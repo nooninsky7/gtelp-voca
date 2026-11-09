@@ -391,6 +391,9 @@
         <!-- 퀴즈 상단 바 -->
         <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
           <div class="flex items-center gap-2">
+            <button id="btnQuizBack" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold flex items-center gap-1 transition shadow-xs" title="이전 문제로 이동">
+              <i class="fa-solid fa-chevron-left text-[11px]"></i> 이전
+            </button>
             <span id="quizBadgeScope" class="px-2.5 py-0.5 rounded-full text-xs font-black bg-indigo-100 text-indigo-700">Day 01</span>
             <span class="text-xs font-bold text-slate-500">문제 <span id="quizCurrentIndex" class="text-indigo-600 font-black">1</span> / <span id="quizTotalIndex">10</span></span>
           </div>
@@ -451,10 +454,15 @@
               <span id="quizTipText"></span>
             </div>
 
-            <!-- 다음 문제 넘어가기 버튼 -->
-            <button id="btnNextQuizQuestion" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
-              다음 문제로 넘어가기 <i class="fa-solid fa-arrow-right"></i>
-            </button>
+            <!-- 이전 / 다음 문제 넘어가기 버튼 바 -->
+            <div class="flex items-center gap-2 pt-1">
+              <button id="btnPrevQuizQuestion" class="w-1/3 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-arrow-left text-xs"></i> 이전 문제
+              </button>
+              <button id="btnNextQuizQuestion" class="flex-1 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
+                <span id="btnNextQuizQuestionText">다음 문제로 넘어가기</span> <i class="fa-solid fa-arrow-right text-xs"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -559,6 +567,9 @@
         <!-- 상단 바 -->
         <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
           <div class="flex items-center gap-2">
+            <button id="btnClozeBack" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold flex items-center gap-1 transition shadow-xs" title="이전 문제로 이동">
+              <i class="fa-solid fa-chevron-left text-[11px]"></i> 이전
+            </button>
             <span id="clozeBadgeScope" class="px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-100 text-emerald-800">Day 01</span>
             <span class="text-xs font-bold text-slate-500">문제 <span id="clozeCurrentIndex" class="text-emerald-600 font-black">1</span> / <span id="clozeTotalIndex">10</span></span>
           </div>
@@ -622,10 +633,15 @@
               <span id="clozeTipText"></span>
             </div>
 
-            <!-- 다음 문제 넘어가기 버튼 -->
-            <button id="btnNextClozeQuestion" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
-              다음 문제로 넘어가기 <i class="fa-solid fa-arrow-right"></i>
-            </button>
+            <!-- 이전 / 다음 문제 이동 버튼 -->
+            <div class="flex items-center gap-2 pt-1">
+              <button id="btnPrevClozeQuestion" class="w-1/3 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-arrow-left text-xs"></i> 이전 문제
+              </button>
+              <button id="btnNextClozeQuestion" class="flex-1 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
+                <span id="btnNextClozeQuestionText">다음 문제로 넘어가기</span> <i class="fa-solid fa-arrow-right text-xs"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -693,6 +709,9 @@
       <div id="paraActiveCard" class="hidden bg-white rounded-3xl border border-slate-200 shadow-md overflow-hidden">
         <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
           <div class="flex items-center gap-2">
+            <button id="btnParaBack" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold flex items-center gap-1 transition shadow-xs" title="이전 문제로 이동">
+              <i class="fa-solid fa-chevron-left text-[11px]"></i> 이전
+            </button>
             <span id="paraBadgeScope" class="px-2.5 py-0.5 rounded-full text-xs font-black bg-amber-100 text-amber-800">Day 01</span>
             <span class="text-xs font-bold text-slate-500">문제 <span id="paraCurrentIndex" class="text-amber-600 font-black">1</span> / <span id="paraTotalIndex">10</span></span>
           </div>
@@ -728,9 +747,14 @@
               <div class="font-bold text-slate-700">전체 동의어/패러프레이징 목록:</div>
               <div id="paraAllSynonyms" class="flex flex-wrap gap-1.5"></div>
             </div>
-            <button id="btnNextParaQuestion" class="w-full py-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
-              다음 문제로 <i class="fa-solid fa-arrow-right"></i>
-            </button>
+            <div class="flex items-center gap-2 pt-1">
+              <button id="btnPrevParaQuestion" class="w-1/3 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-arrow-left text-xs"></i> 이전 문제
+              </button>
+              <button id="btnNextParaQuestion" class="flex-1 py-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
+                <span id="btnNextParaQuestionText">다음 문제로</span> <i class="fa-solid fa-arrow-right text-xs"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -768,6 +792,12 @@
       <!-- 모달 상단 -->
       <div class="p-5 border-b border-slate-100 flex items-start justify-between bg-slate-50/70 rounded-t-3xl">
         <div class="space-y-1">
+          <!-- 이전 단어(유의어 탐색 히스토리)로 돌아가기 버튼 -->
+          <div id="modalBackWordContainer" class="hidden mb-1.5">
+            <button id="modalBackWordBtn" class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 transition flex items-center gap-1.5 shadow-xs">
+              <i class="fa-solid fa-arrow-left text-[11px]"></i> 이전 단어 (<span id="modalBackWordName"></span>)로
+            </button>
+          </div>
           <div class="flex items-center gap-2">
             <span id="modalDayBadge" class="px-2.5 py-0.5 rounded-full text-xs font-black bg-indigo-100 text-indigo-700">Day 01</span>
             <span id="modalNoBadge" class="px-2 py-0.5 rounded-md text-xs font-bold bg-slate-200 text-slate-700">No.01</span>
@@ -1222,7 +1252,7 @@
   </div>
 
   <!-- 스크립트 연결 (캐시 무효화 버전 파라미터 적용) -->
-  <script src="data.js?v=20261109_10"></script>
-  <script src="app.js?v=20261109_10"></script>
+  <script src="data.js?v=20261109_11"></script>
+  <script src="app.js?v=20261109_11"></script>
 </body>
 </html>
