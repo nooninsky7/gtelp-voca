@@ -388,6 +388,9 @@
         <!-- 퀴즈 상단 바 -->
         <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
           <div class="flex items-center gap-2">
+            <button id="btnQuizBack" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold flex items-center gap-1 transition shadow-xs" title="이전 문제로 이동">
+              <i class="fa-solid fa-chevron-left text-[11px]"></i> 이전
+            </button>
             <span id="quizBadgeScope" class="px-2.5 py-0.5 rounded-full text-xs font-black bg-indigo-100 text-indigo-700">Day 01</span>
             <span class="text-xs font-bold text-slate-500">문제 <span id="quizCurrentIndex" class="text-indigo-600 font-black">1</span> / <span id="quizTotalIndex">10</span></span>
           </div>
@@ -556,6 +559,9 @@
         <!-- 상단 바 -->
         <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
           <div class="flex items-center gap-2">
+            <button id="btnClozeBack" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold flex items-center gap-1 transition shadow-xs" title="이전 문제로 이동">
+              <i class="fa-solid fa-chevron-left text-[11px]"></i> 이전
+            </button>
             <span id="clozeBadgeScope" class="px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-100 text-emerald-800">Day 01</span>
             <span class="text-xs font-bold text-slate-500">문제 <span id="clozeCurrentIndex" class="text-emerald-600 font-black">1</span> / <span id="clozeTotalIndex">10</span></span>
           </div>
@@ -690,6 +696,9 @@
       <div id="paraActiveCard" class="hidden bg-white rounded-3xl border border-slate-200 shadow-md overflow-hidden">
         <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
           <div class="flex items-center gap-2">
+            <button id="btnParaBack" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold flex items-center gap-1 transition shadow-xs" title="이전 문제로 이동">
+              <i class="fa-solid fa-chevron-left text-[11px]"></i> 이전
+            </button>
             <span id="paraBadgeScope" class="px-2.5 py-0.5 rounded-full text-xs font-black bg-amber-100 text-amber-800">Day 01</span>
             <span class="text-xs font-bold text-slate-500">문제 <span id="paraCurrentIndex" class="text-amber-600 font-black">1</span> / <span id="paraTotalIndex">10</span></span>
           </div>
@@ -765,6 +774,12 @@
       <!-- 모달 상단 -->
       <div class="p-5 border-b border-slate-100 flex items-start justify-between bg-slate-50/70 rounded-t-3xl">
         <div class="space-y-1">
+          <!-- 이전 단어(유의어 탐색 히스토리)로 돌아가기 버튼 -->
+          <div id="modalBackWordContainer" class="hidden mb-1.5">
+            <button id="modalBackWordBtn" class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 transition flex items-center gap-1.5 shadow-xs">
+              <i class="fa-solid fa-arrow-left text-[11px]"></i> 이전 단어 (<span id="modalBackWordName"></span>)로
+            </button>
+          </div>
           <div class="flex items-center gap-2">
             <span id="modalDayBadge" class="px-2.5 py-0.5 rounded-full text-xs font-black bg-indigo-100 text-indigo-700">Day 01</span>
             <span id="modalNoBadge" class="px-2 py-0.5 rounded-md text-xs font-bold bg-slate-200 text-slate-700">No.01</span>
@@ -1118,7 +1133,7 @@
   </div>
 
   <!-- 스크립트 연결 (캐시 무효화 버전 파라미터 적용) -->
-  <script src="data.js?v=clean_20261109_v1"></script>
-  <script src="app.js?v=clean_20261109_v1"></script>
+  <script src="data.js?v=v2_features_20261109_22"></script>
+  <script src="app.js?v=v2_features_20261109_22"></script>
 </body>
 </html>
