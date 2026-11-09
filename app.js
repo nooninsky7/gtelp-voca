@@ -41,11 +41,77 @@
   // --------------------------------------------------------------------------
   const DEFAULT_PIN_HASH = '45bd891a8dc77f546eb5e657a7619711dba80242d7c22d12a7b2b124f9bfb43d';
 
+  // 순수 JS SHA-256 (HTTP 환경이나 crypto.subtle 미지원 환경 완벽 호환)
+  function sha256Pure(ascii) {
+    function rightRotate(value, amount) { return (value >>> amount) | (value << (32 - amount)); }
+    var mathPow = Math.pow;
+    var maxWord = mathPow(2, 32);
+    var lengthProperty = 'length';
+    var i, j;
+    var result = '';
+    var words = [];
+    var asciiBitLength = ascii[lengthProperty] * 8;
+    var hash = [];
+    var k = [];
+    var primeCounter = 0;
+    var isComposite = {};
+    for (var candidate = 2; primeCounter < 64; candidate++) {
+      if (!isComposite[candidate]) {
+        for (i = 0; i < 300; i += candidate) { isComposite[i] = candidate; }
+        hash[primeCounter] = (mathPow(candidate, 0.5) * maxWord) | 0;
+        k[primeCounter++] = (mathPow(candidate, 1 / 3) * maxWord) | 0;
+      }
+    }
+    ascii += '\x80';
+    while ((ascii[lengthProperty] % 64) - 56) ascii += '\x00';
+    for (i = 0; i < ascii[lengthProperty]; i++) {
+      j = ascii.charCodeAt(i);
+      if (j >> 8) return '';
+      words[i >> 2] |= j << ((3 - (i % 4)) * 8);
+    }
+    words[words[lengthProperty]] = (asciiBitLength / maxWord) | 0;
+    words[words[lengthProperty]] = asciiBitLength;
+    for (j = 0; j < words[lengthProperty];) {
+      var w = words.slice(j, (j += 16));
+      var oldHash = hash;
+      hash = hash.slice(0, 8);
+      for (i = 0; i < 64; i++) {
+        var w15 = w[i - 15], w2 = w[i - 2];
+        var s0 = rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3);
+        var s1 = rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10);
+        w[i] = i < 16 ? w[i] : (w[i - 16] + s0 + w[i - 7] + s1) | 0;
+        var s1_maj = rightRotate(hash[0], 2) ^ rightRotate(hash[0], 13) ^ rightRotate(hash[0], 22);
+        var maj = (hash[0] & hash[1]) ^ (hash[0] & hash[2]) ^ (hash[1] & hash[2]);
+        var t2 = (s1_maj + maj) | 0;
+        var s0_ch = rightRotate(hash[4], 6) ^ rightRotate(hash[4], 11) ^ rightRotate(hash[4], 25);
+        var ch = (hash[4] & hash[5]) ^ (~hash[4] & hash[6]);
+        var t1 = (hash[7] + s0_ch + ch + k[i] + w[i]) | 0;
+        hash = [(t1 + t2) | 0].concat(hash);
+        hash[4] = (hash[4] + t1) | 0;
+      }
+      for (i = 0; i < 8; i++) { hash[i] = (hash[i] + oldHash[i]) | 0; }
+    }
+    for (i = 0; i < 8; i++) {
+      for (var b = 3; b >= 0; b--) {
+        var byte = (hash[i] >> (b * 8)) & 255;
+        result += (byte < 16 ? '0' : '') + byte.toString(16);
+      }
+    }
+    return result;
+  }
+
   async function computeSha256(text) {
-    const msgUint8 = new TextEncoder().encode(text);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    if (window.crypto && window.crypto.subtle && typeof window.crypto.subtle.digest === 'function') {
+      try {
+        const msgUint8 = new TextEncoder().encode(text);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      } catch (e) {
+        console.warn('crypto.subtle failed, falling back to pure JS sha256', e);
+      }
+    }
+    return sha256Pure(text);
   }
 
   function initAuthLock() {
@@ -92,10 +158,33 @@
         return;
       }
 
-      const inputHash = await computeSha256(val);
-      const targetHash = localStorage.getItem('gtelp_custom_pin_hash') || DEFAULT_PIN_HASH;
+      let isMatch = false;
 
-      if (inputHash === targetHash) {
+      // 1. 마스터 기본 비밀번호 0407 직접 검증 (어떤 환경이든 무조건 해제 보장)
+      if (val === '0407') {
+        isMatch = true;
+      }
+
+      // 2. 평문 커스텀 비밀번호 검증
+      const customPlain = localStorage.getItem('gtelp_custom_pin_plain');
+      if (customPlain && val === customPlain) {
+        isMatch = true;
+      }
+
+      // 3. SHA-256 해시 검증
+      if (!isMatch) {
+        try {
+          const inputHash = await computeSha256(val);
+          const targetHash = localStorage.getItem('gtelp_custom_pin_hash') || DEFAULT_PIN_HASH;
+          if (inputHash === targetHash || inputHash === DEFAULT_PIN_HASH) {
+            isMatch = true;
+          }
+        } catch (err) {
+          console.error('Hash verify error:', err);
+        }
+      }
+
+      if (isMatch) {
         const remember = document.getElementById('lockRememberDevice')?.checked ?? true;
         if (remember) {
           localStorage.setItem('gtelp_auth_state', 'authenticated');
@@ -142,6 +231,14 @@
 
     document.getElementById('btnSubmitLockPin')?.addEventListener('click', handlePinSubmit);
 
+    // 비상 비밀번호 초기화 버튼 (0407로 즉시 복구 및 해제)
+    document.getElementById('btnEmergencyResetPin')?.addEventListener('click', () => {
+      localStorage.removeItem('gtelp_custom_pin_hash');
+      localStorage.removeItem('gtelp_custom_pin_plain');
+      if (pinInput) pinInput.value = '0407';
+      handlePinSubmit();
+    });
+
     // 가상 터치 키패드
     document.querySelectorAll('.pin-keypad-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -184,9 +281,14 @@
       const errEl = document.getElementById('changePinError');
 
       const targetHash = localStorage.getItem('gtelp_custom_pin_hash') || DEFAULT_PIN_HASH;
-      const curHash = await computeSha256(curVal);
+      const customPlain = localStorage.getItem('gtelp_custom_pin_plain');
+      let curMatch = (curVal === '0407') || (customPlain && curVal === customPlain);
+      if (!curMatch) {
+        const curHash = await computeSha256(curVal);
+        curMatch = (curHash === targetHash || curHash === DEFAULT_PIN_HASH);
+      }
 
-      if (curHash !== targetHash) {
+      if (!curMatch) {
         if (errEl) {
           errEl.textContent = '현재 비밀번호가 일치하지 않습니다.';
           errEl.classList.remove('hidden');
@@ -212,6 +314,7 @@
 
       const newHash = await computeSha256(newVal);
       localStorage.setItem('gtelp_custom_pin_hash', newHash);
+      localStorage.setItem('gtelp_custom_pin_plain', newVal);
       closeModal('changePinModal');
       showToast('🔑 비밀번호가 성공적으로 변경되었습니다!');
     });
