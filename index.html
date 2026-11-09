@@ -41,6 +41,9 @@
         <button id="dataManageBtn" title="데이터 백업/관리" class="w-9 h-9 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition">
           <i class="fa-solid fa-database"></i>
         </button>
+        <button id="btnAppLock" title="화면 잠금 (로그아웃)" class="w-9 h-9 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-indigo-600 flex items-center justify-center transition">
+          <i class="fa-solid fa-lock"></i>
+        </button>
       </div>
     </div>
 
@@ -1069,7 +1072,19 @@
           </label>
         </div>
 
-        <div class="pt-2 border-t border-slate-100">
+        <div class="pt-2 border-t border-slate-100 space-y-2">
+          <div class="font-bold text-slate-800">보안 및 잠금 설정</div>
+          <div class="grid grid-cols-2 gap-2">
+            <button id="btnOpenChangePin" class="py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 font-bold text-slate-700 transition flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-key text-indigo-600"></i> 비밀번호 변경
+            </button>
+            <button id="btnLockAppNow" class="py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 font-bold text-rose-700 transition flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-lock"></i> 지금 화면 잠금
+            </button>
+          </div>
+        </div>
+
+        <div class="pt-1 border-t border-slate-100">
           <button id="btnResetAllStats" class="w-full py-2 rounded-xl text-rose-500 hover:bg-rose-50 font-bold transition flex items-center justify-center gap-1.5">
             <i class="fa-solid fa-trash-can"></i> 전체 오답 기록 초기화
           </button>
@@ -1113,12 +1128,101 @@
     </div>
   </div>
 
+  <!-- [비밀번호 변경 모달] -->
+  <div id="changePinModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-key text-indigo-600"></i> 비밀번호(PIN) 변경
+        </h3>
+        <button onclick="closeModal('changePinModal')" class="text-slate-400 hover:text-slate-600">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">현재 비밀번호</label>
+          <input type="password" id="currentPinInput" maxlength="6" inputmode="numeric" placeholder="현재 비밀번호 (기본: 0407)" class="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 outline-none focus:border-indigo-500 font-mono text-center tracking-widest text-sm">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">새 비밀번호 (4~6자리)</label>
+          <input type="password" id="newPinInput" maxlength="6" inputmode="numeric" placeholder="새 비밀번호 입력" class="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 outline-none focus:border-indigo-500 font-mono text-center tracking-widest text-sm">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">새 비밀번호 확인</label>
+          <input type="password" id="newPinConfirmInput" maxlength="6" inputmode="numeric" placeholder="새 비밀번호 한 번 더" class="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 outline-none focus:border-indigo-500 font-mono text-center tracking-widest text-sm">
+        </div>
+
+        <div id="changePinError" class="text-rose-500 font-bold text-center hidden"></div>
+
+        <button id="btnSaveNewPin" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition">
+          비밀번호 변경 완료
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- [전체 화면 잠금 오버레이 (PIN 잠금)] -->
+  <div id="appLockScreen" class="fixed inset-0 z-[100] bg-slate-950 flex flex-col items-center justify-center p-6 text-white transition-opacity duration-300">
+    <div class="max-w-xs w-full space-y-6 text-center">
+      <!-- 잠금 아이콘 및 타이틀 -->
+      <div class="space-y-3">
+        <div class="w-16 h-16 mx-auto rounded-3xl bg-indigo-600/20 border border-indigo-500/30 text-indigo-400 flex items-center justify-center text-2xl shadow-lg shadow-indigo-500/10">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-black text-white tracking-tight">G-TELP VOCA MASTER</h1>
+          <p class="text-xs text-slate-400 mt-1">보안을 위해 비밀번호를 입력해주세요</p>
+        </div>
+      </div>
+
+      <!-- PIN 입력창 -->
+      <div class="space-y-3" id="pinInputContainer">
+        <div class="relative max-w-[200px] mx-auto">
+          <input type="password" id="lockPinInput" maxlength="6" inputmode="numeric" placeholder="••••" autocomplete="off"
+            class="w-full text-center text-3xl font-mono tracking-[0.4em] py-3.5 rounded-2xl bg-slate-900 border-2 border-slate-700 focus:border-indigo-500 focus:outline-none text-white transition shadow-inner">
+        </div>
+        <div id="lockPinError" class="text-xs text-rose-400 font-bold hidden min-h-[1.25rem]"></div>
+      </div>
+
+      <!-- 터치 키패드 (스마트폰/태블릿 편리용) -->
+      <div class="grid grid-cols-3 gap-2 max-w-[240px] mx-auto pt-1 select-none">
+        <button type="button" class="pin-keypad-btn py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-lg font-black text-white active:scale-95 transition" data-key="1">1</button>
+        <button type="button" class="pin-keypad-btn py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-lg font-black text-white active:scale-95 transition" data-key="2">2</button>
+        <button type="button" class="pin-keypad-btn py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-lg font-black text-white active:scale-95 transition" data-key="3">3</button>
+        <button type="button" class="pin-keypad-btn py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-lg font-black text-white active:scale-95 transition" data-key="4">4</button>
+        <button type="button" class="pin-keypad-btn py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-lg font-black text-white active:scale-95 transition" data-key="5">5</button>
+        <button type="button" class="pin-keypad-btn py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-lg font-black text-white active:scale-95 transition" data-key="6">6</button>
+        <button type="button" class="pin-keypad-btn py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-lg font-black text-white active:scale-95 transition" data-key="7">7</button>
+        <button type="button" class="pin-keypad-btn py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-lg font-black text-white active:scale-95 transition" data-key="8">8</button>
+        <button type="button" class="pin-keypad-btn py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-lg font-black text-white active:scale-95 transition" data-key="9">9</button>
+        <button type="button" class="pin-keypad-btn py-3.5 rounded-2xl bg-slate-900/40 hover:bg-slate-800/60 border border-slate-800/60 text-xs font-bold text-slate-400 active:scale-95 transition" data-key="clear">초기화</button>
+        <button type="button" class="pin-keypad-btn py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-lg font-black text-white active:scale-95 transition" data-key="0">0</button>
+        <button type="button" class="pin-keypad-btn py-3.5 rounded-2xl bg-slate-900/40 hover:bg-slate-800/60 border border-slate-800/60 text-base font-bold text-slate-300 active:scale-95 transition" data-key="back"><i class="fa-solid fa-delete-left"></i></button>
+      </div>
+
+      <!-- 이 기기 기억하기 (로그인 유지) 옵션 -->
+      <div class="pt-1 flex items-center justify-center">
+        <label class="flex items-center gap-2 cursor-pointer select-none text-xs text-slate-300">
+          <input type="checkbox" id="lockRememberDevice" checked class="w-4 h-4 rounded text-indigo-500 focus:ring-indigo-400 border-slate-700 bg-slate-900">
+          <span>이 기기에서 로그인 유지 (자동 접속)</span>
+        </label>
+      </div>
+
+      <!-- 확인 버튼 -->
+      <button id="btnSubmitLockPin" class="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-sm shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
+        <span>잠금 해제</span> <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
   <!-- 토스트 알림 메시지 -->
   <div id="toastMessage" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 hidden px-4 py-2 rounded-full bg-slate-900/90 text-white text-xs font-semibold shadow-lg backdrop-blur-md transition-all duration-200">
   </div>
 
   <!-- 스크립트 연결 (캐시 무효화 버전 파라미터 적용) -->
-  <script src="data.js?v=20261109_09"></script>
-  <script src="app.js?v=20261109_09"></script>
+  <script src="data.js?v=20261109_10"></script>
+  <script src="app.js?v=20261109_10"></script>
 </body>
 </html>

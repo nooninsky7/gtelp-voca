@@ -27,6 +27,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
+    initAuthLock();
     loadData();
     initTTS();
     initUI();
@@ -34,6 +35,187 @@
     renderWordList();
     renderStats();
   });
+
+  // --------------------------------------------------------------------------
+  // 0. 보안 및 PIN 잠금 화면 모듈 (기본 비밀번호: 0407)
+  // --------------------------------------------------------------------------
+  const DEFAULT_PIN_HASH = '45bd891a8dc77f546eb5e657a7619711dba80242d7c22d12a7b2b124f9bfb43d';
+
+  async function computeSha256(text) {
+    const msgUint8 = new TextEncoder().encode(text);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function initAuthLock() {
+    const isRemembered = localStorage.getItem('gtelp_auth_state') === 'authenticated';
+    const isSession = sessionStorage.getItem('gtelp_auth_state') === 'authenticated';
+    const lockScreen = document.getElementById('appLockScreen');
+    const pinInput = document.getElementById('lockPinInput');
+    const errorEl = document.getElementById('lockPinError');
+    const container = document.getElementById('pinInputContainer');
+
+    if (isRemembered || isSession) {
+      if (lockScreen) lockScreen.classList.add('hidden');
+    } else {
+      if (lockScreen) lockScreen.classList.remove('hidden');
+      setTimeout(() => pinInput?.focus(), 150);
+    }
+
+    // 잠금 실행 (로그아웃)
+    function lockAppNow() {
+      localStorage.removeItem('gtelp_auth_state');
+      sessionStorage.removeItem('gtelp_auth_state');
+      if (pinInput) pinInput.value = '';
+      if (errorEl) errorEl.classList.add('hidden');
+      if (lockScreen) {
+        lockScreen.classList.remove('hidden');
+        setTimeout(() => pinInput?.focus(), 150);
+      }
+      closeModal('dataManageModal');
+      showToast('🔒 앱이 잠겼습니다.');
+    }
+
+    document.getElementById('btnAppLock')?.addEventListener('click', lockAppNow);
+    document.getElementById('btnLockAppNow')?.addEventListener('click', lockAppNow);
+
+    // PIN 검증 및 잠금 해제
+    async function handlePinSubmit() {
+      if (!pinInput) return;
+      const val = pinInput.value.trim();
+      if (!val) {
+        if (errorEl) {
+          errorEl.textContent = '비밀번호를 입력해주세요.';
+          errorEl.classList.remove('hidden');
+        }
+        return;
+      }
+
+      const inputHash = await computeSha256(val);
+      const targetHash = localStorage.getItem('gtelp_custom_pin_hash') || DEFAULT_PIN_HASH;
+
+      if (inputHash === targetHash) {
+        const remember = document.getElementById('lockRememberDevice')?.checked ?? true;
+        if (remember) {
+          localStorage.setItem('gtelp_auth_state', 'authenticated');
+        } else {
+          sessionStorage.setItem('gtelp_auth_state', 'authenticated');
+        }
+
+        if (lockScreen) {
+          lockScreen.classList.add('opacity-0');
+          setTimeout(() => {
+            lockScreen.classList.add('hidden');
+            lockScreen.classList.remove('opacity-0');
+          }, 250);
+        }
+        pinInput.value = '';
+        if (errorEl) errorEl.classList.add('hidden');
+        showToast('🔓 잠금이 해제되었습니다!');
+      } else {
+        if (container) {
+          container.classList.remove('shake');
+          void container.offsetWidth;
+          container.classList.add('shake');
+        }
+        if (errorEl) {
+          errorEl.textContent = '비밀번호가 일치하지 않습니다.';
+          errorEl.classList.remove('hidden');
+        }
+        pinInput.value = '';
+      }
+    }
+
+    pinInput?.addEventListener('input', () => {
+      if (errorEl) errorEl.classList.add('hidden');
+      if (pinInput.value.length >= 4) {
+        handlePinSubmit();
+      }
+    });
+
+    pinInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        handlePinSubmit();
+      }
+    });
+
+    document.getElementById('btnSubmitLockPin')?.addEventListener('click', handlePinSubmit);
+
+    // 가상 터치 키패드
+    document.querySelectorAll('.pin-keypad-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.key;
+        if (!pinInput) return;
+        if (key === 'clear') {
+          pinInput.value = '';
+          if (errorEl) errorEl.classList.add('hidden');
+        } else if (key === 'back') {
+          pinInput.value = pinInput.value.slice(0, -1);
+        } else {
+          if (pinInput.value.length < 6) {
+            pinInput.value += key;
+            if (pinInput.value.length >= 4) {
+              handlePinSubmit();
+            }
+          }
+        }
+      });
+    });
+
+    // 비밀번호 변경 모달 이벤트
+    document.getElementById('btnOpenChangePin')?.addEventListener('click', () => {
+      closeModal('dataManageModal');
+      const curInput = document.getElementById('currentPinInput');
+      const newInput = document.getElementById('newPinInput');
+      const confirmInput = document.getElementById('newPinConfirmInput');
+      const changeErr = document.getElementById('changePinError');
+      if (curInput) curInput.value = '';
+      if (newInput) newInput.value = '';
+      if (confirmInput) confirmInput.value = '';
+      if (changeErr) changeErr.classList.add('hidden');
+      openModal('changePinModal');
+    });
+
+    document.getElementById('btnSaveNewPin')?.addEventListener('click', async () => {
+      const curVal = document.getElementById('currentPinInput')?.value.trim();
+      const newVal = document.getElementById('newPinInput')?.value.trim();
+      const confirmVal = document.getElementById('newPinConfirmInput')?.value.trim();
+      const errEl = document.getElementById('changePinError');
+
+      const targetHash = localStorage.getItem('gtelp_custom_pin_hash') || DEFAULT_PIN_HASH;
+      const curHash = await computeSha256(curVal);
+
+      if (curHash !== targetHash) {
+        if (errEl) {
+          errEl.textContent = '현재 비밀번호가 일치하지 않습니다.';
+          errEl.classList.remove('hidden');
+        }
+        return;
+      }
+
+      if (!newVal || newVal.length < 4 || newVal.length > 6) {
+        if (errEl) {
+          errEl.textContent = '새 비밀번호는 4~6자리로 입력해주세요.';
+          errEl.classList.remove('hidden');
+        }
+        return;
+      }
+
+      if (newVal !== confirmVal) {
+        if (errEl) {
+          errEl.textContent = '새 비밀번호가 서로 일치하지 않습니다.';
+          errEl.classList.remove('hidden');
+        }
+        return;
+      }
+
+      const newHash = await computeSha256(newVal);
+      localStorage.setItem('gtelp_custom_pin_hash', newHash);
+      closeModal('changePinModal');
+      showToast('🔑 비밀번호가 성공적으로 변경되었습니다!');
+    });
+  }
 
   // --------------------------------------------------------------------------
   // 1. 데이터 로드 & 저장소 (LocalStorage)
