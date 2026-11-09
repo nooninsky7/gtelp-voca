@@ -122,12 +122,33 @@
     const errorEl = document.getElementById('lockPinError');
     const container = document.getElementById('pinInputContainer');
 
+    function hideLockScreen() {
+      if (!lockScreen) return;
+      lockScreen.style.setProperty('display', 'none', 'important');
+      lockScreen.classList.add('hidden');
+      lockScreen.classList.remove('flex');
+    }
+
+    function showLockScreen() {
+      if (!lockScreen) return;
+      lockScreen.style.setProperty('display', 'flex', 'important');
+      lockScreen.classList.remove('hidden');
+      lockScreen.classList.add('flex');
+    }
+
     if (isRemembered || isSession) {
-      if (lockScreen) lockScreen.classList.add('hidden');
+      hideLockScreen();
     } else {
-      if (lockScreen) lockScreen.classList.remove('hidden');
+      showLockScreen();
       setTimeout(() => pinInput?.focus(), 150);
     }
+
+    // 비상 닫기 / 건너뛰기 X 버튼
+    document.getElementById('btnCloseLockScreen')?.addEventListener('click', () => {
+      localStorage.setItem('gtelp_auth_state', 'authenticated');
+      hideLockScreen();
+      showToast('🔓 메인 화면으로 이동했습니다.');
+    });
 
     // 잠금 실행 (로그아웃)
     function lockAppNow() {
@@ -135,10 +156,8 @@
       sessionStorage.removeItem('gtelp_auth_state');
       if (pinInput) pinInput.value = '';
       if (errorEl) errorEl.classList.add('hidden');
-      if (lockScreen) {
-        lockScreen.classList.remove('hidden');
-        setTimeout(() => pinInput?.focus(), 150);
-      }
+      showLockScreen();
+      setTimeout(() => pinInput?.focus(), 150);
       closeModal('dataManageModal');
       showToast('🔒 앱이 잠겼습니다.');
     }
@@ -192,13 +211,7 @@
           sessionStorage.setItem('gtelp_auth_state', 'authenticated');
         }
 
-        if (lockScreen) {
-          lockScreen.classList.add('opacity-0');
-          setTimeout(() => {
-            lockScreen.classList.add('hidden');
-            lockScreen.classList.remove('opacity-0');
-          }, 250);
-        }
+        hideLockScreen();
         pinInput.value = '';
         if (errorEl) errorEl.classList.add('hidden');
         showToast('🔓 잠금이 해제되었습니다!');
@@ -231,12 +244,13 @@
 
     document.getElementById('btnSubmitLockPin')?.addEventListener('click', handlePinSubmit);
 
-    // 비상 비밀번호 초기화 버튼 (0407로 즉시 복구 및 해제)
+    // 비상 비밀번호 초기화 버튼 (터치 한 번으로 즉시 잠금 풀기)
     document.getElementById('btnEmergencyResetPin')?.addEventListener('click', () => {
       localStorage.removeItem('gtelp_custom_pin_hash');
       localStorage.removeItem('gtelp_custom_pin_plain');
-      if (pinInput) pinInput.value = '0407';
-      handlePinSubmit();
+      localStorage.setItem('gtelp_auth_state', 'authenticated');
+      hideLockScreen();
+      showToast('🔓 잠금이 즉시 해제되었습니다!');
     });
 
     // 가상 터치 키패드

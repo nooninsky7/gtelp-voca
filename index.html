@@ -1194,7 +1194,12 @@
   </div>
 
   <!-- [전체 화면 잠금 오버레이 (PIN 잠금)] -->
-  <div id="appLockScreen" class="fixed inset-0 z-[100] bg-slate-950 flex flex-col items-center justify-center p-6 text-white transition-opacity duration-300">
+  <div id="appLockScreen" style="display: none;" class="fixed inset-0 z-[100] bg-slate-950 flex-col items-center justify-center p-6 text-white transition-opacity duration-300">
+    <!-- 비상 닫기 버튼 -->
+    <button id="btnCloseLockScreen" type="button" class="absolute top-5 right-5 text-slate-400 hover:text-white p-2.5 text-2xl transition cursor-pointer" title="닫고 바로 시작하기">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
     <div class="max-w-xs w-full space-y-6 text-center">
       <!-- 잠금 아이콘 및 타이틀 -->
       <div class="space-y-3">
@@ -1203,7 +1208,7 @@
         </div>
         <div>
           <h1 class="text-xl font-black text-white tracking-tight">G-TELP VOCA MASTER</h1>
-          <p class="text-xs text-slate-400 mt-1">보안을 위해 비밀번호를 입력해주세요</p>
+          <p class="text-xs text-slate-400 mt-1">보안을 위해 비밀번호(0407)를 입력해주세요</p>
         </div>
       </div>
 
@@ -1241,14 +1246,15 @@
       </div>
 
       <!-- 확인 버튼 -->
-      <button id="btnSubmitLockPin" class="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-sm shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
+      <button id="btnSubmitLockPin" class="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-sm shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2 cursor-pointer">
         <span>잠금 해제</span> <i class="fa-solid fa-arrow-right"></i>
       </button>
 
-      <!-- 비상 초기화 버튼 -->
-      <div class="pt-0.5">
-        <button type="button" id="btnEmergencyResetPin" class="text-[11px] text-slate-500 hover:text-indigo-400 underline transition cursor-pointer">
-          비밀번호가 안 풀리나요? (0407로 강제 초기화 및 해제)
+      <!-- 비상 해제 / 바로 들어가기 버튼 -->
+      <div class="pt-1">
+        <button type="button" id="btnEmergencyResetPin" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-indigo-400 hover:text-indigo-300 font-bold transition flex items-center justify-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-unlock-keyhole"></i>
+          <span>비상 해제 (터치 한 번으로 즉시 잠금 풀기)</span>
         </button>
       </div>
     </div>
@@ -1259,7 +1265,7 @@
   </div>
 
   <!-- 스크립트 연결 (캐시 무효화 버전 파라미터 적용) -->
-  <script src="data.js?v=20261109_12"></script>
-  <script src="app.js?v=20261109_12"></script>
+  <script src="data.js?v=20261109_13"></script>
+  <script src="app.js?v=20261109_13"></script>
 </body>
 </html>
