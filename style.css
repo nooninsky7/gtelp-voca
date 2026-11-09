@@ -1,0 +1,89 @@
+/* VOCA Master 스타일 시트 */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+body {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 스크롤바 숨김 유틸리티 */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 단어 카드 호버 및 터치 효과 */
+.word-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.word-card:active {
+  transform: scale(0.99);
+}
+
+/* 보기 버튼 애니메이션 */
+.quiz-opt-btn, .cloze-opt-btn {
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.quiz-opt-btn:hover:not(:disabled), .cloze-opt-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+/* TTS 클릭 시 재생 애니메이션 */
+.playing-sound {
+  animation: pulse-indigo 0.6s ease-in-out;
+}
+
+@keyframes pulse-indigo {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); color: #4f46e5; }
+  100% { transform: scale(1); }
+}
+
+/* 부드러운 페이드 인 */
+.fade-in {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 플래시카드 3D 플립 스타일 */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.flip-card-inner.flipped {
+  transform: rotateY(180deg);
+}
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 1.5rem;
+}
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* 타임어택 게이지 애니메이션 */
+.timer-pulse {
+  animation: timerWarning 0.5s ease-in-out infinite alternate;
+}
+@keyframes timerWarning {
+  from { color: #f43f5e; transform: scale(1); }
+  to { color: #be123c; transform: scale(1.1); }
+}
