@@ -27,14 +27,12 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    // 비밀번호 잠금 관련 잔여 상태 초기화 (잠금 기능 완전 제거)
     try {
       localStorage.removeItem('gtelp_auth_state');
       sessionStorage.removeItem('gtelp_auth_state');
       localStorage.removeItem('gtelp_custom_pin_hash');
       localStorage.removeItem('gtelp_custom_pin_plain');
     } catch (e) {}
-
     loadData();
     initTTS();
     initUI();
@@ -223,11 +221,6 @@
   };
 
   window.closeModal = function (modalId) {
-    if (modalId === 'wordDetailModal') {
-      modalWordHistory = [];
-      currentDetailWordId = null;
-      document.getElementById('modalBackWordContainer')?.classList.add('hidden');
-    }
     document.getElementById(modalId)?.classList.add('hidden');
   };
 
@@ -508,22 +501,11 @@
             ${paraphrases.length > 0 ? `
               <div class="flex items-center gap-1.5 flex-wrap pt-0.5">
                 <span class="font-bold text-amber-600 shrink-0"><i class="fa-solid fa-shuffle"></i> 동의어:</span>
-                ${paraphrases.map(p => {
-                  const cleanP = (p || '').trim();
-                  const found = words.find(item => item.word.toLowerCase() === cleanP.toLowerCase());
-                  if (found) {
-                    return `
-                      <span class="tts-chip px-2 py-0.5 rounded-md bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 font-bold cursor-pointer transition flex items-center gap-1 shadow-xs" data-registered-id="${found.id}" data-word="${cleanP}" title="'${found.word}' 상세정보 보기">
-                        <i class="fa-solid fa-book-open text-[10px] text-amber-700"></i> ${cleanP}
-                      </span>
-                    `;
-                  }
-                  return `
-                    <span class="tts-chip px-2 py-0.5 rounded-md bg-amber-50 text-amber-800 hover:bg-amber-100 font-semibold cursor-pointer transition flex items-center gap-1" data-word="${cleanP}">
-                      ${cleanP} <i class="fa-solid fa-volume-high text-[10px] text-amber-500"></i>
-                    </span>
-                  `;
-                }).join('')}
+                ${paraphrases.map(p => `
+                  <span class="tts-chip px-2 py-0.5 rounded-md bg-amber-50 text-amber-800 hover:bg-amber-100 font-semibold cursor-pointer transition flex items-center gap-1" data-word="${p}">
+                    ${p} <i class="fa-solid fa-volume-high text-[10px] text-amber-500"></i>
+                  </span>
+                `).join('')}
               </div>
             ` : ''}
           </div>
@@ -569,14 +551,10 @@
       });
     });
 
-    // 동의어(패러프레이징) 칩 클릭 (등록된 단어는 상세 팝업 오픈, 일반 단어는 발음)
+    // 동의어(패러프레이징) 칩 발음
     container.querySelectorAll('.tts-chip').forEach(chip => {
       chip.addEventListener('click', (e) => {
-        if (chip.dataset.registeredId) {
-          openWordDetailModal(chip.dataset.registeredId, false);
-        } else {
-          speak(chip.dataset.word, e);
-        }
+        speak(chip.dataset.word, e);
       });
     });
 
@@ -619,43 +597,11 @@
   }
 
   // --------------------------------------------------------------------------
-  // 5. 단어 상세 정보 모달 (영단어 클릭 시 원터치 펼침 & 유의어 클릭 시 팝업 전환 및 뒤로가기 지원)
+  // 5. 단어 상세 정보 모달 (영단어 클릭 시 원터치 펼침)
   // --------------------------------------------------------------------------
-  let modalWordHistory = [];
-  let currentDetailWordId = null;
-
-  function openWordDetailModal(id, pushHistory = false) {
+  function openWordDetailModal(id) {
     const item = words.find(w => w.id === id);
     if (!item) return;
-
-    if (pushHistory && currentDetailWordId && currentDetailWordId !== id) {
-      modalWordHistory.push(currentDetailWordId);
-    }
-    currentDetailWordId = id;
-
-    // 이전 단어 히스토리 버튼 표시 여부
-    const backContainer = document.getElementById('modalBackWordContainer');
-    const backNameEl = document.getElementById('modalBackWordName');
-    if (modalWordHistory.length > 0) {
-      const prevId = modalWordHistory[modalWordHistory.length - 1];
-      const prevItem = words.find(w => w.id === prevId);
-      if (prevItem && backContainer && backNameEl) {
-        backNameEl.textContent = prevItem.word;
-        backContainer.classList.remove('hidden');
-      }
-    } else if (backContainer) {
-      backContainer.classList.add('hidden');
-    }
-
-    const backWordBtn = document.getElementById('modalBackWordBtn');
-    if (backWordBtn) {
-      backWordBtn.onclick = () => {
-        if (modalWordHistory.length > 0) {
-          const prevId = modalWordHistory.pop();
-          openWordDetailModal(prevId, false);
-        }
-      };
-    }
 
     document.getElementById('modalDayBadge').textContent = item.day || 'Day 01';
     const noBadge = document.getElementById('modalNoBadge');
@@ -686,34 +632,15 @@
     // 파생어
     document.getElementById('modalRelatedForms').textContent = item.relatedForms || '등록된 유사 품사어가 없습니다.';
 
-    // 패러프레이징 칩 (등록된 단어는 책 아이콘 + 상세정보 클릭 시 팝업 전환)
+    // 패러프레이징 칩
     const paraContainer = document.getElementById('modalParaphrase');
     const paraphrases = Array.isArray(item.paraphrase) ? item.paraphrase : [];
     if (paraphrases.length > 0) {
-      paraContainer.innerHTML = paraphrases.map(p => {
-        const cleanP = (p || '').trim();
-        const found = words.find(w => w.word.toLowerCase() === cleanP.toLowerCase());
-        if (found) {
-          return `
-            <div class="inline-flex items-center rounded-xl bg-amber-100 text-amber-950 border border-amber-300 shadow-xs hover:bg-amber-200 transition text-xs font-bold overflow-hidden">
-              <button type="button" class="px-2.5 py-1.5 flex items-center gap-1.5 hover:text-amber-900" onclick="window.openWordDetailFromSynonym('${found.id}')" title="'${found.word}' 단어 상세정보 보기">
-                <i class="fa-solid fa-book-open text-[11px] text-amber-700"></i>
-                <span>${cleanP}</span>
-                <span class="text-[10px] bg-amber-200 text-amber-800 px-1 py-0.2 rounded font-black">단어장 등록</span>
-              </button>
-              <button type="button" class="px-2 py-1.5 text-amber-600 hover:text-amber-950 hover:bg-amber-200 border-l border-amber-300 transition" onclick="window.speakText('${cleanP}')" title="발음 듣기">
-                <i class="fa-solid fa-volume-high text-[11px]"></i>
-              </button>
-            </div>
-          `;
-        } else {
-          return `
-            <span class="px-2.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold cursor-pointer transition flex items-center gap-1.5 border border-amber-200/50" onclick="window.speakText('${cleanP}')" title="터치 시 발음 듣기">
-              ${cleanP} <i class="fa-solid fa-volume-high text-[10px] text-amber-600"></i>
-            </span>
-          `;
-        }
-      }).join('');
+      paraContainer.innerHTML = paraphrases.map(p => `
+        <span class="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold cursor-pointer transition flex items-center gap-1.5" onclick="window.speakText('${p}')">
+          ${p} <i class="fa-solid fa-volume-high text-[10px] text-amber-600"></i>
+        </span>
+      `).join('');
     } else {
       paraContainer.innerHTML = '<span class="text-xs text-slate-400">등록된 동의어가 없습니다.</span>';
     }
@@ -766,10 +693,6 @@
 
     openModal('wordDetailModal');
   }
-
-  window.openWordDetailFromSynonym = function(id) {
-    openWordDetailModal(id, true);
-  };
 
   window.speakText = function(text) {
     speak(text);
@@ -1011,8 +934,7 @@
       score: 0,
       correctCount: 0,
       wrongList: [],
-      answered: false,
-      userAnswers: {}
+      answered: false
     };
 
     document.getElementById('quizSetupCard').classList.add('hidden');
@@ -1025,6 +947,7 @@
   function renderCurrentStandardQuestion() {
     clearQuizTimer();
     const q = activeQuiz.questionList[activeQuiz.currentIndex];
+    activeQuiz.answered = false;
 
     // 상단 진행 상태
     document.getElementById('quizBadgeScope').textContent = activeQuiz.scopeLabel;
@@ -1035,65 +958,35 @@
     const progress = ((activeQuiz.currentIndex) / activeQuiz.questionList.length) * 100;
     document.getElementById('quizProgressBar').style.width = `${progress}%`;
 
-    // 상단 뒤로가기 버튼 라벨 및 툴팁
-    const topBackBtn = document.getElementById('btnQuizBack');
-    if (topBackBtn) {
-      if (activeQuiz.currentIndex === 0) {
-        topBackBtn.innerHTML = '<i class="fa-solid fa-chevron-left text-[11px]"></i> 목록';
-        topBackBtn.title = '퀴즈 범위 목록으로';
-      } else {
-        topBackBtn.innerHTML = '<i class="fa-solid fa-chevron-left text-[11px]"></i> 이전';
-        topBackBtn.title = '이전 문제로 이동';
-      }
-    }
-
     // 문제 표시
     document.getElementById('quizQuestionMeaning').textContent = q.meaning;
     document.getElementById('quizQuestionPartOfSpeech').textContent = q.partOfSpeech || '품사';
 
-    // 이미 풀었던 문제인지 확인
-    const prevAns = activeQuiz.userAnswers && activeQuiz.userAnswers[activeQuiz.currentIndex];
-
+    // 보기 구성 (데이터에 options가 있으면 사용, 없으면 지텔프 스마트 디스트랙터 엔진으로 자동 생성)
     let options = [];
-    if (prevAns) {
-      options = prevAns.options;
-      activeQuiz.answered = true;
+    if (q.options && q.options.length === 4) {
+      options = shuffle(q.options);
     } else {
-      activeQuiz.answered = false;
-      if (q.options && q.options.length === 4) {
-        options = shuffle(q.options);
-      } else {
-        options = generateGtelpSmartDistractors(q, words);
-      }
+      options = generateGtelpSmartDistractors(q, words);
+    }
+
+    // 10초 타임어택 가동
+    if (isStandardTimeAttack) {
+      startQuizTimer(10, () => {
+        if (!activeQuiz.answered) {
+          handleStandardAnswer(null, q, options, true); // 시간 초과
+        }
+      }, 'quizTimerBadge', 'quizTimerSeconds');
     }
 
     // 보기 렌더링
     const optionsContainer = document.getElementById('quizOptionsContainer');
     optionsContainer.innerHTML = options.map((opt, i) => {
       const label = String.fromCharCode(65 + i); // A, B, C, D
-      let btnClass = 'quiz-opt-btn w-full p-3.5 rounded-2xl border-2 font-bold transition flex items-center justify-between group ';
-      let badgeClass = 'w-7 h-7 rounded-xl flex items-center justify-center text-xs font-black transition ';
-
-      if (prevAns) {
-        if (opt.word === q.word) {
-          btnClass += 'border-emerald-500 bg-emerald-50 text-emerald-900';
-          badgeClass += 'bg-emerald-600 text-white';
-        } else if (opt.word === prevAns.selectedWord && !prevAns.isCorrect) {
-          btnClass += 'border-rose-500 bg-rose-50 text-rose-900';
-          badgeClass += 'bg-rose-600 text-white';
-        } else {
-          btnClass += 'border-slate-200 bg-slate-50/60 text-slate-400 opacity-60';
-          badgeClass += 'bg-slate-200 text-slate-400';
-        }
-      } else {
-        btnClass += 'border-slate-200 hover:border-indigo-400 bg-white hover:bg-indigo-50/40 text-left';
-        badgeClass += 'bg-slate-100 group-hover:bg-indigo-600 group-hover:text-white text-slate-500';
-      }
-
       return `
-        <button class="${btnClass}" data-word="${opt.word}" ${prevAns ? 'disabled' : ''}>
+        <button class="quiz-opt-btn w-full p-3.5 rounded-2xl border-2 border-slate-200 hover:border-indigo-400 bg-white hover:bg-indigo-50/40 text-left font-bold transition flex items-center justify-between group" data-word="${opt.word}">
           <div class="flex items-center gap-3">
-            <span class="${badgeClass}">
+            <span class="w-7 h-7 rounded-xl bg-slate-100 group-hover:bg-indigo-600 group-hover:text-white flex items-center justify-center text-xs font-black text-slate-500 transition">
               ${label}
             </span>
             <span class="text-base text-slate-900">${opt.word}</span>
@@ -1106,6 +999,10 @@
       `;
     }).join('');
 
+    // 해설창 숨김
+    const explanationBox = document.getElementById('quizExplanationBox');
+    explanationBox.classList.add('hidden');
+
     // 보기 발음 클릭 이벤트
     optionsContainer.querySelectorAll('.tts-quiz-opt').forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -1113,30 +1010,14 @@
       });
     });
 
-    if (prevAns) {
-      showQuizExplanation(prevAns.isCorrect, q, prevAns.options, prevAns.isTimeout);
-    } else {
-      // 해설창 숨김
-      document.getElementById('quizExplanationBox').classList.add('hidden');
-
-      // 10초 타임어택 가동
-      if (isStandardTimeAttack) {
-        startQuizTimer(10, () => {
-          if (!activeQuiz.answered) {
-            handleStandardAnswer(null, q, options, true); // 시간 초과
-          }
-        }, 'quizTimerBadge', 'quizTimerSeconds');
-      }
-
-      // 보기 선택 이벤트
-      optionsContainer.querySelectorAll('.quiz-opt-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          if (activeQuiz.answered) return;
-          if (e.target.closest('.tts-quiz-opt')) return;
-          handleStandardAnswer(btn.dataset.word, q, options);
-        });
+    // 보기 선택 이벤트
+    optionsContainer.querySelectorAll('.quiz-opt-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        if (activeQuiz.answered) return;
+        if (e.target.closest('.tts-quiz-opt')) return;
+        handleStandardAnswer(btn.dataset.word, q, options);
       });
-    }
+    });
   }
 
   function handleStandardAnswer(selectedWord, q, options, isTimeout = false) {
@@ -1166,19 +1047,13 @@
       }
     });
 
-    if (!activeQuiz.userAnswers) activeQuiz.userAnswers = {};
-    const alreadyRecorded = !!activeQuiz.userAnswers[activeQuiz.currentIndex];
-    activeQuiz.userAnswers[activeQuiz.currentIndex] = { selectedWord, options, isTimeout, isCorrect };
-
-    if (!alreadyRecorded) {
-      if (isCorrect) {
-        activeQuiz.score += 10;
-        activeQuiz.correctCount += 1;
-        document.getElementById('quizScore').textContent = activeQuiz.score;
-      } else {
-        activeQuiz.wrongList.push(q);
-        addWrongCount(q.id); // 오답 횟수 자동 누적!
-      }
+    if (isCorrect) {
+      activeQuiz.score += 10;
+      activeQuiz.correctCount += 1;
+      document.getElementById('quizScore').textContent = activeQuiz.score;
+    } else {
+      activeQuiz.wrongList.push(q);
+      addWrongCount(q.id); // 오답 횟수 자동 누적!
     }
 
     // 정답 발음 즉시 재생
@@ -1264,46 +1139,16 @@
       tipSection.classList.add('hidden');
     }
 
-    // 이전 문제 버튼
-    const prevBtn = document.getElementById('btnPrevQuizQuestion');
-    if (prevBtn) {
-      if (activeQuiz.currentIndex === 0) {
-        prevBtn.disabled = true;
-        prevBtn.classList.add('opacity-40', 'cursor-not-allowed');
-      } else {
-        prevBtn.disabled = false;
-        prevBtn.classList.remove('opacity-40', 'cursor-not-allowed');
-      }
-      prevBtn.onclick = () => {
-        clearQuizTimer();
-        if (activeQuiz.currentIndex > 0) {
-          activeQuiz.currentIndex--;
-          renderCurrentStandardQuestion();
-        }
-      };
-    }
-
     // 다음 문제 버튼
     const nextBtn = document.getElementById('btnNextQuizQuestion');
-    const nextBtnText = document.getElementById('btnNextQuizQuestionText');
-    if (nextBtnText) {
-      if (activeQuiz.currentIndex === activeQuiz.questionList.length - 1) {
-        nextBtnText.textContent = '결과 보기 (완료)';
+    nextBtn.onclick = () => {
+      activeQuiz.currentIndex++;
+      if (activeQuiz.currentIndex < activeQuiz.questionList.length) {
+        renderCurrentStandardQuestion();
       } else {
-        nextBtnText.textContent = '다음 문제로 넘어가기';
+        finishQuiz();
       }
-    }
-    if (nextBtn) {
-      nextBtn.onclick = () => {
-        clearQuizTimer();
-        activeQuiz.currentIndex++;
-        if (activeQuiz.currentIndex < activeQuiz.questionList.length) {
-          renderCurrentStandardQuestion();
-        } else {
-          finishQuiz();
-        }
-      };
-    }
+    };
   }
 
   function finishQuiz() {
@@ -1342,7 +1187,6 @@
         activeQuiz.score = 0;
         activeQuiz.correctCount = 0;
         activeQuiz.wrongList = [];
-        activeQuiz.userAnswers = {};
         activeQuiz.scopeLabel = '틀린 단어 재도전';
         document.getElementById('quizResultCard').classList.add('hidden');
         document.getElementById('quizActiveCard').classList.remove('hidden');
@@ -1390,8 +1234,7 @@
       score: 0,
       correctCount: 0,
       wrongList: [],
-      answered: false,
-      userAnswers: {}
+      answered: false
     };
 
     document.getElementById('paraSetupCard').classList.add('hidden');
@@ -1402,6 +1245,7 @@
 
   function renderCurrentParaQuestion() {
     const q = activeQuiz.questionList[activeQuiz.currentIndex];
+    activeQuiz.answered = false;
 
     document.getElementById('paraBadgeScope').textContent = activeQuiz.scopeLabel;
     document.getElementById('paraCurrentIndex').textContent = activeQuiz.currentIndex + 1;
@@ -1411,83 +1255,39 @@
     const progress = ((activeQuiz.currentIndex) / activeQuiz.questionList.length) * 100;
     document.getElementById('paraProgressBar').style.width = `${progress}%`;
 
-    // 상단 뒤로가기 버튼 라벨
-    const topBackBtn = document.getElementById('btnParaBack');
-    if (topBackBtn) {
-      if (activeQuiz.currentIndex === 0) {
-        topBackBtn.innerHTML = '<i class="fa-solid fa-chevron-left text-[11px]"></i> 목록';
-        topBackBtn.title = '패러프레이징 퀴즈 범위 목록으로';
-      } else {
-        topBackBtn.innerHTML = '<i class="fa-solid fa-chevron-left text-[11px]"></i> 이전';
-        topBackBtn.title = '이전 문제로 이동';
-      }
-    }
-
     // 문제 단어 & 발음
     document.getElementById('paraQuestionWord').textContent = q.word;
     document.getElementById('paraQuestionMeaning').textContent = `뜻: ${q.meaning}`;
     document.getElementById('paraTtsQuestionBtn').onclick = () => speak(q.word);
 
-    // 이전 답변 확인
-    const prevAns = activeQuiz.userAnswers && activeQuiz.userAnswers[activeQuiz.currentIndex];
+    // 문제 단어 발음 자동 1회 재생
+    speak(q.word);
 
-    let options = [];
-    let correctAnswer = '';
+    // 정답 동의어 하나 선택
+    const correctAnswer = q.paraphrase[Math.floor(Math.random() * q.paraphrase.length)];
 
-    if (prevAns) {
-      options = prevAns.options;
-      correctAnswer = prevAns.correct;
-      activeQuiz.answered = true;
-    } else {
-      activeQuiz.answered = false;
-      // 문제 단어 발음 자동 1회 재생
-      speak(q.word);
-
-      // 정답 동의어 하나 선택
-      correctAnswer = q.paraphrase[Math.floor(Math.random() * q.paraphrase.length)];
-
-      // 오답용 풀: 다른 단어들의 동의어들 또는 다른 단어들
-      let distractorPool = [];
-      words.forEach(w => {
-        if (w.word !== q.word) {
-          if (Array.isArray(w.paraphrase)) {
-            distractorPool.push(...w.paraphrase);
-          }
-          distractorPool.push(w.word);
+    // 오답용 풀: 다른 단어들의 동의어들 또는 다른 단어들
+    let distractorPool = [];
+    words.forEach(w => {
+      if (w.word !== q.word) {
+        if (Array.isArray(w.paraphrase)) {
+          distractorPool.push(...w.paraphrase);
         }
-      });
-      distractorPool = Array.from(new Set(distractorPool)).filter(d => !q.paraphrase.includes(d) && d !== q.word);
+        distractorPool.push(w.word);
+      }
+    });
+    distractorPool = Array.from(new Set(distractorPool)).filter(d => !q.paraphrase.includes(d) && d !== q.word);
 
-      const wrongOptions = shuffle(distractorPool).slice(0, 3);
-      options = shuffle([correctAnswer, ...wrongOptions]);
-    }
+    const wrongOptions = shuffle(distractorPool).slice(0, 3);
+    const options = shuffle([correctAnswer, ...wrongOptions]);
 
     const optionsContainer = document.getElementById('paraOptionsContainer');
     optionsContainer.innerHTML = options.map((opt, i) => {
       const label = String.fromCharCode(65 + i);
-      let btnClass = 'para-opt-btn w-full p-3.5 rounded-2xl border-2 font-bold transition flex items-center justify-between group ';
-      let badgeClass = 'w-7 h-7 rounded-xl flex items-center justify-center text-xs font-black transition ';
-
-      if (prevAns) {
-        if (opt === prevAns.correct) {
-          btnClass += 'border-emerald-500 bg-emerald-50 text-emerald-900';
-          badgeClass += 'bg-emerald-600 text-white';
-        } else if (opt === prevAns.selected && !prevAns.isCorrect) {
-          btnClass += 'border-rose-500 bg-rose-50 text-rose-900';
-          badgeClass += 'bg-rose-600 text-white';
-        } else {
-          btnClass += 'border-slate-200 bg-slate-50/60 text-slate-400 opacity-60';
-          badgeClass += 'bg-slate-200 text-slate-400';
-        }
-      } else {
-        btnClass += 'border-slate-200 hover:border-amber-400 bg-white hover:bg-amber-50/40 text-left';
-        badgeClass += 'bg-slate-100 group-hover:bg-amber-600 group-hover:text-white text-slate-500';
-      }
-
       return `
-        <button class="${btnClass}" data-word="${opt}" ${prevAns ? 'disabled' : ''}>
+        <button class="para-opt-btn w-full p-3.5 rounded-2xl border-2 border-slate-200 hover:border-amber-400 bg-white hover:bg-amber-50/40 text-left font-bold transition flex items-center justify-between group" data-word="${opt}">
           <div class="flex items-center gap-3">
-            <span class="${badgeClass}">
+            <span class="w-7 h-7 rounded-xl bg-slate-100 group-hover:bg-amber-600 group-hover:text-white flex items-center justify-center text-xs font-black text-slate-500 transition">
               ${label}
             </span>
             <span class="text-base text-slate-900">${opt}</span>
@@ -1499,28 +1299,24 @@
       `;
     }).join('');
 
+    // 해설창 숨김
+    document.getElementById('paraExplanationBox').classList.add('hidden');
+
     // 이벤트 리스너
     optionsContainer.querySelectorAll('.tts-para-opt').forEach(btn => {
       btn.addEventListener('click', (e) => speak(btn.dataset.word, e));
     });
 
-    if (prevAns) {
-      showParaExplanation(prevAns.isCorrect, prevAns.correct, q);
-    } else {
-      // 해설창 숨김
-      document.getElementById('paraExplanationBox').classList.add('hidden');
-
-      optionsContainer.querySelectorAll('.para-opt-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          if (activeQuiz.answered) return;
-          if (e.target.closest('.tts-para-opt')) return;
-          handleParaAnswer(btn.dataset.word, correctAnswer, options, q);
-        });
+    optionsContainer.querySelectorAll('.para-opt-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        if (activeQuiz.answered) return;
+        if (e.target.closest('.tts-para-opt')) return;
+        handleParaAnswer(btn.dataset.word, correctAnswer, q);
       });
-    }
+    });
   }
 
-  function handleParaAnswer(selected, correct, options, q) {
+  function handleParaAnswer(selected, correct, q) {
     activeQuiz.answered = true;
     const isCorrect = selected === correct;
 
@@ -1535,29 +1331,19 @@
       }
     });
 
-    if (!activeQuiz.userAnswers) activeQuiz.userAnswers = {};
-    const alreadyRecorded = !!activeQuiz.userAnswers[activeQuiz.currentIndex];
-    activeQuiz.userAnswers[activeQuiz.currentIndex] = { selected, correct, options, isCorrect };
-
-    if (!alreadyRecorded) {
-      if (isCorrect) {
-        activeQuiz.score += 10;
-        activeQuiz.correctCount++;
-        document.getElementById('paraScore').textContent = activeQuiz.score;
-      } else {
-        activeQuiz.wrongList.push(q);
-        addWrongCount(q.id);
-      }
+    if (isCorrect) {
+      activeQuiz.score += 10;
+      activeQuiz.correctCount++;
+      document.getElementById('paraScore').textContent = activeQuiz.score;
+    } else {
+      activeQuiz.wrongList.push(q);
+      addWrongCount(q.id);
     }
 
     // 정답 동의어 발음
     speak(correct);
 
     // 해설 표시
-    showParaExplanation(isCorrect, correct, q);
-  }
-
-  function showParaExplanation(isCorrect, correct, q) {
     const box = document.getElementById('paraExplanationBox');
     const statusEl = document.getElementById('paraFeedbackStatus');
     box.classList.remove('hidden');
@@ -1570,65 +1356,25 @@
       statusEl.innerHTML = `<span class="text-rose-700 font-bold"><i class="fa-solid fa-circle-xmark"></i> 오답! "${q.word}"의 올바른 동의어는 "${correct}"입니다.</span>`;
     }
 
-    // 전체 동의어 목록 (등록된 단어는 책 아이콘 및 상세정보 열기 지원)
+    // 전체 동의어 목록
     const synList = document.getElementById('paraAllSynonyms');
-    synList.innerHTML = q.paraphrase.map(p => {
-      const cleanP = (p || '').trim();
-      const found = words.find(w => w.word.toLowerCase() === cleanP.toLowerCase());
-      if (found) {
-        return `
-          <button type="button" class="px-2 py-1 rounded-lg bg-amber-100 text-amber-950 font-bold text-xs border border-amber-300 hover:bg-amber-200 flex items-center gap-1 shadow-xs transition" onclick="window.openQuizOptionDetail('${found.id}', '${cleanP}')" title="단어 상세정보 보기">
-            <i class="fa-solid fa-book-open text-[10px] text-amber-700"></i> ${cleanP}
-          </button>
-        `;
-      }
-      return `
-        <span class="px-2 py-1 rounded-lg bg-amber-50 text-amber-900 font-bold text-xs cursor-pointer hover:bg-amber-100 flex items-center gap-1 border border-amber-200/60" onclick="window.speakText('${cleanP}')" title="발음 듣기">
-          ${cleanP} <i class="fa-solid fa-volume-high text-[9px] text-amber-600"></i>
-        </span>
-      `;
-    }).join('');
+    synList.innerHTML = q.paraphrase.map(p => `
+      <span class="px-2 py-0.5 rounded-md bg-amber-100 text-amber-900 font-bold text-xs cursor-pointer hover:bg-amber-200" onclick="window.speakText('${p}')">
+        ${p} <i class="fa-solid fa-volume-high text-[9px]"></i>
+      </span>
+    `).join('');
 
-    // 이전 문제 버튼
-    const prevBtn = document.getElementById('btnPrevParaQuestion');
-    if (prevBtn) {
-      if (activeQuiz.currentIndex === 0) {
-        prevBtn.disabled = true;
-        prevBtn.classList.add('opacity-40', 'cursor-not-allowed');
-      } else {
-        prevBtn.disabled = false;
-        prevBtn.classList.remove('opacity-40', 'cursor-not-allowed');
-      }
-      prevBtn.onclick = () => {
-        if (activeQuiz.currentIndex > 0) {
-          activeQuiz.currentIndex--;
-          renderCurrentParaQuestion();
-        }
-      };
-    }
-
-    // 다음 문제 버튼
     const nextBtn = document.getElementById('btnNextParaQuestion');
-    const nextBtnText = document.getElementById('btnNextParaQuestionText');
-    if (nextBtnText) {
-      if (activeQuiz.currentIndex === activeQuiz.questionList.length - 1) {
-        nextBtnText.textContent = '퀴즈 완료 (종료)';
+    nextBtn.onclick = () => {
+      activeQuiz.currentIndex++;
+      if (activeQuiz.currentIndex < activeQuiz.questionList.length) {
+        renderCurrentParaQuestion();
       } else {
-        nextBtnText.textContent = '다음 문제로';
+        alert(`패러프레이징 퀴즈 완료! 맞힌 문제: ${activeQuiz.correctCount} / ${activeQuiz.questionList.length}`);
+        document.getElementById('paraActiveCard').classList.add('hidden');
+        document.getElementById('paraSetupCard').classList.remove('hidden');
       }
-    }
-    if (nextBtn) {
-      nextBtn.onclick = () => {
-        activeQuiz.currentIndex++;
-        if (activeQuiz.currentIndex < activeQuiz.questionList.length) {
-          renderCurrentParaQuestion();
-        } else {
-          alert(`패러프레이징 퀴즈 완료! 맞힌 문제: ${activeQuiz.correctCount} / ${activeQuiz.questionList.length}`);
-          document.getElementById('paraActiveCard').classList.add('hidden');
-          document.getElementById('paraSetupCard').classList.remove('hidden');
-        }
-      };
-    }
+    };
   }
 
   window.openQuizOptionDetail = function(id, word) {
@@ -1775,20 +1521,6 @@
       startStandardQuiz(scope);
     });
 
-    // 퀴즈 상단 바 이전(뒤로가기) 버튼
-    document.getElementById('btnQuizBack')?.addEventListener('click', () => {
-      clearQuizTimer();
-      if (activeQuiz.currentIndex > 0) {
-        activeQuiz.currentIndex--;
-        renderCurrentStandardQuestion();
-      } else {
-        if (confirm('진행 중인 퀴즈를 중단하고 범위 선택으로 돌아가시겠습니까?')) {
-          document.getElementById('quizActiveCard').classList.add('hidden');
-          document.getElementById('quizSetupCard').classList.remove('hidden');
-        }
-      }
-    });
-
     document.getElementById('btnQuitQuiz')?.addEventListener('click', () => {
       if (confirm('진행 중인 퀴즈를 종료하시겠습니까?')) {
         clearQuizTimer();
@@ -1827,20 +1559,6 @@
     document.getElementById('btnStartClozeQuiz')?.addEventListener('click', () => {
       const scope = getSelectedScope('cloze');
       startClozeQuiz(scope);
-    });
-
-    // 실전 문장 빈칸 퀴즈 상단 바 이전(뒤로가기) 버튼
-    document.getElementById('btnClozeBack')?.addEventListener('click', () => {
-      clearQuizTimer();
-      if (activeClozeQuiz.currentIndex > 0) {
-        activeClozeQuiz.currentIndex--;
-        renderCurrentClozeQuestion();
-      } else {
-        if (confirm('문장 빈칸 퀴즈를 중단하고 범위 선택으로 돌아가시겠습니까?')) {
-          document.getElementById('clozeActiveCard').classList.add('hidden');
-          document.getElementById('clozeSetupCard').classList.remove('hidden');
-        }
-      }
     });
 
     document.getElementById('btnQuitClozeQuiz')?.addEventListener('click', () => {
@@ -1910,19 +1628,6 @@
     document.getElementById('btnStartParaQuiz')?.addEventListener('click', () => {
       const scope = getSelectedScope('paraphrase');
       startParaphraseQuiz(scope);
-    });
-
-    // 패러프레이징 퀴즈 상단 바 이전(뒤로가기) 버튼
-    document.getElementById('btnParaBack')?.addEventListener('click', () => {
-      if (activeQuiz.currentIndex > 0) {
-        activeQuiz.currentIndex--;
-        renderCurrentParaQuestion();
-      } else {
-        if (confirm('패러프레이징 퀴즈를 중단하고 범위 선택으로 돌아가시겠습니까?')) {
-          document.getElementById('paraActiveCard').classList.add('hidden');
-          document.getElementById('paraSetupCard').classList.remove('hidden');
-        }
-      }
     });
 
     document.getElementById('btnQuitParaQuiz')?.addEventListener('click', () => {
@@ -2372,8 +2077,7 @@
       score: 0,
       correctCount: 0,
       wrongList: [],
-      answered: false,
-      userAnswers: {}
+      answered: false
     };
 
     document.getElementById('clozeSetupCard').classList.add('hidden');
@@ -2386,6 +2090,7 @@
   function renderCurrentClozeQuestion() {
     clearQuizTimer();
     const q = activeClozeQuiz.questionList[activeClozeQuiz.currentIndex];
+    activeClozeQuiz.answered = false;
 
     document.getElementById('clozeBadgeScope').textContent = activeClozeQuiz.scopeLabel;
     document.getElementById('clozeCurrentIndex').textContent = activeClozeQuiz.currentIndex + 1;
@@ -2394,18 +2099,6 @@
 
     const progress = ((activeClozeQuiz.currentIndex) / activeClozeQuiz.questionList.length) * 100;
     document.getElementById('clozeProgressBar').style.width = `${progress}%`;
-
-    // 상단 뒤로가기 버튼 라벨
-    const topBackBtn = document.getElementById('btnClozeBack');
-    if (topBackBtn) {
-      if (activeClozeQuiz.currentIndex === 0) {
-        topBackBtn.innerHTML = '<i class="fa-solid fa-chevron-left text-[11px]"></i> 목록';
-        topBackBtn.title = '문장 빈칸 퀴즈 범위 목록으로';
-      } else {
-        topBackBtn.innerHTML = '<i class="fa-solid fa-chevron-left text-[11px]"></i> 이전';
-        topBackBtn.title = '이전 문제로 이동';
-      }
-    }
 
     // 예문 문장에서 정답 단어를 찾아 [ _______ ] 로 빈칸 처리
     const rawSentence = q.exampleEn;
@@ -2419,49 +2112,31 @@
     document.getElementById('clozeSentenceEn').innerHTML = `"${clozeHtml}"`;
     document.getElementById('clozeSentenceKo').textContent = q.exampleKo ? `해석 힌트: ${q.exampleKo}` : '';
 
-    // 이전 답변 확인
-    const prevAns = activeClozeQuiz.userAnswers && activeClozeQuiz.userAnswers[activeClozeQuiz.currentIndex];
-
+    // 보기 4개 생성 (지텔프 스마트 혼동 어휘)
     let options = [];
-    if (prevAns) {
-      options = prevAns.options;
-      activeClozeQuiz.answered = true;
+    if (q.options && q.options.length === 4) {
+      options = shuffle(q.options);
     } else {
-      activeClozeQuiz.answered = false;
-      if (q.options && q.options.length === 4) {
-        options = shuffle(q.options);
-      } else {
-        options = generateGtelpSmartDistractors(q, words);
-      }
+      options = generateGtelpSmartDistractors(q, words);
+    }
+
+    // 10초 타임어택 가동
+    if (isClozeTimeAttack) {
+      startQuizTimer(10, () => {
+        if (!activeClozeQuiz.answered) {
+          handleClozeAnswer(null, q, options, true);
+        }
+      }, 'clozeTimerBadge', 'clozeTimerSeconds');
     }
 
     // 보기 렌더링
     const optionsContainer = document.getElementById('clozeOptionsContainer');
     optionsContainer.innerHTML = options.map((opt, i) => {
       const label = String.fromCharCode(65 + i);
-      let btnClass = 'cloze-opt-btn w-full p-3.5 rounded-2xl border-2 font-bold transition flex items-center justify-between group ';
-      let badgeClass = 'w-7 h-7 rounded-xl flex items-center justify-center text-xs font-black transition ';
-
-      if (prevAns) {
-        if (opt.word === q.word) {
-          btnClass += 'border-emerald-500 bg-emerald-50 text-emerald-900';
-          badgeClass += 'bg-emerald-600 text-white';
-        } else if (opt.word === prevAns.selectedWord && !prevAns.isCorrect) {
-          btnClass += 'border-rose-500 bg-rose-50 text-rose-900';
-          badgeClass += 'bg-rose-600 text-white';
-        } else {
-          btnClass += 'border-slate-200 bg-slate-50/60 text-slate-400 opacity-60';
-          badgeClass += 'bg-slate-200 text-slate-400';
-        }
-      } else {
-        btnClass += 'border-slate-200 hover:border-emerald-400 bg-white hover:bg-emerald-50/40 text-left';
-        badgeClass += 'bg-slate-100 group-hover:bg-emerald-600 group-hover:text-white text-slate-500';
-      }
-
       return `
-        <button class="${btnClass}" data-word="${opt.word}" ${prevAns ? 'disabled' : ''}>
+        <button class="cloze-opt-btn w-full p-3.5 rounded-2xl border-2 border-slate-200 hover:border-emerald-400 bg-white hover:bg-emerald-50/40 text-left font-bold transition flex items-center justify-between group" data-word="${opt.word}">
           <div class="flex items-center gap-3">
-            <span class="${badgeClass}">
+            <span class="w-7 h-7 rounded-xl bg-slate-100 group-hover:bg-emerald-600 group-hover:text-white flex items-center justify-center text-xs font-black text-slate-500 transition">
               ${label}
             </span>
             <span class="text-base text-slate-900">${opt.word}</span>
@@ -2473,32 +2148,19 @@
       `;
     }).join('');
 
+    document.getElementById('clozeExplanationBox').classList.add('hidden');
+
     optionsContainer.querySelectorAll('.tts-cloze-opt').forEach(btn => {
       btn.addEventListener('click', (e) => speak(btn.dataset.word, e));
     });
 
-    if (prevAns) {
-      showClozeExplanation(prevAns.isCorrect, q, prevAns.options, prevAns.isTimeout);
-    } else {
-      document.getElementById('clozeExplanationBox').classList.add('hidden');
-
-      // 10초 타임어택 가동
-      if (isClozeTimeAttack) {
-        startQuizTimer(10, () => {
-          if (!activeClozeQuiz.answered) {
-            handleClozeAnswer(null, q, options, true);
-          }
-        }, 'clozeTimerBadge', 'clozeTimerSeconds');
-      }
-
-      optionsContainer.querySelectorAll('.cloze-opt-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          if (activeClozeQuiz.answered) return;
-          if (e.target.closest('.tts-cloze-opt')) return;
-          handleClozeAnswer(btn.dataset.word, q, options);
-        });
+    optionsContainer.querySelectorAll('.cloze-opt-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        if (activeClozeQuiz.answered) return;
+        if (e.target.closest('.tts-cloze-opt')) return;
+        handleClozeAnswer(btn.dataset.word, q, options);
       });
-    }
+    });
   }
 
   function handleClozeAnswer(selectedWord, q, options, isTimeout = false) {
@@ -2517,19 +2179,13 @@
       }
     });
 
-    if (!activeClozeQuiz.userAnswers) activeClozeQuiz.userAnswers = {};
-    const alreadyRecorded = !!activeClozeQuiz.userAnswers[activeClozeQuiz.currentIndex];
-    activeClozeQuiz.userAnswers[activeClozeQuiz.currentIndex] = { selectedWord, options, isTimeout, isCorrect };
-
-    if (!alreadyRecorded) {
-      if (isCorrect) {
-        activeClozeQuiz.score += 10;
-        activeClozeQuiz.correctCount++;
-        document.getElementById('clozeScore').textContent = activeClozeQuiz.score;
-      } else {
-        activeClozeQuiz.wrongList.push(q);
-        addWrongCount(q.id);
-      }
+    if (isCorrect) {
+      activeClozeQuiz.score += 10;
+      activeClozeQuiz.correctCount++;
+      document.getElementById('clozeScore').textContent = activeClozeQuiz.score;
+    } else {
+      activeClozeQuiz.wrongList.push(q);
+      addWrongCount(q.id);
     }
 
     // 전체 완성 문장 발음 재생
@@ -2595,46 +2251,15 @@
       tipSection.classList.add('hidden');
     }
 
-    // 이전 문제 버튼
-    const prevBtn = document.getElementById('btnPrevClozeQuestion');
-    if (prevBtn) {
-      if (activeClozeQuiz.currentIndex === 0) {
-        prevBtn.disabled = true;
-        prevBtn.classList.add('opacity-40', 'cursor-not-allowed');
-      } else {
-        prevBtn.disabled = false;
-        prevBtn.classList.remove('opacity-40', 'cursor-not-allowed');
-      }
-      prevBtn.onclick = () => {
-        clearQuizTimer();
-        if (activeClozeQuiz.currentIndex > 0) {
-          activeClozeQuiz.currentIndex--;
-          renderCurrentClozeQuestion();
-        }
-      };
-    }
-
-    // 다음 문제 버튼
     const nextBtn = document.getElementById('btnNextClozeQuestion');
-    const nextBtnText = document.getElementById('btnNextClozeQuestionText');
-    if (nextBtnText) {
-      if (activeClozeQuiz.currentIndex === activeClozeQuiz.questionList.length - 1) {
-        nextBtnText.textContent = '결과 보기 (완료)';
+    nextBtn.onclick = () => {
+      activeClozeQuiz.currentIndex++;
+      if (activeClozeQuiz.currentIndex < activeClozeQuiz.questionList.length) {
+        renderCurrentClozeQuestion();
       } else {
-        nextBtnText.textContent = '다음 문제로 넘어가기';
+        finishClozeQuiz();
       }
-    }
-    if (nextBtn) {
-      nextBtn.onclick = () => {
-        clearQuizTimer();
-        activeClozeQuiz.currentIndex++;
-        if (activeClozeQuiz.currentIndex < activeClozeQuiz.questionList.length) {
-          renderCurrentClozeQuestion();
-        } else {
-          finishClozeQuiz();
-        }
-      };
-    }
+    };
   }
 
   function finishClozeQuiz() {
@@ -2659,7 +2284,6 @@
         activeClozeQuiz.score = 0;
         activeClozeQuiz.correctCount = 0;
         activeClozeQuiz.wrongList = [];
-        activeClozeQuiz.userAnswers = {};
         activeClozeQuiz.scopeLabel = '틀린 문장 재도전';
         document.getElementById('clozeResultCard').classList.add('hidden');
         document.getElementById('clozeActiveCard').classList.remove('hidden');
@@ -2668,7 +2292,6 @@
     } else {
       retryWrongBtn.classList.add('hidden');
     }
-  }
   }
   const GTELP_CONFUSABLES_MAP = {
     "ensure": [
