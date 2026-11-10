@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
@@ -226,6 +226,7 @@
         <!-- 상단 바 -->
         <div class="flex items-center justify-between px-2">
           <div class="flex items-center gap-2">
+            <button id="btnFcPrev" class="px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1 transition" title="이전 단어"><i class="fa-solid fa-arrow-left text-[10px]"></i> 이전</button>
             <span id="flashcardScopeBadge" class="px-2.5 py-0.5 rounded-full text-xs font-black bg-amber-100 text-amber-800">Day 01</span>
             <span class="text-xs font-bold text-slate-500">진행: <span id="flashcardCurrentIdx" class="text-amber-600 font-black">1</span> / <span id="flashcardTotalIdx">10</span></span>
           </div>
@@ -301,11 +302,10 @@
             <span>몰라요 (다시 보기)</span>
           </button>
           
-          <button onclick="window.flipCurrentFlashcard()" class="py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-black text-xs transition flex flex-col items-center justify-center gap-0.5">
-            <i class="fa-solid fa-rotate text-base text-indigo-600"></i>
-            <span>카드 뒤집기</span>
+          <button id="btnFcNext" class="py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs transition shadow-md shadow-indigo-200 flex flex-col items-center justify-center gap-0.5 cursor-pointer">
+            <i class="fa-solid fa-arrow-right text-base"></i>
+            <span>다음 단어 (Next)</span>
           </button>
-
           <button id="btnFcKnow" class="py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs transition shadow-md shadow-emerald-200 flex flex-col items-center justify-center gap-0.5">
             <i class="fa-solid fa-check text-base"></i>
             <span>알아요 (완료)</span>

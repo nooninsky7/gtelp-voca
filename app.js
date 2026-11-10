@@ -1253,12 +1253,10 @@
                 <button onclick="window.startStandardQuiz('${day}')" class="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs flex items-center justify-center gap-1.5 shadow-sm transition">
                   <i class="fa-solid fa-play text-[10px]"></i>
                   <span>4지선다 풀기</span>
-                  ${stdRounds > 0 ? `<span class="px-1.5 py-0.5 rounded bg-indigo-950/30 text-[10px] font-black">${stdRounds}회</span>` : ''}
                 </button>
                 <button onclick="window.startDayDirectQuiz('${day}', 'cloze')" class="px-2.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold text-xs flex items-center gap-1 border border-emerald-200 transition" title="실전 문장 빈칸 채우기">
                   <i class="fa-solid fa-pen-to-square text-[10px]"></i>
                   <span>빈칸</span>
-                  ${clozeRounds > 0 ? `<span class="px-1.5 py-0.5 rounded bg-emerald-200 text-emerald-900 text-[10px] font-black">${clozeRounds}회</span>` : ''}
                 </button>
                 <button onclick="window.startDayDirectQuiz('${day}', 'flashcard')" class="px-2.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-600 hover:text-white text-amber-800 font-bold text-xs flex items-center gap-1 border border-amber-200 transition" title="플래시카드 암기">
                   <i class="fa-solid fa-clone text-[10px]"></i> 카드
@@ -2296,6 +2294,14 @@
       handleFlashcardAnswer(false);
     });
 
+    document.getElementById('btnFcNext')?.addEventListener('click', () => {
+      handleFlashcardNext();
+    });
+
+    document.getElementById('btnFcPrev')?.addEventListener('click', () => {
+      handleFlashcardPrev();
+    });
+
     document.getElementById('btnFcKnow')?.addEventListener('click', () => {
       handleFlashcardAnswer(true);
     });
@@ -2680,6 +2686,24 @@
     }
   }
 
+  function handleFlashcardNext() {
+    if (flashcardCurrentIndex >= flashcardDeck.length - 1) {
+      finishFlashcard();
+      return;
+    }
+    flashcardCurrentIndex++;
+    saveCurrentLearningSession();
+    renderCurrentFlashcard();
+  }
+
+  function handleFlashcardPrev() {
+    if (flashcardCurrentIndex > 0) {
+      flashcardCurrentIndex--;
+      saveCurrentLearningSession();
+      renderCurrentFlashcard();
+    }
+  }
+
   function renderCurrentFlashcard() {
     if (flashcardCurrentIndex >= flashcardDeck.length) {
       finishFlashcard();
@@ -2736,6 +2760,20 @@
     } else {
       exBox.classList.add('hidden');
     }
+
+    // 상단 이전 버튼 & 하단 다음 버튼 상태 갱신
+    const prevBtn = document.getElementById('btnFcPrev');
+    if (prevBtn) {
+      const isFirst = flashcardCurrentIndex === 0;
+      prevBtn.disabled = isFirst;
+      prevBtn.style.opacity = isFirst ? '0.4' : '1';
+      prevBtn.style.pointerEvents = isFirst ? 'none' : 'auto';
+    }
+
+    const nextBtnSpan = document.querySelector('#btnFcNext span');
+    if (nextBtnSpan) {
+      nextBtnSpan.textContent = (flashcardCurrentIndex === flashcardDeck.length - 1) ? '학습 완료 (Next)' : '다음 단어 (Next)';
+    }
   }
 
   window.flipCurrentFlashcard = function() {
@@ -2789,6 +2827,8 @@
   window.startClozeQuiz = startClozeQuiz;
   window.startFlashcard = startFlashcard;
   window.handleFlashcardAnswer = handleFlashcardAnswer;
+  window.handleFlashcardNext = handleFlashcardNext;
+  window.handleFlashcardPrev = handleFlashcardPrev;
 
   // --------------------------------------------------------------------------
   // 13. 실전 문장 빈칸 채우기 퀴즈 (Cloze Test Module)
