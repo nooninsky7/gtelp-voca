@@ -127,6 +127,50 @@
     }
   }
 
+  // --- [Day별 회독 차수 관리] ---
+  const DAY_ROUND_STATS_KEY = 'gtelp_day_round_stats';
+
+  function getDayRoundStats() {
+    try {
+      const raw = localStorage.getItem(DAY_ROUND_STATS_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveDayRoundStats(stats) {
+    try {
+      localStorage.setItem(DAY_ROUND_STATS_KEY, JSON.stringify(stats));
+    } catch (e) {
+      console.error('Failed to save day round stats', e);
+    }
+  }
+
+  function getDayRoundCount(day, type) {
+    if (!day) return 0;
+    const stats = getDayRoundStats();
+    if (!stats[day]) return 0;
+    return Number(stats[day][type]) || 0;
+  }
+
+  function incrementDayRoundCount(day, type) {
+    if (!day || !day.startsWith('Day ')) return 0;
+    const stats = getDayRoundStats();
+    if (!stats[day]) stats[day] = {};
+    const current = Number(stats[day][type]) || 0;
+    const next = current + 1;
+    stats[day][type] = next;
+    saveDayRoundStats(stats);
+    return next;
+  }
+
+  function resetDayRoundStats() {
+    try {
+      localStorage.removeItem(DAY_ROUND_STATS_KEY);
+    } catch (e) {}
+  }
+
   // --------------------------------------------------------------------------
   // 2. Web Speech API (TTS) - 모든 영단어 및 문장 발음
   // --------------------------------------------------------------------------
@@ -634,6 +678,8 @@
     container.innerHTML = days.map(d => {
       const dayWords = words.filter(w => w.day === d);
       const wrongCount = dayWords.filter(w => getWrongCount(w.id) > 0).length;
+      const stdRounds = getDayRoundCount(d, 'standard');
+      const clozeRounds = getDayRoundCount(d, 'cloze');
       const isCurrent = activeDayFilter === d;
 
       return `
@@ -650,6 +696,9 @@
               <div>
                 <div class="font-black text-sm text-slate-900">${d}</div>
                 <div class="text-[11px] text-slate-500">총 ${dayWords.length}단어 수록</div>
+                <div class="text-[10px] text-slate-500 mt-0.5">
+                  4지: <strong class="${stdRounds > 0 ? 'text-indigo-600 font-bold' : 'text-slate-400'}">${stdRounds}회독</strong> · 빈칸: <strong class="${clozeRounds > 0 ? 'text-emerald-600 font-bold' : 'text-slate-400'}">${clozeRounds}회독</strong>
+                </div>
               </div>
             </div>
 
@@ -670,10 +719,10 @@
               <i class="fa-solid fa-book-open"></i> 단어
             </button>
             <button onclick="window.startDayDirectQuiz('${d}', 'standard')" class="py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition text-center">
-              <i class="fa-solid fa-play"></i> 4지
+              <i class="fa-solid fa-play"></i> 4지${stdRounds > 0 ? ` (${stdRounds})` : ''}
             </button>
             <button onclick="window.startDayDirectQuiz('${d}', 'cloze')" class="py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold transition text-center">
-              <i class="fa-solid fa-pen"></i> 빈칸
+              <i class="fa-solid fa-pen"></i> 빈칸${clozeRounds > 0 ? ` (${clozeRounds})` : ''}
             </button>
             <button onclick="window.startDayDirectQuiz('${d}', 'flashcard')" class="py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold transition text-center">
               <i class="fa-solid fa-clone"></i> 카드
@@ -1104,10 +1153,13 @@
         dayListContainer.innerHTML = days.map(day => {
           const dayWords = words.filter(w => w.day === day);
           const wrongCount = dayWords.filter(w => getWrongCount(w.id) > 0).length;
+          const stdRounds = getDayRoundCount(day, 'standard');
+          const clozeRounds = getDayRoundCount(day, 'cloze');
+
           return `
             <div class="p-3.5 sm:p-4 rounded-2xl border border-slate-200 bg-white hover:border-indigo-400 shadow-xs transition flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div>
-                <div class="flex items-center gap-2">
+              <div class="space-y-1.5">
+                <div class="flex items-center gap-2 flex-wrap">
                   <span class="font-black text-base sm:text-lg text-slate-900">${day}</span>
                   <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">${dayWords.length}단어</span>
                   ${wrongCount > 0 ? `
@@ -1120,14 +1172,42 @@
                     </span>
                   `}
                 </div>
-                <div class="text-[11px] text-slate-500 mt-1">지텔프 실전 4지선다 출제 기준 (혼동 어휘 4지선다 매칭)</div>
+
+                <!-- 4지선다 & 빈칸 회독 차수 배지 -->
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-[11px] font-bold ${
+                    stdRounds > 0 
+                      ? 'bg-indigo-100 text-indigo-900 border border-indigo-200' 
+                      : 'bg-slate-100 text-slate-400 border border-slate-200'
+                  }">
+                    <i class="fa-solid ${stdRounds > 0 ? 'fa-circle-check text-indigo-600' : 'fa-circle text-slate-300 text-[8px]'}"></i>
+                    <span>4지선다:</span>
+                    <strong class="${stdRounds > 0 ? 'text-indigo-800 font-black' : 'text-slate-400 font-medium'}">${stdRounds > 0 ? `${stdRounds}회독 완료` : '미진행'}</strong>
+                  </span>
+
+                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-[11px] font-bold ${
+                    clozeRounds > 0 
+                      ? 'bg-emerald-100 text-emerald-900 border border-emerald-200' 
+                      : 'bg-slate-100 text-slate-400 border border-slate-200'
+                  }">
+                    <i class="fa-solid ${clozeRounds > 0 ? 'fa-circle-check text-emerald-600' : 'fa-circle text-slate-300 text-[8px]'}"></i>
+                    <span>빈칸:</span>
+                    <strong class="${clozeRounds > 0 ? 'text-emerald-800 font-black' : 'text-slate-400 font-medium'}">${clozeRounds > 0 ? `${clozeRounds}회독 완료` : '미진행'}</strong>
+                  </span>
+                </div>
+
+                <div class="text-[11px] text-slate-500">지텔프 실전 4지선다 출제 기준 (혼동 어휘 4지선다 매칭)</div>
               </div>
               <div class="flex items-center gap-2 shrink-0">
                 <button onclick="window.startStandardQuiz('${day}')" class="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs flex items-center justify-center gap-1.5 shadow-sm transition">
-                  <i class="fa-solid fa-play text-[10px]"></i> 4지선다 풀기
+                  <i class="fa-solid fa-play text-[10px]"></i>
+                  <span>4지선다 풀기</span>
+                  ${stdRounds > 0 ? `<span class="px-1.5 py-0.5 rounded bg-indigo-950/30 text-[10px] font-black">${stdRounds}회</span>` : ''}
                 </button>
                 <button onclick="window.startDayDirectQuiz('${day}', 'cloze')" class="px-2.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold text-xs flex items-center gap-1 border border-emerald-200 transition" title="실전 문장 빈칸 채우기">
-                  <i class="fa-solid fa-pen-to-square text-[10px]"></i> 빈칸
+                  <i class="fa-solid fa-pen-to-square text-[10px]"></i>
+                  <span>빈칸</span>
+                  ${clozeRounds > 0 ? `<span class="px-1.5 py-0.5 rounded bg-emerald-200 text-emerald-900 text-[10px] font-black">${clozeRounds}회</span>` : ''}
                 </button>
                 <button onclick="window.startDayDirectQuiz('${day}', 'flashcard')" class="px-2.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-600 hover:text-white text-amber-800 font-bold text-xs flex items-center gap-1 border border-amber-200 transition" title="플래시카드 암기">
                   <i class="fa-solid fa-clone text-[10px]"></i> 카드
@@ -1328,7 +1408,8 @@
       correctCount: 0,
       wrongList: [],
       answered: false,
-      userAnswers: {}
+      userAnswers: {},
+      isRetry: false
     };
 
     document.getElementById('quizSetupCard').classList.add('hidden');
@@ -1640,6 +1721,20 @@
     document.getElementById('resultWrongCount').textContent = wrong;
     document.getElementById('resultAccuracy').textContent = accuracy;
 
+    // 4지선다 Day별 회독 차수 카운트 & 결과 배지 표시
+    const roundBadge = document.getElementById('quizResultRoundBadge');
+    const roundText = document.getElementById('quizResultRoundText');
+    if (!activeQuiz.isRetry && activeQuiz.currentScope && activeQuiz.currentScope.startsWith('Day ')) {
+      const newRound = incrementDayRoundCount(activeQuiz.currentScope, 'standard');
+      if (roundBadge && roundText) {
+        roundText.textContent = `${activeQuiz.currentScope} 4지선다 ${newRound}회독 달성! 🎉`;
+        roundBadge.classList.remove('hidden');
+      }
+      showToast(`${activeQuiz.currentScope} 4지선다 ${newRound}회독 달성! 👏`);
+    } else {
+      if (roundBadge) roundBadge.classList.add('hidden');
+    }
+
     // 틀린 단어 목록
     const wrongListContainer = document.getElementById('resultWrongList');
     const retryWrongBtn = document.getElementById('btnRetryWrongQuiz');
@@ -1665,6 +1760,7 @@
         activeQuiz.wrongList = [];
         activeQuiz.userAnswers = {};
         activeQuiz.scopeLabel = '틀린 단어 재도전';
+        activeQuiz.isRetry = true;
         document.getElementById('quizResultCard').classList.add('hidden');
         document.getElementById('quizActiveCard').classList.remove('hidden');
         renderCurrentStandardQuestion();
@@ -2127,6 +2223,7 @@
       clearCurrentLearningSession();
       document.getElementById('quizResultCard').classList.add('hidden');
       document.getElementById('quizSetupCard').classList.remove('hidden');
+      setupQuizScopeUI('standard');
     });
 
     // 플래시카드 이벤트
@@ -2184,6 +2281,7 @@
       clearCurrentLearningSession();
       document.getElementById('clozeResultCard').classList.add('hidden');
       document.getElementById('clozeSetupCard').classList.remove('hidden');
+      setupClozeScopeUI();
     });
 
     // 10초 타임어택 독립 옵션 동기화 및 이벤트
@@ -2279,6 +2377,7 @@
       const backupData = {
         words: words,
         wrongStats: wrongStats,
+        dayRoundStats: getDayRoundStats(),
         exportDate: new Date().toISOString()
       };
       const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
@@ -2307,9 +2406,15 @@
             wrongStats = imported.wrongStats;
             saveStats();
           }
+          if (imported.dayRoundStats) {
+            saveDayRoundStats(imported.dayRoundStats);
+          }
           renderDayFilters();
           renderWordList();
           renderStats();
+          setupQuizScopeUI('standard');
+          setupClozeScopeUI();
+          renderDayGridModal();
           closeModal('dataManageModal');
           showToast('데이터를 성공적으로 복원했습니다!');
         } catch (err) {
@@ -2317,6 +2422,18 @@
         }
       };
       reader.readAsText(file);
+    });
+
+    // Day별 회독 차수 초기화
+    document.getElementById('btnResetDayRounds')?.addEventListener('click', () => {
+      if (confirm('모든 Day의 4지선다 및 빈칸 문제 회독 차수를 0회로 초기화하시겠습니까?')) {
+        resetDayRoundStats();
+        setupQuizScopeUI('standard');
+        setupClozeScopeUI();
+        renderDayGridModal();
+        closeModal('dataManageModal');
+        showToast('Day별 회독 기록이 초기화되었습니다.');
+      }
     });
 
     // 전체 오답 기록 초기화
@@ -2662,9 +2779,13 @@
 
     days.forEach(day => {
       const count = words.filter(w => w.day === day).length;
+      const clozeRounds = getDayRoundCount(day, 'cloze');
       html += `
         <button class="cloze-scope-btn p-3 rounded-2xl border border-slate-200 hover:bg-slate-50 text-left transition" data-scope="${day}">
-          <div class="text-xs font-black text-slate-800">${day} 전용</div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-slate-800">${day} 전용</span>
+            ${clozeRounds > 0 ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-200">${clozeRounds}회독</span>` : ''}
+          </div>
           <div class="text-[11px] text-slate-500">${count}개 단어</div>
         </button>
       `;
@@ -2709,7 +2830,8 @@
       correctCount: 0,
       wrongList: [],
       answered: false,
-      userAnswers: {}
+      userAnswers: {},
+      isRetry: false
     };
 
     document.getElementById('clozeSetupCard').classList.add('hidden');
@@ -2991,6 +3113,20 @@
     document.getElementById('clozeResultWrong').textContent = wrong;
     document.getElementById('clozeResultAccuracy').textContent = accuracy;
 
+    // 빈칸 문장 Day별 회독 차수 카운트 & 결과 배지 표시
+    const clozeRoundBadge = document.getElementById('clozeResultRoundBadge');
+    const clozeRoundText = document.getElementById('clozeResultRoundText');
+    if (!activeClozeQuiz.isRetry && activeClozeQuiz.currentScope && activeClozeQuiz.currentScope.startsWith('Day ')) {
+      const newRound = incrementDayRoundCount(activeClozeQuiz.currentScope, 'cloze');
+      if (clozeRoundBadge && clozeRoundText) {
+        clozeRoundText.textContent = `${activeClozeQuiz.currentScope} 문장 빈칸 ${newRound}회독 달성! 🎉`;
+        clozeRoundBadge.classList.remove('hidden');
+      }
+      showToast(`${activeClozeQuiz.currentScope} 문장 빈칸 ${newRound}회독 달성! 👏`);
+    } else {
+      if (clozeRoundBadge) clozeRoundBadge.classList.add('hidden');
+    }
+
     const retryWrongBtn = document.getElementById('btnRetryWrongCloze');
     if (wrong > 0) {
       retryWrongBtn.classList.remove('hidden');
@@ -3002,6 +3138,7 @@
         activeClozeQuiz.wrongList = [];
         activeClozeQuiz.userAnswers = {};
         activeClozeQuiz.scopeLabel = '틀린 문장 재도전';
+        activeClozeQuiz.isRetry = true;
         document.getElementById('clozeResultCard').classList.add('hidden');
         document.getElementById('clozeActiveCard').classList.remove('hidden');
         renderCurrentClozeQuestion();

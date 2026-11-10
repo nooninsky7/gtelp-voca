@@ -508,6 +508,10 @@
         </div>
         <div>
           <h2 class="text-2xl font-black text-slate-900">퀴즈 완료!</h2>
+          <div id="quizResultRoundBadge" class="hidden mt-2 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-black bg-indigo-100 text-indigo-900 border border-indigo-200 shadow-2xs">
+            <i class="fa-solid fa-award text-amber-500 text-sm"></i>
+            <span id="quizResultRoundText">Day 01 4지선다 1회독 완료!</span>
+          </div>
           <p class="text-sm text-slate-500 mt-1">오늘 푼 문제의 결과를 확인하세요.</p>
         </div>
 
@@ -703,6 +707,10 @@
         </div>
         <div>
           <h2 class="text-2xl font-black text-slate-900">문장 빈칸 퀴즈 완료!</h2>
+          <div id="clozeResultRoundBadge" class="hidden mt-2 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-200 shadow-2xs">
+            <i class="fa-solid fa-award text-amber-500 text-sm"></i>
+            <span id="clozeResultRoundText">Day 01 문장 빈칸 1회독 완료!</span>
+          </div>
           <p class="text-sm text-slate-500 mt-1">실전 문맥 어휘 문제 결과를 확인하세요.</p>
         </div>
 
@@ -1169,6 +1177,9 @@
         </div>
 
         <div class="pt-2 border-t border-slate-100">
+          <button id="btnResetDayRounds" class="w-full py-2 rounded-xl text-slate-500 hover:bg-slate-100 font-bold transition flex items-center justify-center gap-1.5 text-xs">
+            <i class="fa-solid fa-rotate-left"></i> Day별 회독 차수 초기화
+          </button>
           <button id="btnResetAllStats" class="w-full py-2 rounded-xl text-rose-500 hover:bg-rose-50 font-bold transition flex items-center justify-center gap-1.5">
             <i class="fa-solid fa-trash-can"></i> 전체 오답 기록 초기화
           </button>
