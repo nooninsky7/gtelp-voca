@@ -88,7 +88,23 @@
     });
 
     words = Array.from(wordMap.values());
-    saveWords();
+
+    // '기초01', '기초 01', '기초 필수 단어'로 등록된 단어의 Day 명칭을 '기초단어'로 마이그레이션
+    let wordsChanged = false;
+    words.forEach(w => {
+      if (w.day === '기초01' || w.day === '기초 01' || w.day === '기초 필수 단어') {
+        w.day = '기초단어';
+        wordsChanged = true;
+      }
+    });
+    if (wordsChanged) {
+      saveWords();
+    } else {
+      saveWords();
+    }
+
+    // Day별 회독 차수 초기화 및 마이그레이션 (기초단어 4지선다 1회독 반영)
+    migrateDayRoundStats();
 
     const savedStats = localStorage.getItem('voca_wrong_stats');
     if (savedStats) {
@@ -155,7 +171,7 @@
   }
 
   function incrementDayRoundCount(day, type) {
-    if (!day || !day.startsWith('Day ')) return 0;
+    if (!day || ['all', 'wrong', 'selected'].includes(day)) return 0;
     const stats = getDayRoundStats();
     if (!stats[day]) stats[day] = {};
     const current = Number(stats[day][type]) || 0;
@@ -163,6 +179,35 @@
     stats[day][type] = next;
     saveDayRoundStats(stats);
     return next;
+  }
+
+  function migrateDayRoundStats() {
+    const stats = getDayRoundStats();
+    let changed = false;
+
+    // '기초01', '기초 01', '기초 필수 단어'가 있다면 '기초단어'로 통합
+    ['기초01', '기초 01', '기초 필수 단어'].forEach(oldKey => {
+      if (stats[oldKey]) {
+        if (!stats['기초단어']) stats['기초단어'] = {};
+        stats['기초단어'].standard = Math.max(stats['기초단어'].standard || 0, stats[oldKey].standard || 0);
+        stats['기초단어'].cloze = Math.max(stats['기초단어'].cloze || 0, stats[oldKey].cloze || 0);
+        delete stats[oldKey];
+        changed = true;
+      }
+    });
+
+    // 사용자의 "기초단어 4지선다는 1회독 완료" 반영 (최소 1회독 설정)
+    if (!stats['기초단어']) {
+      stats['기초단어'] = { standard: 1, cloze: 0 };
+      changed = true;
+    } else if (!stats['기초단어'].standard || stats['기초단어'].standard < 1) {
+      stats['기초단어'].standard = 1;
+      changed = true;
+    }
+
+    if (changed) {
+      saveDayRoundStats(stats);
+    }
   }
 
   function resetDayRoundStats() {
@@ -604,7 +649,13 @@
   // --------------------------------------------------------------------------
   function getAllDays() {
     const daySet = new Set(words.map(w => w.day || 'Day 01'));
-    return Array.from(daySet).sort();
+    const days = Array.from(daySet);
+    return days.sort((a, b) => {
+      // '기초단어'를 항상 최상단 맨 위로 배치
+      if (a === '기초단어' || a === '기초01' || a === '기초 01') return -1;
+      if (b === '기초단어' || b === '기초01' || b === '기초 01') return 1;
+      return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+    });
   }
 
   function renderDayFilters() {
@@ -691,7 +742,7 @@
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
               <span class="w-8 h-8 rounded-xl bg-indigo-600 text-white font-black text-xs flex items-center justify-center shadow-sm">
-                ${d.replace('Day ', '')}
+                ${d.startsWith('Day ') ? d.replace('Day ', '') : (d.includes('기초') ? '기초' : d.slice(0, 2))}
               </span>
               <div>
                 <div class="font-black text-sm text-slate-900">${d}</div>
@@ -1724,7 +1775,8 @@
     // 4지선다 Day별 회독 차수 카운트 & 결과 배지 표시
     const roundBadge = document.getElementById('quizResultRoundBadge');
     const roundText = document.getElementById('quizResultRoundText');
-    if (!activeQuiz.isRetry && activeQuiz.currentScope && activeQuiz.currentScope.startsWith('Day ')) {
+    const isSpecialScope = ['all', 'wrong', 'selected'].includes(activeQuiz.currentScope);
+    if (!activeQuiz.isRetry && activeQuiz.currentScope && !isSpecialScope) {
       const newRound = incrementDayRoundCount(activeQuiz.currentScope, 'standard');
       if (roundBadge && roundText) {
         roundText.textContent = `${activeQuiz.currentScope} 4지선다 ${newRound}회독 달성! 🎉`;
@@ -2468,7 +2520,7 @@
 
       let targetDay = daySelect.value;
       if (targetDay === 'custom') {
-        targetDay = customDayInput.value.trim() || '기초 필수 단어';
+        targetDay = customDayInput.value.trim() || '기초단어';
       }
 
       const wordText = document.getElementById('newWordText').value.trim();
@@ -3116,7 +3168,8 @@
     // 빈칸 문장 Day별 회독 차수 카운트 & 결과 배지 표시
     const clozeRoundBadge = document.getElementById('clozeResultRoundBadge');
     const clozeRoundText = document.getElementById('clozeResultRoundText');
-    if (!activeClozeQuiz.isRetry && activeClozeQuiz.currentScope && activeClozeQuiz.currentScope.startsWith('Day ')) {
+    const isSpecialClozeScope = ['all', 'wrong', 'selected'].includes(activeClozeQuiz.currentScope);
+    if (!activeClozeQuiz.isRetry && activeClozeQuiz.currentScope && !isSpecialClozeScope) {
       const newRound = incrementDayRoundCount(activeClozeQuiz.currentScope, 'cloze');
       if (clozeRoundBadge && clozeRoundText) {
         clozeRoundText.textContent = `${activeClozeQuiz.currentScope} 문장 빈칸 ${newRound}회독 달성! 🎉`;
@@ -3367,7 +3420,7 @@
         parsedData.forEach((item, i) => {
           if (!item.word || !item.meaning) return;
 
-          const targetDay = item.day || activeDayFilter || '기초 필수 단어';
+          const targetDay = item.day || activeDayFilter || '기초단어';
           lastDay = targetDay;
           const cleanWord = item.word.trim().toLowerCase();
 
@@ -3771,7 +3824,7 @@
 
       let targetDay = daySelect.value;
       if (targetDay === 'custom') {
-        targetDay = customDayInput.value.trim() || '기초 필수 단어';
+        targetDay = customDayInput.value.trim() || '기초단어';
       }
 
       showToast(`📸 ${files.length}장의 사진을 안전하게 등록 중입니다...`);
