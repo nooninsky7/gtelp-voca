@@ -185,6 +185,27 @@
 
         <div class="space-y-3 pt-2 border-t border-slate-100">
           <label class="block text-xs font-bold text-slate-700">학습할 Day 범위 선택</label>
+        <!-- [진행 중인 플래시카드 이어보기 안내 배너] -->
+        <div id="flashcardResumeBanner" class="hidden p-4 bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-300 rounded-2xl flex items-center justify-between gap-3 shadow-sm animate-in fade-in duration-200">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center text-lg shadow-sm shrink-0">
+              <i class="fa-solid fa-rotate-left"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="font-black text-xs sm:text-sm text-amber-950 flex items-center gap-1.5 flex-wrap">
+                <span>보던 플래시카드가 보관되어 있습니다!</span>
+                <span id="flashcardResumeScopeBadge" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-200 text-amber-800">Day 01</span>
+              </div>
+              <div class="text-[11px] sm:text-xs text-amber-700 mt-0.5 truncate">
+                진행 상황: <span id="flashcardResumeProgressText" class="font-bold">14 / 50번</span> 보던 중
+              </div>
+            </div>
+          </div>
+          <button id="btnResumeFlashcardNow" class="px-3.5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-black text-xs shrink-0 shadow-md transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-play text-[10px]"></i> 이어서 보기
+          </button>
+        </div>
+
           <div class="grid grid-cols-2 gap-2" id="flashcardScopeContainer">
             <!-- Day 버튼들이 동적으로 채워짐 -->
           </div>
@@ -340,6 +361,27 @@
           </div>
           <h2 class="text-xl font-black text-slate-900">Day별 실전 문제풀이 (4지선다)</h2>
           <p class="text-sm text-slate-500">Day를 선택하여 즉시 문제를 풀거나 전 범위/오답을 집중 공략하세요.<br>지텔프 실제 시험에 출제되는 철자/발음 유사어와 혼동 어휘들로 보기가 구성됩니다.</p>
+        </div>
+
+        <!-- [진행 중인 풀이 이어하기 안내 배너] -->
+        <div id="quizResumeBanner" class="hidden p-4 bg-gradient-to-r from-indigo-50 to-purple-50 border-2 border-indigo-300 rounded-2xl flex items-center justify-between gap-3 shadow-sm animate-in fade-in duration-200">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-lg shadow-sm shrink-0">
+              <i class="fa-solid fa-rotate-left"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="font-black text-xs sm:text-sm text-indigo-950 flex items-center gap-1.5 flex-wrap">
+                <span>풀던 퀴즈가 보관되어 있습니다!</span>
+                <span id="quizResumeScopeBadge" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-indigo-200 text-indigo-800">Day 01</span>
+              </div>
+              <div class="text-[11px] sm:text-xs text-indigo-700 mt-0.5 truncate">
+                진행 상황: <span id="quizResumeProgressText" class="font-bold">14 / 50번</span> 풀던 중
+              </div>
+            </div>
+          </div>
+          <button id="btnResumeQuizNow" class="px-3.5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs shrink-0 shadow-md transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-play text-[10px]"></i> 이어서 풀기
+          </button>
         </div>
 
         <!-- 실전 10초 타임어택 옵션 토글 -->
@@ -532,6 +574,27 @@
           </div>
         </div>
 
+        <!-- [진행 중인 빈칸 풀이 이어하기 안내 배너] -->
+        <div id="clozeResumeBanner" class="hidden p-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-300 rounded-2xl flex items-center justify-between gap-3 shadow-sm animate-in fade-in duration-200">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-lg shadow-sm shrink-0">
+              <i class="fa-solid fa-rotate-left"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="font-black text-xs sm:text-sm text-emerald-950 flex items-center gap-1.5 flex-wrap">
+                <span>풀던 빈칸 퀴즈가 보관되어 있습니다!</span>
+                <span id="clozeResumeScopeBadge" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-200 text-emerald-800">Day 01</span>
+              </div>
+              <div class="text-[11px] sm:text-xs text-emerald-700 mt-0.5 truncate">
+                진행 상황: <span id="clozeResumeProgressText" class="font-bold">14 / 50번</span> 풀던 중
+              </div>
+            </div>
+          </div>
+          <button id="btnResumeClozeNow" class="px-3.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shrink-0 shadow-md transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-play text-[10px]"></i> 이어서 풀기
+          </button>
+        </div>
+
         <!-- 실전 10초 타임어택 옵션 -->
         <div class="p-3.5 bg-rose-50/70 border border-rose-200 rounded-2xl flex items-center justify-between cursor-pointer" id="clozeTimeAttackBox">
           <div class="flex items-center gap-2.5">
@@ -684,6 +747,27 @@
 
         <div class="space-y-3 pt-2 border-t border-slate-100">
           <label class="block text-xs font-bold text-slate-700">출제 범위 선택</label>
+        <!-- [진행 중인 패러프레이징 풀이 이어하기 안내 배너] -->
+        <div id="paraResumeBanner" class="hidden p-4 bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-300 rounded-2xl flex items-center justify-between gap-3 shadow-sm animate-in fade-in duration-200">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center text-lg shadow-sm shrink-0">
+              <i class="fa-solid fa-rotate-left"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="font-black text-xs sm:text-sm text-amber-950 flex items-center gap-1.5 flex-wrap">
+                <span>풀던 동의어 퀴즈가 보관되어 있습니다!</span>
+                <span id="paraResumeScopeBadge" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-200 text-amber-800">Day 01</span>
+              </div>
+              <div class="text-[11px] sm:text-xs text-amber-700 mt-0.5 truncate">
+                진행 상황: <span id="paraResumeProgressText" class="font-bold">14 / 50번</span> 풀던 중
+              </div>
+            </div>
+          </div>
+          <button id="btnResumeParaNow" class="px-3.5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-black text-xs shrink-0 shadow-md transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-play text-[10px]"></i> 이어서 풀기
+          </button>
+        </div>
+
           <div class="grid grid-cols-2 gap-2" id="paraScopeContainer"></div>
         </div>
 
@@ -1133,7 +1217,7 @@
   </div>
 
   <!-- 스크립트 연결 (캐시 무효화 버전 파라미터 적용) -->
-  <script src="data.js?v=v2_features_20261109_22"></script>
-  <script src="app.js?v=v2_features_20261109_22"></script>
+  <script src="data.js?v=v3_resume_20261110_10"></script>
+  <script src="app.js?v=v3_resume_20261110_10"></script>
 </body>
 </html>
