@@ -25,6 +25,8 @@
     answered: false
   };
 
+  let geminiApiKey = localStorage.getItem('voca_gemini_api_key') || '';
+
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
     try {
@@ -2817,6 +2819,60 @@
       }
     });
 
+    // 영단어 AI / 사전 자동 채우기 이벤트
+    const autoLookupBtn = document.getElementById('btnAutoLookupWord');
+    const autoLookupIcon = document.getElementById('iconAutoLookup');
+    const autoLookupText = document.getElementById('textAutoLookup');
+    const wordInput = document.getElementById('newWordText');
+
+    async function handleAutoLookup() {
+      const word = (wordInput?.value || '').trim();
+      if (!word) {
+        alert('먼저 영단어를 입력해주세요.');
+        wordInput?.focus();
+        return;
+      }
+
+      try {
+        if (autoLookupIcon) autoLookupIcon.className = 'fa-solid fa-spinner fa-spin text-amber-300';
+        if (autoLookupText) autoLookupText.textContent = '단어 정보 분석 중...';
+        if (autoLookupBtn) autoLookupBtn.disabled = true;
+
+        const info = await autoLookupWordInfo(word);
+        if (info) {
+          if (info.partOfSpeech) document.getElementById('newWordPos').value = info.partOfSpeech;
+          if (info.meaning) document.getElementById('newWordMeaning').value = info.meaning;
+          if (info.phonetic) document.getElementById('newWordPhonetic').value = info.phonetic;
+          if (info.paraphrase) {
+            const paraVal = Array.isArray(info.paraphrase) ? info.paraphrase.join(', ') : info.paraphrase;
+            document.getElementById('newWordParaphrase').value = paraVal;
+          }
+          if (info.relatedForms) document.getElementById('newWordRelated').value = info.relatedForms;
+          if (info.exampleEn) document.getElementById('newWordExampleEn').value = info.exampleEn;
+          if (info.exampleKo) document.getElementById('newWordExampleKo').value = info.exampleKo;
+          if (info.memo) document.getElementById('newWordMemo').value = info.memo;
+          showToast(`'${word}' 단어 정보가 자동으로 완성되었습니다! 검토 후 필요시 수정하세요.`);
+        } else {
+          showToast('사전에서 정보를 찾지 못했습니다. 직접 입력해주세요.');
+        }
+      } catch (err) {
+        console.error('Auto lookup error:', err);
+        showToast('단어 자동 조회 중 오류가 발생했습니다.');
+      } finally {
+        if (autoLookupIcon) autoLookupIcon.className = 'fa-solid fa-wand-magic-sparkles text-amber-300';
+        if (autoLookupText) autoLookupText.textContent = 'AI / 사전 자동 채우기';
+        if (autoLookupBtn) autoLookupBtn.disabled = false;
+      }
+    }
+
+    autoLookupBtn?.addEventListener('click', handleAutoLookup);
+    wordInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleAutoLookup();
+      }
+    });
+
     form?.addEventListener('submit', (e) => {
       e.preventDefault();
 
@@ -2873,7 +2929,174 @@
   }
 
   // --------------------------------------------------------------------------
-  // 8-1. 기기간 실시간 자동 동기화 (Cloud Sync - 나만의 비밀 동기화 키)
+  // 8-0. 영단어 AI / 사전 자동 완성 엔진 (Gemini AI + 무료 공개 사전 이중 지원)
+  // --------------------------------------------------------------------------
+  async function autoLookupWordInfo(word) {
+    const cleanWord = (word || '').trim().toLowerCase();
+    if (!cleanWord) return null;
+
+    // 1. 이미 등록된 1,082개 공식 데이터셋에 있다면 검증된 고품질 교재 데이터 즉시 활용
+    const existing = words.find(w => (w.word || '').trim().toLowerCase() === cleanWord);
+    if (existing) {
+      return {
+        partOfSpeech: existing.partOfSpeech || '명사',
+        meaning: existing.meaning || '',
+        phonetic: existing.phonetic || '',
+        paraphrase: existing.paraphrase || [],
+        relatedForms: existing.relatedForms || '',
+        exampleEn: existing.exampleEn || '',
+        exampleKo: existing.exampleKo || '',
+        memo: existing.memo || ''
+      };
+    }
+
+    // 2. Gemini API 키가 있다면 지텔프 기출 맞춤형 초고성능 AI 분석 호출
+    if (geminiApiKey) {
+      try {
+        const geminiData = await fetchGeminiWordAnalysis(cleanWord);
+        if (geminiData && geminiData.meaning) {
+          return geminiData;
+        }
+      } catch (err) {
+        console.warn('Gemini lookup fallback to public dictionary:', err);
+      }
+    }
+
+    // 3. 무료 공개 사전 API 및 Google 번역 백업 조회 (별도 API 키 없이 즉시 작동)
+    return await fetchFreeDictionaryWordInfo(cleanWord);
+  }
+
+  // Gemini 기반 지텔프 맞춤 단어 분석
+  async function fetchGeminiWordAnalysis(word) {
+    if (!geminiApiKey) return null;
+    let modelName = 'gemini-2.0-flash';
+    try {
+      if (typeof getBestGeminiModel === 'function') {
+        modelName = await getBestGeminiModel(geminiApiKey);
+      }
+    } catch (e) {}
+
+    const promptText = `너는 지텔프(G-TELP) 시험 전문 어학 사전 AI야. 영단어 "${word}"를 분석해서 지텔프 시험에 최적화된 아래 JSON 규격의 단일 JSON 객체(Object) 하나만 출력해줘. 코드블록(\`\`\`json)이나 부연 설명 없이 오직 JSON만 반환해야 해:
+{
+  "partOfSpeech": "대표 품사 (예: 동사, 형용사, 명사, 부사)",
+  "meaning": "지텔프 시험에 알맞은 대표 한글 뜻풀이 1~2개",
+  "phonetic": "[발음기호]",
+  "relatedForms": "주요 파생어 및 품사 (예: 파생단어 (형) 뜻)",
+  "paraphrase": ["핵심동의어1", "동의어2", "동의어3", "동의어4"],
+  "exampleEn": "지텔프 수준의 자연스러운 영어 예문",
+  "exampleKo": "위 영어 예문의 자연스러운 한글 번역",
+  "memo": "혼동 어휘 주의점이나 지텔프 출제 팁"
+}`;
+
+    const candidateUrls = [
+      `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${geminiApiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`,
+      `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`
+    ];
+
+    for (const url of candidateUrls) {
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: promptText }] }],
+            generationConfig: { temperature: 0.1 }
+          })
+        });
+        if (res.ok) {
+          const json = await res.json();
+          const rawText = json.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
+          const cleaned = rawText.replace(/```json/gi, '').replace(/```/g, '').trim();
+          const firstBrace = cleaned.indexOf('{');
+          const lastBrace = cleaned.lastIndexOf('}');
+          if (firstBrace >= 0 && lastBrace >= 0) {
+            return JSON.parse(cleaned.substring(firstBrace, lastBrace + 1));
+          }
+        }
+      } catch (err) {}
+    }
+    return null;
+  }
+
+  // 무료 공개 사전 + Google 번역 단어 정보 수집 (API 키 불필요)
+  async function fetchFreeDictionaryWordInfo(word) {
+    let phonetic = '';
+    let partOfSpeech = '명사';
+    let meaning = '';
+    let exampleEn = '';
+    let exampleKo = '';
+    let paraphrase = [];
+
+    // A. Free Dictionary API (무료 영영 사전)
+    try {
+      const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
+      if (res.ok) {
+        const data = await res.json();
+        const entry = Array.isArray(data) ? data[0] : null;
+        if (entry) {
+          phonetic = entry.phonetic || (entry.phonetics?.find(p => p.text)?.text) || '';
+          if (entry.meanings && entry.meanings.length > 0) {
+            const m = entry.meanings[0];
+            const posMap = { noun: '명사', verb: '동사', adjective: '형용사', adverb: '부사', preposition: '전치사' };
+            partOfSpeech = posMap[m.partOfSpeech?.toLowerCase()] || m.partOfSpeech || '명사';
+            if (m.definitions && m.definitions.length > 0) {
+              const def = m.definitions[0];
+              if (def.example) exampleEn = def.example;
+              if (def.synonyms && def.synonyms.length > 0) {
+                paraphrase = def.synonyms.slice(0, 4);
+              }
+            }
+          }
+        }
+      }
+    } catch (e) {}
+
+    // B. Datamuse API (무료 동의어/유의어)
+    if (paraphrase.length === 0) {
+      try {
+        const synRes = await fetch(`https://api.datamuse.com/words?rel_syn=${encodeURIComponent(word)}&max=5`);
+        if (synRes.ok) {
+          const synList = await synRes.json();
+          paraphrase = synList.map(s => s.word).filter(Boolean);
+        }
+      } catch (e) {}
+    }
+
+    // C. Google Translate 무료 엔드포인트 (한글 뜻 및 예문 번역)
+    try {
+      const transRes = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ko&dt=t&q=${encodeURIComponent(word)}`);
+      if (transRes.ok) {
+        const transJson = await transRes.json();
+        meaning = transJson?.[0]?.[0]?.[0] || '';
+      }
+    } catch (e) {}
+
+    if (exampleEn) {
+      try {
+        const exTransRes = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ko&dt=t&q=${encodeURIComponent(exampleEn)}`);
+        if (exTransRes.ok) {
+          const exTransJson = await exTransRes.json();
+          exampleKo = exTransJson?.[0]?.[0]?.[0] || '';
+        }
+      } catch (e) {}
+    } else {
+      exampleEn = `It is important to understand the concept of ${word}.`;
+      exampleKo = `${meaning || word}의 개념을 이해하는 것이 중요하다.`;
+    }
+
+    return {
+      partOfSpeech: partOfSpeech,
+      meaning: meaning || word,
+      phonetic: phonetic ? (phonetic.startsWith('[') ? phonetic : `[${phonetic}]`) : '',
+      paraphrase: paraphrase,
+      relatedForms: '',
+      exampleEn: exampleEn,
+      exampleKo: exampleKo,
+      memo: ''
+    };
+  }
   // --------------------------------------------------------------------------
   const CLOUD_SYNC_KEY_STORAGE = 'gtelp_cloud_sync_key';
   const CLOUD_SYNC_LAST_TIME_STORAGE = 'gtelp_cloud_sync_last_time';
@@ -3638,6 +3861,8 @@
     answered: false
   };
 
+  let geminiApiKey = localStorage.getItem('voca_gemini_api_key') || '';
+
   function setupClozeScopeUI() {
     const container = document.getElementById('clozeScopeContainer');
     if (!container) return;
@@ -4305,7 +4530,7 @@
     });
   }
   let pendingOcrWords = [];
-  let geminiApiKey = localStorage.getItem('voca_gemini_api_key') || '';
+  geminiApiKey = localStorage.getItem('voca_gemini_api_key') || '';
 
   function initGeminiUI() {
     const keyInput = document.getElementById('geminiApiKeyInput');

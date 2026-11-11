@@ -1091,16 +1091,26 @@
           </div>
         </div>
 
-        <!-- 영단어 & 발음기호 -->
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">영단어 (Word) *</label>
-            <input type="text" id="newWordText" required placeholder="예: achieve" class="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 font-black text-slate-900 outline-none focus:ring-2 focus:ring-indigo-500">
+        <!-- 영단어 & 발음기호 & 자동완성 버튼 -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <label class="font-bold text-slate-700">영단어 (Word) *</label>
+            <button type="button" id="btnAutoLookupWord" class="px-3 py-1 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 active:scale-95 text-white font-black text-[11px] shadow-sm transition flex items-center gap-1.5 cursor-pointer" title="영단어 입력 후 누르면 뜻, 발음, 품사, 동의어, 파생어, 예문이 자동 완성됩니다">
+              <i class="fa-solid fa-wand-magic-sparkles text-amber-300" id="iconAutoLookup"></i>
+              <span id="textAutoLookup">AI / 사전 자동 채우기</span>
+            </button>
           </div>
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">발음기호 (선택)</label>
-            <input type="text" id="newWordPhonetic" placeholder="예: [ətʃí:v]" class="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 font-mono outline-none focus:ring-2 focus:ring-indigo-500">
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <input type="text" id="newWordText" required placeholder="예: achieve" class="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 font-black text-slate-900 outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+            <div>
+              <input type="text" id="newWordPhonetic" placeholder="발음기호 (선택)" class="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 font-mono outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
           </div>
+          <p class="text-[10px] text-indigo-600 font-medium">
+            💡 영단어 입력 후 엔터키나 [AI / 사전 자동 채우기]를 누르면 뜻, 파생어, 동의어, 예문이 자동 채워지며 원하는 대로 수정하실 수 있습니다.
+          </p>
         </div>
 
         <!-- 품사 & 한글 뜻 -->
