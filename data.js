@@ -16324,5 +16324,897 @@ const INITIAL_WORDS_DATA = [
         "exampleEn":  "cater to the client's specific preferences",
         "exampleKo":  "고객의 특정 취향에 맞추다",
         "memo":  ""
+    },
+  {
+        "id":  "d19-01",
+        "day":  "Day 19",
+        "no":  "01",
+        "word":  "peculiar",
+        "phonetic":  "[pikjúːljər]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "이상한, 특이한 / 특유의",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "strange",
+                           "unusual",
+                           "uncommon",
+                           "odd",
+                           "weird",
+                           "unique",
+                           "distinct"
+                       ],
+        "exampleEn":  "gather peculiar items",
+        "exampleKo":  "특이한 아이템을 모으다",
+        "memo":  "features peculiar to mammals (포유류 특유의 특징)"
+    },
+    {
+        "id":  "d19-02",
+        "day":  "Day 19",
+        "no":  "02",
+        "word":  "unbearable",
+        "phonetic":  "[ʌnbέərəbl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "참을 수 없는, 견디기 어려운",
+        "relatedForms":  "bear (동) 참다, 견디다; (성질을) 띠다, 지니다",
+        "paraphrase":  [
+                           "intolerable"
+                       ],
+        "exampleEn":  "unbearable pain",
+        "exampleKo":  "참을 수 없는 고통",
+        "memo":  "unbearable heat (견딜 수 없는 더위)"
+    },
+    {
+        "id":  "d19-03",
+        "day":  "Day 19",
+        "no":  "03",
+        "word":  "myth",
+        "phonetic":  "[miθ]",
+        "partOfSpeech":  "명사",
+        "meaning":  "신화 / 잘못된 믿음, 근거 없는 통념",
+        "relatedForms":  "mythical (형) 신화에 나오는; 잘못된, 가공의",
+        "paraphrase":  [
+                           "legend",
+                           "story",
+                           "illusion"
+                       ],
+        "exampleEn":  "the Greek myths",
+        "exampleKo":  "그리스 신화",
+        "memo":  "the myth that men are better at math than women (남성이 여성보다 수학에 뛰어나다는 잘못된 통념)"
+    },
+    {
+        "id":  "d19-04",
+        "day":  "Day 19",
+        "no":  "04",
+        "word":  "tackle",
+        "phonetic":  "[tækl]",
+        "partOfSpeech":  "동사",
+        "meaning":  "대처하다, 해결하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "address",
+                           "deal with",
+                           "handle"
+                       ],
+        "exampleEn":  "tackle a problem",
+        "exampleKo":  "문제에 대처하다",
+        "memo":  "지텔프 동의어: The group will meet to discuss how to tackle the issue of climate change. -> (a) address | tackle the crisis (위기에 대처하다)"
+    },
+    {
+        "id":  "d19-05",
+        "day":  "Day 19",
+        "no":  "05",
+        "word":  "ubiquitous",
+        "phonetic":  "[juːbíkwətəs]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "어디에나 있는, 흔히 볼 수 있는",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "widespread",
+                           "common",
+                           "everywhere",
+                           "pervasive"
+                       ],
+        "exampleEn":  "Starbucks is a ubiquitous coffee chain.",
+        "exampleKo":  "스타벅스는 어디에나 있는 커피 체인점이다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-06",
+        "day":  "Day 19",
+        "no":  "06",
+        "word":  "punctuality",
+        "phonetic":  "[pʌ̀ŋktʃuǽləti]",
+        "partOfSpeech":  "명사",
+        "meaning":  "시간 엄수",
+        "relatedForms":  "punctual (형) 시간을 엄수하는",
+        "paraphrase":  [
+                           "promptness"
+                       ],
+        "exampleEn":  "Punctuality is the key element of success.",
+        "exampleKo":  "시간 엄수는 성공의 핵심 요소다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-07",
+        "day":  "Day 19",
+        "no":  "07",
+        "word":  "disclose",
+        "phonetic":  "[disklóuz]",
+        "partOfSpeech":  "동사",
+        "meaning":  "밝히다, 드러내다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "tell",
+                           "reveal",
+                           "show",
+                           "unveil",
+                           "expose",
+                           "uncover"
+                       ],
+        "exampleEn":  "disclose details of the company's future plans",
+        "exampleKo":  "회사의 장래 계획을 밝히다",
+        "memo":  "finally disclose the truth (마침내 진실을 밝히다)"
+    },
+    {
+        "id":  "d19-08",
+        "day":  "Day 19",
+        "no":  "08",
+        "word":  "valid",
+        "phonetic":  "[vǽlid]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "유효한 / 타당한",
+        "relatedForms":  "validity (명) 유효성; 타당성",
+        "paraphrase":  [
+                           "legitimate",
+                           "sound",
+                           "reasonable",
+                           "acceptable",
+                           "sensible"
+                       ],
+        "exampleEn":  "The coupon is no longer valid.",
+        "exampleKo":  "쿠폰은 더 이상 유효하지 않다.",
+        "memo":  "a valid criticism (타당한 비판)"
+    },
+    {
+        "id":  "d19-09",
+        "day":  "Day 19",
+        "no":  "09",
+        "word":  "summarize",
+        "phonetic":  "[sʌ́məràiz]",
+        "partOfSpeech":  "동사",
+        "meaning":  "요약하다",
+        "relatedForms":  "summary (명) 요약",
+        "paraphrase":  [
+                           "recap",
+                           "outline",
+                           "condense"
+                       ],
+        "exampleEn":  "summarize the main points of the meeting",
+        "exampleKo":  "회의의 요점을 요약하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-10",
+        "day":  "Day 19",
+        "no":  "10",
+        "word":  "flawlessly",
+        "phonetic":  "[flɔ́ːlisli]",
+        "partOfSpeech":  "부사",
+        "meaning":  "흠잡을 데 없이, 완벽하게",
+        "relatedForms":  "flaw (명) 흠, 결함, 결점, flawless (형) 흠잡을 데 없는, 완벽한",
+        "paraphrase":  [
+                           "perfectly",
+                           "impeccably"
+                       ],
+        "exampleEn":  "The truck driver transferred the cargo flawlessly.",
+        "exampleKo":  "트럭 운전사는 화물을 완벽히 옮겼다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-11",
+        "day":  "Day 19",
+        "no":  "11",
+        "word":  "avert",
+        "phonetic":  "[əvə́ːrt]",
+        "partOfSpeech":  "동사",
+        "meaning":  "방지하다, 막다 / 외면하다, 시선을 돌리다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "stop",
+                           "prevent",
+                           "avoid",
+                           "turn away"
+                       ],
+        "exampleEn":  "avert famine",
+        "exampleKo":  "기근을 방지하다",
+        "memo":  "지텔프 동의어: The country is taking steps to avert an environmental disaster. -> (b) stop | Avert your thoughts from problems. (문제로부터 당신의 생각을 돌리세요.)"
+    },
+    {
+        "id":  "d19-12",
+        "day":  "Day 19",
+        "no":  "12",
+        "word":  "magnificent",
+        "phonetic":  "[mægnífəsnt]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "훌륭한, 장엄한, 매우 아름다운",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "grand",
+                           "majestic",
+                           "splendid",
+                           "impressive",
+                           "imposing"
+                       ],
+        "exampleEn":  "a magnificent view",
+        "exampleKo":  "웅장한 경치",
+        "memo":  "a magnificent speech (훌륭한 연설)"
+    },
+    {
+        "id":  "d19-13",
+        "day":  "Day 19",
+        "no":  "13",
+        "word":  "anniversary",
+        "phonetic":  "[æ̀nəvə́ːrsəri]",
+        "partOfSpeech":  "명사",
+        "meaning":  "기념일",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "a wedding anniversary",
+        "exampleKo":  "결혼 기념일",
+        "memo":  "commemorate the 100th anniversary of his birth (그의 탄생 100주년을 기념하다)"
+    },
+    {
+        "id":  "d19-14",
+        "day":  "Day 19",
+        "no":  "14",
+        "word":  "dye",
+        "phonetic":  "[dai]",
+        "partOfSpeech":  "명사/동사",
+        "meaning":  "염료, 염색약 / 염색하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "coloring"
+                       ],
+        "exampleEn":  "dye the cloth purple",
+        "exampleKo":  "천을 보라색으로 염색하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-15",
+        "day":  "Day 19",
+        "no":  "15",
+        "word":  "misplace",
+        "phonetic":  "[mispléis]",
+        "partOfSpeech":  "동사",
+        "meaning":  "(제자리에 두지 않고) 어디에 두었는지 잊어버리다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "lose",
+                           "mislay"
+                       ],
+        "exampleEn":  "He is always misplacing his car keys.",
+        "exampleKo":  "그는 항상 차 열쇠 둔 곳을 잊어버린다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-16",
+        "day":  "Day 19",
+        "no":  "16",
+        "word":  "fossil",
+        "phonetic":  "[fάsl]",
+        "partOfSpeech":  "명사",
+        "meaning":  "화석",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "unearth the fossil of a marine reptile",
+        "exampleKo":  "해양 파충류의 화석을 발굴하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-17",
+        "day":  "Day 19",
+        "no":  "17",
+        "word":  "bolster",
+        "phonetic":  "[bóulstər]",
+        "partOfSpeech":  "동사",
+        "meaning":  "강화하다, 보강하다 / (자신감, 사기 등) 북돋우다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "support",
+                           "strengthen",
+                           "reinforce",
+                           "enhance"
+                       ],
+        "exampleEn":  "bolster the economy",
+        "exampleKo":  "경제를 강화하다",
+        "memo":  "지텔프 동의어: The company's cutting-edge products bolster its reputation as an industry leader. -> (b) enhance | bolster her confidence (그녀의 자신감을 북돋우다)"
+    },
+    {
+        "id":  "d19-18",
+        "day":  "Day 19",
+        "no":  "18",
+        "word":  "discourage",
+        "phonetic":  "[diskə́ːridʒ]",
+        "partOfSpeech":  "동사",
+        "meaning":  "~을 하지 못하게 하다, 단념시키다 / 좌절시키다, 의욕을 꺾다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "deter",
+                           "prevent",
+                           "dishearten",
+                           "daunt"
+                       ],
+        "exampleEn":  "Tyler was discouraged from becoming an actor by his parents.",
+        "exampleKo":  "타일러는 부모님에 의해 배우가 되는 것을 단념하게 되었다.",
+        "memo":  "Negative feedback on her restaurant discouraged Lauren. (자신의 레스토랑에 대한 부정적인 피드백은 로렌을 낙담시켰다.)"
+    },
+    {
+        "id":  "d19-19",
+        "day":  "Day 19",
+        "no":  "19",
+        "word":  "transparent",
+        "phonetic":  "[trænspέərənt]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "투명한, 비치는 / 이해하기 쉬운, 명료한 / 숨김없는, 투명한",
+        "relatedForms":  "transparency (명) 투명함",
+        "paraphrase":  [
+                           "clear",
+                           "plain",
+                           "easy",
+                           "lucid",
+                           "open",
+                           "frank",
+                           "candid",
+                           "honest",
+                           "direct"
+                       ],
+        "exampleEn":  "a transparent fish tank",
+        "exampleKo":  "투명한 어항",
+        "memo":  "transparent instructions (명료한 설명), a transparent election process (투명한 선거 과정)"
+    },
+    {
+        "id":  "d19-20",
+        "day":  "Day 19",
+        "no":  "20",
+        "word":  "outsource",
+        "phonetic":  "[àutsɔ́ːrs]",
+        "partOfSpeech":  "동사",
+        "meaning":  "외부에 위탁하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "The work was outsourced to an advertising agency.",
+        "exampleKo":  "그 일은 광고 대행사에 위탁되었다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-21",
+        "day":  "Day 19",
+        "no":  "21",
+        "word":  "hostility",
+        "phonetic":  "[hɑstíləti]",
+        "partOfSpeech":  "명사",
+        "meaning":  "반감, 적대감",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "hatred",
+                           "opposition",
+                           "anger",
+                           "aversion"
+                       ],
+        "exampleEn":  "hostility toward neighboring countries",
+        "exampleKo":  "주변국에 대한 적대감",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-22",
+        "day":  "Day 19",
+        "no":  "22",
+        "word":  "reproduce",
+        "phonetic":  "[rìːprədjúːs]",
+        "partOfSpeech":  "동사",
+        "meaning":  "(식물이나 동물 등) 번식하다, 생식하다 / 복사하다 / 다시 만들어 내다, 재현하다",
+        "relatedForms":  "reproduction (명) 번식, 생식; 복사; 복제품",
+        "paraphrase":  [
+                           "breed",
+                           "spawn",
+                           "copy",
+                           "duplicate"
+                       ],
+        "exampleEn":  "The fish of this lake reproduce during the rainy season.",
+        "exampleKo":  "이 호수의 물고기는 장마철에 번식한다.",
+        "memo":  "reproduce the artist's work on T-shirts (티셔츠에 작가의 작품을 재현하다)"
+    },
+    {
+        "id":  "d19-23",
+        "day":  "Day 19",
+        "no":  "23",
+        "word":  "graduate",
+        "phonetic":  "[grǽdʒuèit] / [grǽdʒuət]",
+        "partOfSpeech":  "동사/명사/형용사",
+        "meaning":  "졸업하다 / 졸업생 / 대학원의",
+        "relatedForms":  "graduation (명) 졸업(식)",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "graduate from high school",
+        "exampleKo":  "고등학교를 졸업하다",
+        "memo":  "a graduate student (대학원생)"
+    },
+    {
+        "id":  "d19-24",
+        "day":  "Day 19",
+        "no":  "24",
+        "word":  "alleviate",
+        "phonetic":  "[əlíːvièit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "완화시키다, 경감시키다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "ease",
+                           "relieve",
+                           "lessen",
+                           "reduce",
+                           "mitigate"
+                       ],
+        "exampleEn":  "alleviate pain",
+        "exampleKo":  "고통을 경감시키다",
+        "memo":  "지텔프 동의어: There are many ways to alleviate pain without medication. -> (a) reduce | alleviate poverty (빈곤을 완화시키다)"
+    },
+    {
+        "id":  "d19-25",
+        "day":  "Day 19",
+        "no":  "25",
+        "word":  "scholarship",
+        "phonetic":  "[skάlərʃìp]",
+        "partOfSpeech":  "명사",
+        "meaning":  "장학금",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "grant"
+                       ],
+        "exampleEn":  "be granted a full scholarship",
+        "exampleKo":  "전액 장학금을 받다",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-26",
+        "day":  "Day 19",
+        "no":  "26",
+        "word":  "consecutive",
+        "phonetic":  "[kənsékjətiv]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "연속적인, 연이은",
+        "relatedForms":  "consecutively (부) 연속으로, 연이어",
+        "paraphrase":  [
+                           "successive"
+                       ],
+        "exampleEn":  "for three consecutive hours",
+        "exampleKo":  "3시간 연속으로",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-27",
+        "day":  "Day 19",
+        "no":  "27",
+        "word":  "courtesy",
+        "phonetic":  "[kə́ːrtəsi]",
+        "partOfSpeech":  "명사/형용사",
+        "meaning":  "공손함, 예의 / 서비스로 제공되는, 무료로 제공되는",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "politeness",
+                           "grace"
+                       ],
+        "exampleEn":  "treat customers with courtesy",
+        "exampleKo":  "고객을 공손하게 대하다",
+        "memo":  "a courtesy shuttle bus (서비스로 제공되는 셔틀 버스) | 숙어: (by) courtesy of (~의 허가를 받아, ~때문에, ~로부터 제공되는)"
+    },
+    {
+        "id":  "d19-28",
+        "day":  "Day 19",
+        "no":  "28",
+        "word":  "chronic",
+        "phonetic":  "[krάnik]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "만성의, 고질적인",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "persistent",
+                           "constant",
+                           "habitual"
+                       ],
+        "exampleEn":  "chronic diseases",
+        "exampleKo":  "만성 질환",
+        "memo":  "chronic stress (만성 스트레스)"
+    },
+    {
+        "id":  "d19-29",
+        "day":  "Day 19",
+        "no":  "29",
+        "word":  "commemorate",
+        "phonetic":  "[kəmémərèit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "기념하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "celebrate",
+                           "observe"
+                       ],
+        "exampleEn":  "A memorial service was held to commemorate the event.",
+        "exampleKo":  "그 사건을 기념하기 위해 추도식이 열렸다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-30",
+        "day":  "Day 19",
+        "no":  "30",
+        "word":  "temperate",
+        "phonetic":  "[témpərət]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "(날씨나 기후가) 온화한 / (사람의 행동이나 말이) 온화한, 절제된",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "mild",
+                           "moderate"
+                       ],
+        "exampleEn":  "in a temperate region",
+        "exampleKo":  "기후가 온화한 지역에서",
+        "memo":  "지텔프 동의어: The temperate climate of the Pacific Northwest is perfect for growing grapes. -> (b) mild"
+    },
+    {
+        "id":  "d19-31",
+        "day":  "Day 19",
+        "no":  "31",
+        "word":  "longevity",
+        "phonetic":  "[landʒévəti]",
+        "partOfSpeech":  "명사",
+        "meaning":  "수명, 장수",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "attribute longevity to positive attitude",
+        "exampleKo":  "장수를 긍정적인 태도 덕분으로 보다",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-32",
+        "day":  "Day 19",
+        "no":  "32",
+        "word":  "discern",
+        "phonetic":  "[disə́ːrn]",
+        "partOfSpeech":  "동사",
+        "meaning":  "파악하다 / 식별하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "perceive",
+                           "notice",
+                           "distinguish",
+                           "differentiate"
+                       ],
+        "exampleEn":  "discern differences between the two paintings",
+        "exampleKo":  "두 그림의 차이점을 파악하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-33",
+        "day":  "Day 19",
+        "no":  "33",
+        "word":  "solidarity",
+        "phonetic":  "[sὰlədǽrəti]",
+        "partOfSpeech":  "명사",
+        "meaning":  "연대, 결속",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "unity"
+                       ],
+        "exampleEn":  "show solidarity with the young generation",
+        "exampleKo":  "젊은 세대와의 연대를 보이다",
+        "memo":  "지텔프 동의어: There is a great need for solidarity among all members of our team. -> (a) unity"
+    },
+    {
+        "id":  "d19-34",
+        "day":  "Day 19",
+        "no":  "34",
+        "word":  "staple",
+        "phonetic":  "[stéipl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "기본이 되는, 주된",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "standard",
+                           "chief",
+                           "main",
+                           "key",
+                           "primary",
+                           "principal"
+                       ],
+        "exampleEn":  "a staple dish of South Africa",
+        "exampleKo":  "남아프리카의 기본 요리",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-35",
+        "day":  "Day 19",
+        "no":  "35",
+        "word":  "careless",
+        "phonetic":  "[kέərlis]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "부주의한, 경솔한",
+        "relatedForms":  "care (명) 돌봄; 주의, (동) 신경 쓰다, 관심 갖다",
+        "paraphrase":  [
+                           "thoughtless",
+                           "indiscreet"
+                       ],
+        "exampleEn":  "careless drivers",
+        "exampleKo":  "부주의한 운전자들",
+        "memo":  "a careless remark about weight (체중에 대한 경솔한 발언)"
+    },
+    {
+        "id":  "d19-36",
+        "day":  "Day 19",
+        "no":  "36",
+        "word":  "arrogant",
+        "phonetic":  "[έrəgənt]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "거만한, 오만한",
+        "relatedForms":  "arrogance (명) 거만, 오만",
+        "paraphrase":  [
+                           "conceited",
+                           "lordly",
+                           "haughty"
+                       ],
+        "exampleEn":  "an arrogant manner",
+        "exampleKo":  "오만한 태도",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-37",
+        "day":  "Day 19",
+        "no":  "37",
+        "word":  "racial",
+        "phonetic":  "[réiʃəl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "인종의, 인종간의",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "racial discrimination",
+        "exampleKo":  "인종 차별",
+        "memo":  "call for an end to racial injustice (인종 불평등의 종식을 호소하다)"
+    },
+    {
+        "id":  "d19-38",
+        "day":  "Day 19",
+        "no":  "38",
+        "word":  "improvise",
+        "phonetic":  "[ímprəvàiz]",
+        "partOfSpeech":  "동사",
+        "meaning":  "즉흥적으로 하다, 있는 것으로 만들다",
+        "relatedForms":  "improvisational (형) 즉흥의, improvisation (명) (공연·연기 등) 즉흥으로 하기",
+        "paraphrase":  [
+                           "invent",
+                           "ad-lib"
+                       ],
+        "exampleEn":  "the improvised lyrics",
+        "exampleKo":  "즉흥적으로 만들어진 가사",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-39",
+        "day":  "Day 19",
+        "no":  "39",
+        "word":  "perish",
+        "phonetic":  "[périʃ]",
+        "partOfSpeech":  "동사",
+        "meaning":  "(사고나 재난 등으로) 죽다, 사라지다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "die",
+                           "pass away"
+                       ],
+        "exampleEn":  "perish due to starvation",
+        "exampleKo":  "기아로 죽다",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-40",
+        "day":  "Day 19",
+        "no":  "40",
+        "word":  "pest",
+        "phonetic":  "[pest]",
+        "partOfSpeech":  "명사",
+        "meaning":  "해충, 유해 동물",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "reduce the number of pests",
+        "exampleKo":  "해충의 수를 줄이다",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-41",
+        "day":  "Day 19",
+        "no":  "41",
+        "word":  "ban",
+        "phonetic":  "[bæn]",
+        "partOfSpeech":  "명사/동사",
+        "meaning":  "금지 / 금지하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "prohibition",
+                           "forbid",
+                           "prohibit",
+                           "outlaw"
+                       ],
+        "exampleEn":  "The hunting of sea lions has been banned.",
+        "exampleKo":  "바다사자의 사냥은 금지되었다.",
+        "memo":  "지텔프 동의어: The school has decided to ban cell phones during class hours. -> (a) prohibit"
+    },
+    {
+        "id":  "d19-42",
+        "day":  "Day 19",
+        "no":  "42",
+        "word":  "implication",
+        "phonetic":  "[ìmpləkéiʃən]",
+        "partOfSpeech":  "명사",
+        "meaning":  "영향 / 암시",
+        "relatedForms":  "imply (동) 암시하다",
+        "paraphrase":  [
+                           "suggestion"
+                       ],
+        "exampleEn":  "ecological implications of global warming",
+        "exampleKo":  "지구 온난화의 생태학적 영향",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-43",
+        "day":  "Day 19",
+        "no":  "43",
+        "word":  "asset",
+        "phonetic":  "[ǽset]",
+        "partOfSpeech":  "명사",
+        "meaning":  "자산, 재산",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "belongings",
+                           "resource"
+                       ],
+        "exampleEn":  "see her as a future asset",
+        "exampleKo":  "그녀를 미래의 자산으로 여기다",
+        "memo":  "use all of the assets (모든 재산을 사용하다)"
+    },
+    {
+        "id":  "d19-44",
+        "day":  "Day 19",
+        "no":  "44",
+        "word":  "hatch",
+        "phonetic":  "[hætʃ]",
+        "partOfSpeech":  "동사",
+        "meaning":  "부화하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "The eggs hatched into chicks.",
+        "exampleKo":  "알이 병아리로 부화했다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-45",
+        "day":  "Day 19",
+        "no":  "45",
+        "word":  "incoherent",
+        "phonetic":  "[ìnkouhíərənt]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "횡설수설하는 / 일관성이 없는",
+        "relatedForms":  "coherent (형) 논리 정연한; 일관성 있는",
+        "paraphrase":  [
+                           "wandering",
+                           "inconsistent",
+                           "confusing",
+                           "unclear"
+                       ],
+        "exampleEn":  "The findings of the study were incoherent.",
+        "exampleKo":  "연구 결과는 일관성이 없었다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-46",
+        "day":  "Day 19",
+        "no":  "46",
+        "word":  "retail",
+        "phonetic":  "[ríːteil]",
+        "partOfSpeech":  "명사/동사",
+        "meaning":  "소매 / 소매하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "the retail price of the iPhone",
+        "exampleKo":  "아이폰의 소매 가격",
+        "memo":  ""
+    },
+    {
+        "id":  "d19-47",
+        "day":  "Day 19",
+        "no":  "47",
+        "word":  "complement",
+        "phonetic":  "[kάmpləmənt]",
+        "partOfSpeech":  "동사/명사",
+        "meaning":  "보완하다 / 보완물, 보충제",
+        "relatedForms":  "complementary (형) 상호 보완적인",
+        "paraphrase":  [
+                           "enhance",
+                           "complete",
+                           "improve",
+                           "match"
+                       ],
+        "exampleEn":  "Teachers use pictures to complement their teaching.",
+        "exampleKo":  "선생님들은 수업을 보완하기 위해 사진을 사용한다.",
+        "memo":  "a nutritional complement (영양 보충제)"
+    },
+    {
+        "id":  "d19-48",
+        "day":  "Day 19",
+        "no":  "48",
+        "word":  "vulnerable",
+        "phonetic":  "[vʌ́lnərəbl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "(~에) 상처받기 쉬운, 취약한",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "helpless",
+                           "open",
+                           "susceptible",
+                           "exposed",
+                           "unprotected",
+                           "sensitive"
+                       ],
+        "exampleEn":  "Plants are vulnerable to pests and diseases.",
+        "exampleKo":  "식물은 해충과 질병에 취약하다.",
+        "memo":  "지텔프 동의어: Rickey is vulnerable to criticism because he tends to be very hard on himself. -> (a) open"
+    },
+    {
+        "id":  "d19-49",
+        "day":  "Day 19",
+        "no":  "49",
+        "word":  "manipulate",
+        "phonetic":  "[mənípjəlèit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "(교묘하게 사람이나 사물을) 조종하다 / 처리하다, 조작하다",
+        "relatedForms":  "manipulation (명) 조작; 조종",
+        "paraphrase":  [
+                           "maneuver",
+                           "operate",
+                           "handle"
+                       ],
+        "exampleEn":  "manipulate the masses",
+        "exampleKo":  "대중을 조종하다",
+        "memo":  "manipulate a machine (기계를 조작하다)"
+    },
+    {
+        "id":  "d19-50",
+        "day":  "Day 19",
+        "no":  "50",
+        "word":  "corruption",
+        "phonetic":  "[kərʌ́pʃən]",
+        "partOfSpeech":  "명사",
+        "meaning":  "부패, 타락",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "tackle the issue of nationwide corruption",
+        "exampleKo":  "전국적인 부패 문제를 다루다",
+        "memo":  ""
     }
 ];
