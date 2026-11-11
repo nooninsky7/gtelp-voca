@@ -89,7 +89,10 @@
     try {
       const customMemos = getCustomMemos();
       const trimmed = (memo || '').trim();
-      if (trimmed) {
+      const initialWord = INITIAL_WORDS_DATA.find(w => w.id === id);
+      const defaultMemo = initialWord ? (initialWord.memo || '').trim() : '';
+
+      if (trimmed && trimmed !== defaultMemo) {
         customMemos[id] = trimmed;
       } else {
         delete customMemos[id];
@@ -97,7 +100,7 @@
       localStorage.setItem(CUSTOM_MEMOS_KEY, JSON.stringify(customMemos));
       const target = words.find(w => w.id === id);
       if (target) {
-        target.memo = trimmed;
+        target.memo = trimmed || defaultMemo;
       }
       saveWords();
     } catch (e) {
@@ -141,7 +144,7 @@
     // 사용자가 작성/수정한 커스텀 암기 팁(수기 메모) 로드 및 단어별 병합
     const customMemos = getCustomMemos();
     words.forEach(w => {
-      if (customMemos[w.id] !== undefined) {
+      if (customMemos[w.id] !== undefined && customMemos[w.id].trim() !== '') {
         w.memo = customMemos[w.id];
       }
     });
@@ -1294,6 +1297,10 @@
     const memoInput = document.getElementById('modalMemoInput');
     const memoSaveBtn = document.getElementById('modalMemoSaveBtn');
     const memoSaveBadge = document.getElementById('modalMemoSaveBadge');
+    const legacyMemoEl = document.getElementById('modalMemo');
+    if (legacyMemoEl) {
+      legacyMemoEl.textContent = item.memo || '등록된 추가 메모가 없습니다.';
+    }
 
     if (memoInput) {
       memoInput.value = item.memo || '';
