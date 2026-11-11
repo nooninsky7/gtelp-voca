@@ -40,6 +40,11 @@
     renderWordList();
     renderStats();
 
+    // 클라우드 동기화 키가 등록되어 있다면 최신 데이터 자동 가져오기
+    if (typeof getCloudSyncKey === 'function' && getCloudSyncKey()) {
+      syncPullFromCloud(true);
+    }
+
     // 다른 앱 작업 후 복귀하거나 재접속 시 이전 풀던 문제/카드 세션 자동 복원!
     const restored = restoreActiveLearningSession();
     if (!restored) {
@@ -47,11 +52,15 @@
     }
   });
 
-  // 모바일 백그라운드 전환 및 복귀 이벤트 (다른 앱 전환 시 실시간 보존)
+  // 모바일 백그라운드 전환 및 복귀 이벤트 (다른 앱 전환 시 실시간 보존 및 복귀 시 최신 동기화)
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') {
       clearQuizTimer();
       saveCurrentLearningSession();
+    } else if (document.visibilityState === 'visible') {
+      if (typeof syncPullFromCloud === 'function' && typeof getCloudSyncKey === 'function' && getCloudSyncKey()) {
+        syncPullFromCloud(true);
+      }
     }
   });
   window.addEventListener('pagehide', () => {
@@ -143,12 +152,14 @@
   function addWrongCount(id) {
     wrongStats[id] = (wrongStats[id] || 0) + 1;
     saveStats();
+    if (typeof debouncedCloudPush === 'function') debouncedCloudPush();
   }
 
   function resetWordWrongCount(id) {
     if (wrongStats[id]) {
       delete wrongStats[id];
       saveStats();
+      if (typeof debouncedCloudPush === 'function') debouncedCloudPush();
     }
   }
 
@@ -187,6 +198,10 @@
     const next = current + 1;
     stats[day][type] = next;
     saveDayRoundStats(stats);
+    // 클라우드 동기화 키가 있으면 즉시 자동 업로드
+    if (typeof syncPushToCloud === 'function' && typeof getCloudSyncKey === 'function' && getCloudSyncKey()) {
+      syncPushToCloud(true);
+    }
     return next;
   }
 
@@ -222,6 +237,9 @@
   function resetDayRoundStats() {
     try {
       localStorage.removeItem(DAY_ROUND_STATS_KEY);
+      if (typeof syncPushToCloud === 'function' && typeof getCloudSyncKey === 'function' && getCloudSyncKey()) {
+        syncPushToCloud(true);
+      }
     } catch (e) {}
   }
 
@@ -2181,6 +2199,7 @@
   function initUI() {
     initAddWordUI();
     initBatchImportUI();
+    initCloudSyncUI();
 
     // Day 이전/다음 퀵 점프 버튼
     document.getElementById('btnPrevDay')?.addEventListener('click', () => goToAdjacentDay(-1));
@@ -2520,6 +2539,9 @@
           setupClozeScopeUI();
           renderDayGridModal();
           closeModal('dataManageModal');
+          if (typeof syncPushToCloud === 'function' && typeof getCloudSyncKey === 'function' && getCloudSyncKey()) {
+            syncPushToCloud(true);
+          }
           showToast(`총 ${words.length}개 단어 데이터가 성공적으로 등록되었습니다!`);
         } catch (err) {
           alert('올바른 백업 JSON 파일이 아닙니다.');
@@ -2545,6 +2567,9 @@
       if (confirm('모든 단어의 오답 기록을 0회로 초기화하시겠습니까?')) {
         wrongStats = {};
         saveStats();
+        if (typeof syncPushToCloud === 'function' && typeof getCloudSyncKey === 'function' && getCloudSyncKey()) {
+          syncPushToCloud(true);
+        }
         renderWordList();
         renderStats();
         closeModal('dataManageModal');
@@ -2662,6 +2687,9 @@
 
       words.push(newWordItem);
       saveWords();
+      if (typeof syncPushToCloud === 'function' && typeof getCloudSyncKey === 'function' && getCloudSyncKey()) {
+        syncPushToCloud(true);
+      }
 
       // UI 갱신
       activeDayFilter = targetDay;
@@ -2671,6 +2699,438 @@
       form.reset();
 
       showToast(`'${wordText}' 단어가 [${targetDay}]에 성공적으로 등록되었습니다!`);
+    });
+  }
+
+  // --------------------------------------------------------------------------
+  // 8-1. 기기간 실시간 자동 동기화 (Cloud Sync - 나만의 비밀 동기화 키)
+  // --------------------------------------------------------------------------
+  const CLOUD_SYNC_KEY_STORAGE = 'gtelp_cloud_sync_key';
+  const CLOUD_SYNC_LAST_TIME_STORAGE = 'gtelp_cloud_sync_last_time';
+  const CLOUD_SYNC_API_BASE = 'https://api.restful-api.dev/objects';
+  let isSyncInProgress = false;
+  let debounceSyncTimer = null;
+
+  function getCloudSyncKey() {
+    return (localStorage.getItem(CLOUD_SYNC_KEY_STORAGE) || '').trim();
+  }
+
+  function setCloudSyncKey(key) {
+    if (key) {
+      localStorage.setItem(CLOUD_SYNC_KEY_STORAGE, key.trim());
+    } else {
+      localStorage.removeItem(CLOUD_SYNC_KEY_STORAGE);
+    }
+  }
+
+  function removeCloudSyncKey() {
+    localStorage.removeItem(CLOUD_SYNC_KEY_STORAGE);
+    localStorage.removeItem(CLOUD_SYNC_LAST_TIME_STORAGE);
+  }
+
+  function getCloudLastTime() {
+    return localStorage.getItem(CLOUD_SYNC_LAST_TIME_STORAGE) || '';
+  }
+
+  function setCloudLastTime() {
+    const now = new Date();
+    const timeStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+    localStorage.setItem(CLOUD_SYNC_LAST_TIME_STORAGE, timeStr);
+    return timeStr;
+  }
+
+  // 기본 교재(data.js)에 없는 사용자가 직접 추가한 단어 목록 추출
+  function getCustomWords() {
+    const initialIdSet = new Set(INITIAL_WORDS_DATA.map(w => w.id));
+    return words.filter(w => !initialIdSet.has(w.id));
+  }
+
+  // 클라우드에서 받은 커스텀 단어 병합
+  function mergeCustomWords(cloudCustomWords) {
+    if (!Array.isArray(cloudCustomWords) || cloudCustomWords.length === 0) return false;
+    const existingIds = new Set(words.map(w => w.id));
+    const existingKeys = new Set(words.map(w => `${w.day}::${(w.word || '').trim().toLowerCase()}`));
+    let added = false;
+
+    cloudCustomWords.forEach(w => {
+      const key = `${w.day}::${(w.word || '').trim().toLowerCase()}`;
+      if (!existingIds.has(w.id) && !existingKeys.has(key)) {
+        words.push(w);
+        existingIds.add(w.id);
+        existingKeys.add(key);
+        added = true;
+      }
+    });
+
+    if (added) {
+      saveWords();
+    }
+    return added;
+  }
+
+  // Day별 회독 차수 스마트 병합 (핸드폰/태블릿 중 더 높은 회독수 유지 -> 회독 손실 방지)
+  function mergeDayRoundStats(cloudDayRoundStats) {
+    if (!cloudDayRoundStats || typeof cloudDayRoundStats !== 'object') return false;
+    const localStats = getDayRoundStats();
+    let changed = false;
+
+    for (const [day, types] of Object.entries(cloudDayRoundStats)) {
+      if (!localStats[day]) localStats[day] = {};
+      for (const [quizType, count] of Object.entries(types || {})) {
+        const remoteCount = Number(count) || 0;
+        const localCount = Number(localStats[day][quizType]) || 0;
+        if (remoteCount > localCount) {
+          localStats[day][quizType] = remoteCount;
+          changed = true;
+        }
+      }
+    }
+
+    if (changed) {
+      saveDayRoundStats(localStats);
+    }
+    return changed;
+  }
+
+  // 오답 기록 스마트 병합
+  function mergeWrongStats(cloudWrongStats) {
+    if (!cloudWrongStats || typeof cloudWrongStats !== 'object') return false;
+    let changed = false;
+
+    for (const [id, count] of Object.entries(cloudWrongStats)) {
+      const remoteCount = Number(count) || 0;
+      const localCount = Number(wrongStats[id]) || 0;
+      if (remoteCount > localCount) {
+        wrongStats[id] = remoteCount;
+        changed = true;
+      }
+    }
+
+    if (changed) {
+      saveStats();
+    }
+    return changed;
+  }
+
+  // 동기화 중 스피너 표시
+  function setCloudSyncBusy(isBusy) {
+    const headerIcon = document.getElementById('cloudSyncHeaderIcon');
+    const pushIcon = document.getElementById('pushSyncIcon');
+    const pullIcon = document.getElementById('pullSyncIcon');
+
+    if (isBusy) {
+      headerIcon?.classList.add('fa-spin');
+      pushIcon?.classList.add('fa-spin');
+      pullIcon?.classList.add('fa-spin');
+    } else {
+      headerIcon?.classList.remove('fa-spin');
+      pushIcon?.classList.remove('fa-spin');
+      pullIcon?.classList.remove('fa-spin');
+    }
+  }
+
+  // UI 상태 갱신 (연결됨 / 미연결 뷰 전환)
+  function updateCloudSyncUI() {
+    const key = getCloudSyncKey();
+    const statusBadge = document.getElementById('cloudSyncStatusBadge');
+    const unconnectedSec = document.getElementById('cloudSyncUnconnectedSection');
+    const connectedSec = document.getElementById('cloudSyncConnectedSection');
+    const displayKey = document.getElementById('displaySyncKey');
+    const lastTimeText = document.getElementById('syncLastTimeText');
+    const dot = document.getElementById('cloudSyncDot');
+    const headerBtn = document.getElementById('btnCloudSyncStatus');
+    const headerIcon = document.getElementById('cloudSyncHeaderIcon');
+
+    if (key) {
+      if (statusBadge) {
+        statusBadge.className = 'px-2 py-0.5 rounded-full text-[11px] font-extrabold bg-emerald-100 text-emerald-700 flex items-center gap-1';
+        statusBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> 연결됨';
+      }
+      unconnectedSec?.classList.add('hidden');
+      connectedSec?.classList.remove('hidden');
+      if (displayKey) displayKey.textContent = key;
+      if (lastTimeText) lastTimeText.textContent = getCloudLastTime() || '방금 전';
+      dot?.classList.remove('hidden');
+      if (headerIcon) headerIcon.className = 'fa-solid fa-cloud text-emerald-600';
+      if (headerBtn) headerBtn.title = '기기간 실시간 동기화 (연결됨)';
+    } else {
+      if (statusBadge) {
+        statusBadge.className = 'px-2 py-0.5 rounded-full text-[11px] font-bold bg-slate-200 text-slate-600';
+        statusBadge.textContent = '미연결';
+      }
+      unconnectedSec?.classList.remove('hidden');
+      connectedSec?.classList.add('hidden');
+      dot?.classList.add('hidden');
+      if (headerIcon) headerIcon.className = 'fa-solid fa-cloud text-slate-400';
+      if (headerBtn) headerBtn.title = '기기간 실시간 동기화 (미연결)';
+    }
+  }
+
+  // 새 비밀 키 발급
+  async function syncCreateKey() {
+    try {
+      setCloudSyncBusy(true);
+      const payload = {
+        name: 'gtelp_voca_sync',
+        data: {
+          customWords: getCustomWords(),
+          wrongStats: wrongStats,
+          dayRoundStats: getDayRoundStats(),
+          updatedAt: new Date().toISOString()
+        }
+      };
+
+      const res = await fetch(CLOUD_SYNC_API_BASE, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) throw new Error('서버 응답 오류 (' + res.status + ')');
+      const result = await res.json();
+      const newKey = result.id;
+      if (!newKey) throw new Error('동기화 키 생성 실패');
+
+      setCloudSyncKey(newKey);
+      setCloudLastTime();
+      updateCloudSyncUI();
+      showToast('🎉 나만의 비밀 동기화 키가 발급되었습니다!');
+    } catch (err) {
+      console.error(err);
+      alert('동기화 키 발급 중 오류가 발생했습니다. 인터넷 연결 상태를 확인해주세요.\n' + err.message);
+    } finally {
+      setCloudSyncBusy(false);
+    }
+  }
+
+  // 기존 비밀 키로 연결
+  async function syncConnectKey(keyToConnect) {
+    const trimmed = (keyToConnect || '').trim();
+    if (!trimmed) {
+      alert('비밀 동기화 키를 입력해주세요.');
+      return;
+    }
+
+    try {
+      setCloudSyncBusy(true);
+      const res = await fetch(`${CLOUD_SYNC_API_BASE}/${encodeURIComponent(trimmed)}`);
+      if (!res.ok) {
+        if (res.status === 404) {
+          alert('입력하신 키를 서버에서 찾을 수 없습니다. 키를 다시 한번 확인해주세요.');
+          return;
+        }
+        throw new Error('서버 응답 오류 (' + res.status + ')');
+      }
+
+      const result = await res.json();
+      if (!result || !result.data) {
+        alert('동기화 슬롯 데이터를 읽을 수 없습니다.');
+        return;
+      }
+
+      setCloudSyncKey(trimmed);
+
+      const remoteData = result.data;
+      const wordsUpdated = mergeCustomWords(remoteData.customWords);
+      const roundsUpdated = mergeDayRoundStats(remoteData.dayRoundStats);
+      const wrongsUpdated = mergeWrongStats(remoteData.wrongStats);
+
+      // 상호 동기화를 위해 로컬 데이터도 클라우드에 즉시 반영
+      await syncPushToCloud(true);
+
+      setCloudLastTime();
+      updateCloudSyncUI();
+
+      if (wordsUpdated || roundsUpdated || wrongsUpdated) {
+        renderDayFilters();
+        renderWordList();
+        renderStats();
+        setupQuizScopeUI('standard');
+        setupClozeScopeUI();
+        renderDayGridModal();
+      }
+
+      showToast('🔗 기기 연결 완료! 두 기기가 실시간으로 동기화됩니다.');
+    } catch (err) {
+      console.error(err);
+      alert('동기화 연결 중 오류가 발생했습니다.\n' + err.message);
+    } finally {
+      setCloudSyncBusy(false);
+    }
+  }
+
+  // 클라우드로 올리기 (Push)
+  async function syncPushToCloud(silent = false) {
+    const key = getCloudSyncKey();
+    if (!key || isSyncInProgress) return;
+
+    try {
+      isSyncInProgress = true;
+      setCloudSyncBusy(true);
+
+      const payload = {
+        name: 'gtelp_voca_sync',
+        data: {
+          customWords: getCustomWords(),
+          wrongStats: wrongStats,
+          dayRoundStats: getDayRoundStats(),
+          updatedAt: new Date().toISOString()
+        }
+      };
+
+      const res = await fetch(`${CLOUD_SYNC_API_BASE}/${encodeURIComponent(key)}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) throw new Error('서버 응답 오류 (' + res.status + ')');
+
+      setCloudLastTime();
+      updateCloudSyncUI();
+
+      if (!silent) {
+        showToast('☁️ 최신 데이터가 클라우드로 동기화(올리기)되었습니다!');
+      }
+    } catch (err) {
+      console.error('Push error:', err);
+      if (!silent) {
+        alert('클라우드 업로드 실패: 인터넷 연결을 확인해주세요.\n' + err.message);
+      }
+    } finally {
+      isSyncInProgress = false;
+      setCloudSyncBusy(false);
+    }
+  }
+
+  // 클라우드에서 내려받기 (Pull)
+  async function syncPullFromCloud(silent = false) {
+    const key = getCloudSyncKey();
+    if (!key || isSyncInProgress) return;
+
+    try {
+      isSyncInProgress = true;
+      setCloudSyncBusy(true);
+
+      const res = await fetch(`${CLOUD_SYNC_API_BASE}/${encodeURIComponent(key)}`);
+      if (!res.ok) {
+        if (res.status === 404) {
+          console.warn('Sync slot not found on cloud');
+          return;
+        }
+        throw new Error('서버 응답 오류 (' + res.status + ')');
+      }
+
+      const result = await res.json();
+      if (!result || !result.data) return;
+
+      const remoteData = result.data;
+      const wordsUpdated = mergeCustomWords(remoteData.customWords);
+      const roundsUpdated = mergeDayRoundStats(remoteData.dayRoundStats);
+      const wrongsUpdated = mergeWrongStats(remoteData.wrongStats);
+
+      setCloudLastTime();
+      updateCloudSyncUI();
+
+      if (wordsUpdated || roundsUpdated || wrongsUpdated) {
+        renderDayFilters();
+        renderWordList();
+        renderStats();
+        setupQuizScopeUI('standard');
+        setupClozeScopeUI();
+        renderDayGridModal();
+      }
+
+      if (!silent) {
+        showToast('☁️ 클라우드로부터 최신 데이터를 내려받았습니다!');
+      }
+    } catch (err) {
+      console.error('Pull error:', err);
+      if (!silent) {
+        alert('클라우드 동기화 실패: 인터넷 연결을 확인해주세요.\n' + err.message);
+      }
+    } finally {
+      isSyncInProgress = false;
+      setCloudSyncBusy(false);
+    }
+  }
+
+  // 오답 기록 등 빈번한 변경 시 디바운스 push
+  function debouncedCloudPush() {
+    if (getCloudSyncKey()) {
+      if (debounceSyncTimer) clearTimeout(debounceSyncTimer);
+      debounceSyncTimer = setTimeout(() => {
+        syncPushToCloud(true);
+      }, 1500);
+    }
+  }
+
+  // 동기화 모듈 UI 이벤트 바인딩
+  function initCloudSyncUI() {
+    updateCloudSyncUI();
+
+    // 상단 헤더 동기화 아이콘 클릭 시 모달 열기
+    document.getElementById('btnCloudSyncStatus')?.addEventListener('click', () => {
+      openModal('dataManageModal');
+      const card = document.getElementById('cloudSyncCard');
+      card?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    // 새 키 발급 버튼
+    document.getElementById('btnCreateSyncKey')?.addEventListener('click', () => {
+      syncCreateKey();
+    });
+
+    // 기존 키 연결 버튼
+    document.getElementById('btnConnectSyncKey')?.addEventListener('click', () => {
+      const input = document.getElementById('inputSyncKey');
+      syncConnectKey(input?.value);
+    });
+
+    // 엔터키로도 연결
+    document.getElementById('inputSyncKey')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        syncConnectKey(e.target.value);
+      }
+    });
+
+    // 키 복사 버튼
+    document.getElementById('btnCopySyncKey')?.addEventListener('click', () => {
+      const key = getCloudSyncKey();
+      if (!key) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(key).then(() => {
+          const textSpan = document.getElementById('copyKeyText');
+          if (textSpan) {
+            textSpan.textContent = '복사 완료!';
+            setTimeout(() => { textSpan.textContent = '키 복사'; }, 2000);
+          }
+          showToast('📋 동기화 키가 복사되었습니다! 다른 기기에 붙여넣으세요.');
+        }).catch(() => {
+          prompt('아래 동기화 키를 복사하세요:', key);
+        });
+      } else {
+        prompt('아래 동기화 키를 복사하세요:', key);
+      }
+    });
+
+    // 수동 올리기 버튼
+    document.getElementById('btnManualPushSync')?.addEventListener('click', () => {
+      syncPushToCloud(false);
+    });
+
+    // 수동 내려받기 버튼
+    document.getElementById('btnManualPullSync')?.addEventListener('click', () => {
+      syncPullFromCloud(false);
+    });
+
+    // 연결 해제 버튼
+    document.getElementById('btnDisconnectSyncKey')?.addEventListener('click', () => {
+      if (confirm('동기화 연결을 해제하시겠습니까?\n\n(연결을 해제해도 기기에 저장된 단어 및 회독 기록은 유지됩니다)')) {
+        removeCloudSyncKey();
+        updateCloudSyncUI();
+        showToast('동기화 연결이 해제되었습니다.');
+      }
     });
   }
 
@@ -3595,6 +4055,9 @@
         });
 
         saveWords();
+        if (typeof syncPushToCloud === 'function' && typeof getCloudSyncKey === 'function' && getCloudSyncKey()) {
+          syncPushToCloud(true);
+        }
         activeDayFilter = lastDay;
         renderDayFilters();
         renderWordList();
