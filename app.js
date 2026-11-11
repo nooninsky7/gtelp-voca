@@ -29,7 +29,14 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
+    const APP_CURRENT_VER = 'v3.6.5_20261111_2215';
     try {
+      const installedVer = localStorage.getItem('voca_installed_ver');
+      if (installedVer !== APP_CURRENT_VER) {
+        localStorage.setItem('voca_installed_ver', APP_CURRENT_VER);
+        // 이전 버전의 손상되거나 캐시된 세션 초기화
+        localStorage.removeItem('gtelp_active_learning_session');
+      }
       localStorage.removeItem('gtelp_auth_state');
       sessionStorage.removeItem('gtelp_auth_state');
       localStorage.removeItem('gtelp_custom_pin_hash');
@@ -986,6 +993,20 @@
   }
 
   let expandAllWordsInList = false;
+
+  // 모바일/태블릿 등에서 브라우저 디스크 캐시 및 이전 세션을 완전히 비우고 최신 코드로 강제 새로고침하는 유틸리티
+  window.forceAppUpdate = function () {
+    try {
+      localStorage.removeItem('gtelp_active_learning_session');
+      if ('caches' in window) {
+        caches.keys().then(names => {
+          names.forEach(name => caches.delete(name));
+        });
+      }
+    } catch (e) {}
+    const baseUrl = window.location.origin + window.location.pathname;
+    window.location.replace(baseUrl + '?t=' + Date.now());
+  };
 
   // 언제든 Day 전체 목차(대시보드)로 초기화하는 헬퍼 함수
   window.resetToDayFolders = function() {
@@ -2122,10 +2143,10 @@
           </div>
 
           <!-- 상태 및 상세 팝업 버튼 -->
-          <div class="flex items-center gap-1.5 shrink-0" onclick="event.stopPropagation()">
+          <div class="flex items-center gap-1.5 shrink-0">
             ${isTarget ? '<span class="text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded-full font-black">정답</span>' : ''}
             
-            <button type="button" onclick="window.openQuizOptionDetail('${registeredId}', '${optWord}', '${safeDefForAttr}')" class="px-2.5 py-1 rounded-xl ${
+            <button type="button" onclick="event.stopPropagation(); window.openQuizOptionDetail('${registeredId}', '${optWord}', '${safeDefForAttr}')" class="px-2.5 py-1 rounded-xl ${
               isTarget ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-700'
             } font-bold text-xs flex items-center gap-1 transition shadow-xs border border-indigo-200 cursor-pointer active:scale-95" title="'${optWord}' 상세 예문/파생어/암기팁 보기">
               <i class="fa-solid fa-book-open text-[11px]"></i>
@@ -2152,6 +2173,11 @@
       tipSection.classList.remove('hidden');
       tipText.innerHTML = `<strong>[지텔프 핵심 어휘]</strong> "${q.word}" (${q.partOfSpeech || '어휘'}) - 주요 뜻: ${q.meaning}`;
     }
+
+    // 모바일에서 풀이 직후 해설창이 한눈에 보이도록 자동 부드러운 스크롤
+    setTimeout(() => {
+      box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 120);
 
     // 이전 문제 버튼
     const prevBtn = document.getElementById('btnPrevQuizQuestion');
@@ -4458,10 +4484,10 @@
             </div>
           </div>
 
-          <div class="flex items-center gap-1.5 shrink-0" onclick="event.stopPropagation()">
+          <div class="flex items-center gap-1.5 shrink-0">
             ${isTarget ? '<span class="text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded-full font-black">정답</span>' : ''}
             
-            <button type="button" onclick="window.openQuizOptionDetail('${registeredId}', '${optWord}', '${safeDefForAttr}')" class="px-2.5 py-1 rounded-xl ${
+            <button type="button" onclick="event.stopPropagation(); window.openQuizOptionDetail('${registeredId}', '${optWord}', '${safeDefForAttr}')" class="px-2.5 py-1 rounded-xl ${
               isTarget ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'bg-emerald-50 hover:bg-emerald-600 hover:text-white text-emerald-700'
             } font-bold text-xs flex items-center gap-1 transition shadow-xs border border-emerald-200 cursor-pointer active:scale-95" title="'${optWord}' 상세 예문/파생어/암기팁 보기">
               <i class="fa-solid fa-book-open text-[11px]"></i>
@@ -4488,6 +4514,11 @@
       tipSection.classList.remove('hidden');
       tipText.innerHTML = `<strong>[문맥 완성 포인트]</strong> "${q.word}" (${q.partOfSpeech || '어휘'}) - 뜻: ${q.meaning}`;
     }
+
+    // 모바일에서 풀이 직후 해설창이 한눈에 보이도록 자동 부드러운 스크롤
+    setTimeout(() => {
+      box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 120);
 
     // 이전 문제 버튼
     const prevBtn = document.getElementById('btnPrevClozeQuestion');

@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
   <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -47,6 +50,10 @@
         <button id="btnBatchImport" onclick="openModal('batchImportModal')" class="hidden md:flex px-2.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs items-center gap-1 transition shadow-sm" title="교재 데이터 일괄 등록">
           <i class="fa-solid fa-file-import text-[11px]"></i>
           <span>일괄 등록</span>
+        </button>
+        <button onclick="window.forceAppUpdate()" class="px-2 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs flex items-center gap-1 transition border border-indigo-200 shadow-2xs shrink-0 cursor-pointer active:scale-95" title="모바일 캐시 완전 초기화 및 최신버전 새로고침">
+          <i class="fa-solid fa-arrows-rotate text-[11px]"></i>
+          <span>새로고침</span>
         </button>
         <button id="btnAddWordQuick" onclick="openModal('addWordModal')" class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1 transition" title="개인 단어 추가">
           <i class="fa-solid fa-plus text-indigo-600"></i>
@@ -1371,7 +1378,7 @@
   </div>
 
   <!-- 스크립트 연결 (캐시 무효화 버전 파라미터 적용) -->
-  <script src="data.js?v=v3_6_quiz_detail_fix_20261111_2150"></script>
-  <script src="app.js?v=v3_6_quiz_detail_fix_20261111_2150"></script>
+  <script src="data.js?v=v3_6_5_mobile_touch_scroll_20261111_2215"></script>
+  <script src="app.js?v=v3_6_5_mobile_touch_scroll_20261111_2215"></script>
 </body>
 </html>
