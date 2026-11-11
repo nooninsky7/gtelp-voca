@@ -7413,6 +7413,877 @@ const INITIAL_WORDS_DATA = [
         "memo":  ""
     },
   {
+        "id":  "d09-01",
+        "day":  "Day 09",
+        "no":  "01",
+        "word":  "positive",
+        "phonetic":  "[pάzitiv]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "긍정적인, 호의적인",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "optimistic",
+                           "affirmative"
+                       ],
+        "exampleEn":  "always maintain a positive attitude",
+        "exampleKo":  "항상 긍정적인 태도를 유지하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-02",
+        "day":  "Day 09",
+        "no":  "02",
+        "word":  "permission",
+        "phonetic":  "[pərmíʃən]",
+        "partOfSpeech":  "명사",
+        "meaning":  "허가, 허락",
+        "relatedForms":  "permit (동) 허가하다, 허락하다",
+        "paraphrase":  [
+                           "authorization",
+                           "approval"
+                       ],
+        "exampleEn":  "Give permission to use the phone.",
+        "exampleKo":  "전화를 사용할 수 있도록 허락해 주세요.",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-03",
+        "day":  "Day 09",
+        "no":  "03",
+        "word":  "routine",
+        "phonetic":  "[ruːtíːn]",
+        "partOfSpeech":  "명사/형용사",
+        "meaning":  "일상, 일과 / 일상의, 일상적인",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "Waking up early and going for a run has become Crystal\u0027s routine.",
+        "exampleKo":  "일찍 일어나서 달리기를 하는 것은 크리스탈의 일과가 되었다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-04",
+        "day":  "Day 09",
+        "no":  "04",
+        "word":  "propel",
+        "phonetic":  "[prəpél]",
+        "partOfSpeech":  "동사",
+        "meaning":  "추진하다, 몰고 가다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "drive",
+                           "push",
+                           "force"
+                       ],
+        "exampleEn":  "propel the boat forward",
+        "exampleKo":  "보트를 전진시키다",
+        "memo":  "지텔프 동의어: The rocket\u0027s engines will propel it into orbit. -> (a) push"
+    },
+    {
+        "id":  "d09-05",
+        "day":  "Day 09",
+        "no":  "05",
+        "word":  "abstract",
+        "phonetic":  "[æbstrækt]",
+        "partOfSpeech":  "형용사/명사",
+        "meaning":  "추상적인 / (논문의) 초록, 요약",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "summary"
+                       ],
+        "exampleEn":  "an abstract work of art",
+        "exampleKo":  "추상적인 미술 작품",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-06",
+        "day":  "Day 09",
+        "no":  "06",
+        "word":  "rough",
+        "phonetic":  "[rʌf]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "(표면 등) 거친, 고르지 않은 / 대략적인, 대강의",
+        "relatedForms":  "roughly (부) 대략, 대강",
+        "paraphrase":  [
+                           "uneven",
+                           "irregular",
+                           "approximate"
+                       ],
+        "exampleEn":  "the rough surface of the moon",
+        "exampleKo":  "달의 거친 표면",
+        "memo":  "A rough estimate for the cost of the project is $100,000. (프로젝트의 대략적인 비용은 10만 달러이다.)"
+    },
+    {
+        "id":  "d09-07",
+        "day":  "Day 09",
+        "no":  "07",
+        "word":  "promise",
+        "phonetic":  "[prάmis]",
+        "partOfSpeech":  "동사/명사",
+        "meaning":  "약속하다 / 약속 / 가능성, 잠재력",
+        "relatedForms":  "promising (형) 유망한",
+        "paraphrase":  [
+                           "guarantee",
+                           "assure",
+                           "pledge",
+                           "vow",
+                           "potential"
+                       ],
+        "exampleEn":  "promise to finish the homework by 9 p.m.",
+        "exampleKo":  "숙제를 9시까지 끝내겠다고 약속하다",
+        "memo":  "지텔프 동의어: This new medication shows promise in treating cancer. -> (b) potential"
+    },
+    {
+        "id":  "d09-08",
+        "day":  "Day 09",
+        "no":  "08",
+        "word":  "remarkable",
+        "phonetic":  "[rimάːrkəbl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "놀랄 만한, 놀라운",
+        "relatedForms":  "remark (명) 발언, 언급 (= comment)",
+        "paraphrase":  [
+                           "surprising",
+                           "notable",
+                           "wonderful",
+                           "extraordinary"
+                       ],
+        "exampleEn":  "The Wright brothers\u0027 first flight was a remarkable feat.",
+        "exampleKo":  "라이트 형제의 첫 비행은 놀라운 업적이었다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-09",
+        "day":  "Day 09",
+        "no":  "09",
+        "word":  "severe",
+        "phonetic":  "[sivíər]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "심각한, 극심한",
+        "relatedForms":  "severely (부) 극심하게, 심각하게",
+        "paraphrase":  [
+                           "serious",
+                           "intense",
+                           "awful",
+                           "extreme",
+                           "harsh"
+                       ],
+        "exampleEn":  "severe mental illness",
+        "exampleKo":  "심각한 정신 질환",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-10",
+        "day":  "Day 09",
+        "no":  "10",
+        "word":  "accommodate",
+        "phonetic":  "[əkάmədèit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "수용하다 / 필요한 것을 제공하다",
+        "relatedForms":  "accommodations (명) 숙박 시설",
+        "paraphrase":  [
+                           "help",
+                           "support"
+                       ],
+        "exampleEn":  "The bus can accommodate up to fifty passengers.",
+        "exampleKo":  "그 버스는 최대 50명의 승객을 수용할 수 있다.",
+        "memo":  "accommodate customers with children by providing high chairs (높은 의자를 제공하여 아이들을 데리고 있는 손님들에게 편의를 제공하다)"
+    },
+    {
+        "id":  "d09-11",
+        "day":  "Day 09",
+        "no":  "11",
+        "word":  "invade",
+        "phonetic":  "[invéid]",
+        "partOfSpeech":  "동사",
+        "meaning":  "침입하다, 침략하다",
+        "relatedForms":  "invasion (명) 침입, 침략",
+        "paraphrase":  [
+                           "attack"
+                       ],
+        "exampleEn":  "The Soviet Union invaded Afghanistan in order to expand its territory.",
+        "exampleKo":  "소련은 영토를 확장하기 위해 아프가니스탄을 침략했다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-12",
+        "day":  "Day 09",
+        "no":  "12",
+        "word":  "pleasant",
+        "phonetic":  "[pléznt]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "즐거운, 기분 좋은",
+        "relatedForms":  "pleasure (명) 즐거움, 기쁨",
+        "paraphrase":  [
+                           "pleasing",
+                           "satisfying",
+                           "delightful",
+                           "enjoyable"
+                       ],
+        "exampleEn":  "pleasant memories of childhood",
+        "exampleKo":  "어린 시절의 즐거운 기억",
+        "memo":  "have a pleasant evening (즐거운 저녁 시간을 보내다)"
+    },
+    {
+        "id":  "d09-13",
+        "day":  "Day 09",
+        "no":  "13",
+        "word":  "sharply",
+        "phonetic":  "[ʃάːrpli]",
+        "partOfSpeech":  "부사",
+        "meaning":  "급격히",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "Stock prices fell sharply.",
+        "exampleKo":  "주가가 급격히 하락했다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-14",
+        "day":  "Day 09",
+        "no":  "14",
+        "word":  "recover",
+        "phonetic":  "[rikʌ́vər]",
+        "partOfSpeech":  "동사",
+        "meaning":  "회복하다, 되찾다",
+        "relatedForms":  "recovery (명) 회복",
+        "paraphrase":  [
+                           "regain",
+                           "retrieve",
+                           "improve",
+                           "heal"
+                       ],
+        "exampleEn":  "recover from the surgery",
+        "exampleKo":  "수술에서 회복하다",
+        "memo":  "지텔프 동의어: George recovered consciousness after being in a coma for three days. -> (a) regained"
+    },
+    {
+        "id":  "d09-15",
+        "day":  "Day 09",
+        "no":  "15",
+        "word":  "possess",
+        "phonetic":  "[pəzés]",
+        "partOfSpeech":  "동사",
+        "meaning":  "소유하다, 가지다",
+        "relatedForms":  "possession (명) 소유(물)",
+        "paraphrase":  [
+                           "have"
+                       ],
+        "exampleEn":  "possess a lot of wealth",
+        "exampleKo":  "많은 재산을 소유하다",
+        "memo":  "possess the ability to empathize with others (타인과 공감할 수 있는 능력을 갖고 있다)"
+    },
+    {
+        "id":  "d09-16",
+        "day":  "Day 09",
+        "no":  "16",
+        "word":  "resist",
+        "phonetic":  "[rizíst]",
+        "partOfSpeech":  "동사",
+        "meaning":  "참다, 견디다 / 저항하다, 반대하다",
+        "relatedForms":  "resistant (형) 저항력 있는, 잘 견디는, resistance (명) 저항",
+        "paraphrase":  [
+                           "withstand",
+                           "oppose",
+                           "confront",
+                           "defy"
+                       ],
+        "exampleEn":  "can\u0027t resist eating chocolate cake",
+        "exampleKo":  "초콜릿 케이크를 먹지 않을 수 없다",
+        "memo":  "resist negative changes (부정적인 변화에 저항하다)"
+    },
+    {
+        "id":  "d09-17",
+        "day":  "Day 09",
+        "no":  "17",
+        "word":  "shift",
+        "phonetic":  "[ʃift]",
+        "partOfSpeech":  "명사/동사",
+        "meaning":  "변화, 움직임 / 교대 근무 / 움직이다, 이동하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "change",
+                           "move"
+                       ],
+        "exampleEn":  "work the night shift",
+        "exampleKo":  "야간 근무를 하다",
+        "memo":  "The Earth\u0027s axis has shifted from its original position. (지구의 축이 원래의 위치에서 벗어났다.)"
+    },
+    {
+        "id":  "d09-18",
+        "day":  "Day 09",
+        "no":  "18",
+        "word":  "stir",
+        "phonetic":  "[stəːr]",
+        "partOfSpeech":  "동사",
+        "meaning":  "(휘)젓다 / 불러일으키다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "mix",
+                           "blend",
+                           "raise",
+                           "inspire",
+                           "prompt",
+                           "provoke",
+                           "arouse"
+                       ],
+        "exampleEn":  "stir soup with a spoon",
+        "exampleKo":  "숟가락으로 수프를 젓다",
+        "memo":  "지텔프 동의어: The increase in crime has stirred concerns among residents. -> (a) raised"
+    },
+    {
+        "id":  "d09-19",
+        "day":  "Day 09",
+        "no":  "19",
+        "word":  "privilege",
+        "phonetic":  "[prívəlidʒ]",
+        "partOfSpeech":  "명사",
+        "meaning":  "특권, 특혜 / 영광",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "right",
+                           "benefit",
+                           "advantage",
+                           "honor"
+                       ],
+        "exampleEn":  "enjoy special privileges as a member of the VIP club",
+        "exampleKo":  "VIP 클럽의 회원으로서 특권을 누리다",
+        "memo":  "It is a privilege to be able to learn from the best professors. (최고의 교수들에게 배울 수 있다는 것은 영광이다.)"
+    },
+    {
+        "id":  "d09-20",
+        "day":  "Day 09",
+        "no":  "20",
+        "word":  "reserve",
+        "phonetic":  "[rizə́ːrv]",
+        "partOfSpeech":  "동사",
+        "meaning":  "예약하다 / 확보하다, 따로 남겨두다",
+        "relatedForms":  "reservation (명) 예약",
+        "paraphrase":  [
+                           "book",
+                           "hold"
+                       ],
+        "exampleEn":  "reserve a seat on the train",
+        "exampleKo":  "기차 좌석을 예약하다",
+        "memo":  "reserve a space in the parking lot (주차장에 공간을 확보하다)"
+    },
+    {
+        "id":  "d09-21",
+        "day":  "Day 09",
+        "no":  "21",
+        "word":  "particularly",
+        "phonetic":  "[pərtíkjələrli]",
+        "partOfSpeech":  "부사",
+        "meaning":  "특히",
+        "relatedForms":  "particular (형) 특정한; 특별한",
+        "paraphrase":  [
+                           "especially",
+                           "specifically",
+                           "in particular"
+                       ],
+        "exampleEn":  "Emma is particularly interested in the study of linguistics.",
+        "exampleKo":  "엠마는 특히 언어학에 관심이 있다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-22",
+        "day":  "Day 09",
+        "no":  "22",
+        "word":  "allocate",
+        "phonetic":  "[ǽləkèit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "할당하다",
+        "relatedForms":  "allocation (명) 할당(량)",
+        "paraphrase":  [
+                           "assign",
+                           "distribute"
+                       ],
+        "exampleEn":  "allocate a larger budget to the marketing department",
+        "exampleKo":  "마케팅 부서에 더 많은 예산을 할당하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-23",
+        "day":  "Day 09",
+        "no":  "23",
+        "word":  "favorable",
+        "phonetic":  "[féivərəbl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "호의적인, 우호적인",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "a favorable response to the new product",
+        "exampleKo":  "신제품에 대한 호의적인 반응",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-24",
+        "day":  "Day 09",
+        "no":  "24",
+        "word":  "submit",
+        "phonetic":  "[səbmít]",
+        "partOfSpeech":  "동사",
+        "meaning":  "제출하다",
+        "relatedForms":  "submission (명) 제출; 항복",
+        "paraphrase":  [
+                           "hand in",
+                           "file"
+                       ],
+        "exampleEn":  "Submit your report by Friday.",
+        "exampleKo":  "금요일까지 보고서를 제출해라.",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-25",
+        "day":  "Day 09",
+        "no":  "25",
+        "word":  "species",
+        "phonetic":  "[spíːʃiːz]",
+        "partOfSpeech":  "명사",
+        "meaning":  "(생물의 분류 단위) 종",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "an endangered species",
+        "exampleKo":  "멸종 위기에 처한 종",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-26",
+        "day":  "Day 09",
+        "no":  "26",
+        "word":  "steady",
+        "phonetic":  "[stédi]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "지속적인, 꾸준한",
+        "relatedForms":  "steadily (부) 꾸준히",
+        "paraphrase":  [
+                           "continuous",
+                           "constant"
+                       ],
+        "exampleEn":  "aim for steady growth",
+        "exampleKo":  "꾸준한 성장을 목표로 하다",
+        "memo":  "The company has a steady supply of raw materials. (그 회사는 원자재가 안정적으로 공급되고 있다.)"
+    },
+    {
+        "id":  "d09-27",
+        "day":  "Day 09",
+        "no":  "27",
+        "word":  "sympathy",
+        "phonetic":  "[símpəθi]",
+        "partOfSpeech":  "명사",
+        "meaning":  "동정, 연민",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "compassion",
+                           "pity",
+                           "empathy"
+                       ],
+        "exampleEn":  "feel no sympathy for criminals",
+        "exampleKo":  "범죄자들에게 동정심을 느끼지 않다",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-28",
+        "day":  "Day 09",
+        "no":  "28",
+        "word":  "replace",
+        "phonetic":  "[ripléis]",
+        "partOfSpeech":  "동사",
+        "meaning":  "(새것으로) 교체하다 / (다른 것을) 대신하다, 대체하다",
+        "relatedForms":  "replacement (명) 대체(품); 후임자",
+        "paraphrase":  [
+                           "change",
+                           "substitute"
+                       ],
+        "exampleEn":  "find someone to replace the retiring CEO",
+        "exampleKo":  "은퇴하는 CEO를 대신할 사람을 찾다",
+        "memo":  "지텔프 동의어: James will replace the roof on the house. -> (a) change"
+    },
+    {
+        "id":  "d09-29",
+        "day":  "Day 09",
+        "no":  "29",
+        "word":  "praise",
+        "phonetic":  "[preiz]",
+        "partOfSpeech":  "동사/명사",
+        "meaning":  "칭찬하다 / 칭찬",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "acclaim",
+                           "compliment",
+                           "applaud",
+                           "applause",
+                           "tout"
+                       ],
+        "exampleEn":  "The actor\u0027s outstanding performance was praised by the director.",
+        "exampleKo":  "그 배우의 뛰어난 연기는 감독으로부터 칭찬을 받았다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-30",
+        "day":  "Day 09",
+        "no":  "30",
+        "word":  "statistic",
+        "phonetic":  "[stətístik]",
+        "partOfSpeech":  "명사",
+        "meaning":  "통계(학)",
+        "relatedForms":  "statistical (형) 통계의",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "according to official statistics",
+        "exampleKo":  "공식 통계에 의하면",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-31",
+        "day":  "Day 09",
+        "no":  "31",
+        "word":  "otherwise",
+        "phonetic":  "[ʌ́ðərwàiz]",
+        "partOfSpeech":  "부사",
+        "meaning":  "그렇지 않으면[않았다면]",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "The fire alarm went off. Otherwise, there could have been injuries.",
+        "exampleKo":  "화재경보기가 울렸다. 그렇지 않았다면, 부상자가 있었을 수도 있다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-32",
+        "day":  "Day 09",
+        "no":  "32",
+        "word":  "advocate",
+        "phonetic":  "[ǽdvəkèit] / [ǽdvəkət]",
+        "partOfSpeech":  "동사/명사",
+        "meaning":  "지지하다, 옹호하다 / 지지자, 옹호자",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "support",
+                           "supporter",
+                           "defender"
+                       ],
+        "exampleEn":  "advocate for policies that protect the environment",
+        "exampleKo":  "환경을 보호하는 정책을 옹호하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-33",
+        "day":  "Day 09",
+        "no":  "33",
+        "word":  "prefer",
+        "phonetic":  "[prifə́ːr]",
+        "partOfSpeech":  "동사",
+        "meaning":  "선호하다",
+        "relatedForms":  "preference (명) 선호",
+        "paraphrase":  [
+                           "favor"
+                       ],
+        "exampleEn":  "prefer chocolate to vanilla",
+        "exampleKo":  "바닐라보다 초콜릿을 더 선호하다",
+        "memo":  "prefer studying at home (집에서 공부하는 것을 선호하다)"
+    },
+    {
+        "id":  "d09-34",
+        "day":  "Day 09",
+        "no":  "34",
+        "word":  "update",
+        "phonetic":  "[ʌpdéit]",
+        "partOfSpeech":  "동사/명사",
+        "meaning":  "최신의 것으로 만들다 / 업데이트",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "upgrade",
+                           "renew",
+                           "revise",
+                           "modernize"
+                       ],
+        "exampleEn":  "update the system regularly",
+        "exampleKo":  "정기적으로 시스템을 업데이트하다",
+        "memo":  "automatic software updates (소프트웨어 자동 업데이트)"
+    },
+    {
+        "id":  "d09-35",
+        "day":  "Day 09",
+        "no":  "35",
+        "word":  "vital",
+        "phonetic":  "[váitl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "필수적인, 매우 중요한",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "essential",
+                           "important",
+                           "critical",
+                           "key",
+                           "crucial"
+                       ],
+        "exampleEn":  "The heart is a vital organ in the human body.",
+        "exampleKo":  "심장은 인체에 필수적인 기관이다.",
+        "memo":  "지텔프 동의어: It is vital that all products are thoroughly tested before they are released. -> (a) important"
+    },
+    {
+        "id":  "d09-36",
+        "day":  "Day 09",
+        "no":  "36",
+        "word":  "rescue",
+        "phonetic":  "[réskjuː]",
+        "partOfSpeech":  "동사",
+        "meaning":  "구조하다, 구출하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "save"
+                       ],
+        "exampleEn":  "rescue the drowning child",
+        "exampleKo":  "물에 빠진 아이를 구하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-37",
+        "day":  "Day 09",
+        "no":  "37",
+        "word":  "specify",
+        "phonetic":  "[spésəfài]",
+        "partOfSpeech":  "동사",
+        "meaning":  "(구체적으로) 명시하다",
+        "relatedForms":  "specification (명) 설명서",
+        "paraphrase":  [
+                           "stipulate"
+                       ],
+        "exampleEn":  "Please specify the quantity when placing your order.",
+        "exampleKo":  "주문할 때 수량을 구체적으로 명시하라.",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-38",
+        "day":  "Day 09",
+        "no":  "38",
+        "word":  "survive",
+        "phonetic":  "[sərváiv]",
+        "partOfSpeech":  "동사",
+        "meaning":  "살아남다, 생존하다",
+        "relatedForms":  "survival (명) 생존",
+        "paraphrase":  [
+                           "subsist"
+                       ],
+        "exampleEn":  "survive in harsh conditions",
+        "exampleKo":  "혹독한 환경에서 살아남다",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-39",
+        "day":  "Day 09",
+        "no":  "39",
+        "word":  "familiar",
+        "phonetic":  "[fəmíljər]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "익숙한, 낯익은",
+        "relatedForms":  "unfamiliar (형) 낯선",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "Andrew is familiar with the area.",
+        "exampleKo":  "앤드류는 그 지역에 익숙하다.",
+        "memo":  "see a familiar face (낯익은 얼굴을 보다)"
+    },
+    {
+        "id":  "d09-40",
+        "day":  "Day 09",
+        "no":  "40",
+        "word":  "premise",
+        "phonetic":  "[prémis]",
+        "partOfSpeech":  "명사",
+        "meaning":  "전제",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "assumption"
+                       ],
+        "exampleEn":  "The theory is based on the premise that all people are equal.",
+        "exampleKo":  "그 이론은 모든 사람이 평등하다는 전제에 근거를 두고 있다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-41",
+        "day":  "Day 09",
+        "no":  "41",
+        "word":  "struggle",
+        "phonetic":  "[strʌ́gl]",
+        "partOfSpeech":  "동사/명사",
+        "meaning":  "애쓰다, 고군분투하다 / 투쟁",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "strive",
+                           "fight",
+                           "battle"
+                       ],
+        "exampleEn":  "The refugees are struggling to survive.",
+        "exampleKo":  "난민들은 살아남기 위해 고군분투하고 있다.",
+        "memo":  "the power struggle between the two political parties (두 정당 간의 권력 투쟁)"
+    },
+    {
+        "id":  "d09-42",
+        "day":  "Day 09",
+        "no":  "42",
+        "word":  "sufficient",
+        "phonetic":  "[səfíʃənt]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "충분한",
+        "relatedForms":  "sufficiency (명) 충분함, insufficient (형) 불충분한",
+        "paraphrase":  [
+                           "enough",
+                           "adequate"
+                       ],
+        "exampleEn":  "sufficient time to complete the task",
+        "exampleKo":  "임무를 완수하기에 충분한 시간",
+        "memo":  "지텔프 동의어: Getting sufficient sleep can help improve concentration. -> (b) enough"
+    },
+    {
+        "id":  "d09-43",
+        "day":  "Day 09",
+        "no":  "43",
+        "word":  "attain",
+        "phonetic":  "[ətéin]",
+        "partOfSpeech":  "동사",
+        "meaning":  "(노력 끝에) 이루다, 달성하다 / (특정 수준) 이르다, 도달하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "achieve",
+                           "accomplish",
+                           "reach"
+                       ],
+        "exampleEn":  "Olivia attained her goal of becoming a doctor.",
+        "exampleKo":  "올리비아는 의사가 되겠다는 목표를 달성했다.",
+        "memo":  "The car attained a speed of 100 mph. (그 차는 시속 100마일에 도달했다.)"
+    },
+    {
+        "id":  "d09-44",
+        "day":  "Day 09",
+        "no":  "44",
+        "word":  "attract",
+        "phonetic":  "[ətrǽkt]",
+        "partOfSpeech":  "동사",
+        "meaning":  "(주의·관심 등을) 끌다",
+        "relatedForms":  "attractive (형) 매력적인, attraction (명) 명소; 매력",
+        "paraphrase":  [
+                           "draw"
+                       ],
+        "exampleEn":  "attract more customers",
+        "exampleKo":  "더 많은 손님을 끌다",
+        "memo":  "The trash attracted many flies. (쓰레기는 많은 파리를 끌어들였다.)"
+    },
+    {
+        "id":  "d09-45",
+        "day":  "Day 09",
+        "no":  "45",
+        "word":  "election",
+        "phonetic":  "[ilékʃən]",
+        "partOfSpeech":  "명사",
+        "meaning":  "선거",
+        "relatedForms":  "elect (동) 선출하다",
+        "paraphrase":  [
+                           "race"
+                       ],
+        "exampleEn":  "a presidential election",
+        "exampleKo":  "대통령 선거",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-46",
+        "day":  "Day 09",
+        "no":  "46",
+        "word":  "preserve",
+        "phonetic":  "[prizə́ːrv]",
+        "partOfSpeech":  "동사/명사",
+        "meaning":  "보존하다, 보호하다 / 보호구역",
+        "relatedForms":  "preservation (명) 보존, 보호",
+        "paraphrase":  [
+                           "protect",
+                           "maintain",
+                           "conserve",
+                           "keep"
+                       ],
+        "exampleEn":  "preserve cultural heritage",
+        "exampleKo":  "문화유산을 보존하다",
+        "memo":  "nature preserve (자연 보호 구역)"
+    },
+    {
+        "id":  "d09-47",
+        "day":  "Day 09",
+        "no":  "47",
+        "word":  "purchase",
+        "phonetic":  "[pə́ːrtʃəs]",
+        "partOfSpeech":  "동사/명사",
+        "meaning":  "구매하다, 사다 / 구매, 구매한 물건",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "buy",
+                           "get"
+                       ],
+        "exampleEn":  "purchase some new clothes",
+        "exampleKo":  "새 옷을 사다",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-48",
+        "day":  "Day 09",
+        "no":  "48",
+        "word":  "sustain",
+        "phonetic":  "[səstéin]",
+        "partOfSpeech":  "동사",
+        "meaning":  "유지하다, 지속하다",
+        "relatedForms":  "sustainable (형) 지속 가능한",
+        "paraphrase":  [
+                           "maintain",
+                           "continue"
+                       ],
+        "exampleEn":  "sustain life with food and water",
+        "exampleKo":  "음식과 물로 생명을 유지하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-49",
+        "day":  "Day 09",
+        "no":  "49",
+        "word":  "outcome",
+        "phonetic":  "[áutkʌ̀m]",
+        "partOfSpeech":  "명사",
+        "meaning":  "결과",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "result",
+                           "end",
+                           "consequence"
+                       ],
+        "exampleEn":  "a satisfactory outcome",
+        "exampleKo":  "만족스러운 결과",
+        "memo":  ""
+    },
+    {
+        "id":  "d09-50",
+        "day":  "Day 09",
+        "no":  "50",
+        "word":  "transaction",
+        "phonetic":  "[trænsǽkʃən]",
+        "partOfSpeech":  "명사",
+        "meaning":  "거래",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "deal"
+                       ],
+        "exampleEn":  "financial transactions",
+        "exampleKo":  "금융 거래",
+        "memo":  ""
+    },
+  {
         "id":  "d10-01",
         "day":  "Day 10",
         "no":  "01",
