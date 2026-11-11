@@ -14561,5 +14561,890 @@ const INITIAL_WORDS_DATA = [
         "exampleEn":  "Senior citizens are exempted from paying the entrance fee.",
         "exampleKo":  "노인들은 입장료를 면제받는다.",
         "memo":  ""
+    },
+  {
+        "id":  "d17-01",
+        "day":  "Day 17",
+        "no":  "01",
+        "word":  "proximity",
+        "phonetic":  "[prɑksíməti]",
+        "partOfSpeech":  "명사",
+        "meaning":  "<거리·시간 등> 가까움, 근접(성)",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "nearness",
+                           "vicinity",
+                           "closeness"
+                       ],
+        "exampleEn":  "The hotel is in proximity to the airport.",
+        "exampleKo":  "그 호텔은 공항에서 가깝다.",
+        "memo":  "지텔프 동의어: The proximity of the two countries makes trade between them easier. -> (a) nearness"
+    },
+    {
+        "id":  "d17-02",
+        "day":  "Day 17",
+        "no":  "02",
+        "word":  "debris",
+        "phonetic":  "[dəbríː]",
+        "partOfSpeech":  "명사",
+        "meaning":  "잔해",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "remains",
+                           "fragments"
+                       ],
+        "exampleEn":  "the debris of a plane crash",
+        "exampleKo":  "추락한 비행기의 잔해",
+        "memo":  ""
+    },
+    {
+        "id":  "d17-03",
+        "day":  "Day 17",
+        "no":  "03",
+        "word":  "insurance",
+        "phonetic":  "[inʃúərəns]",
+        "partOfSpeech":  "명사",
+        "meaning":  "보험",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "The company provides health insurance to its employees.",
+        "exampleKo":  "회사는 직원들에게 건강 보험을 제공한다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d17-04",
+        "day":  "Day 17",
+        "no":  "04",
+        "word":  "expel",
+        "phonetic":  "[ikspél]",
+        "partOfSpeech":  "동사",
+        "meaning":  "추방하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "banish",
+                           "remove",
+                           "exile"
+                       ],
+        "exampleEn":  "expel illegal immigrants",
+        "exampleKo":  "불법 이민자를 추방하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d17-05",
+        "day":  "Day 17",
+        "no":  "05",
+        "word":  "erupt",
+        "phonetic":  "[irʌ́pt]",
+        "partOfSpeech":  "동사",
+        "meaning":  "<화산이> 폭발하다, 분출하다 / <사태 등이> 발생하다, 터지다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "explode"
+                       ],
+        "exampleEn":  "A volcano erupted in Iceland near the capital Reykjavik.",
+        "exampleKo":  "아이슬란드 수도 레이캬비크 근처에서 화산이 폭발했다.",
+        "memo":  "Cries for help erupted from the crowd. (군중으로부터 도움을 외치는 소리가 터져 나왔다.)"
+    },
+    {
+        "id":  "d17-06",
+        "day":  "Day 17",
+        "no":  "06",
+        "word":  "formal",
+        "phonetic":  "[fɔ́ːrməl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "공식적인, 정식의 / 격식을 차린",
+        "relatedForms":  "formally (부) 공식적으로; 정중하게",
+        "paraphrase":  [
+                           "official"
+                       ],
+        "exampleEn":  "Ashley didn\u0027t attain formal education.",
+        "exampleKo":  "애슐리는 정식 교육을 받지 못했다.",
+        "memo":  "You should wear formal attire for the event. (당신은 그 행사를 위해 정장을 입어야 합니다.)"
+    },
+    {
+        "id":  "d17-07",
+        "day":  "Day 17",
+        "no":  "07",
+        "word":  "withstand",
+        "phonetic":  "[widstǽnd]",
+        "partOfSpeech":  "동사",
+        "meaning":  "견디다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "endure",
+                           "resist"
+                       ],
+        "exampleEn":  "withstand wear and tear",
+        "exampleKo":  "마모를 견디다",
+        "memo":  "The fabric can withstand high temperatures. (그 천은 고온을 견딜 수 있다.)"
+    },
+    {
+        "id":  "d17-08",
+        "day":  "Day 17",
+        "no":  "08",
+        "word":  "dissolve",
+        "phonetic":  "[dizάlv]",
+        "partOfSpeech":  "동사",
+        "meaning":  "용해되다, 녹다 / ~을 끝내다, 해체하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "melt",
+                           "end",
+                           "dismantle"
+                       ],
+        "exampleEn":  "The tablet dissolves in water.",
+        "exampleKo":  "그 알약은 물에 녹는다.",
+        "memo":  "The Soviet Union was dissolved into 15 countries. (소련은 15개국으로 해체되었다.)"
+    },
+    {
+        "id":  "d17-09",
+        "day":  "Day 17",
+        "no":  "09",
+        "word":  "consume",
+        "phonetic":  "[kənsúːm]",
+        "partOfSpeech":  "동사",
+        "meaning":  "먹다, 섭취하다 / 소비하다, 쓰다",
+        "relatedForms":  "consumer (명) 소비자",
+        "paraphrase":  [
+                           "eat",
+                           "swallow",
+                           "use",
+                           "spend"
+                       ],
+        "exampleEn":  "This food should be consumed within two hours.",
+        "exampleKo":  "이 음식은 2시간 이내에 먹어야 한다.",
+        "memo":  "This hair dryer consumes much electricity. (이 헤어드라이어는 많은 전기를 소비한다.)"
+    },
+    {
+        "id":  "d17-10",
+        "day":  "Day 17",
+        "no":  "10",
+        "word":  "fearful",
+        "phonetic":  "[fíərfəl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "두려워하는",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "scared",
+                           "afraid",
+                           "frightened"
+                       ],
+        "exampleEn":  "The squirrels are usually fearful of humans.",
+        "exampleKo":  "다람쥐는 보통 사람을 무서워한다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d17-11",
+        "day":  "Day 17",
+        "no":  "11",
+        "word":  "fortress",
+        "phonetic":  "[fɔ́ːrtris]",
+        "partOfSpeech":  "명사",
+        "meaning":  "요새",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "This medieval fortress was built with stones.",
+        "exampleKo":  "이 중세시대 요새는 돌로 지어졌다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d17-12",
+        "day":  "Day 17",
+        "no":  "12",
+        "word":  "frustrate",
+        "phonetic":  "[frʌ́streit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "짜증나게 하다, 답답하게 하다 / <시도, 계획 등> 좌절시키다",
+        "relatedForms":  "frustration (명) 짜증, 답답함; 좌절",
+        "paraphrase":  [
+                           "annoy",
+                           "stop",
+                           "discourage",
+                           "inhibit",
+                           "foil",
+                           "thwart"
+                       ],
+        "exampleEn":  "be frustrated with the restaurant\u0027s service",
+        "exampleKo":  "레스토랑의 서비스에 답답함을 느끼다",
+        "memo":  "지텔프 동의어: The leg injury frustrated his attempts to win the race. -> (b) discouraged | The bad weather frustrated our plans. (나쁜 날씨는 우리의 계획을 좌절시켰다.)"
+    },
+    {
+        "id":  "d17-13",
+        "day":  "Day 17",
+        "no":  "13",
+        "word":  "opening",
+        "phonetic":  "[óupniŋ]",
+        "partOfSpeech":  "명사",
+        "meaning":  "빈 일자리, 공석 / 개업, 개장",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "opportunity",
+                           "beginning",
+                           "launch",
+                           "start"
+                       ],
+        "exampleEn":  "announce job openings",
+        "exampleKo":  "빈 일자리를 광고하다 (채용 공고를 내다)",
+        "memo":  "the opening of a new museum (새로운 박물관의 개장)"
+    },
+    {
+        "id":  "d17-14",
+        "day":  "Day 17",
+        "no":  "14",
+        "word":  "historic",
+        "phonetic":  "[histɔ́ːrik]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "역사적으로 중요한, 역사적인",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "a historic speech",
+        "exampleKo":  "역사적인 연설",
+        "memo":  "The theater was recognized as a historic site. (그 극장은 역사적인 장소로 인정받았다.)"
+    },
+    {
+        "id":  "d17-15",
+        "day":  "Day 17",
+        "no":  "15",
+        "word":  "disapprove",
+        "phonetic":  "[dìsəprúːv]",
+        "partOfSpeech":  "동사",
+        "meaning":  "반대하다, 못마땅해하다",
+        "relatedForms":  "approve (동) 찬성하다, 허락하다; 승인하다, disapproval (명) 반대, 못마땅해함",
+        "paraphrase":  [
+                           "dislike",
+                           "deplore"
+                       ],
+        "exampleEn":  "My mom disapproved of my decision to major in art.",
+        "exampleKo":  "어머니는 미술을 전공하기로 한 나의 결정을 못마땅해했다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d17-16",
+        "day":  "Day 17",
+        "no":  "16",
+        "word":  "trait",
+        "phonetic":  "[treit]",
+        "partOfSpeech":  "명사",
+        "meaning":  "특징, 특성",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "characteristic",
+                           "feature",
+                           "attribute"
+                       ],
+        "exampleEn":  "genetic traits of seeds",
+        "exampleKo":  "씨앗의 유전적 특징",
+        "memo":  "지텔프 동의어: Some common traits of successful people are hard work and determination. -> (a) characteristics | a dog\u0027s behavioral traits (개의 행동 특성)"
+    },
+    {
+        "id":  "d17-17",
+        "day":  "Day 17",
+        "no":  "17",
+        "word":  "humble",
+        "phonetic":  "[hʌ́mbl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "겸손한 / 미천한, 보잘것없는",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "modest",
+                           "simple",
+                           "poor",
+                           "insignificant"
+                       ],
+        "exampleEn":  "a humble person",
+        "exampleKo":  "겸손한 사람",
+        "memo":  "humble origins (미천한 출신)"
+    },
+    {
+        "id":  "d17-18",
+        "day":  "Day 17",
+        "no":  "18",
+        "word":  "disregard",
+        "phonetic":  "[dìsrigάːrd]",
+        "partOfSpeech":  "동사",
+        "meaning":  "무시하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "ignore",
+                           "neglect"
+                       ],
+        "exampleEn":  "Please disregard my previous e-mail.",
+        "exampleKo":  "제가 이전에 보냈던 이메일은 무시해 주세요.",
+        "memo":  ""
+    },
+    {
+        "id":  "d17-19",
+        "day":  "Day 17",
+        "no":  "19",
+        "word":  "derive",
+        "phonetic":  "[diráiv]",
+        "partOfSpeech":  "동사",
+        "meaning":  "~에서 유래되다, 비롯되다 / 얻다, 끌어내다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "take",
+                           "obtain",
+                           "get",
+                           "receive",
+                           "gather",
+                           "collect"
+                       ],
+        "exampleEn":  "The English word \"story\" derives from the Greek word \"historia.\"",
+        "exampleKo":  "\"story\"라는 영단어는 그리스어 \"historia\"에서 유래했다.",
+        "memo":  "Los Angeles derives a lot of revenue from the sales of cars. (로스앤젤레스는 자동차 판매로 많은 수익을 얻는다.)"
+    },
+    {
+        "id":  "d17-20",
+        "day":  "Day 17",
+        "no":  "20",
+        "word":  "evaporate",
+        "phonetic":  "[ivǽpərèit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "<액체 등> 증발하다, 증발시키다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "The sweat evaporates through the skin.",
+        "exampleKo":  "땀은 피부를 통해 증발한다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d17-21",
+        "day":  "Day 17",
+        "no":  "21",
+        "word":  "ignore",
+        "phonetic":  "[ignɔ́ːr]",
+        "partOfSpeech":  "동사",
+        "meaning":  "무시하다",
+        "relatedForms":  "ignorant (형) 무지한, 무식한, ignorance (명) 무지(함), 무식(함)",
+        "paraphrase":  [
+                           "disregard",
+                           "neglect"
+                       ],
+        "exampleEn":  "ignore social norms",
+        "exampleKo":  "사회 규범을 무시하다",
+        "memo":  "ignore harsh criticism (혹평을 무시하다)"
+    },
+    {
+        "id":  "d17-22",
+        "day":  "Day 17",
+        "no":  "22",
+        "word":  "maturity",
+        "phonetic":  "[mətʃúərəti]",
+        "partOfSpeech":  "명사",
+        "meaning":  "<사람, 동식물 등> 다 자란 상태 / 성숙함, 어른스러움",
+        "relatedForms":  "mature (형) 다 자란; 어른스러운, 성숙한",
+        "paraphrase":  [
+                           "adulthood"
+                       ],
+        "exampleEn":  "Trees reach maturity at different ages, depending on the species.",
+        "exampleKo":  "나무는 종에 따라 다양한 나이에 성숙기에 도달한다.",
+        "memo":  "It takes maturity to stay calm in stressful situations. (스트레스가 많은 상황에서 침착함을 유지하기 위해서는 성숙함이 필요하다.)"
+    },
+    {
+        "id":  "d17-23",
+        "day":  "Day 17",
+        "no":  "23",
+        "word":  "industrial",
+        "phonetic":  "[indʌ́striəl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "산업의, 공업의",
+        "relatedForms":  "industry (명) 산업, 공업",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "industrial safety standards",
+        "exampleKo":  "산업 안전 기준",
+        "memo":  "common industrial products (일반 공산품)"
+    },
+    {
+        "id":  "d17-24",
+        "day":  "Day 17",
+        "no":  "24",
+        "word":  "foster",
+        "phonetic":  "[fɔ́ːstər]",
+        "partOfSpeech":  "동사",
+        "meaning":  "조성하다, 발전시키다 / (남의 아이를) 키우다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "develop",
+                           "support",
+                           "promote",
+                           "encourage",
+                           "bring up",
+                           "raise",
+                           "nurture"
+                       ],
+        "exampleEn":  "foster teamwork and collaboration",
+        "exampleKo":  "팀워크와 협동심을 기르다[발전시키다]",
+        "memo":  "지텔프 동의어: It is important to foster a sense of cooperation among team members. -> (a) encourage | decide to foster a child from the local orphanage (지역 고아원에서 아이를 입양하기로 결정하다)"
+    },
+    {
+        "id":  "d17-25",
+        "day":  "Day 17",
+        "no":  "25",
+        "word":  "general",
+        "phonetic":  "[dʒénərəl]",
+        "partOfSpeech":  "형용사/명사",
+        "meaning":  "일반적인, 전반적인 / 장군",
+        "relatedForms":  "generally (부) 일반적으로; 보통, 대개",
+        "paraphrase":  [
+                           "widespread",
+                           "common",
+                           "broad",
+                           "prevalent"
+                       ],
+        "exampleEn":  "There is general concern about growing political tensions.",
+        "exampleKo":  "점차적 긴장이 고조되는 것에 대해 대부분이 우려하고 있다.",
+        "memo":  "general interest (일반적인 관심사)"
+    },
+    {
+        "id":  "d17-26",
+        "day":  "Day 17",
+        "no":  "26",
+        "word":  "evade",
+        "phonetic":  "[ivéid]",
+        "partOfSpeech":  "동사",
+        "meaning":  "피하다 / <의무 등> 회피하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "avoid",
+                           "escape"
+                       ],
+        "exampleEn":  "evade the police",
+        "exampleKo":  "경찰을 피하다",
+        "memo":  "evade a question (질문을 회피하다), evade tax payments (탈세하다)"
+    },
+    {
+        "id":  "d17-27",
+        "day":  "Day 17",
+        "no":  "27",
+        "word":  "fulfill",
+        "phonetic":  "[fulfíl]",
+        "partOfSpeech":  "동사",
+        "meaning":  "<의무 등> 수행하다, 완료하다 / <꿈, 목표를> 달성하다, 이루다",
+        "relatedForms":  "fulfillment (명) 성취(감); 수행, 이행",
+        "paraphrase":  [
+                           "perform",
+                           "complete",
+                           "realize",
+                           "achieve",
+                           "accomplish"
+                       ],
+        "exampleEn":  "fulfill a task",
+        "exampleKo":  "업무를 수행하다",
+        "memo":  "To fulfill his dream, Mark worked harder. (자신의 꿈을 이루기 위해 마크는 더 열심히 일했다.)"
+    },
+    {
+        "id":  "d17-28",
+        "day":  "Day 17",
+        "no":  "28",
+        "word":  "humidity",
+        "phonetic":  "[hjuːmídəti]",
+        "partOfSpeech":  "명사",
+        "meaning":  "습도",
+        "relatedForms":  "humid (형) 습한",
+        "paraphrase":  [
+                           "moisture",
+                           "damp"
+                       ],
+        "exampleEn":  "The humidity in the room is very high.",
+        "exampleKo":  "방안의 습도가 매우 높다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d17-29",
+        "day":  "Day 17",
+        "no":  "29",
+        "word":  "circular",
+        "phonetic":  "[sə́ːrkjələr]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "원형의, 둥근",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "round"
+                       ],
+        "exampleEn":  "The rocks are in a circular formation.",
+        "exampleKo":  "돌들이 원형을 이루고 있다.",
+        "memo":  "A fly typically flies in a circular motion. (파리는 보통 원형으로 난다.)"
+    },
+    {
+        "id":  "d17-30",
+        "day":  "Day 17",
+        "no":  "30",
+        "word":  "incredibly",
+        "phonetic":  "[inkrédəbli]",
+        "partOfSpeech":  "부사",
+        "meaning":  "믿기 힘들게도 / 엄청나게, 대단히",
+        "relatedForms":  "incredible (형) 믿기 힘든; 엄청난, 대단한",
+        "paraphrase":  [
+                           "unbelievably",
+                           "amazingly"
+                       ],
+        "exampleEn":  "Incredibly, no one was injured from the fire.",
+        "exampleKo":  "믿기 힘들게도, 그 화재로 다친 사람은 아무도 없었다.",
+        "memo":  "an incredibly beautiful painting (엄청나게 아름다운 그림)"
+    },
+    {
+        "id":  "d17-31",
+        "day":  "Day 17",
+        "no":  "31",
+        "word":  "gradually",
+        "phonetic":  "[grǽdʒuəli]",
+        "partOfSpeech":  "부사",
+        "meaning":  "서서히, 점차적으로",
+        "relatedForms":  "gradual (형) 점진적인",
+        "paraphrase":  [
+                           "steadily",
+                           "slowly",
+                           "progressively"
+                       ],
+        "exampleEn":  "The leaves gradually perished due to the lack of sunlight.",
+        "exampleKo":  "햇빛 부족으로 나뭇잎이 서서히 시들었다.",
+        "memo":  "gradually progress from a small startup to a large corporation (작은 스타트업에서 점차 큰 회사로 발전하다)"
+    },
+    {
+        "id":  "d17-32",
+        "day":  "Day 17",
+        "no":  "32",
+        "word":  "intend",
+        "phonetic":  "[inténd]",
+        "partOfSpeech":  "동사",
+        "meaning":  "의도하다, 계획하다",
+        "relatedForms":  "intent (형) 열중하는, (명) 의도",
+        "paraphrase":  [
+                           "plan",
+                           "aim",
+                           "mean"
+                       ],
+        "exampleEn":  "intend to deceive customers",
+        "exampleKo":  "고객을 속이려고 의도하다",
+        "memo":  "intend to be a writer (작가가 되기로 계획하다)"
+    },
+    {
+        "id":  "d17-33",
+        "day":  "Day 17",
+        "no":  "33",
+        "word":  "adverse",
+        "phonetic":  "[ædvə́ːrs]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "좋지 않은, 불리한",
+        "relatedForms":  "adversely (부) 불리하게, 안 좋게",
+        "paraphrase":  [
+                           "harmful",
+                           "negative",
+                           "unfavorable"
+                       ],
+        "exampleEn":  "adverse weather conditions",
+        "exampleKo":  "불리한 기상 조건",
+        "memo":  "지텔프 동의어: The adverse effects of smoking can lead to a variety of health problems. -> (b) harmful | adverse effect (역효과)"
+    },
+    {
+        "id":  "d17-34",
+        "day":  "Day 17",
+        "no":  "34",
+        "word":  "helpless",
+        "phonetic":  "[hélplis]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "무력한, 속수무책의, 의지할 곳 없는",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "vulnerable",
+                           "unprotected",
+                           "exposed",
+                           "weak"
+                       ],
+        "exampleEn":  "The bug may look small and helpless, but it is strong.",
+        "exampleKo":  "이 벌레는 작고 무력해 보일 수 있지만 강하다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d17-35",
+        "day":  "Day 17",
+        "no":  "35",
+        "word":  "loosen",
+        "phonetic":  "[lúːsn]",
+        "partOfSpeech":  "동사",
+        "meaning":  "느슨하게 하다, 완화하다",
+        "relatedForms":  "loose (형) 느슨한; 헐렁한",
+        "paraphrase":  [
+                           "ease",
+                           "relax",
+                           "untie"
+                       ],
+        "exampleEn":  "loosen the screws",
+        "exampleKo":  "나사를 풀다",
+        "memo":  "loosen the restrictions (규제를 느슨히 하다)"
+    },
+    {
+        "id":  "d17-36",
+        "day":  "Day 17",
+        "no":  "36",
+        "word":  "surpass",
+        "phonetic":  "[sərpǽs]",
+        "partOfSpeech":  "동사",
+        "meaning":  "넘어서다, 능가하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "exceed",
+                           "outdo",
+                           "beat"
+                       ],
+        "exampleEn":  "surpass our expectations",
+        "exampleKo":  "우리의 기대를 능가하다",
+        "memo":  "Erica has surpassed her teacher\u0027s swimming ability. (에리카는 선생님의 수영 실력을 능가했다.)"
+    },
+    {
+        "id":  "d17-37",
+        "day":  "Day 17",
+        "no":  "37",
+        "word":  "grateful",
+        "phonetic":  "[gréitfəl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "감사하는",
+        "relatedForms":  "gratitude (명) 감사",
+        "paraphrase":  [
+                           "thankful",
+                           "appreciative"
+                       ],
+        "exampleEn":  "Sarah is grateful to her mentors for their advice.",
+        "exampleKo":  "사라는 멘토들의 조언에 감사한다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d17-38",
+        "day":  "Day 17",
+        "no":  "38",
+        "word":  "infamous",
+        "phonetic":  "[ínfəməs]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "악명 높은",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "notorious"
+                       ],
+        "exampleEn":  "infamous for poor air quality",
+        "exampleKo":  "공기 질이 나쁘기로 악명 높은",
+        "memo":  "He is infamous for being late to work. (그는 직장에 지각하기로 악명이 높다.)"
+    },
+    {
+        "id":  "d17-39",
+        "day":  "Day 17",
+        "no":  "39",
+        "word":  "memorable",
+        "phonetic":  "[mémərəbl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "기억할 만한, 인상적인",
+        "relatedForms":  "memorize (동) 외우다, 암기하다",
+        "paraphrase":  [
+                           "impressive",
+                           "noteworthy",
+                           "special",
+                           "remarkable"
+                       ],
+        "exampleEn":  "a memorable experience",
+        "exampleKo":  "기억할 만한 경험",
+        "memo":  "memorable characters of the novel (그 소설의 기억에 남는 인물들)"
+    },
+    {
+        "id":  "d17-40",
+        "day":  "Day 17",
+        "no":  "40",
+        "word":  "copious",
+        "phonetic":  "[kóupiəs]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "대량의, 방대한",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "large",
+                           "great",
+                           "abundant",
+                           "plentiful",
+                           "ample"
+                       ],
+        "exampleEn":  "copious amounts of time",
+        "exampleKo":  "방대한 시간",
+        "memo":  "지텔프 동의어: The copious use of resources has led to the depletion of the rainforest. -> (a) large | copious evidence (방대한 증거)"
+    },
+    {
+        "id":  "d17-41",
+        "day":  "Day 17",
+        "no":  "41",
+        "word":  "guidance",
+        "phonetic":  "[gáidəns]",
+        "partOfSpeech":  "명사",
+        "meaning":  "지도, 안내",
+        "relatedForms":  "guide (명) 안내(책자), (동) 안내하다",
+        "paraphrase":  [
+                           "direction",
+                           "instruction",
+                           "advice"
+                       ],
+        "exampleEn":  "receive guidance from a famous pianist",
+        "exampleKo":  "유명한 피아니스트의 지도를 받다",
+        "memo":  "guidance on how to use the software (소프트웨어 사용법에 대한 안내)"
+    },
+    {
+        "id":  "d17-42",
+        "day":  "Day 17",
+        "no":  "42",
+        "word":  "moderate",
+        "phonetic":  "[mάdərət] / [mάdərèit]",
+        "partOfSpeech":  "형용사/동사",
+        "meaning":  "보통의, 중간의 / 온건한 / 완화하다",
+        "relatedForms":  "moderately (부) 적당히, 중간 정도로",
+        "paraphrase":  [
+                           "reasonable",
+                           "average",
+                           "acceptable",
+                           "mild"
+                       ],
+        "exampleEn":  "moderate success",
+        "exampleKo":  "보통의 성공",
+        "memo":  "moderate political views (온건한 정치적 견해)"
+    },
+    {
+        "id":  "d17-43",
+        "day":  "Day 17",
+        "no":  "43",
+        "word":  "sturdy",
+        "phonetic":  "[stə́ːrdi]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "견고한, 튼튼한",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "solid",
+                           "robust",
+                           "durable"
+                       ],
+        "exampleEn":  "a sturdy fabric",
+        "exampleKo":  "튼튼한 직물",
+        "memo":  "a building of sturdy construction (튼튼한 구조의 건물)"
+    },
+    {
+        "id":  "d17-44",
+        "day":  "Day 17",
+        "no":  "44",
+        "word":  "identification",
+        "phonetic":  "[aidèntəfəkéiʃən]",
+        "partOfSpeech":  "명사",
+        "meaning":  "파악, 신원 확인 / 신분증",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "discovery",
+                           "detection"
+                       ],
+        "exampleEn":  "identification of problems",
+        "exampleKo":  "문제 파악",
+        "memo":  "a form of identification (신분증의 한 종류)"
+    },
+    {
+        "id":  "d17-45",
+        "day":  "Day 17",
+        "no":  "45",
+        "word":  "notify",
+        "phonetic":  "[nóutəfài]",
+        "partOfSpeech":  "동사",
+        "meaning":  "(공식적으로) 알리다",
+        "relatedForms":  "notification (명) 알림, 통지",
+        "paraphrase":  [
+                           "inform",
+                           "advise"
+                       ],
+        "exampleEn":  "notify the class of the date of the final exam",
+        "exampleKo":  "기말고사 날짜를 학급에 알리다",
+        "memo":  ""
+    },
+    {
+        "id":  "d17-46",
+        "day":  "Day 17",
+        "no":  "46",
+        "word":  "merger",
+        "phonetic":  "[mə́ːrdʒər]",
+        "partOfSpeech":  "명사",
+        "meaning":  "합병",
+        "relatedForms":  "merge (동) 합병하다",
+        "paraphrase":  [
+                           "consolidation"
+                       ],
+        "exampleEn":  "merger of the two companies",
+        "exampleKo":  "두 회사의 합병",
+        "memo":  ""
+    },
+    {
+        "id":  "d17-47",
+        "day":  "Day 17",
+        "no":  "47",
+        "word":  "pending",
+        "phonetic":  "[péndiŋ]",
+        "partOfSpeech":  "형용사/전치사",
+        "meaning":  "곧 있을, 임박한 / 보류 중인 / ~가 있을 때까지",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "imminent",
+                           "forthcoming",
+                           "unfinished",
+                           "unsettled",
+                           "undecided"
+                       ],
+        "exampleEn":  "pending tasks",
+        "exampleKo":  "곧 해야 하는 업무들",
+        "memo":  "지텔프 동의어: Bryan is getting frustrated with all the pending matters. -> (b) unsettled | Nicole was suspended from work pending an investigation. (니콜은 조사를 기다리는 동안 업무 정지를 당했다.)"
+    },
+    {
+        "id":  "d17-48",
+        "day":  "Day 17",
+        "no":  "48",
+        "word":  "outdated",
+        "phonetic":  "[àutdéitid]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "구식의",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "obsolete",
+                           "dated"
+                       ],
+        "exampleEn":  "outdated equipment",
+        "exampleKo":  "구식 장비",
+        "memo":  ""
+    },
+    {
+        "id":  "d17-49",
+        "day":  "Day 17",
+        "no":  "49",
+        "word":  "drought",
+        "phonetic":  "[draut]",
+        "partOfSpeech":  "명사",
+        "meaning":  "가뭄",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "dryness"
+                       ],
+        "exampleEn":  "Livestock are often severely affected by drought.",
+        "exampleKo":  "가축은 종종 가뭄의 영향을 심하게 받는다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d17-50",
+        "day":  "Day 17",
+        "no":  "50",
+        "word":  "peer",
+        "phonetic":  "[piər]",
+        "partOfSpeech":  "명사",
+        "meaning":  "또래",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "smarter than her peers",
+        "exampleKo":  "그녀의 또래들보다 더 똑똑한",
+        "memo":  "peer pressure (또래[동료]들로부터 받는 압력)"
     }
 ];
