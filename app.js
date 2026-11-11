@@ -774,8 +774,19 @@
     }).join(' ');
   }
 
+  function normalizeDayName(d) {
+    if (!d) return '';
+    const str = String(d).trim();
+    const m = str.match(/^Day\s*(\d+)$/i);
+    if (m) {
+      return `Day ${String(m[1]).padStart(2, '0')}`;
+    }
+    if (str === '기초01' || str === '기초 01' || str === '기초 필수 단어') return '기초단어';
+    return str;
+  }
+
   function getAllDays() {
-    const daySet = new Set(words.map(w => w.day || 'Day 01'));
+    const daySet = new Set(words.map(w => normalizeDayName(w.day || 'Day 01')));
     const days = Array.from(daySet);
     return days.sort((a, b) => {
       // '기초단어'를 항상 최상단 맨 위로 배치
@@ -945,15 +956,15 @@
 
     let result = words.filter(w => {
       // Day 필터 (상단 검색창에 검색어가 비어있을 때만 Day 필터 적용)
-      if (!query && activeDayFilter !== 'ALL' && w.day !== activeDayFilter) {
+      if (!query && activeDayFilter !== 'ALL' && normalizeDayName(w.day) !== normalizeDayName(activeDayFilter)) {
         return false;
       }
       // 검색어 필터 (영단어, 한글 뜻, 품사, 패러프레이징, Day)
       if (query) {
-        const inWord = w.word.toLowerCase().includes(query);
-        const inMeaning = w.meaning.toLowerCase().includes(query);
+        const inWord = (w.word || '').toLowerCase().includes(query);
+        const inMeaning = (w.meaning || '').toLowerCase().includes(query);
         const inPos = (w.partOfSpeech || '').toLowerCase().includes(query);
-        const inPara = (w.paraphrase || []).some(p => p.toLowerCase().includes(query));
+        const inPara = (w.paraphrase || []).some(p => (p || '').toLowerCase().includes(query));
         const inDay = (w.day || '').toLowerCase().includes(query);
         if (!inWord && !inMeaning && !inPos && !inPara && !inDay) {
           return false;
@@ -968,7 +979,7 @@
     } else if (currentSort === 'wrong-asc') {
       result.sort((a, b) => getWrongCount(a.id) - getWrongCount(b.id));
     } else if (currentSort === 'alphabet') {
-      result.sort((a, b) => a.word.localeCompare(b.word));
+      result.sort((a, b) => (a.word || '').localeCompare(b.word || ''));
     }
 
     return result;
@@ -992,13 +1003,14 @@
 
   window.selectDayFolder = function(day) {
     expandAllWordsInList = false;
-    activeDayFilter = day;
+    activeDayFilter = normalizeDayName(day);
+    const select = document.getElementById('dayDropdownSelect');
+    if (select) select.value = activeDayFilter;
     renderDayFilters();
     renderWordList();
-    if (day !== 'ALL') {
-      const targetSec = document.getElementById('view-list');
-      targetSec?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      showToast(`[${day}] 단어 목록을 불러왔습니다.`);
+    if (activeDayFilter !== 'ALL') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      showToast(`[${activeDayFilter}] 단어 목록을 불러왔습니다.`);
     }
   };
 
@@ -1037,19 +1049,19 @@
     `;
 
     days.forEach(d => {
-      const dayWords = words.filter(w => w.day === d);
+      const dayWords = words.filter(w => normalizeDayName(w.day) === normalizeDayName(d));
       const wrongCount = dayWords.filter(w => getWrongCount(w.id) > 0).length;
       const stdRounds = getDayRoundCount(d, 'standard');
       const clozeRounds = getDayRoundCount(d, 'cloze');
       const sampleWords = dayWords.slice(0, 4).map(w => w.word).join(', ');
 
       html += `
-        <div onclick="window.selectDayFolder('${d}')" class="day-folder-card bg-white p-4 rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-md hover:border-indigo-300 transition cursor-pointer space-y-3 group active:scale-[0.99]">
+        <div onclick="window.selectDayFolder('${d}')" class="day-folder-card bg-white p-4 rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-md hover:border-indigo-400 transition cursor-pointer space-y-3 group active:scale-[0.99]">
           
           <!-- 카드 상단: Day 배지 + 단어 수 + 오답 알림 -->
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between pointer-events-none">
             <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full ${d === '기초단어' ? 'bg-emerald-500' : 'bg-indigo-600'} group-hover:scale-125 transition"></span>
+              <span class="w-3 h-3 rounded-full ${d === '기초단어' ? 'bg-emerald-500' : 'bg-indigo-600'}"></span>
               <h4 class="font-black text-slate-900 text-base group-hover:text-indigo-600 transition flex items-center gap-1.5">
                 ${d}
               </h4>
@@ -1059,7 +1071,7 @@
             </div>
             ${wrongCount > 0 ? `
               <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-rose-100 text-rose-700 flex items-center gap-1" title="오답 단어 ${wrongCount}개">
-                <i class="fa-solid fa-triangle-exclamation"></i> ${wrongCount}
+                <i class="fa-solid fa-triangle-exclamation"></i> 오답 ${wrongCount}
               </span>
             ` : `
               <span class="text-slate-300 group-hover:text-indigo-500 group-hover:translate-x-0.5 transition text-sm">
@@ -1069,12 +1081,12 @@
           </div>
 
           <!-- 대표 단어 미리보기 -->
-          <div class="text-xs text-slate-400 font-medium truncate">
+          <div class="text-xs text-slate-400 font-medium truncate pointer-events-none">
             <i class="fa-solid fa-quote-left text-[10px] text-slate-300 mr-1"></i>${sampleWords}...
           </div>
 
           <!-- 회독 현황 뱃지 -->
-          <div class="flex items-center gap-2 text-[11px] font-semibold text-slate-500 pt-1 border-t border-slate-100">
+          <div class="flex items-center gap-2 text-[11px] font-semibold text-slate-500 pt-1 border-t border-slate-100 pointer-events-none">
             <span class="px-1.5 py-0.5 rounded bg-slate-50 border border-slate-100 flex items-center gap-1">
               <i class="fa-solid fa-circle-check text-indigo-500 text-[10px]"></i> 4지: <strong>${stdRounds}회독</strong>
             </span>
@@ -1083,19 +1095,22 @@
             </span>
           </div>
 
-          <!-- 액션 바로가기 버튼들 -->
-          <div class="grid grid-cols-4 gap-1.5 pt-1 text-[11px]" onclick="event.stopPropagation()">
-            <button onclick="window.selectDayFolder('${d}')" class="py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black transition text-center shadow-xs flex items-center justify-center gap-1 active:scale-95">
-              <i class="fa-solid fa-book-open text-[10px]"></i> 단어
+          <!-- [메인 터치 버튼: 단어 목록 보기] 터치 시 즉시 해당 Day의 50단어 전체 목록 표시 -->
+          <button type="button" onclick="event.stopPropagation(); window.selectDayFolder('${d}')" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-black text-xs sm:text-sm transition text-center shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-98">
+            <i class="fa-solid fa-book-open text-xs"></i>
+            <span>${d} 단어 목록 보기 (${dayWords.length}단어)</span>
+          </button>
+
+          <!-- 보조 액션 버튼들 (4지선다, 문장 빈칸, 플래시카드 즉시 시작) -->
+          <div class="grid grid-cols-3 gap-1.5 pt-0.5 text-[11px]">
+            <button type="button" onclick="event.stopPropagation(); window.startDayDirectQuiz('${d}', 'standard')" class="py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 font-bold transition text-center shadow-2xs" title="4지선다 퀴즈">
+              <i class="fa-solid fa-play text-indigo-600 text-[10px]"></i> 4지선다
             </button>
-            <button onclick="window.startDayDirectQuiz('${d}', 'standard')" class="py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition text-center active:scale-95" title="4지선다 퀴즈">
-              <i class="fa-solid fa-play text-[10px]"></i> 4지
+            <button type="button" onclick="event.stopPropagation(); window.startDayDirectQuiz('${d}', 'cloze')" class="py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 active:scale-95 text-emerald-800 font-bold transition text-center shadow-2xs" title="빈칸 문맥 퀴즈">
+              <i class="fa-solid fa-pen text-emerald-600 text-[10px]"></i> 문장 빈칸
             </button>
-            <button onclick="window.startDayDirectQuiz('${d}', 'cloze')" class="py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold transition text-center active:scale-95" title="빈칸 문맥 퀴즈">
-              <i class="fa-solid fa-pen text-[10px]"></i> 빈칸
-            </button>
-            <button onclick="window.startDayDirectQuiz('${d}', 'flashcard')" class="py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold transition text-center active:scale-95" title="플래시카드 암기">
-              <i class="fa-solid fa-clone text-[10px]"></i> 카드
+            <button type="button" onclick="event.stopPropagation(); window.startDayDirectQuiz('${d}', 'flashcard')" class="py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 active:scale-95 text-amber-800 font-bold transition text-center shadow-2xs" title="플래시카드 암기">
+              <i class="fa-solid fa-clone text-amber-600 text-[10px]"></i> 플래시카드
             </button>
           </div>
 
@@ -1229,7 +1244,7 @@
                 <span class="font-bold text-amber-600 shrink-0"><i class="fa-solid fa-shuffle"></i> 동의어:</span>
                 ${paraphrases.map(p => {
                   const cleanP = (p || '').trim();
-                  const found = words.find(item => item.word.toLowerCase() === cleanP.toLowerCase());
+                  const found = words.find(item => item && item.word && item.word.toLowerCase() === cleanP.toLowerCase());
                   if (found) {
                     return `
                       <span class="tts-chip px-2 py-0.5 rounded-md bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 font-bold cursor-pointer transition flex items-center gap-1 shadow-xs" data-registered-id="${found.id}" data-word="${cleanP}" title="'${found.word}' 상세정보 보기">
@@ -1617,17 +1632,22 @@
 
                 <div class="text-[11px] text-slate-500">지텔프 실전 4지선다 출제 기준 (혼동 어휘 4지선다 매칭)</div>
               </div>
-              <div class="flex items-center gap-2 shrink-0">
+              <div class="flex items-center gap-1.5 shrink-0 flex-wrap">
+                <button onclick="window.switchTab('list'); window.selectDayFolder('${day}');" class="px-2.5 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-700 font-bold text-xs flex items-center gap-1 border border-indigo-200 transition" title="단어 목록 보기">
+                  <i class="fa-solid fa-book-open text-[10px]"></i>
+                  <span>단어 목록</span>
+                </button>
                 <button onclick="window.startStandardQuiz('${day}')" class="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs flex items-center justify-center gap-1.5 shadow-sm transition">
                   <i class="fa-solid fa-play text-[10px]"></i>
-                  <span>4지선다 풀기</span>
+                  <span>4지선다</span>
                 </button>
                 <button onclick="window.startDayDirectQuiz('${day}', 'cloze')" class="px-2.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold text-xs flex items-center gap-1 border border-emerald-200 transition" title="실전 문장 빈칸 채우기">
                   <i class="fa-solid fa-pen-to-square text-[10px]"></i>
                   <span>빈칸</span>
                 </button>
                 <button onclick="window.startDayDirectQuiz('${day}', 'flashcard')" class="px-2.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-600 hover:text-white text-amber-800 font-bold text-xs flex items-center gap-1 border border-amber-200 transition" title="플래시카드 암기">
-                  <i class="fa-solid fa-clone text-[10px]"></i> 카드
+                  <i class="fa-solid fa-clone text-[10px]"></i>
+                  <span>카드</span>
                 </button>
               </div>
             </div>
@@ -1882,18 +1902,26 @@
       }
     }
 
+    // 만약 options가 비어있거나 4개 미만인 경우 즉시 안전 보충
+    if (!options || !Array.isArray(options) || options.length < 4) {
+      options = generateGtelpSmartDistractors(q, words);
+    }
+
     // 보기 렌더링
     const optionsContainer = document.getElementById('quizOptionsContainer');
     optionsContainer.innerHTML = options.map((opt, i) => {
       const label = String.fromCharCode(65 + i); // A, B, C, D
+      // 문자열 또는 객체({ word, def }) 형태 모두 지원
+      const optWord = typeof opt === 'string' ? opt : (opt && opt.word ? opt.word : '');
+
       let btnClass = 'quiz-opt-btn w-full p-3.5 rounded-2xl border-2 font-bold transition flex items-center justify-between group ';
       let badgeClass = 'w-7 h-7 rounded-xl flex items-center justify-center text-xs font-black transition ';
 
       if (prevAns) {
-        if (opt.word === q.word) {
+        if (optWord === q.word) {
           btnClass += 'border-emerald-500 bg-emerald-50 text-emerald-900';
           badgeClass += 'bg-emerald-600 text-white';
-        } else if (opt.word === prevAns.selectedWord && !prevAns.isCorrect) {
+        } else if (optWord === prevAns.selectedWord && !prevAns.isCorrect) {
           btnClass += 'border-rose-500 bg-rose-50 text-rose-900';
           badgeClass += 'bg-rose-600 text-white';
         } else {
@@ -1906,15 +1934,15 @@
       }
 
       return `
-        <button class="${btnClass}" data-word="${opt.word}" ${prevAns ? 'disabled' : ''}>
+        <button class="${btnClass}" data-word="${optWord}" ${prevAns ? 'disabled' : ''}>
           <div class="flex items-center gap-3">
             <span class="${badgeClass}">
               ${label}
             </span>
-            <span class="text-base text-slate-900">${opt.word}</span>
+            <span class="text-base text-slate-900">${optWord}</span>
           </div>
           <!-- 보기 발음 듣기 아이콘 -->
-          <span class="tts-quiz-opt p-1.5 text-slate-300 hover:text-indigo-600 transition" title="발음 듣기" data-word="${opt.word}">
+          <span class="tts-quiz-opt p-1.5 text-slate-300 hover:text-indigo-600 transition" title="발음 듣기" data-word="${optWord}">
             <i class="fa-solid fa-volume-high"></i>
           </span>
         </button>
@@ -4194,18 +4222,24 @@
       }
     }
 
+    // 만약 options가 비어있거나 4개 미만인 경우 즉시 안전 보충
+    if (!options || !Array.isArray(options) || options.length < 4) {
+      options = generateGtelpSmartDistractors(q, words);
+    }
+
     // 보기 렌더링
     const optionsContainer = document.getElementById('clozeOptionsContainer');
     optionsContainer.innerHTML = options.map((opt, i) => {
       const label = String.fromCharCode(65 + i);
+      const optWord = typeof opt === 'string' ? opt : (opt && opt.word ? opt.word : '');
       let btnClass = 'cloze-opt-btn w-full p-3.5 rounded-2xl border-2 font-bold transition flex items-center justify-between group ';
       let badgeClass = 'w-7 h-7 rounded-xl flex items-center justify-center text-xs font-black transition ';
 
       if (prevAns) {
-        if (opt.word === q.word) {
+        if (optWord === q.word) {
           btnClass += 'border-emerald-500 bg-emerald-50 text-emerald-900';
           badgeClass += 'bg-emerald-600 text-white';
-        } else if (opt.word === prevAns.selectedWord && !prevAns.isCorrect) {
+        } else if (optWord === prevAns.selectedWord && !prevAns.isCorrect) {
           btnClass += 'border-rose-500 bg-rose-50 text-rose-900';
           badgeClass += 'bg-rose-600 text-white';
         } else {
@@ -4218,14 +4252,14 @@
       }
 
       return `
-        <button class="${btnClass}" data-word="${opt.word}" ${prevAns ? 'disabled' : ''}>
+        <button class="${btnClass}" data-word="${optWord}" ${prevAns ? 'disabled' : ''}>
           <div class="flex items-center gap-3">
             <span class="${badgeClass}">
               ${label}
             </span>
-            <span class="text-base text-slate-900">${opt.word}</span>
+            <span class="text-base text-slate-900">${optWord}</span>
           </div>
-          <span class="tts-cloze-opt p-1.5 text-slate-300 hover:text-emerald-600 transition" title="발음" data-word="${opt.word}">
+          <span class="tts-cloze-opt p-1.5 text-slate-300 hover:text-emerald-600 transition" title="발음" data-word="${optWord}">
             <i class="fa-solid fa-volume-high"></i>
           </span>
         </button>
@@ -4552,7 +4586,7 @@
   };
 
   function generateGtelpSmartDistractors(targetItem, allWords) {
-    const targetWord = targetItem.word.toLowerCase();
+    const targetWord = (targetItem && targetItem.word ? targetItem.word : '').toLowerCase();
     let selectedDistractors = [];
 
     // 1단계: 지텔프 빈출 혼동 어휘 사전에 사전 정의된 오답이 있는지 확인
@@ -4562,12 +4596,12 @@
 
     // 2단계: 부족한 보기는 단어장 내 단어 중 '유사도 점수'가 높은 단어로 채우기
     if (selectedDistractors.length < 3) {
-      const candidates = allWords.filter(w => w.word.toLowerCase() !== targetWord);
+      const candidates = (allWords || []).filter(w => w && w.word && w.word.toLowerCase() !== targetWord);
 
       // 점수 계산: 품사 일치(+10), 앞 2글자 일치(+15), 길이 비슷(+5)
       const scored = candidates.map(c => {
         let score = 0;
-        const cWord = c.word.toLowerCase();
+        const cWord = (c.word || '').toLowerCase();
         if (c.partOfSpeech === targetItem.partOfSpeech) score += 10;
         if (cWord.slice(0, 2) === targetWord.slice(0, 2)) score += 15;
         else if (cWord[0] === targetWord[0]) score += 8;
@@ -4580,28 +4614,34 @@
 
       for (const s of scored) {
         if (selectedDistractors.length >= 3) break;
-        if (!selectedDistractors.some(d => d.word.toLowerCase() === s.item.word.toLowerCase())) {
-          selectedDistractors.push({ word: s.item.word, def: s.item.meaning });
+        if (!selectedDistractors.some(d => {
+          const dw = typeof d === 'string' ? d : (d && d.word ? d.word : '');
+          return dw.toLowerCase() === s.item.word.toLowerCase();
+        })) {
+          selectedDistractors.push({ word: s.item.word, def: s.item.meaning || '' });
         }
       }
     }
 
     // 3단계: 그래도 부족하면 아무 단어나 무작위 보충
     if (selectedDistractors.length < 3) {
-      const remaining = allWords.filter(w => 
-        w.word.toLowerCase() !== targetWord && 
-        !selectedDistractors.some(d => d.word.toLowerCase() === w.word.toLowerCase())
+      const remaining = (allWords || []).filter(w => 
+        w && w.word && w.word.toLowerCase() !== targetWord && 
+        !selectedDistractors.some(d => {
+          const dw = typeof d === 'string' ? d : (d && d.word ? d.word : '');
+          return dw.toLowerCase() === w.word.toLowerCase();
+        })
       );
       const shuffledRem = shuffle(remaining);
       for (const r of shuffledRem) {
         if (selectedDistractors.length >= 3) break;
-        selectedDistractors.push({ word: r.word, def: r.meaning });
+        selectedDistractors.push({ word: r.word, def: r.meaning || '' });
       }
     }
 
     // 정답 1개 + 오답 3개 셔플
     return shuffle([
-      { word: targetItem.word, def: targetItem.meaning },
+      { word: targetItem.word, def: targetItem.meaning || '' },
       ...selectedDistractors.slice(0, 3)
     ]);
   }
