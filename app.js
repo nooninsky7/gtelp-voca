@@ -642,7 +642,7 @@
     saveCurrentLearningSession();
     currentTab = tabId;
     document.querySelectorAll('.nav-tab').forEach(btn => {
-      const active = btn.dataset.tab === tabId;
+      const active = (btn.dataset.tab === tabId) || (tabId === 'quiz' && btn.dataset.tab === 'list');
       btn.classList.toggle('border-indigo-600', active);
       btn.classList.toggle('text-indigo-600', active);
       btn.classList.toggle('font-bold', active);
@@ -944,11 +944,11 @@
     const query = (document.getElementById('searchInput')?.value || '').trim().toLowerCase();
 
     let result = words.filter(w => {
-      // Day 필터
-      if (activeDayFilter !== 'ALL' && w.day !== activeDayFilter) {
+      // Day 필터 (상단 검색창에 검색어가 비어있을 때만 Day 필터 적용)
+      if (!query && activeDayFilter !== 'ALL' && w.day !== activeDayFilter) {
         return false;
       }
-      // 검색어 필터
+      // 검색어 필터 (영단어, 한글 뜻, 품사, 패러프레이징, Day)
       if (query) {
         const inWord = w.word.toLowerCase().includes(query);
         const inMeaning = w.meaning.toLowerCase().includes(query);
@@ -975,6 +975,20 @@
   }
 
   let expandAllWordsInList = false;
+
+  // 언제든 Day 전체 목차(대시보드)로 초기화하는 헬퍼 함수
+  window.resetToDayFolders = function() {
+    activeDayFilter = 'ALL';
+    expandAllWordsInList = false;
+    const searchInput = document.getElementById('searchInput');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+    if (searchInput) searchInput.value = '';
+    if (clearSearchBtn) clearSearchBtn.classList.add('hidden');
+    const dayDropdown = document.getElementById('dayDropdownSelect');
+    if (dayDropdown) dayDropdown.value = 'ALL';
+    switchTab('list');
+    renderWordList();
+  };
 
   window.selectDayFolder = function(day) {
     expandAllWordsInList = false;
@@ -1120,8 +1134,18 @@
       return;
     }
 
-    // 상단 네비게이션 바 (특정 Day 보기 중이거나 전체 펼치기 중일 때)
-    const backBarHtml = (activeDayFilter !== 'ALL' && !query) ? `
+    // 상단 네비게이션 바 (검색 결과 중이거나 특정 Day 보기 중이거나 전체 펼치기 중일 때)
+    const backBarHtml = query ? `
+      <div class="bg-indigo-50 p-3.5 rounded-2xl border border-indigo-200 flex items-center justify-between shadow-xs mb-1">
+        <span class="text-xs text-indigo-950 font-bold flex items-center gap-1.5">
+          <i class="fa-solid fa-magnifying-glass text-indigo-600"></i>
+          <span>"<strong>${query}</strong>" 검색 결과: <strong class="text-indigo-600">${filteredWords.length}개</strong> 단어</span>
+        </span>
+        <button onclick="window.resetToDayFolders()" class="px-3 py-1 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs transition flex items-center gap-1 shadow-xs cursor-pointer active:scale-95">
+          <i class="fa-solid fa-xmark text-slate-400"></i> 검색 닫기
+        </button>
+      </div>
+    ` : (activeDayFilter !== 'ALL' && !query) ? `
       <div class="bg-gradient-to-r from-indigo-50 to-purple-50 p-3.5 rounded-2xl border border-indigo-100 flex items-center justify-between shadow-xs mb-1">
         <button onclick="window.selectDayFolder('ALL')" class="px-3.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-indigo-700 font-extrabold text-xs transition flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95">
           <i class="fa-solid fa-arrow-left"></i> 전체 Day 목록으로
@@ -2533,17 +2557,29 @@
       tab.addEventListener('click', () => switchTab(tab.dataset.tab));
     });
 
-    // 검색
+    // 상단 상시 고정 검색
     const searchInput = document.getElementById('searchInput');
     const clearSearchBtn = document.getElementById('clearSearchBtn');
     searchInput?.addEventListener('input', () => {
-      clearSearchBtn.classList.toggle('hidden', !searchInput.value);
+      const val = (searchInput.value || '').trim();
+      clearSearchBtn.classList.toggle('hidden', !val);
+      if (val) {
+        // 어느 탭(퀴즈, 플래시카드, 통계 등)에 있든 즉시 단어 검색 뷰로 자동 전환
+        if (currentTab !== 'list') {
+          switchTab('list');
+        }
+        expandAllWordsInList = true;
+      } else {
+        expandAllWordsInList = false;
+      }
       renderWordList();
     });
     clearSearchBtn?.addEventListener('click', () => {
       searchInput.value = '';
       clearSearchBtn.classList.add('hidden');
+      expandAllWordsInList = false;
       renderWordList();
+      searchInput.focus();
     });
 
     // 정렬 셀렉트

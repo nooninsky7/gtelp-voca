@@ -20,61 +20,69 @@
 
   <!-- 상단 네비게이션 헤더 -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
-    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center gap-2 cursor-pointer" onclick="switchTab('list')">
-        <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-lg shadow-md shadow-indigo-200">
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 py-2.5 flex items-center justify-between gap-2">
+      <!-- 앱 로고 & 타이틀 (클릭 시 언제든 Day 목차 뷰로 복귀) -->
+      <div class="flex items-center gap-2 cursor-pointer shrink-0" onclick="window.resetToDayFolders ? window.resetToDayFolders() : switchTab('list')">
+        <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-base shadow-md shadow-indigo-200">
           <i class="fa-solid fa-graduation-cap"></i>
         </div>
-        <div>
-          <h1 class="text-lg font-black tracking-tight text-slate-900 leading-none">VOCA Master</h1>
-          <p class="text-xs text-indigo-600 font-semibold mt-0.5">교재 기반 스마트 영단어장</p>
+        <div class="hidden sm:block">
+          <h1 class="text-base font-black tracking-tight text-slate-900 leading-none">VOCA Master</h1>
+          <p class="text-[10px] text-indigo-600 font-semibold mt-0.5">교재 기반 스마트 영단어장</p>
         </div>
       </div>
       
+      <!-- 상단 상시 고정 검색창 (모든 화면/탭에서 언제나 상시 표시) -->
+      <div class="relative flex-1 max-w-xs sm:max-w-sm mx-1 sm:mx-2">
+        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+        <input type="text" id="searchInput" placeholder="영단어·뜻·동의어 검색..." 
+          class="w-full pl-8 pr-7 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-50 focus:bg-white border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none text-xs sm:text-sm transition">
+        <button id="clearSearchBtn" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600" title="검색 지우기">
+          <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+      </div>
+
       <!-- 상단 액션 버튼들 -->
-      <div class="flex items-center gap-2">
-        <button id="btnBatchImport" onclick="openModal('batchImportModal')" class="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs flex items-center gap-1.5 transition shadow-sm">
-          <i class="fa-solid fa-file-import"></i>
-          <span>데이터 일괄 등록</span>
+      <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
+        <button id="btnBatchImport" onclick="openModal('batchImportModal')" class="hidden md:flex px-2.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs items-center gap-1 transition shadow-sm" title="교재 데이터 일괄 등록">
+          <i class="fa-solid fa-file-import text-[11px]"></i>
+          <span>일괄 등록</span>
         </button>
-        <button id="btnAddWordQuick" onclick="openModal('addWordModal')" class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition">
+        <button id="btnAddWordQuick" onclick="openModal('addWordModal')" class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1 transition" title="개인 단어 추가">
           <i class="fa-solid fa-plus text-indigo-600"></i>
-          <span>단어 추가</span>
+          <span class="hidden sm:inline">단어 추가</span>
         </button>
-        <button id="ttsSettingsBtn" title="발음 설정" class="w-9 h-9 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition">
-          <i class="fa-solid fa-volume-high"></i>
+        <button id="ttsSettingsBtn" title="발음 설정" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition">
+          <i class="fa-solid fa-volume-high text-xs"></i>
         </button>
-        <button id="btnToggleFullscreen" title="전체화면으로 보기 (툴바 숨기기)" class="w-9 h-9 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 flex items-center justify-center transition shadow-2xs" onclick="window.toggleFullscreen()">
-          <i id="fullscreenIcon" class="fa-solid fa-expand text-sm"></i>
+        <button id="btnToggleFullscreen" title="전체화면으로 보기 (툴바 숨기기)" class="w-8 h-8 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 flex items-center justify-center transition shadow-2xs" onclick="window.toggleFullscreen()">
+          <i id="fullscreenIcon" class="fa-solid fa-expand text-xs"></i>
         </button>
-        <button id="btnCloudSyncStatus" title="기기간 실시간 자동 동기화" class="relative w-9 h-9 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition">
-          <i id="cloudSyncHeaderIcon" class="fa-solid fa-cloud"></i>
+        <button id="btnCloudSyncStatus" title="기기간 실시간 자동 동기화" class="relative w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition">
+          <i id="cloudSyncHeaderIcon" class="fa-solid fa-cloud text-xs"></i>
           <span id="cloudSyncDot" class="hidden absolute top-1 right-1 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white animate-pulse"></span>
         </button>
-        <button id="dataManageBtn" title="데이터 백업/관리" class="w-9 h-9 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition">
-          <i class="fa-solid fa-database"></i>
+        <button id="dataManageBtn" title="데이터 백업/관리" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition">
+          <i class="fa-solid fa-database text-xs"></i>
         </button>
       </div>
     </div>
 
-    <!-- 네비게이션 탭 -->
+    <!-- 네비게이션 탭 (5개로 일원화: Day 학습 & 퀴즈) -->
     <div class="max-w-4xl mx-auto px-4 flex gap-1 border-t border-slate-100 overflow-x-auto no-scrollbar">
-      <button class="nav-tab active flex items-center gap-1.5 py-3 px-3.5 font-bold text-sm border-b-2 border-indigo-600 text-indigo-600 transition shrink-0" data-tab="list">
-        <i class="fa-solid fa-book-bookmark"></i> 단어장
+      <button class="nav-tab active flex items-center gap-1.5 py-2.5 sm:py-3 px-3 sm:px-3.5 font-bold text-xs sm:text-sm border-b-2 border-indigo-600 text-indigo-600 transition shrink-0" data-tab="list">
+        <i class="fa-solid fa-graduation-cap text-indigo-600"></i> Day 학습 & 퀴즈
       </button>
-      <button class="nav-tab flex items-center gap-1.5 py-3 px-3.5 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition shrink-0" data-tab="quiz">
-        <i class="fa-solid fa-graduation-cap text-indigo-600"></i> Day별 문제풀이
-      </button>
-      <button class="nav-tab flex items-center gap-1.5 py-3 px-3.5 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition shrink-0" data-tab="flashcard">
+      <button class="nav-tab flex items-center gap-1.5 py-2.5 sm:py-3 px-3 sm:px-3.5 font-semibold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition shrink-0" data-tab="flashcard">
         <i class="fa-solid fa-clone text-amber-500"></i> 플래시카드
       </button>
-      <button class="nav-tab flex items-center gap-1.5 py-3 px-3.5 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition shrink-0" data-tab="cloze-quiz">
+      <button class="nav-tab flex items-center gap-1.5 py-2.5 sm:py-3 px-3 sm:px-3.5 font-semibold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition shrink-0" data-tab="cloze-quiz">
         <i class="fa-solid fa-pen-to-square text-emerald-500"></i> 문장 빈칸 퀴즈
       </button>
-      <button class="nav-tab flex items-center gap-1.5 py-3 px-3.5 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition shrink-0" data-tab="paraphrase-quiz">
+      <button class="nav-tab flex items-center gap-1.5 py-2.5 sm:py-3 px-3 sm:px-3.5 font-semibold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition shrink-0" data-tab="paraphrase-quiz">
         <i class="fa-solid fa-shuffle text-rose-500"></i> 패러프레이징
       </button>
-      <button class="nav-tab flex items-center gap-1.5 py-3 px-3.5 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition shrink-0" data-tab="stats">
+      <button class="nav-tab flex items-center gap-1.5 py-2.5 sm:py-3 px-3 sm:px-3.5 font-semibold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition shrink-0" data-tab="stats">
         <i class="fa-solid fa-chart-pie text-slate-400"></i> 오답 분석
       </button>
     </div>
@@ -83,23 +91,12 @@
   <!-- 메인 컨텐츠 영역 -->
   <main class="max-w-4xl w-full mx-auto px-4 py-4 flex-1">
 
-    <!-- [뷰 1: 단어장 리스트] -->
+    <!-- [뷰 1: Day 학습 & 퀴즈 (단어장 + Day 퀴즈 통합 허브)] -->
     <section id="view-list" class="space-y-4">
-      <!-- 검색바 & 필터 -->
-      <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3">
-        <!-- 검색창 -->
-        <div class="relative">
-          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
-          <input type="text" id="searchInput" placeholder="영단어, 한글 뜻, 품사, 패러프레이징 검색..." 
-            class="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none text-sm transition">
-          <button id="clearSearchBtn" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-
+      <!-- Day 필터 & 선택 컨트롤 바 -->
+      <div class="bg-white p-3 sm:p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3">
         <!-- Day 필터 칩 & 정렬 컨트롤 -->
-        <div class="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-slate-100">
-          
+        <div class="flex flex-wrap items-center justify-between gap-2">
           <!-- Day 선택 및 이전/다음 퀵 컨트롤 -->
           <div class="flex items-center gap-1.5 w-full sm:w-auto">
             <button id="btnPrevDay" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition shrink-0" title="이전 Day">
@@ -1364,7 +1361,7 @@
   </div>
 
   <!-- 스크립트 연결 (캐시 무효화 버전 파라미터 적용) -->
-  <script src="data.js?v=v3_3_perf_20261111_1852"></script>
-  <script src="app.js?v=v3_3_perf_20261111_1852"></script>
+  <script src="data.js?v=v3_4_header_search_20261111_1910"></script>
+  <script src="app.js?v=v3_4_header_search_20261111_1910"></script>
 </body>
 </html>
