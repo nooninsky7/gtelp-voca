@@ -4757,5 +4757,900 @@ const INITIAL_WORDS_DATA = [
     exampleEn: "revenue from online sales",
     exampleKo: "온라인 판매 수익",
     memo: ""
-  }
+  },
+  {
+        "id":  "d06-01",
+        "day":  "Day 06",
+        "no":  "01",
+        "word":  "conduct",
+        "phonetic":  "[kəndʌ́kt]",
+        "partOfSpeech":  "동사",
+        "meaning":  "수행하다, 진행하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "lead"
+                       ],
+        "exampleEn":  "conduct a detailed study",
+        "exampleKo":  "상세한 연구를 수행하다",
+        "memo":  "지텔프 동의어: A renowned expert will conduct the workshop. -> (b) lead"
+    },
+    {
+        "id":  "d06-02",
+        "day":  "Day 06",
+        "no":  "02",
+        "word":  "confident",
+        "phonetic":  "[kάnfidənt]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "자신감 있는, 확신하고 있는",
+        "relatedForms":  "confidence (명) 자신감, 확신",
+        "paraphrase":  [
+                           "convinced",
+                           "certain"
+                       ],
+        "exampleEn":  "quite confident about life",
+        "exampleKo":  "인생에 대해 꽤 자신 있는",
+        "memo":  "I am confident that we share the same goal. (저는 우리가 같은 목표를 가지고 있다고 확신합니다.)"
+    },
+    {
+        "id":  "d06-03",
+        "day":  "Day 06",
+        "no":  "03",
+        "word":  "given",
+        "phonetic":  "[gívn]",
+        "partOfSpeech":  "전치사/접속사",
+        "meaning":  "~라는 것을 감안하면",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "considering"
+                       ],
+        "exampleEn":  "Given that it is raining, we will have to cancel our picnic.",
+        "exampleKo":  "비가 온다는 것을 고려하면, 우리는 소풍을 취소해야 할 것이다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-04",
+        "day":  "Day 06",
+        "no":  "04",
+        "word":  "instead",
+        "phonetic":  "[instéd]",
+        "partOfSpeech":  "부사",
+        "meaning":  "대신에",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "I was going to watch a movie but went for a walk instead.",
+        "exampleKo":  "나는 영화를 보려고 했지만 대신 산책을 갔다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-05",
+        "day":  "Day 06",
+        "no":  "05",
+        "word":  "approximately",
+        "phonetic":  "[əprάksəmətli]",
+        "partOfSpeech":  "부사",
+        "meaning":  "대략",
+        "relatedForms":  "approximate (형) 대략적인, 근사치의",
+        "paraphrase":  [
+                           "almost",
+                           "nearly",
+                           "roughly",
+                           "about",
+                           "around"
+                       ],
+        "exampleEn":  "for approximately 15 minutes",
+        "exampleKo":  "대략 15분 동안",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-06",
+        "day":  "Day 06",
+        "no":  "06",
+        "word":  "absorb",
+        "phonetic":  "[æbsɔ́ːrb]",
+        "partOfSpeech":  "동사",
+        "meaning":  "흡수하다, 빨아들이이다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "digest",
+                           "soak up"
+                       ],
+        "exampleEn":  "Your body can absorb 30 grams of protein in one meal.",
+        "exampleKo":  "여러분의 몸은 한 끼에 30그램의 단백질을 흡수할 수 있습니다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-07",
+        "day":  "Day 06",
+        "no":  "07",
+        "word":  "exhibit",
+        "phonetic":  "[igzíbit]",
+        "partOfSpeech":  "동사/명사",
+        "meaning":  "전시하다 / 보이다, 나타내다 / 전시회, 전시품, 전시물",
+        "relatedForms":  "exhibition (명) 전시회",
+        "paraphrase":  [
+                           "display",
+                           "present",
+                           "show",
+                           "reveal"
+                       ],
+        "exampleEn":  "exhibit symptoms of stress",
+        "exampleKo":  "스트레스 증상을 보이다",
+        "memo":  "a photo exhibit (사진 전시회)"
+    },
+    {
+        "id":  "d06-08",
+        "day":  "Day 06",
+        "no":  "08",
+        "word":  "accuse",
+        "phonetic":  "[əkjúːz]",
+        "partOfSpeech":  "동사",
+        "meaning":  "비난하다, 고소하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "blame",
+                           "denounce"
+                       ],
+        "exampleEn":  "accuse Kevin of spreading false information",
+        "exampleKo":  "케빈이 잘못된 정보를 퍼뜨렸다고 비난하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-09",
+        "day":  "Day 06",
+        "no":  "09",
+        "word":  "apologize",
+        "phonetic":  "[əpάlədʒàiz]",
+        "partOfSpeech":  "동사",
+        "meaning":  "사과하다",
+        "relatedForms":  "apology (명) 사과",
+        "paraphrase":  [
+                           "express regret"
+                       ],
+        "exampleEn":  "apologize for the mistake",
+        "exampleKo":  "잘못을 사과하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-10",
+        "day":  "Day 06",
+        "no":  "10",
+        "word":  "cease",
+        "phonetic":  "[siːs]",
+        "partOfSpeech":  "동사",
+        "meaning":  "중단하다, 멈추다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "finish",
+                           "stop",
+                           "end",
+                           "halt"
+                       ],
+        "exampleEn":  "cease production of consumer goods",
+        "exampleKo":  "소비재의 생산을 중단하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-11",
+        "day":  "Day 06",
+        "no":  "11",
+        "word":  "vacant",
+        "phonetic":  "[véikənt]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "비어 있는, 공석의",
+        "relatedForms":  "vacancy (명) 빈자리, 공석, 결원; (호텔 등의) 빈 방",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "buy the vacant lot",
+        "exampleKo":  "공터를 매입하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-12",
+        "day":  "Day 06",
+        "no":  "12",
+        "word":  "accurate",
+        "phonetic":  "[ǽkjərit]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "정확한",
+        "relatedForms":  "accuracy (명) 정확, 정확성",
+        "paraphrase":  [
+                           "precise",
+                           "exact",
+                           "correct"
+                       ],
+        "exampleEn":  "an accurate description of the situation",
+        "exampleKo":  "상황의 정확한 묘사",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-13",
+        "day":  "Day 06",
+        "no":  "13",
+        "word":  "equivalent",
+        "phonetic":  "[ikwívələnt]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "동등한, 맞먹는",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "equal",
+                           "comparable",
+                           "identical"
+                       ],
+        "exampleEn":  "$1 is equivalent to about 1,300 won.",
+        "exampleKo":  "1달러는 1,300원에 상당한다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-14",
+        "day":  "Day 06",
+        "no":  "14",
+        "word":  "frequent",
+        "phonetic":  "[fríːkwənt]",
+        "partOfSpeech":  "형용사/동사",
+        "meaning":  "잦은, 빈번한 / 자주 방문하다",
+        "relatedForms":  "frequency (명) 빈도, frequently (부) 자주, 빈번히",
+        "paraphrase":  [
+                           "repeated",
+                           "common",
+                           "recurrent",
+                           "visit",
+                           "patronize"
+                       ],
+        "exampleEn":  "the most frequent cause of head injuries",
+        "exampleKo":  "머리 부상의 가장 빈번한 원인",
+        "memo":  "지텔프 동의어: The café is frequented by families with young children. -> (b) visited"
+    },
+    {
+        "id":  "d06-15",
+        "day":  "Day 06",
+        "no":  "15",
+        "word":  "administrative",
+        "phonetic":  "[ædmínəstrèitiv]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "행정적인, 관리의",
+        "relatedForms":  "administration (명) 행정, 관리, administer (동) 시행하다, 관리하다",
+        "paraphrase":  [
+                           "executive",
+                           "managerial"
+                       ],
+        "exampleEn":  "provide administrative support",
+        "exampleKo":  "행정적인 지원을 제공하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-16",
+        "day":  "Day 06",
+        "no":  "16",
+        "word":  "implement",
+        "phonetic":  "[ímpləmənt]",
+        "partOfSpeech":  "동사",
+        "meaning":  "실행하다, 시행하다",
+        "relatedForms":  "implementation (명) 실행, 시행",
+        "paraphrase":  [
+                           "enforce",
+                           "enact",
+                           "execute",
+                           "carry out"
+                       ],
+        "exampleEn":  "implement tax reform",
+        "exampleKo":  "세제 개혁을 시행하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-17",
+        "day":  "Day 06",
+        "no":  "17",
+        "word":  "locate",
+        "phonetic":  "[lóukeit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "~의 위치를 찾아내다",
+        "relatedForms":  "location (명) 장소, 지점",
+        "paraphrase":  [
+                           "discover",
+                           "find"
+                       ],
+        "exampleEn":  "try to locate the missing girl",
+        "exampleKo":  "실종된 여자 아이의 행방을 찾기 위해 노력하다",
+        "memo":  "숙어: be located (위치하다)"
+    },
+    {
+        "id":  "d06-18",
+        "day":  "Day 06",
+        "no":  "18",
+        "word":  "anticipate",
+        "phonetic":  "[æntísəpèit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "예감하다, 예상하다",
+        "relatedForms":  "anticipation (명) 기대, 예감",
+        "paraphrase":  [
+                           "expect",
+                           "predict",
+                           "forecast"
+                       ],
+        "exampleEn":  "anticipate a lot of participants",
+        "exampleKo":  "많은 참석자를 예상하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-19",
+        "day":  "Day 06",
+        "no":  "19",
+        "word":  "literally",
+        "phonetic":  "[lítərəli]",
+        "partOfSpeech":  "부사",
+        "meaning":  "문자 그대로, 말 그대로",
+        "relatedForms":  "literal (형) 문자 그대로의, 말 그대로의",
+        "paraphrase":  [
+                           "exactly",
+                           "actually"
+                       ],
+        "exampleEn":  "I was literally about to die of hunger.",
+        "exampleKo":  "나는 말 그대로 배고파 죽을 지경이었다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-20",
+        "day":  "Day 06",
+        "no":  "20",
+        "word":  "complicated",
+        "phonetic":  "[kάmpləkèitid]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "복잡한",
+        "relatedForms":  "complication (명) 복잡, 복잡한 문제",
+        "paraphrase":  [
+                           "difficult",
+                           "complex",
+                           "intricate"
+                       ],
+        "exampleEn":  "the complicated process of buying a home",
+        "exampleKo":  "집을 사는 복잡한 과정",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-21",
+        "day":  "Day 06",
+        "no":  "21",
+        "word":  "inform",
+        "phonetic":  "[infɔ́ːrm]",
+        "partOfSpeech":  "동사",
+        "meaning":  "통보하다, 알리다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "notify",
+                           "tell",
+                           "advise"
+                       ],
+        "exampleEn":  "Erica informed the tenants that the rent is due tomorrow.",
+        "exampleKo":  "에리카는 세입자들에게 집세가 내일까지라고 알렸다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-22",
+        "day":  "Day 06",
+        "no":  "22",
+        "word":  "adequate",
+        "phonetic":  "[ǽdikwit]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "적절한, 충분한",
+        "relatedForms":  "inadequate (형) 부적절한, 불충분한",
+        "paraphrase":  [
+                           "enough",
+                           "suitable",
+                           "sufficient"
+                       ],
+        "exampleEn":  "read under adequate lighting to protect my eyes",
+        "exampleKo":  "내 눈을 보호하기 위해 적절한 조명 아래서 책을 읽다",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-23",
+        "day":  "Day 06",
+        "no":  "23",
+        "word":  "devastate",
+        "phonetic":  "[dévəstèit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "완전히 파괴하다, 황폐화시키다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "destroy",
+                           "batter",
+                           "ruin",
+                           "wreck"
+                       ],
+        "exampleEn":  "The floods devastated the crops.",
+        "exampleKo":  "홍수로 농작물이 황폐해졌다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-24",
+        "day":  "Day 06",
+        "no":  "24",
+        "word":  "massive",
+        "phonetic":  "[mǽsiv]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "거대한, 대규모의",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "huge",
+                           "enormous",
+                           "gigantic",
+                           "vast"
+                       ],
+        "exampleEn":  "erect a massive statue",
+        "exampleKo":  "거대한 동상을 세우다",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-25",
+        "day":  "Day 06",
+        "no":  "25",
+        "word":  "acknowledge",
+        "phonetic":  "[æknάlidʒ]",
+        "partOfSpeech":  "동사",
+        "meaning":  "인정하다, 승인하다 / 감사를 표하다",
+        "relatedForms":  "acknowledgment (명) 인정, 승인; 감사, 사례",
+        "paraphrase":  [
+                           "admit",
+                           "accept",
+                           "recognize"
+                       ],
+        "exampleEn":  "Gary acknowledged that he was wrong.",
+        "exampleKo":  "게리는 자신이 틀렸다는 것을 인정했다.",
+        "memo":  "지텔프 동의어: We would like to acknowledge your continued support. -> (b) recognize"
+    },
+    {
+        "id":  "d06-26",
+        "day":  "Day 06",
+        "no":  "26",
+        "word":  "liquid",
+        "phonetic":  "[líkwid]",
+        "partOfSpeech":  "명사/형용사",
+        "meaning":  "액체 / 액체의",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "fluid"
+                       ],
+        "exampleEn":  "spill liquid soap all over the floor",
+        "exampleKo":  "바닥에 액체 비누를 엎지르다",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-27",
+        "day":  "Day 06",
+        "no":  "27",
+        "word":  "comprehensive",
+        "phonetic":  "[kὰmprihénsiv]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "포괄적인, 광범위한",
+        "relatedForms":  "comprehend (동) 파악하다, 이해하다",
+        "paraphrase":  [
+                           "thorough",
+                           "extensive",
+                           "broad"
+                       ],
+        "exampleEn":  "carry out a comprehensive study",
+        "exampleKo":  "포괄적인 연구를 수행하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-28",
+        "day":  "Day 06",
+        "no":  "28",
+        "word":  "enclose",
+        "phonetic":  "[inklóuz]",
+        "partOfSpeech":  "동사",
+        "meaning":  "동봉하다 / 둘러싸다, 에워싸다",
+        "relatedForms":  "enclosed (형) 동봉된",
+        "paraphrase":  [
+                           "include",
+                           "surround",
+                           "cover"
+                       ],
+        "exampleEn":  "enclose the area with a fence",
+        "exampleKo":  "그 구역을 울타리로 둘러싸다",
+        "memo":  "Enclosed is a copy of my résumé. (제 이력서 사본을 동봉합니다.)"
+    },
+    {
+        "id":  "d06-29",
+        "day":  "Day 06",
+        "no":  "29",
+        "word":  "adapt",
+        "phonetic":  "[ədǽpt]",
+        "partOfSpeech":  "동사",
+        "meaning":  "개조하다, 바꾸다 / 적응하다 / (연극, 영화 등으로) 각색하다",
+        "relatedForms":  "adaptation (명) 개조, 변경; 각색 작품",
+        "paraphrase":  [
+                           "change",
+                           "modify",
+                           "adjust",
+                           "alter",
+                           "convert"
+                       ],
+        "exampleEn":  "adapt the recipe to use less sugar",
+        "exampleKo":  "설탕을 덜 쓰도록 조리법을 수정하다",
+        "memo":  "The book has been adapted into a movie. (그 책은 영화로 각색되었다.)"
+    },
+    {
+        "id":  "d06-30",
+        "day":  "Day 06",
+        "no":  "30",
+        "word":  "chemical",
+        "phonetic":  "[kémikəl]",
+        "partOfSpeech":  "명사/형용사",
+        "meaning":  "화학물질 / 화학의",
+        "relatedForms":  "chemistry (명) 화학, chemist (명) 화학자",
+        "paraphrase":  [
+                           "substance"
+                       ],
+        "exampleEn":  "contain toxic chemicals",
+        "exampleKo":  "유독성 화학물질을 함유하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-31",
+        "day":  "Day 06",
+        "no":  "31",
+        "word":  "reduce",
+        "phonetic":  "[ridjúːs]",
+        "partOfSpeech":  "동사",
+        "meaning":  "낮추다, 줄이다",
+        "relatedForms":  "reduction (명) 감소, 삭감",
+        "paraphrase":  [
+                           "cut",
+                           "lower",
+                           "decrease",
+                           "diminish"
+                       ],
+        "exampleEn":  "reduce the amount of waste",
+        "exampleKo":  "폐기물의 양을 줄이다",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-32",
+        "day":  "Day 06",
+        "no":  "32",
+        "word":  "affordable",
+        "phonetic":  "[əfɔ́ːrdəbl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "저렴한",
+        "relatedForms":  "afford (동) ~을 감당할 여유가 있다",
+        "paraphrase":  [
+                           "inexpensive",
+                           "reasonable",
+                           "moderate"
+                       ],
+        "exampleEn":  "have access to affordable health care",
+        "exampleKo":  "저렴한 의료 서비스를 이용할 수 있다",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-33",
+        "day":  "Day 06",
+        "no":  "33",
+        "word":  "distinct",
+        "phonetic":  "[distíŋkt]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "뚜렷한, 분명한 / 독특한, 전혀 다른",
+        "relatedForms":  "distinction (명) 차이; 특별함",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "have a distinct sense of humor",
+        "exampleKo":  "독특한 유머 감각을 가지고 있다",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-34",
+        "day":  "Day 06",
+        "no":  "34",
+        "word":  "entry",
+        "phonetic":  "[éntri]",
+        "partOfSpeech":  "명사",
+        "meaning":  "입장, 진입 / 입력 / 응모작, 출품작",
+        "relatedForms":  "enter (동) 입장하다, 들어가다; 입력하다",
+        "paraphrase":  [
+                           "access",
+                           "admission",
+                           "record",
+                           "registration"
+                       ],
+        "exampleEn":  "illegal entry into the United States",
+        "exampleKo":  "미국으로의 불법 입국",
+        "memo":  "entries for the writing competition (글쓰기 대회의 응모작들)"
+    },
+    {
+        "id":  "d06-35",
+        "day":  "Day 06",
+        "no":  "35",
+        "word":  "fix",
+        "phonetic":  "[fiks]",
+        "partOfSpeech":  "동사",
+        "meaning":  "고치다, 해결하다 / 고정시키다",
+        "relatedForms":  "fixed (형) 고정된",
+        "paraphrase":  [
+                           "repair",
+                           "mend",
+                           "attach",
+                           "tie",
+                           "secure"
+                       ],
+        "exampleEn":  "fix the leak in the ceiling",
+        "exampleKo":  "천장의 누수를 고치다",
+        "memo":  "지텔프 동의어: We can\u0027t leave until we fix the flat tire. -> (b) repair"
+    },
+    {
+        "id":  "d06-36",
+        "day":  "Day 06",
+        "no":  "36",
+        "word":  "admire",
+        "phonetic":  "[ædmáiər]",
+        "partOfSpeech":  "동사",
+        "meaning":  "존경하다, 우러러보다",
+        "relatedForms":  "admirable (형) 감탄할 만한, 존경스러운",
+        "paraphrase":  [
+                           "respect",
+                           "honor",
+                           "appreciate"
+                       ],
+        "exampleEn":  "admire those who never give up",
+        "exampleKo":  "포기하지 않는 사람들을 존경하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-37",
+        "day":  "Day 06",
+        "no":  "37",
+        "word":  "comprise",
+        "phonetic":  "[kəmpráiz]",
+        "partOfSpeech":  "동사",
+        "meaning":  "구성되다, 이뤄지다 / 차지하다, 구성하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "include",
+                           "consist of",
+                           "form",
+                           "constitute"
+                       ],
+        "exampleEn":  "Women comprise a majority of childcare workers.",
+        "exampleKo":  "여성이 보육시설 종사자의 대다수를 차지한다.",
+        "memo":  "숙어: be comprised of (~로 구성되다)"
+    },
+    {
+        "id":  "d06-38",
+        "day":  "Day 06",
+        "no":  "38",
+        "word":  "impressive",
+        "phonetic":  "[imprésiv]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "인상적인",
+        "relatedForms":  "impression (명) 인상, 느낌, impress (동) 깊은 인상을 주다, 감동을 주다",
+        "paraphrase":  [
+                           "prodigious",
+                           "dazzling"
+                       ],
+        "exampleEn":  "show impressive growth",
+        "exampleKo":  "인상적인 성장을 보이다",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-39",
+        "day":  "Day 06",
+        "no":  "39",
+        "word":  "project",
+        "phonetic":  "[prάdʒekt] / [prədʒékt]",
+        "partOfSpeech":  "동사/명사",
+        "meaning":  "예상하다, 예측하다, 전망하다 / 프로젝트, 사업",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "expect",
+                           "estimate",
+                           "forecast",
+                           "predict"
+                       ],
+        "exampleEn":  "project economic growth of 2%",
+        "exampleKo":  "2%의 경제 성장을 전망하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-40",
+        "day":  "Day 06",
+        "no":  "40",
+        "word":  "adjust",
+        "phonetic":  "[ədʒʌ́st]",
+        "partOfSpeech":  "동사",
+        "meaning":  "조절하다, 조정하다 / 적응하다",
+        "relatedForms":  "adjustment (명) 조절; 적응",
+        "paraphrase":  [
+                           "change",
+                           "adapt",
+                           "alter",
+                           "modify"
+                       ],
+        "exampleEn":  "adjust the light in the living room",
+        "exampleKo":  "거실의 조명을 조절하다",
+        "memo":  "adjust to the new schedule (새로운 일정에 적응하다)"
+    },
+    {
+        "id":  "d06-41",
+        "day":  "Day 06",
+        "no":  "41",
+        "word":  "organism",
+        "phonetic":  "[ɔ́ːrgənìzəm]",
+        "partOfSpeech":  "명사",
+        "meaning":  "유기체, 생물, 미생물",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "All living organisms need water to survive.",
+        "exampleKo":  "모든 살아있는 유기체는 생존하기 위해 물이 필요하다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-42",
+        "day":  "Day 06",
+        "no":  "42",
+        "word":  "advantage",
+        "phonetic":  "[ædvǽntidʒ]",
+        "partOfSpeech":  "명사",
+        "meaning":  "이점, 장점, 유리한 점",
+        "relatedForms":  "disadvantage (명) 불리한 점",
+        "paraphrase":  [
+                           "edge",
+                           "benefit"
+                       ],
+        "exampleEn":  "Owning a home has an advantage over renting.",
+        "exampleKo":  "집을 소유하는 것은 임대하는 것보다 장점이 있다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-43",
+        "day":  "Day 06",
+        "no":  "43",
+        "word":  "assist",
+        "phonetic":  "[əsíst]",
+        "partOfSpeech":  "동사",
+        "meaning":  "돕다, 보조하다",
+        "relatedForms":  "assistance (명) 도움, 지원",
+        "paraphrase":  [
+                           "help",
+                           "support",
+                           "aid"
+                       ],
+        "exampleEn":  "assist with the cleaning up",
+        "exampleKo":  "청소를 돕다",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-44",
+        "day":  "Day 06",
+        "no":  "44",
+        "word":  "command",
+        "phonetic":  "[kəmǽnd]",
+        "partOfSpeech":  "동사/명사",
+        "meaning":  "지휘하다, 명령하다 / 지휘, 명령 / (언어에 대한) 지식, 능력",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "order",
+                           "compel",
+                           "direct"
+                       ],
+        "exampleEn":  "train a dog to respond to human commands",
+        "exampleKo":  "사람의 명령에 반응하도록 개를 훈련시키다",
+        "memo":  "지텔프 동의어: The captain commanded the troops to halt. -> (a) ordered"
+    },
+    {
+        "id":  "d06-45",
+        "day":  "Day 06",
+        "no":  "45",
+        "word":  "exhausted",
+        "phonetic":  "[igzɔ́ːstid]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "지친, 기진맥진한",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "tired",
+                           "fatigued"
+                       ],
+        "exampleEn":  "exhausted after working all day",
+        "exampleKo":  "하루 종일 일한 후 녹초가 된",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-46",
+        "day":  "Day 06",
+        "no":  "46",
+        "word":  "disrupt",
+        "phonetic":  "[disrʌ́pt]",
+        "partOfSpeech":  "동사",
+        "meaning":  "방해하다, 지장을 주다",
+        "relatedForms":  "disruptive (형) 방해하는, 지장을 주는, disruption (명) 방해, 지장",
+        "paraphrase":  [
+                           "interrupt",
+                           "disturb",
+                           "hamper",
+                           "unsettle"
+                       ],
+        "exampleEn":  "The flooding disrupted travel on many roads.",
+        "exampleKo":  "홍수는 많은 도로의 교통에 지장을 주었다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d06-47",
+        "day":  "Day 06",
+        "no":  "47",
+        "word":  "verify",
+        "phonetic":  "[vérəfài]",
+        "partOfSpeech":  "동사",
+        "meaning":  "확인하다, 증명하다",
+        "relatedForms":  "verification (명) 확인, 증명",
+        "paraphrase":  [
+                           "check",
+                           "prove",
+                           "confirm"
+                       ],
+        "exampleEn":  "Megan had to be fingerprinted to verify her identity.",
+        "exampleKo":  "메건은 신원을 확인하기 위해 지문을 채취해야 했다.",
+        "memo":  "지텔프 동의어: A blood test has verified that the patient has the flu. -> (a) confirmed"
+    },
+    {
+        "id":  "d06-48",
+        "day":  "Day 06",
+        "no":  "48",
+        "word":  "appreciate",
+        "phonetic":  "[əpríːʃièit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "고마워하다 / 진가를 알다, 감상할 줄 알다 / (가치가) 오르다",
+        "relatedForms":  "appreciation (명) 감사; 이해, 감상, appreciative (형) 고마워하는; 감상하는",
+        "paraphrase":  [
+                           "be grateful for",
+                           "value",
+                           "respect",
+                           "admire",
+                           "increase",
+                           "rise"
+                       ],
+        "exampleEn":  "appreciate working in a creative environment",
+        "exampleKo":  "창의적인 환경에서 일하는 것을 감사히 여기다",
+        "memo":  "She can appreciate a good book. (그녀는 좋은 책의 가치를 안다.)"
+    },
+    {
+        "id":  "d06-49",
+        "day":  "Day 06",
+        "no":  "49",
+        "word":  "competitive",
+        "phonetic":  "[kəmpétətiv]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "경쟁력 있는 / 경쟁의, 경쟁을 하는",
+        "relatedForms":  "competitor (명) 경쟁자",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "competitive salary",
+        "exampleKo":  "경쟁력 있는 급여",
+        "memo":  "a highly competitive world (경쟁이 치열한 세계)"
+    },
+    {
+        "id":  "d06-50",
+        "day":  "Day 06",
+        "no":  "50",
+        "word":  "consent",
+        "phonetic":  "[kənsént]",
+        "partOfSpeech":  "명사/동사",
+        "meaning":  "동의, 합의 / 동의하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "agreement",
+                           "assent",
+                           "approval",
+                           "agree",
+                           "concur"
+                       ],
+        "exampleEn":  "require proof of parental consent",
+        "exampleKo":  "부모 동의의 증명을 필요로 하다",
+        "memo":  ""
+    }
 ];
