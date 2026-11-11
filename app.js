@@ -674,6 +674,62 @@
   // --------------------------------------------------------------------------
   // 4. 단어 리스트 및 필터/정렬 렌더링
   // --------------------------------------------------------------------------
+  // 유사품사어(파생어) 텍스트를 개별 단어 단위로 파싱하여 발음 재생이 가능한 칩으로 변환
+  function parseRelatedForms(rawStr) {
+    if (!rawStr || rawStr === '-' || !rawStr.trim()) return [];
+    // 쉼표 뒤에 영어단어와 괄호(품사)가 오는 패턴을 기준으로 분리
+    const parts = rawStr.split(/,\s*(?=[A-Za-z][A-Za-z\s\-]*\s*\()/);
+    const results = [];
+    parts.forEach(p => {
+      const trimmed = p.trim();
+      if (!trimmed) return;
+      const match = trimmed.match(/^([A-Za-z][A-Za-z\s\-]*?)\s*(\([^\)]+\).*)$/);
+      if (match) {
+        results.push({
+          word: match[1].trim(),
+          desc: match[2].trim(),
+          raw: trimmed
+        });
+      } else {
+        const fallbackMatch = trimmed.match(/^([A-Za-z][A-Za-z\s\-]*)/);
+        if (fallbackMatch && fallbackMatch[1].trim()) {
+          const w = fallbackMatch[1].trim();
+          results.push({
+            word: w,
+            desc: trimmed.slice(w.length).trim(),
+            raw: trimmed
+          });
+        } else {
+          results.push({
+            word: '',
+            desc: trimmed,
+            raw: trimmed
+          });
+        }
+      }
+    });
+    return results;
+  }
+
+  function renderRelatedFormsChips(rawStr, isCompact = false) {
+    const list = parseRelatedForms(rawStr);
+    if (list.length === 0) return '';
+
+    return list.map(item => {
+      if (!item.word) {
+        return `<span class="text-slate-500">${item.desc}</span>`;
+      }
+      const cleanWord = item.word.replace(/'/g, "\\'");
+      return `
+        <span class="tts-related-chip inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-indigo-50/90 hover:bg-indigo-100 text-indigo-900 border border-indigo-200/90 font-medium cursor-pointer transition shadow-2xs group" data-word="${cleanWord}" title="'${cleanWord}' 발음 듣기" onclick="event.stopPropagation(); window.speakText('${cleanWord}', event)">
+          <span class="font-bold text-indigo-700 underline decoration-indigo-300 group-hover:text-indigo-950">${item.word}</span>
+          <i class="fa-solid fa-volume-high text-[10px] text-indigo-500 group-hover:scale-110 transition-transform"></i>
+          ${item.desc ? `<span class="text-[11px] text-slate-600 font-normal">${item.desc}</span>` : ''}
+        </span>
+      `;
+    }).join(' ');
+  }
+
   function getAllDays() {
     const daySet = new Set(words.map(w => w.day || 'Day 01'));
     const days = Array.from(daySet);
@@ -939,10 +995,10 @@
 
           <!-- 유사품사어 & 패러프레이징 칩 -->
           <div class="space-y-1.5 pt-1 text-xs border-t border-slate-100">
-            ${w.relatedForms ? `
-              <div class="text-slate-500 truncate flex items-center gap-1">
+            ${w.relatedForms && w.relatedForms !== '-' && w.relatedForms.trim() ? `
+              <div class="text-slate-500 flex items-center gap-1.5 flex-wrap">
                 <span class="font-bold text-indigo-600 shrink-0"><i class="fa-solid fa-network-wired"></i> 파생:</span>
-                <span>${w.relatedForms}</span>
+                ${renderRelatedFormsChips(w.relatedForms, true)}
               </div>
             ` : ''}
 
@@ -1125,7 +1181,18 @@
     ttsBtn.onclick = () => speak(item.word);
 
     // 파생어
-    document.getElementById('modalRelatedForms').textContent = item.relatedForms || '등록된 유사 품사어가 없습니다.';
+    const modalRelatedEl = document.getElementById('modalRelatedForms');
+    if (modalRelatedEl) {
+      if (item.relatedForms && item.relatedForms !== '-' && item.relatedForms.trim()) {
+        modalRelatedEl.innerHTML = `
+          <div class="flex flex-wrap gap-2">
+            ${renderRelatedFormsChips(item.relatedForms, false)}
+          </div>
+        `;
+      } else {
+        modalRelatedEl.innerHTML = '<span class="text-slate-400 font-normal">등록된 유사 품사어가 없습니다.</span>';
+      }
+    }
 
     // 패러프레이징 칩 (등록된 단어는 책 아이콘 + 상세정보 클릭 시 팝업 전환)
     const paraContainer = document.getElementById('modalParaphrase');
@@ -1212,8 +1279,9 @@
     openWordDetailModal(id, true);
   };
 
-  window.speakText = function(text) {
-    speak(text);
+  window.speakText = function(text, e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    speak(text, e);
   };
 
   // --------------------------------------------------------------------------
@@ -3308,6 +3376,29 @@
       `).join('');
     } else {
       paraBox.classList.add('hidden');
+    }
+
+    // 파생어 (유사품사어)
+    const relatedBox = document.getElementById('fcBackRelatedBox');
+    const relatedEl = document.getElementById('fcBackRelated');
+    if (relatedBox && relatedEl) {
+      if (item.relatedForms && item.relatedForms !== '-' && item.relatedForms.trim()) {
+        relatedBox.classList.remove('hidden');
+        const list = parseRelatedForms(item.relatedForms);
+        relatedEl.innerHTML = list.map(rf => {
+          if (!rf.word) return `<span class="text-slate-300">${rf.desc}</span>`;
+          const cleanWord = rf.word.replace(/'/g, "\\'");
+          return `
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-white/20 hover:bg-white/30 text-white font-medium cursor-pointer transition shadow-xs group" onclick="event.stopPropagation(); window.speakText('${cleanWord}', event)" title="'${cleanWord}' 발음 듣기">
+              <span class="font-bold underline decoration-white/50 group-hover:text-amber-200">${rf.word}</span>
+              <i class="fa-solid fa-volume-high text-[10px] text-indigo-200"></i>
+              ${rf.desc ? `<span class="text-[11px] text-indigo-100 font-normal">${rf.desc}</span>` : ''}
+            </span>
+          `;
+        }).join(' ');
+      } else {
+        relatedBox.classList.add('hidden');
+      }
     }
 
     // 예문
