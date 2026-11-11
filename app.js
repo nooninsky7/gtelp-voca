@@ -78,12 +78,21 @@
 
     // INITIAL_WORDS_DATA를 기준으로 데이터 맵 생성 (최신 교재 데이터 반영)
     const wordMap = new Map();
-    INITIAL_WORDS_DATA.forEach(w => wordMap.set(w.id, { ...w }));
+    const existingWordKeys = new Set();
+
+    INITIAL_WORDS_DATA.forEach(w => {
+      wordMap.set(w.id, { ...w });
+      const key = `${w.day}::${(w.word || '').trim().toLowerCase()}`;
+      existingWordKeys.add(key);
+    });
     
-    // 사용자가 로컬에서 수정한 내용이나 추가된 커스텀 단어가 있다면 병합
+    // 사용자가 로컬에서 수정한 내용이나 추가된 커스텀 단어가 있다면 병합 (단, 정식 단어와 중복되는 구버전 단어는 최신 정식 데이터 우선)
     loaded.forEach(w => {
-      if (!wordMap.has(w.id)) {
-        wordMap.set(w.id, w);
+      const normalizedDay = (w.day === '기초 01' || w.day === '기초01' || w.day === '기초 필수 단어') ? '기초단어' : w.day;
+      const key = `${normalizedDay}::${(w.word || '').trim().toLowerCase()}`;
+      if (!wordMap.has(w.id) && !existingWordKeys.has(key)) {
+        wordMap.set(w.id, { ...w, day: normalizedDay });
+        existingWordKeys.add(key);
       }
     });
 
@@ -2456,8 +2465,44 @@
       reader.onload = (event) => {
         try {
           const imported = JSON.parse(event.target.result);
-          if (imported.words && Array.isArray(imported.words)) {
-            words = imported.words;
+          let newWordsList = null;
+          if (Array.isArray(imported)) {
+            newWordsList = imported;
+          } else if (imported.words && Array.isArray(imported.words)) {
+            newWordsList = imported.words;
+          }
+
+          if (newWordsList) {
+            words = newWordsList.map((item, idx) => {
+              const day = (item.day === '기초 01' || item.day === '기초01' || item.day === '기초 필수 단어') ? '기초단어' : (item.day || 'Day 01');
+              let id = item.id;
+              if (!id) {
+                const noStr = item.no ? String(item.no).padStart(2, '0') : String(idx + 1).padStart(2, '0');
+                if (day === '기초단어') {
+                  id = `basic-${noStr}`;
+                } else if (day.startsWith('Day ')) {
+                  const dayNum = day.replace('Day ', '').padStart(2, '0');
+                  id = `d${dayNum}-${noStr}`;
+                } else {
+                  id = `custom-${Date.now()}-${idx}`;
+                }
+              }
+              return {
+                id: id,
+                day: day,
+                no: item.no ? String(item.no).padStart(2, '0') : String(idx + 1).padStart(2, '0'),
+                word: item.word || '',
+                phonetic: item.phonetic || '',
+                partOfSpeech: item.partOfSpeech || '품사',
+                meaning: item.meaning || '',
+                relatedForms: item.relatedForms || '-',
+                paraphrase: Array.isArray(item.paraphrase) ? item.paraphrase : (item.paraphrase ? [item.paraphrase] : []),
+                exampleEn: item.exampleEn || '',
+                exampleKo: item.exampleKo || '',
+                memo: item.memo || '',
+                options: item.options || undefined
+              };
+            });
             saveWords();
           }
           if (imported.wrongStats) {
@@ -2474,7 +2519,7 @@
           setupClozeScopeUI();
           renderDayGridModal();
           closeModal('dataManageModal');
-          showToast('데이터를 성공적으로 복원했습니다!');
+          showToast(`총 ${words.length}개 단어 데이터가 성공적으로 등록되었습니다!`);
         } catch (err) {
           alert('올바른 백업 JSON 파일이 아닙니다.');
         }
