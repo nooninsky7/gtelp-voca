@@ -3,6 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="VOCA Master">
+  <meta name="mobile-web-app-capable" content="yes">
   <title>VOCA Master - Day별 단어장 & 실전 퀴즈</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -37,6 +41,9 @@
         </button>
         <button id="ttsSettingsBtn" title="발음 설정" class="w-9 h-9 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition">
           <i class="fa-solid fa-volume-high"></i>
+        </button>
+        <button id="btnToggleFullscreen" title="전체화면으로 보기 (툴바 숨기기)" class="w-9 h-9 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 flex items-center justify-center transition shadow-2xs" onclick="window.toggleFullscreen()">
+          <i id="fullscreenIcon" class="fa-solid fa-expand text-sm"></i>
         </button>
         <button id="dataManageBtn" title="데이터 백업/관리" class="w-9 h-9 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition">
           <i class="fa-solid fa-database"></i>

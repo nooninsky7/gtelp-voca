@@ -2434,9 +2434,10 @@
       startStandardQuiz('wrong');
     });
 
-    // 상단 아이콘 모달 오픈
+    // 상단 아이콘 모달 오픈 & 전체화면 토글
     document.getElementById('ttsSettingsBtn')?.addEventListener('click', () => openModal('ttsSettingsModal'));
     document.getElementById('dataManageBtn')?.addEventListener('click', () => openModal('dataManageModal'));
+    document.getElementById('btnToggleFullscreen')?.addEventListener('click', () => toggleFullscreen());
     document.getElementById('closeDetailModalBtn')?.addEventListener('click', () => closeModal('wordDetailModal'));
 
     // 데이터 백업 내보내기
@@ -2551,6 +2552,61 @@
       }
     });
   }
+
+  // --- [태블릿/모바일 전체화면 (Fullscreen) 기능] ---
+  function isCurrentlyFullscreen() {
+    return !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+  }
+
+  function toggleFullscreen() {
+    const doc = document;
+    const docEl = document.documentElement;
+
+    if (!isCurrentlyFullscreen()) {
+      const request = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
+      if (request) {
+        request.call(docEl).then(() => {
+          showToast('🖥️ 전체화면 모드로 전환되었습니다.');
+        }).catch(() => {
+          showToast('🖥️ 전체화면 모드로 전환되었습니다.');
+        });
+      } else {
+        alert('현재 브라우저에서는 전체화면 버튼 API를 직접 지원하지 않습니다.\n\n💡 팁: 태블릿 브라우저 메뉴(공유/설정)에서 [홈 화면에 추가]를 하시면 상단 주소창과 툴바가 완전히 사라진 깔끔한 전체화면 앱으로 이용하실 수 있습니다!');
+      }
+    } else {
+      const exit = doc.exitFullscreen || doc.webkitExitFullscreen || doc.mozCancelFullScreen || doc.msExitFullscreen;
+      if (exit) {
+        exit.call(doc).then(() => {
+          showToast('전체화면이 해제되었습니다.');
+        }).catch(() => {});
+      }
+    }
+  }
+
+  function updateFullscreenUI() {
+    const isFs = isCurrentlyFullscreen();
+    const icon = document.getElementById('fullscreenIcon');
+    const btn = document.getElementById('btnToggleFullscreen');
+    if (icon) {
+      icon.className = isFs ? 'fa-solid fa-compress text-sm' : 'fa-solid fa-expand text-sm';
+    }
+    if (btn) {
+      btn.title = isFs ? '전체화면 종료' : '전체화면으로 보기 (툴바 숨기기)';
+      if (isFs) {
+        btn.classList.add('bg-indigo-600', 'text-white', 'border-indigo-600');
+        btn.classList.remove('bg-indigo-50', 'text-indigo-700', 'border-indigo-200');
+      } else {
+        btn.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600');
+        btn.classList.add('bg-indigo-50', 'text-indigo-700', 'border-indigo-200');
+      }
+    }
+  }
+
+  ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(ev => {
+    document.addEventListener(ev, updateFullscreenUI);
+  });
+
+  window.toggleFullscreen = toggleFullscreen;
 
   function initAddWordUI() {
     const daySelect = document.getElementById('newWordDaySelect');
