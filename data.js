@@ -13687,5 +13687,879 @@ const INITIAL_WORDS_DATA = [
         "exampleEn":  "Sharks eat various prey.",
         "exampleKo":  "상어는 다양한 먹이를 먹는다.",
         "memo":  ""
+    },
+  {
+        "id":  "d16-01",
+        "day":  "Day 16",
+        "no":  "01",
+        "word":  "forbid",
+        "phonetic":  "[fərbíd]",
+        "partOfSpeech":  "동사",
+        "meaning":  "금지하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "ban",
+                           "prohibit",
+                           "outlaw",
+                           "proscribe"
+                       ],
+        "exampleEn":  "forbid smoking in public places",
+        "exampleKo":  "공공장소에서의 흡연을 금지하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-02",
+        "day":  "Day 16",
+        "no":  "02",
+        "word":  "interact",
+        "phonetic":  "[ìntərǽkt]",
+        "partOfSpeech":  "동사",
+        "meaning":  "소통하다, 교류하다 / 상호작용하다",
+        "relatedForms":  "interaction (명) 교류; 상호작용",
+        "paraphrase":  [
+                           "interplay"
+                       ],
+        "exampleEn":  "interact with others through social media",
+        "exampleKo":  "SNS를 통해 다른 사람들과 교류하다",
+        "memo":  "find out how the medicine interacts with other drugs (그 약이 다른 약과 어떻게 상호작용하는지 알아내다)"
+    },
+    {
+        "id":  "d16-03",
+        "day":  "Day 16",
+        "no":  "03",
+        "word":  "dedication",
+        "phonetic":  "[dèdikéiʃən]",
+        "partOfSpeech":  "명사",
+        "meaning":  "전념, 헌신",
+        "relatedForms":  "dedicate (동) 전념하다, 헌신하다",
+        "paraphrase":  [
+                           "devotion",
+                           "commitment",
+                           "loyalty"
+                       ],
+        "exampleEn":  "Ricky showed dedication to his project.",
+        "exampleKo":  "리키는 그의 프로젝트에 헌신적인 모습을 보였다.",
+        "memo":  "지텔프 동의어: From a young age, Kelly showed dedication to becoming a doctor. -> (b) commitment"
+    },
+    {
+        "id":  "d16-04",
+        "day":  "Day 16",
+        "no":  "04",
+        "word":  "quantity",
+        "phonetic":  "[kwάntəti]",
+        "partOfSpeech":  "명사",
+        "meaning":  "양, 수량",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "amount",
+                           "number",
+                           "volume"
+                       ],
+        "exampleEn":  "a large quantity of waste",
+        "exampleKo":  "대량의 폐기물",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-05",
+        "day":  "Day 16",
+        "no":  "05",
+        "word":  "architecture",
+        "phonetic":  "[άːrkitèktʃər]",
+        "partOfSpeech":  "명사",
+        "meaning":  "건축, 건축양식",
+        "relatedForms":  "architect (명) 건축가",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "medieval architecture",
+        "exampleKo":  "중세 건축 양식",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-06",
+        "day":  "Day 16",
+        "no":  "06",
+        "word":  "designated",
+        "phonetic":  "[dézignèitid]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "지정된",
+        "relatedForms":  "designate (동) 지정하다",
+        "paraphrase":  [
+                           "reserved"
+                       ],
+        "exampleEn":  "designated parking areas",
+        "exampleKo":  "지정된 주차 구역",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-07",
+        "day":  "Day 16",
+        "no":  "07",
+        "word":  "duplicate",
+        "phonetic":  "[djúːpləkèit] / [djúːplikət]",
+        "partOfSpeech":  "동사/명사",
+        "meaning":  "(중복해서) 다시 하다 / 복제하다, 사본을 만들다 / 복제품, 사본",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "repeat",
+                           "copy",
+                           "reproduction"
+                       ],
+        "exampleEn":  "It is important to avoid duplicating work when possible.",
+        "exampleKo":  "가능한 한 중복 작업을 피하는 것이 중요하다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-08",
+        "day":  "Day 16",
+        "no":  "08",
+        "word":  "capture",
+        "phonetic":  "[kǽptʃər]",
+        "partOfSpeech":  "동사",
+        "meaning":  "<사람·동물> 포획하다 / 점령하다 / <흥미·관심> 사로잡다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "take",
+                           "catch",
+                           "grab",
+                           "invade",
+                           "seize",
+                           "occupy",
+                           "engage"
+                       ],
+        "exampleEn":  "capture the enemy\u0027s base",
+        "exampleKo":  "적의 기지를 점령하다",
+        "memo":  "capture the interest of the audience (관객의 흥미를 끌다)"
+    },
+    {
+        "id":  "d16-09",
+        "day":  "Day 16",
+        "no":  "09",
+        "word":  "collaborate",
+        "phonetic":  "[kəlǽbərèit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "협력하다",
+        "relatedForms":  "collaboration (명) 협력, 합작(품)",
+        "paraphrase":  [
+                           "cooperate",
+                           "join forces"
+                       ],
+        "exampleEn":  "collaborate with other departments",
+        "exampleKo":  "다른 부서와 협력하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-10",
+        "day":  "Day 16",
+        "no":  "10",
+        "word":  "chase",
+        "phonetic":  "[tʃeis]",
+        "partOfSpeech":  "동사",
+        "meaning":  "추격하다, 뒤쫓다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "follow",
+                           "pursue"
+                       ],
+        "exampleEn":  "The police were chasing the thief.",
+        "exampleKo":  "경찰은 도둑을 쫓고 있었다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-11",
+        "day":  "Day 16",
+        "no":  "11",
+        "word":  "embarrassed",
+        "phonetic":  "[imbǽrəst]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "당황스러운",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "ashamed",
+                           "abashed",
+                           "uncomfortable"
+                       ],
+        "exampleEn":  "Ella was embarrassed to find that she had forgotten her wallet.",
+        "exampleKo":  "엘라는 지갑을 잊어버린 것을 알고 당황했다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-12",
+        "day":  "Day 16",
+        "no":  "12",
+        "word":  "deficiency",
+        "phonetic":  "[difíʃənsi]",
+        "partOfSpeech":  "명사",
+        "meaning":  "결핍, 부족",
+        "relatedForms":  "deficient (형) 결핍된, 부족한",
+        "paraphrase":  [
+                           "shortage",
+                           "lack",
+                           "deficit"
+                       ],
+        "exampleEn":  "vitamin D deficiency",
+        "exampleKo":  "비타민 D 결핍증",
+        "memo":  "지텔프 동의어: A deficiency of magnesium can lead to muscle cramps. -> (a) shortage"
+    },
+    {
+        "id":  "d16-13",
+        "day":  "Day 16",
+        "no":  "13",
+        "word":  "cognitive",
+        "phonetic":  "[kάgnətiv]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "인지적인, 인식의",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "theory of cognitive development",
+        "exampleKo":  "인지 발달 이론",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-14",
+        "day":  "Day 16",
+        "no":  "14",
+        "word":  "theme",
+        "phonetic":  "[θiːm]",
+        "partOfSpeech":  "명사",
+        "meaning":  "주제, 테마",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "topic",
+                           "subject"
+                       ],
+        "exampleEn":  "The theme of the painting is hope.",
+        "exampleKo":  "이 그림의 주제는 희망이다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-15",
+        "day":  "Day 16",
+        "no":  "15",
+        "word":  "deter",
+        "phonetic":  "[ditə́ːr]",
+        "partOfSpeech":  "동사",
+        "meaning":  "단념시키다, 그만두게 하다",
+        "relatedForms":  "deterrent (명) 억제책",
+        "paraphrase":  [
+                           "discourage",
+                           "inhibit",
+                           "stop",
+                           "prevent",
+                           "prohibit"
+                       ],
+        "exampleEn":  "The high cost of living can deter people from moving to a new city.",
+        "exampleKo":  "높은 생활비는 사람들이 새로운 도시로 이사하는 것을 단념시킬 수 있다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-16",
+        "day":  "Day 16",
+        "no":  "16",
+        "word":  "acting",
+        "phonetic":  "[ǽktiŋ]",
+        "partOfSpeech":  "명사/형용사",
+        "meaning":  "연기 / 대행하는, 대리의",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "performance",
+                           "temporary",
+                           "interim"
+                       ],
+        "exampleEn":  "an acting career",
+        "exampleKo":  "연기 경력",
+        "memo":  "an acting manager (부장 대리인)"
+    },
+    {
+        "id":  "d16-17",
+        "day":  "Day 16",
+        "no":  "17",
+        "word":  "session",
+        "phonetic":  "[séʃən]",
+        "partOfSpeech":  "명사",
+        "meaning":  "기간, 시간",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "period",
+                           "time"
+                       ],
+        "exampleEn":  "a training session",
+        "exampleKo":  "연수 기간",
+        "memo":  "a therapy session (치료 시간)"
+    },
+    {
+        "id":  "d16-18",
+        "day":  "Day 16",
+        "no":  "18",
+        "word":  "symptom",
+        "phonetic":  "[símptəm]",
+        "partOfSpeech":  "명사",
+        "meaning":  "증상 / 징후",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "indication",
+                           "sign"
+                       ],
+        "exampleEn":  "have mild cold symptoms",
+        "exampleKo":  "가벼운 감기 증상이 있다",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-19",
+        "day":  "Day 16",
+        "no":  "19",
+        "word":  "integrate",
+        "phonetic":  "[íntəgrèit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "통합되다, 통합하다",
+        "relatedForms":  "integration (명) 통합",
+        "paraphrase":  [
+                           "combine",
+                           "join",
+                           "unite"
+                       ],
+        "exampleEn":  "The marketing department will be integrated with the public relations department.",
+        "exampleKo":  "마케팅 부서는 홍보 부서와 통합될 것이다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-20",
+        "day":  "Day 16",
+        "no":  "20",
+        "word":  "conserve",
+        "phonetic":  "[kənsə́ːrv]",
+        "partOfSpeech":  "동사",
+        "meaning":  "보존하다, 보호하다",
+        "relatedForms":  "conservation (명) 보존, 보호",
+        "paraphrase":  [
+                           "protect",
+                           "preserve",
+                           "save"
+                       ],
+        "exampleEn":  "conserve the environment by recycling",
+        "exampleKo":  "재활용하여 환경을 보호하다",
+        "memo":  "지텔프 동의어: We have a responsibility to conserve our woodlands to ensure a healthy environment. -> (b) preserve"
+    },
+    {
+        "id":  "d16-21",
+        "day":  "Day 16",
+        "no":  "21",
+        "word":  "attire",
+        "phonetic":  "[ətáiər]",
+        "partOfSpeech":  "명사",
+        "meaning":  "의복, 복장",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "clothes",
+                           "clothing",
+                           "gear",
+                           "garment",
+                           "apparel"
+                       ],
+        "exampleEn":  "formal attire",
+        "exampleKo":  "정장",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-22",
+        "day":  "Day 16",
+        "no":  "22",
+        "word":  "manuscript",
+        "phonetic":  "[mǽnjəskrìpt]",
+        "partOfSpeech":  "명사",
+        "meaning":  "원고",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "proofread a manuscript",
+        "exampleKo":  "원고를 교정하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-23",
+        "day":  "Day 16",
+        "no":  "23",
+        "word":  "disappear",
+        "phonetic":  "[dìsəpíər]",
+        "partOfSpeech":  "동사",
+        "meaning":  "사라지다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "vanish"
+                       ],
+        "exampleEn":  "Maria suddenly disappeared from the party.",
+        "exampleKo":  "마리아는 갑자기 파티에서 사라졌다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-24",
+        "day":  "Day 16",
+        "no":  "24",
+        "word":  "navigation",
+        "phonetic":  "[næ̀vəgéiʃən]",
+        "partOfSpeech":  "명사",
+        "meaning":  "운항, 항해",
+        "relatedForms":  "navigate (동) 길을 찾다; 운항하다, 항해하다",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "The navigation system is an important tool for pilots.",
+        "exampleKo":  "내비게이션 시스템은 조종사들에게 중요한 도구이다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-25",
+        "day":  "Day 16",
+        "no":  "25",
+        "word":  "expire",
+        "phonetic":  "[ikspáiər]",
+        "partOfSpeech":  "동사",
+        "meaning":  "만료되다",
+        "relatedForms":  "expiration (명) 만료",
+        "paraphrase":  [
+                           "end"
+                       ],
+        "exampleEn":  "The contract expires in six months.",
+        "exampleKo":  "그 계약은 6개월 후에 만료된다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-26",
+        "day":  "Day 16",
+        "no":  "26",
+        "word":  "authentic",
+        "phonetic":  "[ɔːθéntik]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "진짜의, 정통의",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "original",
+                           "genuine",
+                           "real"
+                       ],
+        "exampleEn":  "authentic Chinese cuisine",
+        "exampleKo":  "정통 중국 요리",
+        "memo":  "This work of art is authentic. (이 예술 작품은 진품이다.)"
+    },
+    {
+        "id":  "d16-27",
+        "day":  "Day 16",
+        "no":  "27",
+        "word":  "diplomatic",
+        "phonetic":  "[dìpləmǽtik]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "외교의",
+        "relatedForms":  "diplomat (명) 외교관",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "a diplomatic dispute",
+        "exampleKo":  "외교 분쟁",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-28",
+        "day":  "Day 16",
+        "no":  "28",
+        "word":  "defy",
+        "phonetic":  "[difái]",
+        "partOfSpeech":  "동사",
+        "meaning":  "반항하다, 무시하다 / ~이 불가능하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "disobey",
+                           "challenge",
+                           "resist",
+                           "oppose",
+                           "confront",
+                           "disregard"
+                       ],
+        "exampleEn":  "defy the government\u0027s rules and regulations",
+        "exampleKo":  "정부의 규칙과 규제를 무시하다",
+        "memo":  "지텔프 동의어: Daniel defied the king\u0027s orders and was promptly executed. -> (b) disobeyed | defy explanation (설명이 불가능하다)"
+    },
+    {
+        "id":  "d16-29",
+        "day":  "Day 16",
+        "no":  "29",
+        "word":  "await",
+        "phonetic":  "[əwéit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "기다리다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "await the results of the test",
+        "exampleKo":  "시험 결과를 기다리다",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-30",
+        "day":  "Day 16",
+        "no":  "30",
+        "word":  "celebrate",
+        "phonetic":  "[séləbrèit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "축하하다",
+        "relatedForms":  "celebration (명) 축하(행사)",
+        "paraphrase":  [
+                           "commemorate",
+                           "observe"
+                       ],
+        "exampleEn":  "celebrate an anniversary",
+        "exampleKo":  "기념일을 축하하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-31",
+        "day":  "Day 16",
+        "no":  "31",
+        "word":  "entrance",
+        "phonetic":  "[éntrəns]",
+        "partOfSpeech":  "명사",
+        "meaning":  "입구 / 입학",
+        "relatedForms":  "enter (동) 들어가다; 입학하다",
+        "paraphrase":  [
+                           "entry",
+                           "access",
+                           "gate",
+                           "admission"
+                       ],
+        "exampleEn":  "the entrance to the library",
+        "exampleKo":  "도서관 입구",
+        "memo":  "a university entrance exam (대학 입학 시험)"
+    },
+    {
+        "id":  "d16-32",
+        "day":  "Day 16",
+        "no":  "32",
+        "word":  "reinforce",
+        "phonetic":  "[rìːinfɔ́ːrs]",
+        "partOfSpeech":  "동사",
+        "meaning":  "강화하다, 보강하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "support",
+                           "strengthen",
+                           "fortify"
+                       ],
+        "exampleEn":  "reinforce the argument with data from a recent study",
+        "exampleKo":  "최근 연구 자료를 활용하여 논점을 강화하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-33",
+        "day":  "Day 16",
+        "no":  "33",
+        "word":  "destination",
+        "phonetic":  "[dèstənéiʃən]",
+        "partOfSpeech":  "명사",
+        "meaning":  "목적지",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "reach our destination",
+        "exampleKo":  "우리의 목적지에 도착하다",
+        "memo":  "a tourist destination (관광지)"
+    },
+    {
+        "id":  "d16-34",
+        "day":  "Day 16",
+        "no":  "34",
+        "word":  "intrigue",
+        "phonetic":  "[intríːg]",
+        "partOfSpeech":  "동사",
+        "meaning":  "흥미를 일으키다",
+        "relatedForms":  "intriguing (형) 흥미로운",
+        "paraphrase":  [
+                           "interest",
+                           "charm",
+                           "fascinate"
+                       ],
+        "exampleEn":  "Charles was intrigued by the mystery of the Pyramids.",
+        "exampleKo":  "찰스는 피라미드의 신비에 흥미를 느꼈다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-35",
+        "day":  "Day 16",
+        "no":  "35",
+        "word":  "fiction",
+        "phonetic":  "[fíkʃən]",
+        "partOfSpeech":  "명사",
+        "meaning":  "소설",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "novel",
+                           "tale"
+                       ],
+        "exampleEn":  "science fiction",
+        "exampleKo":  "공상 과학 소설",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-36",
+        "day":  "Day 16",
+        "no":  "36",
+        "word":  "costume",
+        "phonetic":  "[kάstjuːm]",
+        "partOfSpeech":  "명사",
+        "meaning":  "의상, 분장",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "outfit",
+                           "dress"
+                       ],
+        "exampleEn":  "a costume party",
+        "exampleKo":  "코스튬 파티",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-37",
+        "day":  "Day 16",
+        "no":  "37",
+        "word":  "distance",
+        "phonetic":  "[dístəns]",
+        "partOfSpeech":  "명사",
+        "meaning":  "거리",
+        "relatedForms":  "distant (형) (거리가) 먼; (친척 관계가) 먼",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "travel long distances",
+        "exampleKo":  "장거리를 여행하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-38",
+        "day":  "Day 16",
+        "no":  "38",
+        "word":  "deviate",
+        "phonetic":  "[díːvièit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "벗어나다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "differ",
+                           "depart",
+                           "stray"
+                       ],
+        "exampleEn":  "The participants deviated from the expected behavior.",
+        "exampleKo":  "참가자들은 예상된 행동에서 벗어났다.",
+        "memo":  "지텔프 동의어: Michelle decided to deviate from the norm. -> (a) differ"
+    },
+    {
+        "id":  "d16-39",
+        "day":  "Day 16",
+        "no":  "39",
+        "word":  "legend",
+        "phonetic":  "[lédʒənd]",
+        "partOfSpeech":  "명사",
+        "meaning":  "전설(적인 인물)",
+        "relatedForms":  "legendary (형) 전설적인; 전설에 나오는",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "The Beatles\u0027 music became legend.",
+        "exampleKo":  "비틀즈의 음악은 전설이 되었다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-40",
+        "day":  "Day 16",
+        "no":  "40",
+        "word":  "compose",
+        "phonetic":  "[kəmpóuz]",
+        "partOfSpeech":  "동사",
+        "meaning":  "구성하다 / 작곡하다 / 쓰다, 작성하다",
+        "relatedForms":  "composer (명) 작곡가",
+        "paraphrase":  [
+                           "comprise",
+                           "make",
+                           "create",
+                           "produce"
+                       ],
+        "exampleEn":  "The United States is composed of fifty states.",
+        "exampleKo":  "미국은 50개의 주로 구성되어 있다.",
+        "memo":  "compose a letter (편지를 쓰다)"
+    },
+    {
+        "id":  "d16-41",
+        "day":  "Day 16",
+        "no":  "41",
+        "word":  "marine",
+        "phonetic":  "[məríːn]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "해양의",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "maritime"
+                       ],
+        "exampleEn":  "marine mammals",
+        "exampleKo":  "해양 포유동물",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-42",
+        "day":  "Day 16",
+        "no":  "42",
+        "word":  "complex",
+        "phonetic":  "[kάmpleks]",
+        "partOfSpeech":  "형용사/명사",
+        "meaning":  "복잡한 / (건물) 단지",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "complicated",
+                           "elaborate",
+                           "intricate"
+                       ],
+        "exampleEn":  "a complex structure",
+        "exampleKo":  "복잡한 구조",
+        "memo":  "an apartment complex (아파트 단지)"
+    },
+    {
+        "id":  "d16-43",
+        "day":  "Day 16",
+        "no":  "43",
+        "word":  "prose",
+        "phonetic":  "[prouz]",
+        "partOfSpeech":  "명사",
+        "meaning":  "산문, 산문체",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "a literary work written in prose",
+        "exampleKo":  "산문으로 쓰여진 문학 작품",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-44",
+        "day":  "Day 16",
+        "no":  "44",
+        "word":  "distract",
+        "phonetic":  "[distrǽkt]",
+        "partOfSpeech":  "동사",
+        "meaning":  "산만하게 하다, 집중을 방해하다",
+        "relatedForms":  "distraction (명) 산만하게 하는 것; 집중을 방해하는 것",
+        "paraphrase":  [
+                           "divert",
+                           "sidetrack"
+                       ],
+        "exampleEn":  "The noise from the construction work distracted attention from the meeting.",
+        "exampleKo":  "공사 소음이 회의 참석자들의 주의를 산만하게 했다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-45",
+        "day":  "Day 16",
+        "no":  "45",
+        "word":  "disorder",
+        "phonetic":  "[disɔ́ːrdər]",
+        "partOfSpeech":  "명사",
+        "meaning":  "이상, 장애 / 무질서, 혼란",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "disease",
+                           "illness",
+                           "chaos",
+                           "disturbance",
+                           "unrest",
+                           "turmoil"
+                       ],
+        "exampleEn":  "eating disorders",
+        "exampleKo":  "섭식 장애",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-46",
+        "day":  "Day 16",
+        "no":  "46",
+        "word":  "shed",
+        "phonetic":  "[ʃed]",
+        "partOfSpeech":  "동사",
+        "meaning":  "~을 밝히다, 조명하다 / <껍질 등> 벗기다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "remove",
+                           "lose"
+                       ],
+        "exampleEn":  "The data sheds light on the impact of the recession on families.",
+        "exampleKo":  "이 자료는 불경기가 가정에 미치는 영향을 조명한다.",
+        "memo":  "The snake shed its skin. (뱀이 허물을 벗었다.)"
+    },
+    {
+        "id":  "d16-47",
+        "day":  "Day 16",
+        "no":  "47",
+        "word":  "eagerly",
+        "phonetic":  "[íːgərli]",
+        "partOfSpeech":  "부사",
+        "meaning":  "열렬히, 간절히",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "keenly",
+                           "anxiously"
+                       ],
+        "exampleEn":  "eagerly anticipate the release of the new iPhone",
+        "exampleKo":  "신형 아이폰 출시를 간절히 기다리다",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-48",
+        "day":  "Day 16",
+        "no":  "48",
+        "word":  "fatal",
+        "phonetic":  "[féitl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "치명적인, 죽음을 초래하는",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "lethal",
+                           "disastrous"
+                       ],
+        "exampleEn":  "a fatal accident",
+        "exampleKo":  "치명적인 사고",
+        "memo":  ""
+    },
+    {
+        "id":  "d16-49",
+        "day":  "Day 16",
+        "no":  "49",
+        "word":  "portray",
+        "phonetic":  "[pɔːrtréi]",
+        "partOfSpeech":  "동사",
+        "meaning":  "<글, 그림 등으로> 묘사하다, 표현하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "depict",
+                           "display",
+                           "describe"
+                       ],
+        "exampleEn":  "portray the character as a villain",
+        "exampleKo":  "그 인물을 악역으로 표현하다",
+        "memo":  "지텔프 동의어: The novel portrays the struggles of a family during the war. -> (a) depicts"
+    },
+    {
+        "id":  "d16-50",
+        "day":  "Day 16",
+        "no":  "50",
+        "word":  "exempt",
+        "phonetic":  "[igzémpt]",
+        "partOfSpeech":  "동사",
+        "meaning":  "면제하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "free",
+                           "excuse"
+                       ],
+        "exampleEn":  "Senior citizens are exempted from paying the entrance fee.",
+        "exampleKo":  "노인들은 입장료를 면제받는다.",
+        "memo":  ""
     }
 ];
