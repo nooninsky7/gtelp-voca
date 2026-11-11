@@ -974,10 +974,138 @@
     return result;
   }
 
+  let expandAllWordsInList = false;
+
+  window.selectDayFolder = function(day) {
+    expandAllWordsInList = false;
+    activeDayFilter = day;
+    renderDayFilters();
+    renderWordList();
+    if (day !== 'ALL') {
+      const targetSec = document.getElementById('view-list');
+      targetSec?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      showToast(`[${day}] 단어 목록을 불러왔습니다.`);
+    }
+  };
+
+  window.toggleExpandAllWords = function(expand) {
+    expandAllWordsInList = expand;
+    renderWordList();
+    if (expand) {
+      showToast('1,082개 전체 단어를 한 번에 펼쳤습니다.');
+    }
+  };
+
+  // Day별 묶음(폴더) 대시보드 뷰 (초고속 로딩 & 모바일 최적화)
+  function renderDayFoldersView(container) {
+    const days = getAllDays();
+    const totalWords = words.length;
+
+    let html = `
+      <!-- Day 폴더 그리드 헤더 안내 -->
+      <div class="bg-gradient-to-r from-indigo-50 via-purple-50 to-slate-50 p-4 rounded-3xl border border-indigo-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+        <div class="space-y-0.5">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded-md bg-indigo-600 text-white font-extrabold text-[11px]">Day 선택</span>
+            <span class="font-extrabold text-slate-900 text-sm">학습할 Day를 터치하세요</span>
+          </div>
+          <p class="text-xs text-slate-500">
+            총 <strong class="text-indigo-600 font-bold">${totalWords}개 단어</strong>가 Day별 50단어로 깔끔하게 분류되어 빠른 학습과 쾌적한 반응속도를 제공합니다.
+          </p>
+        </div>
+        <button onclick="window.toggleExpandAllWords(true)" class="px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-indigo-600 font-bold text-xs transition flex items-center gap-1.5 shrink-0 shadow-xs cursor-pointer active:scale-95">
+          <i class="fa-solid fa-list text-indigo-600"></i> 전체 단어 한 번에 펼치기
+        </button>
+      </div>
+
+      <!-- Day별 폴더 카드 그리드 (반응형 1열 / 2열 / 3열) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 pt-1">
+    `;
+
+    days.forEach(d => {
+      const dayWords = words.filter(w => w.day === d);
+      const wrongCount = dayWords.filter(w => getWrongCount(w.id) > 0).length;
+      const stdRounds = getDayRoundCount(d, 'standard');
+      const clozeRounds = getDayRoundCount(d, 'cloze');
+      const sampleWords = dayWords.slice(0, 4).map(w => w.word).join(', ');
+
+      html += `
+        <div onclick="window.selectDayFolder('${d}')" class="day-folder-card bg-white p-4 rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-md hover:border-indigo-300 transition cursor-pointer space-y-3 group active:scale-[0.99]">
+          
+          <!-- 카드 상단: Day 배지 + 단어 수 + 오답 알림 -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full ${d === '기초단어' ? 'bg-emerald-500' : 'bg-indigo-600'} group-hover:scale-125 transition"></span>
+              <h4 class="font-black text-slate-900 text-base group-hover:text-indigo-600 transition flex items-center gap-1.5">
+                ${d}
+              </h4>
+              <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 text-slate-600">
+                ${dayWords.length}단어
+              </span>
+            </div>
+            ${wrongCount > 0 ? `
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-rose-100 text-rose-700 flex items-center gap-1" title="오답 단어 ${wrongCount}개">
+                <i class="fa-solid fa-triangle-exclamation"></i> ${wrongCount}
+              </span>
+            ` : `
+              <span class="text-slate-300 group-hover:text-indigo-500 group-hover:translate-x-0.5 transition text-sm">
+                <i class="fa-solid fa-chevron-right"></i>
+              </span>
+            `}
+          </div>
+
+          <!-- 대표 단어 미리보기 -->
+          <div class="text-xs text-slate-400 font-medium truncate">
+            <i class="fa-solid fa-quote-left text-[10px] text-slate-300 mr-1"></i>${sampleWords}...
+          </div>
+
+          <!-- 회독 현황 뱃지 -->
+          <div class="flex items-center gap-2 text-[11px] font-semibold text-slate-500 pt-1 border-t border-slate-100">
+            <span class="px-1.5 py-0.5 rounded bg-slate-50 border border-slate-100 flex items-center gap-1">
+              <i class="fa-solid fa-circle-check text-indigo-500 text-[10px]"></i> 4지: <strong>${stdRounds}회독</strong>
+            </span>
+            <span class="px-1.5 py-0.5 rounded bg-slate-50 border border-slate-100 flex items-center gap-1">
+              <i class="fa-solid fa-pen text-emerald-500 text-[10px]"></i> 빈칸: <strong>${clozeRounds}회독</strong>
+            </span>
+          </div>
+
+          <!-- 액션 바로가기 버튼들 -->
+          <div class="grid grid-cols-4 gap-1.5 pt-1 text-[11px]" onclick="event.stopPropagation()">
+            <button onclick="window.selectDayFolder('${d}')" class="py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black transition text-center shadow-xs flex items-center justify-center gap-1 active:scale-95">
+              <i class="fa-solid fa-book-open text-[10px]"></i> 단어
+            </button>
+            <button onclick="window.startDayDirectQuiz('${d}', 'standard')" class="py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition text-center active:scale-95" title="4지선다 퀴즈">
+              <i class="fa-solid fa-play text-[10px]"></i> 4지
+            </button>
+            <button onclick="window.startDayDirectQuiz('${d}', 'cloze')" class="py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold transition text-center active:scale-95" title="빈칸 문맥 퀴즈">
+              <i class="fa-solid fa-pen text-[10px]"></i> 빈칸
+            </button>
+            <button onclick="window.startDayDirectQuiz('${d}', 'flashcard')" class="py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold transition text-center active:scale-95" title="플래시카드 암기">
+              <i class="fa-solid fa-clone text-[10px]"></i> 카드
+            </button>
+          </div>
+
+        </div>
+      `;
+    });
+
+    html += `</div>`;
+    container.innerHTML = html;
+  }
+
   function renderWordList() {
     const container = document.getElementById('wordList');
     const displayedCountEl = document.getElementById('displayedCount');
     if (!container) return;
+
+    const query = (document.getElementById('searchInput')?.value || '').trim().toLowerCase();
+
+    // 전체보기(ALL)이고 검색어가 없으며, '전체 펼치기'를 누르지 않은 경우 -> 쾌속 Day 폴더 그리드 렌더링!
+    if (activeDayFilter === 'ALL' && !query && !expandAllWordsInList) {
+      if (displayedCountEl) displayedCountEl.textContent = words.length;
+      renderDayFoldersView(container);
+      return;
+    }
 
     const filteredWords = getFilteredAndSortedWords();
     if (displayedCountEl) displayedCountEl.textContent = filteredWords.length;
@@ -992,7 +1120,33 @@
       return;
     }
 
-    container.innerHTML = filteredWords.map(w => {
+    // 상단 네비게이션 바 (특정 Day 보기 중이거나 전체 펼치기 중일 때)
+    const backBarHtml = (activeDayFilter !== 'ALL' && !query) ? `
+      <div class="bg-gradient-to-r from-indigo-50 to-purple-50 p-3.5 rounded-2xl border border-indigo-100 flex items-center justify-between shadow-xs mb-1">
+        <button onclick="window.selectDayFolder('ALL')" class="px-3.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-indigo-700 font-extrabold text-xs transition flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95">
+          <i class="fa-solid fa-arrow-left"></i> 전체 Day 목록으로
+        </button>
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full ${activeDayFilter === '기초단어' ? 'bg-emerald-500' : 'bg-indigo-600'}"></span>
+          <span class="font-black text-slate-900 text-sm">${activeDayFilter}</span>
+          <span class="text-xs text-indigo-600 font-bold">(${filteredWords.length}단어)</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button onclick="window.startDayDirectQuiz('${activeDayFilter}', 'standard')" class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs transition shadow-xs cursor-pointer active:scale-95">
+            <i class="fa-solid fa-play text-[10px]"></i> 퀴즈
+          </button>
+        </div>
+      </div>
+    ` : (expandAllWordsInList && !query) ? `
+      <div class="bg-slate-100 p-3 rounded-2xl border border-slate-200 flex items-center justify-between mb-1">
+        <span class="text-xs text-slate-600 font-bold">1,082단어 전체가 펼쳐진 상태입니다.</span>
+        <button onclick="window.toggleExpandAllWords(false)" class="px-3 py-1.5 rounded-xl bg-white hover:bg-slate-200 text-indigo-700 font-bold text-xs transition flex items-center gap-1 shadow-xs cursor-pointer active:scale-95">
+          <i class="fa-solid fa-folder-tree"></i> Day별 폴더 묶음으로 보기
+        </button>
+      </div>
+    ` : '';
+
+    container.innerHTML = backBarHtml + filteredWords.map(w => {
       const wrongCount = getWrongCount(w.id);
       const isChecked = selectedWordIds.has(w.id);
       const paraphrases = Array.isArray(w.paraphrase) ? w.paraphrase : [];
@@ -3860,8 +4014,6 @@
     wrongList: [],
     answered: false
   };
-
-  let geminiApiKey = localStorage.getItem('voca_gemini_api_key') || '';
 
   function setupClozeScopeUI() {
     const container = document.getElementById('clozeScopeContainer');
