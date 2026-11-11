@@ -11895,5 +11895,902 @@ const INITIAL_WORDS_DATA = [
         "exampleEn":  "I was inclined to believe that he was telling the truth.",
         "exampleKo":  "나는 그가 진실을 말하고 있다고 믿는 쪽으로 기울었다.",
         "memo":  ""
+    },
+  {
+        "id":  "d14-01",
+        "day":  "Day 14",
+        "no":  "01",
+        "word":  "contract",
+        "phonetic":  "[kάntrækt] / [kəntrǽkt]",
+        "partOfSpeech":  "명사/동사",
+        "meaning":  "계약 / 계약하다, 계약을 맺다 / (질병 등) 걸리다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "deal",
+                           "agreement",
+                           "arrangement",
+                           "hire",
+                           "arrange",
+                           "develop",
+                           "get",
+                           "catch"
+                       ],
+        "exampleEn":  "sign a contract",
+        "exampleKo":  "계약서에 서명하다",
+        "memo":  "contract a virus (바이러스에 감염되다)"
+    },
+    {
+        "id":  "d14-02",
+        "day":  "Day 14",
+        "no":  "02",
+        "word":  "vegetation",
+        "phonetic":  "[vèdʒətéiʃən]",
+        "partOfSpeech":  "명사",
+        "meaning":  "식물, 초목",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "plants"
+                       ],
+        "exampleEn":  "green vegetation",
+        "exampleKo":  "푸른 초목",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-03",
+        "day":  "Day 14",
+        "no":  "03",
+        "word":  "labor",
+        "phonetic":  "[léibər]",
+        "partOfSpeech":  "명사/동사",
+        "meaning":  "노동 / 일하다, 노동하다, 노력하다",
+        "relatedForms":  "laborer (명) 노동자",
+        "paraphrase":  [
+                           "work",
+                           "toil",
+                           "work",
+                           "endeavor",
+                           "strive"
+                       ],
+        "exampleEn":  "manual labor",
+        "exampleKo":  "육체노동",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-04",
+        "day":  "Day 14",
+        "no":  "04",
+        "word":  "conceal",
+        "phonetic":  "[kənsíːl]",
+        "partOfSpeech":  "동사",
+        "meaning":  "숨기다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "hide",
+                           "cover",
+                           "bury"
+                       ],
+        "exampleEn":  "conceal his true identity",
+        "exampleKo":  "그의 진짜 신분을 숨기다",
+        "memo":  "지텔프 동의어: Frank was able to conceal the gun in his jacket without being seen. -> (a) hide"
+    },
+    {
+        "id":  "d14-05",
+        "day":  "Day 14",
+        "no":  "05",
+        "word":  "instruct",
+        "phonetic":  "[instrʌ́kt]",
+        "partOfSpeech":  "동사",
+        "meaning":  "지시하다",
+        "relatedForms":  "instruction (명) 지시; 설명",
+        "paraphrase":  [
+                           "order",
+                           "command",
+                           "tell"
+                       ],
+        "exampleEn":  "instruct the staff to submit their reports",
+        "exampleKo":  "직원들에게 보고서를 제출하도록 지시하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-06",
+        "day":  "Day 14",
+        "no":  "06",
+        "word":  "detective",
+        "phonetic":  "[ditéktiv]",
+        "partOfSpeech":  "명사",
+        "meaning":  "탐정",
+        "relatedForms":  "detect (동) 발견하다, 감지하다 (= find)",
+        "paraphrase":  [
+                           "investigator",
+                           "sleuth"
+                       ],
+        "exampleEn":  "a detective novel",
+        "exampleKo":  "추리(탐정) 소설",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-07",
+        "day":  "Day 14",
+        "no":  "07",
+        "word":  "apprentice",
+        "phonetic":  "[əpréntis]",
+        "partOfSpeech":  "명사",
+        "meaning":  "견습생",
+        "relatedForms":  "apprenticeship (명) 견습 기간",
+        "paraphrase":  [
+                           "trainee",
+                           "pupil"
+                       ],
+        "exampleEn":  "The master sculptor invited Mary to become his apprentice.",
+        "exampleKo":  "거장 조각가가 메리에게 자신의 견습생이 되라고 제안했다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-08",
+        "day":  "Day 14",
+        "no":  "08",
+        "word":  "invoke",
+        "phonetic":  "[invóuk]",
+        "partOfSpeech":  "동사",
+        "meaning":  "\u003c법·규칙 등> 발동하다 / (주장을 뒷받침하려고) 언급하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "implement",
+                           "resort to",
+                           "mention",
+                           "cite",
+                           "quote"
+                       ],
+        "exampleEn":  "The government invoked martial law.",
+        "exampleKo":  "정부는 계엄령을 발동했다.",
+        "memo":  "The author invoked scholars in order to support her claim. (저자는 자신의 주장을 뒷받침하기 위해 학자들을 언급했다.)"
+    },
+    {
+        "id":  "d14-09",
+        "day":  "Day 14",
+        "no":  "09",
+        "word":  "regulate",
+        "phonetic":  "[régjəlèit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "규제하다",
+        "relatedForms":  "regulation (명) 규제; 규정",
+        "paraphrase":  [
+                           "control",
+                           "govern"
+                       ],
+        "exampleEn":  "regulate the use of pesticides in agriculture",
+        "exampleKo":  "농업에서 살충제 사용을 규제하다",
+        "memo":  "지텔프 동의어: The government will regulate the prices of essential goods. -> (b) control"
+    },
+    {
+        "id":  "d14-10",
+        "day":  "Day 14",
+        "no":  "10",
+        "word":  "annual",
+        "phonetic":  "[ǽnjuəl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "연례의, 연간의",
+        "relatedForms":  "annually (부) 매년",
+        "paraphrase":  [
+                           "yearly"
+                       ],
+        "exampleEn":  "annual salary",
+        "exampleKo":  "연봉",
+        "memo":  "an annual event (연례 행사)"
+    },
+    {
+        "id":  "d14-11",
+        "day":  "Day 14",
+        "no":  "11",
+        "word":  "convenient",
+        "phonetic":  "[kənvíːnjənt]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "편리한",
+        "relatedForms":  "convenience (명) 편리(함)",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "It is convenient to live close to your work.",
+        "exampleKo":  "직장과 가까운 곳에 사는 것은 편리하다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-12",
+        "day":  "Day 14",
+        "no":  "12",
+        "word":  "particulars",
+        "phonetic":  "[pərtíkjələrz]",
+        "partOfSpeech":  "명사",
+        "meaning":  "상세(한 것), 세부 사항",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "details",
+                           "specifics"
+                       ],
+        "exampleEn":  "give particulars about the project",
+        "exampleKo":  "프로젝트에 대한 세부 사항을 전달하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-13",
+        "day":  "Day 14",
+        "no":  "13",
+        "word":  "discharge",
+        "phonetic":  "[distʃάːrdʒ]",
+        "partOfSpeech":  "동사",
+        "meaning":  "배출하다, 방출하다 / 해고하다, 떠나게 하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "release",
+                           "free",
+                           "dismiss",
+                           "expel",
+                           "liberate"
+                       ],
+        "exampleEn":  "discharge chemicals into the air",
+        "exampleKo":  "화학물질을 대기 중으로 배출하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-14",
+        "day":  "Day 14",
+        "no":  "14",
+        "word":  "sales",
+        "phonetic":  "[seilz]",
+        "partOfSpeech":  "명사",
+        "meaning":  "판매량, 매출 / 영업(부)",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "increased sales",
+        "exampleKo":  "증가된 매출",
+        "memo":  "a sales team (영업팀)"
+    },
+    {
+        "id":  "d14-15",
+        "day":  "Day 14",
+        "no":  "15",
+        "word":  "erosion",
+        "phonetic":  "[iróuʒən]",
+        "partOfSpeech":  "명사",
+        "meaning":  "침식",
+        "relatedForms":  "erode (동) 침식되다, 침식시키다",
+        "paraphrase":  [
+                           "corrosion"
+                       ],
+        "exampleEn":  "erosion of the coastline",
+        "exampleKo":  "해안선의 침식",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-16",
+        "day":  "Day 14",
+        "no":  "16",
+        "word":  "employment",
+        "phonetic":  "[implɔ́imənt]",
+        "partOfSpeech":  "명사",
+        "meaning":  "고용, 취업 / 직장, 일자리",
+        "relatedForms":  "employ (동) 고용하다, employee (명) 직원, 종업원, employer (명) 고용주",
+        "paraphrase":  [
+                           "work",
+                           "position",
+                           "job"
+                       ],
+        "exampleEn":  "increase employment",
+        "exampleKo":  "고용을 늘리다",
+        "memo":  "find employment (일자리를 구하다)"
+    },
+    {
+        "id":  "d14-17",
+        "day":  "Day 14",
+        "no":  "17",
+        "word":  "reasonable",
+        "phonetic":  "[ríːzənəbl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "합리적인, 타당한",
+        "relatedForms":  "reasonably (부) 합리적으로",
+        "paraphrase":  [
+                           "moderate",
+                           "modest",
+                           "fair",
+                           "acceptable"
+                       ],
+        "exampleEn":  "a reasonable request",
+        "exampleKo":  "합당한 요구",
+        "memo":  "a reasonable price (합리적인 가격)"
+    },
+    {
+        "id":  "d14-18",
+        "day":  "Day 14",
+        "no":  "18",
+        "word":  "inherent",
+        "phonetic":  "[inhí(ː)ərənt]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "고유의, 내재하는",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "intrinsic"
+                       ],
+        "exampleEn":  "There are many risks inherent in investment.",
+        "exampleKo":  "투자에는 많은 내재된 위험이 있다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-19",
+        "day":  "Day 14",
+        "no":  "19",
+        "word":  "notable",
+        "phonetic":  "[nóutəbl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "주목할 만한, 두드러진 / 유명한",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "remarkable",
+                           "noticeable",
+                           "famous",
+                           "prominent",
+                           "renowned",
+                           "celebrated"
+                       ],
+        "exampleEn":  "A notable feature of the product is its durability.",
+        "exampleKo":  "그 제품의 두드러진 특징은 내구성이다.",
+        "memo":  "지텔프 동의어: Rebecca made a notable contribution to the community. -> (a) remarkable | a notable figure (유명 인사)"
+    },
+    {
+        "id":  "d14-20",
+        "day":  "Day 14",
+        "no":  "20",
+        "word":  "marginal",
+        "phonetic":  "[mάːrdʒənl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "미미한, 근소한",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "slight",
+                           "minor",
+                           "negligible",
+                           "insignificant"
+                       ],
+        "exampleEn":  "marginal changes in the price of gasoline",
+        "exampleKo":  "휘발유 가격의 근소한 변화",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-21",
+        "day":  "Day 14",
+        "no":  "21",
+        "word":  "prevail",
+        "phonetic":  "[privéil]",
+        "partOfSpeech":  "동사",
+        "meaning":  "만연하다, 널리 퍼져 있다 / 이기다, 승리하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "abound",
+                           "predominate",
+                           "win",
+                           "triumph"
+                       ],
+        "exampleEn":  "Anxiety prevailed among the students taking the test.",
+        "exampleKo":  "시험을 보는 학생들 사이에 불안감이 퍼져 있었다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-22",
+        "day":  "Day 14",
+        "no":  "22",
+        "word":  "expand",
+        "phonetic":  "[ikspǽnd]",
+        "partOfSpeech":  "동사",
+        "meaning":  "확장하다, 넓히다, 팽창시키다",
+        "relatedForms":  "expansive (형) 넓은, 광범위한, expansion (명) 확장",
+        "paraphrase":  [
+                           "grow",
+                           "develop",
+                           "enlarge",
+                           "spread",
+                           "broaden"
+                       ],
+        "exampleEn":  "expand the business",
+        "exampleKo":  "사업을 확장하다",
+        "memo":  "expand your horizon (시야를 넓히다)"
+    },
+    {
+        "id":  "d14-23",
+        "day":  "Day 14",
+        "no":  "23",
+        "word":  "accordingly",
+        "phonetic":  "[əkɔ́ːrdiŋli]",
+        "partOfSpeech":  "부사",
+        "meaning":  "그에 따라",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "appropriately",
+                           "correspondingly"
+                       ],
+        "exampleEn":  "The hospital will respond accordingly to the patient\u0027s condition.",
+        "exampleKo":  "병원은 환자의 상태에 따라 대응할 것이다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-24",
+        "day":  "Day 14",
+        "no":  "24",
+        "word":  "offset",
+        "phonetic":  "[ɔ́ːfsèt]",
+        "partOfSpeech":  "동사",
+        "meaning":  "상쇄하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "balance",
+                           "counteract",
+                           "redeem"
+                       ],
+        "exampleEn":  "offset losses by reducing expenses",
+        "exampleKo":  "비용을 절감하여 손실을 상쇄하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-25",
+        "day":  "Day 14",
+        "no":  "25",
+        "word":  "deposit",
+        "phonetic":  "[dipάzit]",
+        "partOfSpeech":  "명사/동사",
+        "meaning":  "예금, 보증금 / 예금하다 / ~에 두다[놓다]",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "save",
+                           "put",
+                           "place",
+                           "drop"
+                       ],
+        "exampleEn":  "security deposit",
+        "exampleKo":  "보증금",
+        "memo":  "deposit trash in the proper receptacle (쓰레기를 적절한 용기에 넣다)"
+    },
+    {
+        "id":  "d14-26",
+        "day":  "Day 14",
+        "no":  "26",
+        "word":  "irrational",
+        "phonetic":  "[irǽʃənl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "비이성적인, 비합리적인",
+        "relatedForms":  "rational (형) 이성적인, 합리적인",
+        "paraphrase":  [
+                           "illogical",
+                           "unreasonable",
+                           "absurd"
+                       ],
+        "exampleEn":  "An irrational fear can lead to a phobia.",
+        "exampleKo":  "비이성적인 두려움은 공포증으로 이어질 수 있다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-27",
+        "day":  "Day 14",
+        "no":  "27",
+        "word":  "pact",
+        "phonetic":  "[pækt]",
+        "partOfSpeech":  "명사",
+        "meaning":  "협정, 계약",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "agreement",
+                           "contract",
+                           "deal",
+                           "bargain"
+                       ],
+        "exampleEn":  "make a pact with the government",
+        "exampleKo":  "정부와 계약을 맺다",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-28",
+        "day":  "Day 14",
+        "no":  "28",
+        "word":  "traditional",
+        "phonetic":  "[trədíʃənl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "전통적인",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "conventional"
+                       ],
+        "exampleEn":  "traditional culture",
+        "exampleKo":  "전통 문화",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-29",
+        "day":  "Day 14",
+        "no":  "29",
+        "word":  "earn",
+        "phonetic":  "[əːrn]",
+        "partOfSpeech":  "동사",
+        "meaning":  "(돈을) 벌다 / (자격이 되어) ~을 얻다, 획득하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "get",
+                           "gain",
+                           "deserve",
+                           "justify",
+                           "merit"
+                       ],
+        "exampleEn":  "earn fortunes in real estate",
+        "exampleKo":  "부동산으로 재산을 모으다",
+        "memo":  "지텔프 동의어: Sheryl Sandberg is an independent woman who has earned the respect of many. -> (b) gained | earn a reputation (평판을 얻다)"
+    },
+    {
+        "id":  "d14-30",
+        "day":  "Day 14",
+        "no":  "30",
+        "word":  "tolerance",
+        "phonetic":  "[tάlərəns]",
+        "partOfSpeech":  "명사",
+        "meaning":  "관대함, 관용 / 내성",
+        "relatedForms":  "tolerate (동) 용인하다; 참다, 견뎌내다",
+        "paraphrase":  [
+                           "forbearance",
+                           "sympathy",
+                           "resistance"
+                       ],
+        "exampleEn":  "tolerance to a medication",
+        "exampleKo":  "약물에 대한 내성",
+        "memo":  "tolerance towards those who are different from us (우리와 다른 사람들에 대한 관용)"
+    },
+    {
+        "id":  "d14-31",
+        "day":  "Day 14",
+        "no":  "31",
+        "word":  "modify",
+        "phonetic":  "[mάdəfài]",
+        "partOfSpeech":  "동사",
+        "meaning":  "수정하다",
+        "relatedForms":  "modification (명) 수정",
+        "paraphrase":  [
+                           "adjust",
+                           "change",
+                           "alter"
+                       ],
+        "exampleEn":  "modify the lesson plan",
+        "exampleKo":  "교안을 수정하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-32",
+        "day":  "Day 14",
+        "no":  "32",
+        "word":  "intense",
+        "phonetic":  "[inténs]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "극심한, 치열한",
+        "relatedForms":  "intensely (부) 극심하게, 몹시, intensify (동) 심해지다, 강화하다",
+        "paraphrase":  [
+                           "severe",
+                           "extreme",
+                           "fierce",
+                           "harsh"
+                       ],
+        "exampleEn":  "intense storms",
+        "exampleKo":  "극심한 폭풍우",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-33",
+        "day":  "Day 14",
+        "no":  "33",
+        "word":  "nutrition",
+        "phonetic":  "[njuːtríʃən]",
+        "partOfSpeech":  "명사",
+        "meaning":  "영양, 영양 섭취",
+        "relatedForms":  "nutrient (명) 영양소, 영양분, nutritional (형) 영양의",
+        "paraphrase":  [
+                           "food",
+                           "nourishment"
+                       ],
+        "exampleEn":  "adequate nutrition",
+        "exampleKo":  "충분한 영양 섭취",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-34",
+        "day":  "Day 14",
+        "no":  "34",
+        "word":  "warranty",
+        "phonetic":  "[wɔ́ːrənti]",
+        "partOfSpeech":  "명사",
+        "meaning":  "보증(서)",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "guarantee"
+                       ],
+        "exampleEn":  "The warranty period is one year from the date of purchase.",
+        "exampleKo":  "보증 기간은 구매일로부터 1년이다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-35",
+        "day":  "Day 14",
+        "no":  "35",
+        "word":  "remote",
+        "phonetic":  "[rimóut]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "원격의, 먼 곳에 있는",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "distant"
+                       ],
+        "exampleEn":  "a remote control device",
+        "exampleKo":  "원격 조종 장치",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-36",
+        "day":  "Day 14",
+        "no":  "36",
+        "word":  "attend",
+        "phonetic":  "[əténd]",
+        "partOfSpeech":  "동사",
+        "meaning":  "참석하다 / (학교 등) 다니다",
+        "relatedForms":  "attendance (명) 출석, 참석, attendee (명) 출석자; 참석자",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "attend a conference",
+        "exampleKo":  "학회에 참석하다",
+        "memo":  "attend a university (대학에 다니다)"
+    },
+    {
+        "id":  "d14-37",
+        "day":  "Day 14",
+        "no":  "37",
+        "word":  "optimistic",
+        "phonetic":  "[ὰptəmístik]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "낙관적인, 낙천적인",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "hopeful",
+                           "positive",
+                           "confident"
+                       ],
+        "exampleEn":  "take an optimistic view of the future",
+        "exampleKo":  "미래를 낙관적으로 보다",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-38",
+        "day":  "Day 14",
+        "no":  "38",
+        "word":  "reliant",
+        "phonetic":  "[riláiənt]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "의존하는, 의지하는",
+        "relatedForms":  "reliance (명) 의존, 의지",
+        "paraphrase":  [
+                           "dependent"
+                       ],
+        "exampleEn":  "The team is too reliant on its star player.",
+        "exampleKo":  "그 팀은 스타 선수에게 너무 의존하고 있다.",
+        "memo":  "지텔프 동의어: Jack is reliant on his coach for motivation. -> (b) dependent"
+    },
+    {
+        "id":  "d14-39",
+        "day":  "Day 14",
+        "no":  "39",
+        "word":  "structure",
+        "phonetic":  "[strʌ́ktʃər]",
+        "partOfSpeech":  "명사",
+        "meaning":  "구조, 구성 / 구조물, 건축물",
+        "relatedForms":  "structural (형) 구조상의, 구조적인",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "brain structure",
+        "exampleKo":  "뇌구조",
+        "memo":  "an ancient structure (고대 건축물)"
+    },
+    {
+        "id":  "d14-40",
+        "day":  "Day 14",
+        "no":  "40",
+        "word":  "ongoing",
+        "phonetic":  "[άngòuiŋ]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "진행 중인",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "current",
+                           "continuing",
+                           "continued",
+                           "constant"
+                       ],
+        "exampleEn":  "an ongoing debate",
+        "exampleKo":  "계속 진행 중인 토론",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-41",
+        "day":  "Day 14",
+        "no":  "41",
+        "word":  "parallel",
+        "phonetic":  "[pǽrəlèl]",
+        "partOfSpeech":  "명사/형용사/동사",
+        "meaning":  "유사점, 유사성 / 평행한, 나란한 / 유사하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "similarity",
+                           "resemblance",
+                           "match"
+                       ],
+        "exampleEn":  "parallel lines",
+        "exampleKo":  "평행선",
+        "memo":  "draw a parallel between two historical figures (두 역사적 인물의 유사점을 찾다)"
+    },
+    {
+        "id":  "d14-42",
+        "day":  "Day 14",
+        "no":  "42",
+        "word":  "royalty",
+        "phonetic":  "[rɔ́iəlti]",
+        "partOfSpeech":  "명사",
+        "meaning":  "왕족 / 저작권 사용료, 인세",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "British royalty",
+        "exampleKo":  "영국 왕족",
+        "memo":  "pay royalties to the original author (원작자에게 인세를 지불하다)"
+    },
+    {
+        "id":  "d14-43",
+        "day":  "Day 14",
+        "no":  "43",
+        "word":  "average",
+        "phonetic":  "[ǽvəridʒ]",
+        "partOfSpeech":  "형용사/명사",
+        "meaning":  "평균의, 보통의 / 평균",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "common",
+                           "usual",
+                           "regular",
+                           "mean",
+                           "standard",
+                           "norm"
+                       ],
+        "exampleEn":  "the average person",
+        "exampleKo":  "보통 사람",
+        "memo":  "숙어: on average (평균적으로)"
+    },
+    {
+        "id":  "d14-44",
+        "day":  "Day 14",
+        "no":  "44",
+        "word":  "following",
+        "phonetic":  "[fάlouiŋ]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "다음에 나오는, 이하의 / 다음의, 그다음의",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "next",
+                           "coming",
+                           "subsequent",
+                           "succeeding"
+                       ],
+        "exampleEn":  "Answer the following question.",
+        "exampleKo":  "다음 질문에 답하세요.",
+        "memo":  "지텔프 동의어: In the following chapter, the book will explore the theme of loss. -> (b) succeeding | the following year (그 다음 해)"
+    },
+    {
+        "id":  "d14-45",
+        "day":  "Day 14",
+        "no":  "45",
+        "word":  "relocate",
+        "phonetic":  "[rìːloukéit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "옮기다, 이전하다",
+        "relatedForms":  "relocation (명) 이전, 이동",
+        "paraphrase":  [
+                           "move"
+                       ],
+        "exampleEn":  "The factory relocated to Vietnam.",
+        "exampleKo":  "그 공장은 베트남으로 이전했다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-46",
+        "day":  "Day 14",
+        "no":  "46",
+        "word":  "outstanding",
+        "phonetic":  "[àutstǽndiŋ]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "뛰어난 / 미지불된",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "excellent",
+                           "great",
+                           "superb",
+                           "impressive",
+                           "exceptional",
+                           "unpaid",
+                           "remaining",
+                           "payable"
+                       ],
+        "exampleEn":  "outstanding performance at the Olympics",
+        "exampleKo":  "올림픽에서의 뛰어난 성과",
+        "memo":  "an outstanding balance of $15,000 (15,000달러의 미불 잔액)"
+    },
+    {
+        "id":  "d14-47",
+        "day":  "Day 14",
+        "no":  "47",
+        "word":  "isolate",
+        "phonetic":  "[áisəlèit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "고립시키다, 격리하다",
+        "relatedForms":  "isolation (명) 고립, 격리",
+        "paraphrase":  [
+                           "separate",
+                           "disconnect"
+                       ],
+        "exampleEn":  "isolate a patient",
+        "exampleKo":  "환자를 격리하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-48",
+        "day":  "Day 14",
+        "no":  "48",
+        "word":  "random",
+        "phonetic":  "[rǽndəm]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "무작위의, 닥치는 대로의",
+        "relatedForms":  "randomly (부) 무작위로",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "select a random sample",
+        "exampleKo":  "무작위로 표본을 추출하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d14-49",
+        "day":  "Day 14",
+        "no":  "49",
+        "word":  "cultivate",
+        "phonetic":  "[kʌ́ltəvèit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "재배하다, 기르다 / 함양하다, 기르다",
+        "relatedForms":  "cultivation (명) 재배, 경작; 함양",
+        "paraphrase":  [
+                           "grow",
+                           "develop",
+                           "foster"
+                       ],
+        "exampleEn":  "cultivate potatoes",
+        "exampleKo":  "감자를 재배하다",
+        "memo":  "cultivate a positive habit of being a good listener (남의 말을 잘 듣는 좋은 습관을 기르다)"
+    },
+    {
+        "id":  "d14-50",
+        "day":  "Day 14",
+        "no":  "50",
+        "word":  "prestigious",
+        "phonetic":  "[prestídʒəs]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "권위 있는, 일류의",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "respected",
+                           "renowned",
+                           "esteemed"
+                       ],
+        "exampleEn":  "win a prestigious award",
+        "exampleKo":  "권위 있는 상을 받다",
+        "memo":  "prestigious universities (명문대학교)"
     }
 ];
