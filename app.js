@@ -1366,21 +1366,34 @@
   let modalWordHistory = [];
   let currentDetailWordId = null;
 
-  function openWordDetailModal(id, pushHistory = false) {
-    const item = words.find(w => w.id === id);
+  function openWordDetailModal(idOrItem, pushHistory = false) {
+    let item = null;
+    let itemId = null;
+
+    if (typeof idOrItem === 'object' && idOrItem !== null) {
+      item = idOrItem;
+      itemId = item.id || ('temp-' + (item.word || 'word'));
+    } else if (typeof idOrItem === 'string') {
+      itemId = idOrItem;
+      item = words.find(w => w && w.id === itemId);
+      if (!item) {
+        item = words.find(w => w && w.word && w.word.toLowerCase() === itemId.toLowerCase());
+      }
+    }
+
     if (!item) return;
 
-    if (pushHistory && currentDetailWordId && currentDetailWordId !== id) {
+    if (pushHistory && currentDetailWordId && currentDetailWordId !== itemId) {
       modalWordHistory.push(currentDetailWordId);
     }
-    currentDetailWordId = id;
+    currentDetailWordId = itemId;
 
     // 이전 단어 히스토리 버튼 표시 여부
     const backContainer = document.getElementById('modalBackWordContainer');
     const backNameEl = document.getElementById('modalBackWordName');
     if (modalWordHistory.length > 0) {
       const prevId = modalWordHistory[modalWordHistory.length - 1];
-      const prevItem = words.find(w => w.id === prevId);
+      const prevItem = words.find(w => w.id === prevId) || words.find(w => w.word === prevId);
       if (prevItem && backContainer && backNameEl) {
         backNameEl.textContent = prevItem.word;
         backContainer.classList.remove('hidden');
@@ -1399,7 +1412,7 @@
       };
     }
 
-    document.getElementById('modalDayBadge').textContent = item.day || 'Day 01';
+    document.getElementById('modalDayBadge').textContent = item.day || '어휘 보기';
     const noBadge = document.getElementById('modalNoBadge');
     if (noBadge) {
       if (item.no) {
@@ -1411,15 +1424,15 @@
     }
     document.getElementById('modalPosBadge').textContent = item.partOfSpeech || '품사';
     
-    const wrongCount = getWrongCount(item.id);
+    const wrongCount = item.id ? getWrongCount(item.id) : 0;
     document.getElementById('modalWrongCount').textContent = wrongCount;
 
-    document.getElementById('modalWord').textContent = item.word;
+    document.getElementById('modalWord').textContent = item.word || '';
     const modalPhonetic = document.getElementById('modalPhonetic');
     if (modalPhonetic) {
       modalPhonetic.textContent = item.phonetic || '';
     }
-    document.getElementById('modalMeaning').textContent = item.meaning;
+    document.getElementById('modalMeaning').textContent = item.meaning || '';
 
     // 발음 버튼
     const ttsBtn = document.getElementById('modalWordTtsBtn');
@@ -1534,18 +1547,23 @@
       };
     }
 
-    // 오답 리셋 버튼
+    // 오답 리셋 버튼 및 단어 삭제 버튼 (정식 등록 단어에만 활성화)
+    const isSynthetic = !item.id || item.id.startsWith('distractor-') || item.id.startsWith('temp-');
     const resetWrongBtn = document.getElementById('modalResetWrongBtn');
-    resetWrongBtn.onclick = () => {
-      resetWordWrongCount(item.id);
-      document.getElementById('modalWrongCount').textContent = 0;
-      renderWordList();
-      showToast(`'${item.word}' 오답 횟수가 초기화되었습니다.`);
-    };
+    if (resetWrongBtn) {
+      resetWrongBtn.classList.toggle('hidden', isSynthetic);
+      resetWrongBtn.onclick = () => {
+        resetWordWrongCount(item.id);
+        document.getElementById('modalWrongCount').textContent = 0;
+        renderWordList();
+        showToast(`'${item.word}' 오답 횟수가 초기화되었습니다.`);
+      };
+    }
 
     // 단어 삭제 버튼
     const deleteBtn = document.getElementById('modalDeleteWordBtn');
     if (deleteBtn) {
+      deleteBtn.classList.toggle('hidden', isSynthetic);
       deleteBtn.onclick = () => {
         if (confirm(`'${item.word}' 단어를 단어장에서 완전히 삭제하시겠습니까?`)) {
           words = words.filter(w => w.id !== item.id);
@@ -2049,8 +2067,17 @@
       statusEl.innerHTML = `<span class="text-rose-600"><i class="fa-solid fa-circle-xmark text-lg"></i> 아쉽네요! 정답은 <strong>"${q.word}"</strong>입니다.</span>`;
     }
 
+    // 정답 단어 전체 상세정보 열기 버튼
+    const openTargetBtn = document.getElementById('quizBtnOpenTargetDetail');
+    if (openTargetBtn) {
+      openTargetBtn.onclick = () => window.openQuizOptionDetail(q.id, q.word, q.meaning);
+    }
+
     // 정답 발음 버튼
-    document.getElementById('quizTtsTargetWordBtn').onclick = () => speak(q.word);
+    const ttsTargetBtn = document.getElementById('quizTtsTargetWordBtn');
+    if (ttsTargetBtn) {
+      ttsTargetBtn.onclick = () => speak(q.word);
+    }
 
     // 예문 영역
     const exEn = document.getElementById('quizExampleEn');
@@ -2065,48 +2092,65 @@
       exEn.onclick = null;
     }
 
-    // 보기 4단어 뜻풀이 리스트 (단어장에 등록된 단어는 상세정보 팝업 지원)
+    // 보기 4단어 뜻풀이 리스트 (모든 보기 단어 100% 상세정보 팝업 & 원터치 터치 지원)
     const reviewList = document.getElementById('quizReviewOptionsList');
     reviewList.innerHTML = options.map(opt => {
-      const isTarget = opt.word === q.word;
-      const registeredItem = words.find(w => w.word.toLowerCase() === opt.word.toLowerCase());
+      const optWord = typeof opt === 'string' ? opt : (opt && opt.word ? opt.word : '');
+      const isTarget = optWord.toLowerCase() === (q.word || '').toLowerCase();
+      const registeredItem = words.find(w => w && w.word && w.word.toLowerCase() === optWord.toLowerCase());
+      const optDef = (typeof opt === 'object' && opt && opt.def) 
+        ? opt.def 
+        : (registeredItem ? registeredItem.meaning : (opt.meaning || ''));
+
+      const safeDefForAttr = (optDef || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      const registeredId = registeredItem ? registeredItem.id : '';
 
       return `
-        <div class="flex items-center justify-between p-2.5 rounded-xl ${
-          isTarget ? 'bg-emerald-100/70 border-emerald-200 text-emerald-950 font-bold' : 'bg-white border-slate-200 text-slate-700'
-        } border shadow-xs hover:border-indigo-300 transition gap-2">
+        <div class="flex items-center justify-between p-3 rounded-2xl ${
+          isTarget ? 'bg-emerald-100/80 border-emerald-300 text-emerald-950 font-bold' : 'bg-white border-slate-200 hover:border-indigo-300 text-slate-700'
+        } border shadow-xs transition gap-2 cursor-pointer group active:scale-[0.99]" onclick="window.openQuizOptionDetail('${registeredId}', '${optWord}', '${safeDefForAttr}')">
           
-          <!-- 단어 및 뜻 (터치 시 발음 듣기) -->
-          <div class="flex items-center gap-2 flex-1 min-w-0 cursor-pointer" onclick="window.speakText('${opt.word}')">
-            <button type="button" class="text-indigo-600 hover:text-indigo-800 p-1" title="발음 듣기">
+          <!-- 단어 및 뜻 (터치 시 상세 모달 오픈, 스피커 클릭 시 발음 재생) -->
+          <div class="flex items-center gap-2 flex-1 min-w-0">
+            <button type="button" class="text-indigo-600 hover:text-indigo-800 p-1.5 rounded-lg hover:bg-indigo-50 transition shrink-0" title="발음 듣기" onclick="event.stopPropagation(); window.speakText('${optWord}', event)">
               <i class="fa-solid fa-volume-high text-xs"></i>
             </button>
-            <span class="font-black text-slate-900 tracking-tight shrink-0">${opt.word}</span>
-            <span class="text-slate-600 text-xs truncate">: ${opt.def}</span>
+            <div class="min-w-0">
+              <span class="font-black text-slate-900 tracking-tight text-sm">${optWord}</span>
+              <span class="text-slate-600 text-xs truncate ml-1">: ${optDef}</span>
+            </div>
           </div>
 
           <!-- 상태 및 상세 팝업 버튼 -->
-          <div class="flex items-center gap-1.5 shrink-0">
-            ${isTarget ? '<span class="text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded font-black">정답</span>' : ''}
+          <div class="flex items-center gap-1.5 shrink-0" onclick="event.stopPropagation()">
+            ${isTarget ? '<span class="text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded-full font-black">정답</span>' : ''}
             
-            ${registeredItem ? `
-              <button type="button" onclick="window.openQuizOptionDetail('${registeredItem.id}', '${opt.word}')" class="px-2 py-0.5 rounded-lg bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-700 font-bold text-[11px] flex items-center gap-1 transition shadow-xs border border-indigo-200" title="단어장에 등록된 단어의 예문/파생어/상세보기">
-                <i class="fa-solid fa-book-open text-[10px]"></i> 상세
-              </button>
-            ` : ''}
+            <button type="button" onclick="window.openQuizOptionDetail('${registeredId}', '${optWord}', '${safeDefForAttr}')" class="px-2.5 py-1 rounded-xl ${
+              isTarget ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-700'
+            } font-bold text-xs flex items-center gap-1 transition shadow-xs border border-indigo-200 cursor-pointer active:scale-95" title="'${optWord}' 상세 예문/파생어/암기팁 보기">
+              <i class="fa-solid fa-book-open text-[11px]"></i>
+              <span>상세</span>
+            </button>
           </div>
         </div>
       `;
     }).join('');
 
-    // 출제 팁
+    // 출제 팁 & 핵심 포인트 (등록된 메모가 없으면 파생어/동의어/출제 팁 자동 보강)
     const tipSection = document.getElementById('quizTipSection');
     const tipText = document.getElementById('quizTipText');
-    if (q.memo) {
+    if (q.memo && q.memo.trim()) {
       tipSection.classList.remove('hidden');
       tipText.textContent = q.memo;
+    } else if (q.relatedForms && q.relatedForms !== '-' && q.relatedForms.trim()) {
+      tipSection.classList.remove('hidden');
+      tipText.innerHTML = `<strong>[파생어/형태]</strong> ${q.relatedForms}`;
+    } else if (Array.isArray(q.paraphrase) && q.paraphrase.length > 0) {
+      tipSection.classList.remove('hidden');
+      tipText.innerHTML = `<strong>[핵심 동의어]</strong> ${q.paraphrase.join(', ')}`;
     } else {
-      tipSection.classList.add('hidden');
+      tipSection.classList.remove('hidden');
+      tipText.innerHTML = `<strong>[지텔프 핵심 어휘]</strong> "${q.word}" (${q.partOfSpeech || '어휘'}) - 주요 뜻: ${q.meaning}`;
     }
 
     // 이전 문제 버튼
@@ -2436,22 +2480,18 @@
       statusEl.innerHTML = `<span class="text-rose-700 font-bold"><i class="fa-solid fa-circle-xmark"></i> 오답! "${q.word}"의 올바른 동의어는 "${correct}"입니다.</span>`;
     }
 
-    // 전체 동의어 목록 (등록된 단어는 책 아이콘 및 상세정보 열기 지원)
+    // 전체 동의어 목록 (모든 동의어 단어 상세정보 팝업 지원)
     const synList = document.getElementById('paraAllSynonyms');
     synList.innerHTML = q.paraphrase.map(p => {
       const cleanP = (p || '').trim();
-      const found = words.find(w => w.word.toLowerCase() === cleanP.toLowerCase());
-      if (found) {
-        return `
-          <button type="button" class="px-2 py-1 rounded-lg bg-amber-100 text-amber-950 font-bold text-xs border border-amber-300 hover:bg-amber-200 flex items-center gap-1 shadow-xs transition" onclick="window.openQuizOptionDetail('${found.id}', '${cleanP}')" title="단어 상세정보 보기">
-            <i class="fa-solid fa-book-open text-[10px] text-amber-700"></i> ${cleanP}
-          </button>
-        `;
-      }
+      const found = words.find(w => w && w.word && w.word.toLowerCase() === cleanP.toLowerCase());
+      const idParam = found ? found.id : '';
       return `
-        <span class="px-2 py-1 rounded-lg bg-amber-50 text-amber-900 font-bold text-xs cursor-pointer hover:bg-amber-100 flex items-center gap-1 border border-amber-200/60" onclick="window.speakText('${cleanP}')" title="발음 듣기">
-          ${cleanP} <i class="fa-solid fa-volume-high text-[9px] text-amber-600"></i>
-        </span>
+        <button type="button" class="px-2.5 py-1.5 rounded-xl bg-amber-100 text-amber-950 font-bold text-xs border border-amber-300 hover:bg-amber-200 flex items-center gap-1.5 shadow-xs transition cursor-pointer active:scale-95" onclick="window.openQuizOptionDetail('${idParam}', '${cleanP}')" title="'${cleanP}' 단어 상세정보 보기">
+          <i class="fa-solid fa-book-open text-[11px] text-amber-700"></i>
+          <span>${cleanP}</span>
+          ${found ? `<span class="text-[10px] bg-amber-200 text-amber-800 px-1 py-0.2 rounded font-black">단어장</span>` : ''}
+        </button>
       `;
     }).join('');
 
@@ -2498,9 +2538,36 @@
     }
   }
 
-  window.openQuizOptionDetail = function(id, word) {
-    if (word) speak(word);
-    openWordDetailModal(id);
+  window.openQuizOptionDetail = function(id, word, fallbackDef = '') {
+    const cleanWord = (word || '').trim();
+    if (cleanWord) speak(cleanWord);
+
+    let item = null;
+    if (id) {
+      item = words.find(w => w && w.id === id);
+    }
+    if (!item && cleanWord) {
+      item = words.find(w => w && w.word && w.word.toLowerCase() === cleanWord.toLowerCase());
+    }
+
+    if (item) {
+      openWordDetailModal(item, true);
+    } else if (cleanWord) {
+      const synthetic = {
+        id: 'distractor-' + cleanWord.toLowerCase(),
+        day: '혼동 어휘',
+        word: cleanWord,
+        phonetic: '',
+        partOfSpeech: '어휘',
+        meaning: fallbackDef || '지텔프 기출 관련 어휘',
+        relatedForms: '-',
+        paraphrase: [],
+        exampleEn: '',
+        exampleKo: '',
+        memo: `지텔프 기출 4지선다 혼동 어휘 보기입니다. 뜻: ${fallbackDef || cleanWord}`
+      };
+      openWordDetailModal(synthetic, true);
+    }
   };
 
   // --------------------------------------------------------------------------
@@ -4349,45 +4416,77 @@
       statusEl.innerHTML = `<span class="text-rose-700 font-bold"><i class="fa-solid fa-circle-xmark text-lg"></i> 오답입니다! 빈칸에 알맞은 단어는 <strong>"${q.word}"</strong>입니다.</span>`;
     }
 
+    // 정답 단어 전체 상세정보 열기 버튼
+    const openTargetBtn = document.getElementById('clozeBtnOpenTargetDetail');
+    if (openTargetBtn) {
+      openTargetBtn.onclick = () => window.openQuizOptionDetail(q.id, q.word, q.meaning);
+    }
+
     // 완성 문장 듣기 버튼
-    document.getElementById('clozeTtsFullSentenceBtn').onclick = () => speak(q.exampleEn);
+    const ttsSentenceBtn = document.getElementById('clozeTtsFullSentenceBtn');
+    if (ttsSentenceBtn) {
+      ttsSentenceBtn.onclick = () => speak(q.exampleEn);
+    }
     document.getElementById('clozeReviewFullSentence').innerHTML = `"${q.exampleEn}"`;
     document.getElementById('clozeReviewTranslation').textContent = q.exampleKo || '';
 
-    // 보기 4개 뜻풀이 & 상세 모달 버튼
+    // 보기 4개 뜻풀이 & 상세 모달 버튼 (100% 모든 보기 단어 상세 팝업 연동)
     const reviewList = document.getElementById('clozeReviewOptionsList');
     reviewList.innerHTML = options.map(opt => {
-      const isTarget = opt.word === q.word;
-      const registeredItem = words.find(w => w.word.toLowerCase() === opt.word.toLowerCase());
+      const optWord = typeof opt === 'string' ? opt : (opt && opt.word ? opt.word : '');
+      const isTarget = optWord.toLowerCase() === (q.word || '').toLowerCase();
+      const registeredItem = words.find(w => w && w.word && w.word.toLowerCase() === optWord.toLowerCase());
+      const optDef = (typeof opt === 'object' && opt && opt.def) 
+        ? opt.def 
+        : (registeredItem ? registeredItem.meaning : (opt.meaning || ''));
+
+      const safeDefForAttr = (optDef || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      const registeredId = registeredItem ? registeredItem.id : '';
 
       return `
-        <div class="flex items-center justify-between p-2.5 rounded-xl ${
-          isTarget ? 'bg-emerald-100/70 border-emerald-200 text-emerald-950 font-bold' : 'bg-white border-slate-200 text-slate-700'
-        } border shadow-xs gap-2">
-          <div class="flex items-center gap-2 flex-1 min-w-0 cursor-pointer" onclick="window.speakText('${opt.word}')">
-            <i class="fa-solid fa-volume-high text-xs text-indigo-500"></i>
-            <span class="font-black text-slate-900">${opt.word}</span>
-            <span class="text-slate-600 text-xs truncate">: ${opt.def}</span>
+        <div class="flex items-center justify-between p-3 rounded-2xl ${
+          isTarget ? 'bg-emerald-100/80 border-emerald-300 text-emerald-950 font-bold' : 'bg-white border-slate-200 hover:border-emerald-300 text-slate-700'
+        } border shadow-xs transition gap-2 cursor-pointer group active:scale-[0.99]" onclick="window.openQuizOptionDetail('${registeredId}', '${optWord}', '${safeDefForAttr}')">
+          
+          <div class="flex items-center gap-2 flex-1 min-w-0">
+            <button type="button" class="text-emerald-600 hover:text-emerald-800 p-1.5 rounded-lg hover:bg-emerald-50 transition shrink-0" title="발음 듣기" onclick="event.stopPropagation(); window.speakText('${optWord}', event)">
+              <i class="fa-solid fa-volume-high text-xs"></i>
+            </button>
+            <div class="min-w-0">
+              <span class="font-black text-slate-900 tracking-tight text-sm">${optWord}</span>
+              <span class="text-slate-600 text-xs truncate ml-1">: ${optDef}</span>
+            </div>
           </div>
-          <div class="flex items-center gap-1.5 shrink-0">
-            ${isTarget ? '<span class="text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded font-black">정답</span>' : ''}
-            ${registeredItem ? `
-              <button type="button" onclick="window.openQuizOptionDetail('${registeredItem.id}', '${opt.word}')" class="px-2 py-0.5 rounded-lg bg-emerald-50 hover:bg-emerald-600 hover:text-white text-emerald-700 font-bold text-[11px] flex items-center gap-1 transition shadow-xs border border-emerald-200">
-                <i class="fa-solid fa-book-open text-[10px]"></i> 상세
-              </button>
-            ` : ''}
+
+          <div class="flex items-center gap-1.5 shrink-0" onclick="event.stopPropagation()">
+            ${isTarget ? '<span class="text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded-full font-black">정답</span>' : ''}
+            
+            <button type="button" onclick="window.openQuizOptionDetail('${registeredId}', '${optWord}', '${safeDefForAttr}')" class="px-2.5 py-1 rounded-xl ${
+              isTarget ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'bg-emerald-50 hover:bg-emerald-600 hover:text-white text-emerald-700'
+            } font-bold text-xs flex items-center gap-1 transition shadow-xs border border-emerald-200 cursor-pointer active:scale-95" title="'${optWord}' 상세 예문/파생어/암기팁 보기">
+              <i class="fa-solid fa-book-open text-[11px]"></i>
+              <span>상세</span>
+            </button>
           </div>
         </div>
       `;
     }).join('');
 
+    // 출제 팁 & 핵심 포인트
     const tipSection = document.getElementById('clozeTipSection');
     const tipText = document.getElementById('clozeTipText');
-    if (q.memo) {
+    if (q.memo && q.memo.trim()) {
       tipSection.classList.remove('hidden');
       tipText.textContent = q.memo;
+    } else if (q.relatedForms && q.relatedForms !== '-' && q.relatedForms.trim()) {
+      tipSection.classList.remove('hidden');
+      tipText.innerHTML = `<strong>[파생어/형태]</strong> ${q.relatedForms}`;
+    } else if (Array.isArray(q.paraphrase) && q.paraphrase.length > 0) {
+      tipSection.classList.remove('hidden');
+      tipText.innerHTML = `<strong>[핵심 동의어]</strong> ${q.paraphrase.join(', ')}`;
     } else {
-      tipSection.classList.add('hidden');
+      tipSection.classList.remove('hidden');
+      tipText.innerHTML = `<strong>[문맥 완성 포인트]</strong> "${q.word}" (${q.partOfSpeech || '어휘'}) - 뜻: ${q.meaning}`;
     }
 
     // 이전 문제 버튼
