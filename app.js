@@ -74,6 +74,37 @@
   // --------------------------------------------------------------------------
   // 1. 데이터 로드 & 저장소 (LocalStorage)
   // --------------------------------------------------------------------------
+  const CUSTOM_MEMOS_KEY = 'voca_custom_memos';
+
+  function getCustomMemos() {
+    try {
+      const saved = localStorage.getItem(CUSTOM_MEMOS_KEY);
+      return saved ? JSON.parse(saved) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveWordCustomMemo(id, memo) {
+    try {
+      const customMemos = getCustomMemos();
+      const trimmed = (memo || '').trim();
+      if (trimmed) {
+        customMemos[id] = trimmed;
+      } else {
+        delete customMemos[id];
+      }
+      localStorage.setItem(CUSTOM_MEMOS_KEY, JSON.stringify(customMemos));
+      const target = words.find(w => w.id === id);
+      if (target) {
+        target.memo = trimmed;
+      }
+      saveWords();
+    } catch (e) {
+      console.error('Failed to save custom memo:', e);
+    }
+  }
+
   function loadData() {
     const savedWords = localStorage.getItem('voca_words');
     let loaded = [];
@@ -106,6 +137,14 @@
     });
 
     words = Array.from(wordMap.values());
+
+    // 사용자가 작성/수정한 커스텀 암기 팁(수기 메모) 로드 및 단어별 병합
+    const customMemos = getCustomMemos();
+    words.forEach(w => {
+      if (customMemos[w.id] !== undefined) {
+        w.memo = customMemos[w.id];
+      }
+    });
 
     // '기초01', '기초 01', '기초 필수 단어'로 등록된 단어의 Day 명칭을 '기초단어'로 마이그레이션
     let wordsChanged = false;
@@ -1036,6 +1075,14 @@
             </div>
           ` : ''}
 
+          <!-- 출제 포인트 & 암기 팁 미리보기 -->
+          ${w.memo ? `
+            <div class="p-2 rounded-xl bg-purple-50/70 border border-purple-100 text-[11px] text-purple-900 flex items-start gap-1.5 leading-snug">
+              <i class="fa-solid fa-pen-nib text-purple-500 shrink-0 mt-0.5 text-[10px]"></i>
+              <span class="font-medium">${w.memo}</span>
+            </div>
+          ` : ''}
+
         </div>
       `;
     }).join('');
@@ -1243,8 +1290,47 @@
       exampleTtsBtn.onclick = null;
     }
 
-    // 메모 / 팁
-    document.getElementById('modalMemo').textContent = item.memo || '등록된 추가 메모가 없습니다.';
+    // 메모 / 암기 팁 편집창 및 자동저장 설정
+    const memoInput = document.getElementById('modalMemoInput');
+    const memoSaveBtn = document.getElementById('modalMemoSaveBtn');
+    const memoSaveBadge = document.getElementById('modalMemoSaveBadge');
+
+    if (memoInput) {
+      memoInput.value = item.memo || '';
+      
+      let memoDebounceTimer = null;
+      const doSaveMemo = (showToastMsg = false) => {
+        const currentVal = memoInput.value.trim();
+        if (item.memo !== currentVal) {
+          item.memo = currentVal;
+          saveWordCustomMemo(item.id, currentVal);
+          if (memoSaveBadge) {
+            memoSaveBadge.classList.remove('opacity-0');
+            setTimeout(() => memoSaveBadge.classList.add('opacity-0'), 1500);
+          }
+          if (showToastMsg) {
+            showToast('암기 팁이 저장되었습니다!');
+          }
+          renderWordList();
+          if (typeof debouncedCloudPush === 'function') debouncedCloudPush();
+        }
+      };
+
+      if (memoSaveBtn) {
+        memoSaveBtn.onclick = () => doSaveMemo(true);
+      }
+
+      memoInput.onblur = () => {
+        doSaveMemo(false);
+      };
+
+      memoInput.oninput = () => {
+        if (memoDebounceTimer) clearTimeout(memoDebounceTimer);
+        memoDebounceTimer = setTimeout(() => {
+          doSaveMemo(false);
+        }, 800);
+      };
+    }
 
     // 오답 리셋 버튼
     const resetWrongBtn = document.getElementById('modalResetWrongBtn');
@@ -2531,6 +2617,7 @@
     document.getElementById('btnExportData')?.addEventListener('click', () => {
       const backupData = {
         words: words,
+        customMemos: getCustomMemos(),
         wrongStats: wrongStats,
         dayRoundStats: getDayRoundStats(),
         exportDate: new Date().toISOString()
@@ -2596,6 +2683,14 @@
           if (imported.wrongStats) {
             wrongStats = imported.wrongStats;
             saveStats();
+          }
+          if (imported.customMemos && typeof imported.customMemos === 'object') {
+            localStorage.setItem(CUSTOM_MEMOS_KEY, JSON.stringify(imported.customMemos));
+            words.forEach(w => {
+              if (imported.customMemos[w.id] !== undefined) {
+                w.memo = imported.customMemos[w.id];
+              }
+            });
           }
           if (imported.dayRoundStats) {
             saveDayRoundStats(imported.dayRoundStats);
@@ -2880,6 +2975,31 @@
     return changed;
   }
 
+  // 커스텀 암기 팁(수기 메모) 스마트 병합
+  function mergeCustomMemos(cloudCustomMemos) {
+    if (!cloudCustomMemos || typeof cloudCustomMemos !== 'object') return false;
+    const localMemos = getCustomMemos();
+    let changed = false;
+
+    for (const [id, memo] of Object.entries(cloudCustomMemos)) {
+      const cleanRemote = (memo || '').trim();
+      if (cleanRemote && localMemos[id] !== cleanRemote) {
+        localMemos[id] = cleanRemote;
+        changed = true;
+        const target = words.find(w => w.id === id);
+        if (target) {
+          target.memo = cleanRemote;
+        }
+      }
+    }
+
+    if (changed) {
+      localStorage.setItem(CUSTOM_MEMOS_KEY, JSON.stringify(localMemos));
+      saveWords();
+    }
+    return changed;
+  }
+
   // 동기화 중 스피너 표시
   function setCloudSyncBusy(isBusy) {
     const headerIcon = document.getElementById('cloudSyncHeaderIcon');
@@ -2942,6 +3062,7 @@
         name: 'gtelp_voca_sync',
         data: {
           customWords: getCustomWords(),
+          customMemos: getCustomMemos(),
           wrongStats: wrongStats,
           dayRoundStats: getDayRoundStats(),
           updatedAt: new Date().toISOString()
@@ -3002,6 +3123,7 @@
       const wordsUpdated = mergeCustomWords(remoteData.customWords);
       const roundsUpdated = mergeDayRoundStats(remoteData.dayRoundStats);
       const wrongsUpdated = mergeWrongStats(remoteData.wrongStats);
+      const memosUpdated = mergeCustomMemos(remoteData.customMemos);
 
       // 상호 동기화를 위해 로컬 데이터도 클라우드에 즉시 반영
       await syncPushToCloud(true);
@@ -3009,7 +3131,7 @@
       setCloudLastTime();
       updateCloudSyncUI();
 
-      if (wordsUpdated || roundsUpdated || wrongsUpdated) {
+      if (wordsUpdated || roundsUpdated || wrongsUpdated || memosUpdated) {
         renderDayFilters();
         renderWordList();
         renderStats();
@@ -3040,6 +3162,7 @@
         name: 'gtelp_voca_sync',
         data: {
           customWords: getCustomWords(),
+          customMemos: getCustomMemos(),
           wrongStats: wrongStats,
           dayRoundStats: getDayRoundStats(),
           updatedAt: new Date().toISOString()
@@ -3096,11 +3219,12 @@
       const wordsUpdated = mergeCustomWords(remoteData.customWords);
       const roundsUpdated = mergeDayRoundStats(remoteData.dayRoundStats);
       const wrongsUpdated = mergeWrongStats(remoteData.wrongStats);
+      const memosUpdated = mergeCustomMemos(remoteData.customMemos);
 
       setCloudLastTime();
       updateCloudSyncUI();
 
-      if (wordsUpdated || roundsUpdated || wrongsUpdated) {
+      if (wordsUpdated || roundsUpdated || wrongsUpdated || memosUpdated) {
         renderDayFilters();
         renderWordList();
         renderStats();
@@ -3411,6 +3535,18 @@
       exKo.textContent = item.exampleKo || '';
     } else {
       exBox.classList.add('hidden');
+    }
+
+    // 출제 포인트 & 암기 팁
+    const memoBox = document.getElementById('fcBackMemoBox');
+    const memoEl = document.getElementById('fcBackMemo');
+    if (memoBox && memoEl) {
+      if (item.memo && item.memo.trim()) {
+        memoBox.classList.remove('hidden');
+        memoEl.textContent = item.memo.trim();
+      } else {
+        memoBox.classList.add('hidden');
+      }
     }
 
     // 상단 이전 버튼 & 하단 다음 버튼 상태 갱신

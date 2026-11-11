@@ -304,6 +304,14 @@
                   <div id="fcBackExampleEn" class="font-semibold text-indigo-100 leading-snug"></div>
                   <div id="fcBackExampleKo" class="text-slate-300 text-[11px]"></div>
                 </div>
+
+                <!-- 출제 포인트 & 수기 암기 팁 -->
+                <div id="fcBackMemoBox" class="p-2.5 bg-amber-400/20 rounded-xl space-y-0.5 text-xs border border-amber-300/30 hidden">
+                  <div class="text-[10px] font-bold text-amber-200 flex items-center gap-1">
+                    <i class="fa-solid fa-pen-nib"></i> 출제 포인트 & 암기 팁
+                  </div>
+                  <div id="fcBackMemo" class="text-white text-[11px] font-medium leading-relaxed"></div>
+                </div>
               </div>
 
               <div class="text-[10px] text-center text-slate-400">
@@ -953,11 +961,25 @@
 
         <!-- 4. 출제 포인트 및 수기 메모 -->
         <div class="space-y-1.5">
-          <div class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-            <i class="fa-solid fa-pen-nib text-purple-500"></i> 출제 포인트 & 암기 팁
+          <div class="flex items-center justify-between">
+            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-pen-nib text-purple-500"></i> 출제 포인트 & 나만의 암기 팁
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span id="modalMemoSaveBadge" class="text-[10px] text-emerald-600 font-bold transition opacity-0 flex items-center gap-1">
+                <i class="fa-solid fa-check"></i> 저장됨
+              </span>
+              <button id="modalMemoSaveBtn" type="button" class="px-2.5 py-1 rounded-lg bg-purple-100 hover:bg-purple-200 active:scale-95 text-purple-700 text-[11px] font-bold transition flex items-center gap-1 shadow-xs cursor-pointer" title="암기 팁 저장">
+                <i class="fa-solid fa-floppy-disk"></i> 저장
+              </button>
+            </div>
           </div>
-          <div id="modalMemo" class="p-3 bg-purple-50 text-purple-950 rounded-xl text-xs font-medium border border-purple-100">
-            -
+          <div class="relative">
+            <textarea id="modalMemoInput" rows="3" placeholder="나만의 암기 비법, 헷갈리는 포인트, 기출 팁 등을 자유롭게 메모하세요. (입력 시 자동 저장 및 기기간 동기화)" class="w-full p-3 bg-purple-50/70 text-purple-950 rounded-xl text-xs font-medium border border-purple-200 focus:border-purple-400 focus:bg-white focus:ring-2 focus:ring-purple-200 outline-none transition leading-relaxed resize-y"></textarea>
+          </div>
+          <div class="flex items-center justify-between text-[10px] text-slate-400 px-0.5">
+            <span>💡 바깥 터치(포커스 해제) 또는 [저장] 클릭 시 즉시 저장됩니다.</span>
+            <span class="text-purple-600 font-medium"><i class="fa-solid fa-cloud"></i> 실시간 기기 동기화 지원</span>
           </div>
         </div>
       </div>
