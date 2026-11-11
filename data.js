@@ -5379,7 +5379,7 @@ const INITIAL_WORDS_DATA = [
                        ],
         "exampleEn":  "fix the leak in the ceiling",
         "exampleKo":  "천장의 누수를 고치다",
-        "memo":  "지텔프 동의어: We can\u0027t leave until we fix the flat tire. -> (b) repair"
+        "memo":  "지텔프 동의어: We can't leave until we fix the flat tire. -> (b) repair"
     },
     {
         "id":  "d06-36",
@@ -6245,7 +6245,7 @@ const INITIAL_WORDS_DATA = [
                        ],
         "exampleEn":  "soaring prices",
         "exampleKo":  "치솟는 물가",
-        "memo":  "지텔프 동의어: The athlete\u0027s popularity soared after he won the gold medal. -> (b) increased"
+        "memo":  "지텔프 동의어: The athlete's popularity soared after he won the gold medal. -> (b) increased"
     },
     {
         "id":  "d07-36",
@@ -6369,7 +6369,7 @@ const INITIAL_WORDS_DATA = [
                        ],
         "exampleEn":  "carefully monitor the growth of a plant",
         "exampleKo":  "식물의 성장을 주의 깊게 관찰하다",
-        "memo":  "지텔프 동의어: The nurse constantly monitored the patient\u0027s heart rate. -> (b) observed"
+        "memo":  "지텔프 동의어: The nurse constantly monitored the patient's heart rate. -> (b) observed"
     },
     {
         "id":  "d07-43",
@@ -6384,7 +6384,7 @@ const INITIAL_WORDS_DATA = [
                            "persuade",
                            "assure"
                        ],
-        "exampleEn":  "The jury was not convinced by the defendant\u0027s story.",
+        "exampleEn":  "The jury was not convinced by the defendant's story.",
         "exampleKo":  "배심원들은 피고의 이야기를 납득하지 못했다.",
         "memo":  ""
     },
@@ -6668,7 +6668,7 @@ const INITIAL_WORDS_DATA = [
                            "passion",
                            "devotion"
                        ],
-        "exampleEn":  "disappointed with the speaker\u0027s lack of enthusiasm",
+        "exampleEn":  "disappointed with the speaker's lack of enthusiasm",
         "exampleKo":  "연설자의 열의 부족에 실망한",
         "memo":  ""
     },
@@ -7458,7 +7458,7 @@ const INITIAL_WORDS_DATA = [
         "paraphrase":  [
 
                        ],
-        "exampleEn":  "Waking up early and going for a run has become Crystal\u0027s routine.",
+        "exampleEn":  "Waking up early and going for a run has become Crystal's routine.",
         "exampleKo":  "일찍 일어나서 달리기를 하는 것은 크리스탈의 일과가 되었다.",
         "memo":  ""
     },
@@ -7478,7 +7478,7 @@ const INITIAL_WORDS_DATA = [
                        ],
         "exampleEn":  "propel the boat forward",
         "exampleKo":  "보트를 전진시키다",
-        "memo":  "지텔프 동의어: The rocket\u0027s engines will propel it into orbit. -> (a) push"
+        "memo":  "지텔프 동의어: The rocket's engines will propel it into orbit. -> (a) push"
     },
     {
         "id":  "d09-05",
@@ -7549,7 +7549,7 @@ const INITIAL_WORDS_DATA = [
                            "wonderful",
                            "extraordinary"
                        ],
-        "exampleEn":  "The Wright brothers\u0027 first flight was a remarkable feat.",
+        "exampleEn":  "The Wright brothers' first flight was a remarkable feat.",
         "exampleKo":  "라이트 형제의 첫 비행은 놀라운 업적이었다.",
         "memo":  ""
     },
@@ -7691,7 +7691,7 @@ const INITIAL_WORDS_DATA = [
                            "confront",
                            "defy"
                        ],
-        "exampleEn":  "can\u0027t resist eating chocolate cake",
+        "exampleEn":  "can't resist eating chocolate cake",
         "exampleKo":  "초콜릿 케이크를 먹지 않을 수 없다",
         "memo":  "resist negative changes (부정적인 변화에 저항하다)"
     },
@@ -7710,7 +7710,7 @@ const INITIAL_WORDS_DATA = [
                        ],
         "exampleEn":  "work the night shift",
         "exampleKo":  "야간 근무를 하다",
-        "memo":  "The Earth\u0027s axis has shifted from its original position. (지구의 축이 원래의 위치에서 벗어났다.)"
+        "memo":  "The Earth's axis has shifted from its original position. (지구의 축이 원래의 위치에서 벗어났다.)"
     },
     {
         "id":  "d09-18",
@@ -7922,7 +7922,7 @@ const INITIAL_WORDS_DATA = [
                            "applause",
                            "tout"
                        ],
-        "exampleEn":  "The actor\u0027s outstanding performance was praised by the director.",
+        "exampleEn":  "The actor's outstanding performance was praised by the director.",
         "exampleKo":  "그 배우의 뛰어난 연기는 감독으로부터 칭찬을 받았다.",
         "memo":  ""
     },
@@ -8906,7 +8906,7 @@ const INITIAL_WORDS_DATA = [
                            "observe",
                            "abide by"
                        ],
-        "exampleEn":  "The tiles won\u0027t adhere to the floor properly.",
+        "exampleEn":  "The tiles won't adhere to the floor properly.",
         "exampleKo":  "타일이 바닥에 제대로 붙지 않는다.",
         "memo":  "adhere to the terms of the contract (계약 조건을 지키다)"
     },
@@ -8939,7 +8939,7 @@ const INITIAL_WORDS_DATA = [
         "paraphrase":  [
 
                        ],
-        "exampleEn":  "each person\u0027s unique genetic makeup",
+        "exampleEn":  "each person's unique genetic makeup",
         "exampleKo":  "개개인의 고유한 유전자 구성",
         "memo":  ""
     },
@@ -9032,7 +9032,7 @@ const INITIAL_WORDS_DATA = [
                            "manage",
                            "direct"
                        ],
-        "exampleEn":  "oversee the company\u0027s operations",
+        "exampleEn":  "oversee the company's operations",
         "exampleKo":  "회사의 운영을 감독하다",
         "memo":  "지텔프 동의어: Craig Kenney was appointed to oversee the construction project. -> (a) supervise"
     },
@@ -9048,7 +9048,7 @@ const INITIAL_WORDS_DATA = [
         "paraphrase":  [
                            "most"
                        ],
-        "exampleEn":  "the majority of the world\u0027s population",
+        "exampleEn":  "the majority of the world's population",
         "exampleKo":  "세계 인구의 대부분",
         "memo":  ""
     },
@@ -9409,7 +9409,7 @@ const INITIAL_WORDS_DATA = [
                            "assign",
                            "entrust"
                        ],
-        "exampleEn":  "Johnson was his company\u0027s delegate to the conference.",
+        "exampleEn":  "Johnson was his company's delegate to the conference.",
         "exampleKo":  "존슨은 콘퍼런스에서 회사의 대표였다.",
         "memo":  "지텔프 동의어: In order to be productive, Lauren learned how to delegate some tasks. -> (a) assign | delegate responsibilities to team members (팀원들에게 업무를 위임하다)"
     },
@@ -9681,7 +9681,7 @@ const INITIAL_WORDS_DATA = [
         "paraphrase":  [
                            "forefather"
                        ],
-        "exampleEn":  "Mary\u0027s ancestors were farmers in Ireland.",
+        "exampleEn":  "Mary's ancestors were farmers in Ireland.",
         "exampleKo":  "메리의 조상은 아일랜드의 농부였다.",
         "memo":  ""
     },
@@ -9734,9 +9734,9 @@ const INITIAL_WORDS_DATA = [
                            "shocking",
                            "disturbing"
                        ],
-        "exampleEn":  "an alarming rise in Earth\u0027s temperatures",
+        "exampleEn":  "an alarming rise in Earth's temperatures",
         "exampleKo":  "지구 기온의 걱정스러울 정도의 상승",
-        "memo":  "지텔프 동의어: The world\u0027s climate is changing at an alarming rate. -> (b) worrying"
+        "memo":  "지텔프 동의어: The world's climate is changing at an alarming rate. -> (b) worrying"
     },
     {
         "id":  "d11-32",
@@ -10002,7 +10002,7 @@ const INITIAL_WORDS_DATA = [
                            "kill",
                            "hang"
                        ],
-        "exampleEn":  "The dog successfully executed its master\u0027s commands.",
+        "exampleEn":  "The dog successfully executed its master's commands.",
         "exampleKo":  "그 개는 성공적으로 주인의 명령을 실행했다.",
         "memo":  "지텔프 동의어: The prisoners were executed for their part in the rebellion. -> (a) killed | The man was executed for being a spy. (그 남자는 스파이라는 이유로 처형당했다.)"
     },
@@ -10082,7 +10082,7 @@ const INITIAL_WORDS_DATA = [
                        ],
         "exampleEn":  "characteristics of tropical fish",
         "exampleKo":  "열대어의 특징",
-        "memo":  "지텔프 동의어: Larry\u0027s easygoing attitude is characteristic of him. -> (b) typical"
+        "memo":  "지텔프 동의어: Larry's easygoing attitude is characteristic of him. -> (b) typical"
     },
     {
         "id":  "d11-50",
@@ -10234,7 +10234,7 @@ const INITIAL_WORDS_DATA = [
                        ],
         "exampleEn":  "have considerable merit",
         "exampleKo":  "상당한 가치가 있다",
-        "memo":  "지텔프 동의어: Andrea has been working hard to merit a pay rise. -> (a) justify | The student\u0027s essay merits attention. (그 학생의 에세이는 주목받을 만하다.)"
+        "memo":  "지텔프 동의어: Andrea has been working hard to merit a pay rise. -> (a) justify | The student's essay merits attention. (그 학생의 에세이는 주목받을 만하다.)"
     },
     {
         "id":  "d12-08",
@@ -10669,7 +10669,7 @@ const INITIAL_WORDS_DATA = [
                        ],
         "exampleEn":  "restrict movement to prevent the spread of disease",
         "exampleKo":  "질병 확산을 막기 위해 이동을 제한하다",
-        "memo":  "지텔프 동의어: This jacket may feel tight but doesn\u0027t restrict movement. -> (b) impede"
+        "memo":  "지텔프 동의어: This jacket may feel tight but doesn't restrict movement. -> (b) impede"
     },
     {
         "id":  "d12-32",
@@ -11094,7 +11094,7 @@ const INITIAL_WORDS_DATA = [
                            "discern",
                            "segregate"
                        ],
-        "exampleEn":  "Melissa can\u0027t differentiate between red and orange.",
+        "exampleEn":  "Melissa can't differentiate between red and orange.",
         "exampleKo":  "멜리사는 붉은색과 주황색을 구별하지 못한다.",
         "memo":  ""
     },
@@ -11328,7 +11328,7 @@ const INITIAL_WORDS_DATA = [
                            "handling",
                            "management"
                        ],
-        "exampleEn":  "The patient\u0027s costly treatment was not effective.",
+        "exampleEn":  "The patient's costly treatment was not effective.",
         "exampleKo":  "그 환자의 값비싼 치료는 효과가 없었다.",
         "memo":  "inadequate treatment of prisoners (죄수들에 대한 부적절한 처우)"
     },
@@ -11363,7 +11363,7 @@ const INITIAL_WORDS_DATA = [
                            "freedom",
                            "release"
                        ],
-        "exampleEn":  "women\u0027s liberation movement",
+        "exampleEn":  "women's liberation movement",
         "exampleKo":  "여성 해방 운동",
         "memo":  ""
     },
@@ -11580,7 +11580,7 @@ const INITIAL_WORDS_DATA = [
                            "opposed",
                            "counter"
                        ],
-        "exampleEn":  "Timothy chose to study psychology contrary to his parents\u0027 wishes.",
+        "exampleEn":  "Timothy chose to study psychology contrary to his parents' wishes.",
         "exampleKo":  "티모시는 부모님의 바람과는 달리 심리학을 공부하기로 선택했다.",
         "memo":  ""
     },
@@ -11856,7 +11856,7 @@ const INITIAL_WORDS_DATA = [
         "paraphrase":  [
                            "understanding"
                        ],
-        "exampleEn":  "The study grants insight into dogs\u0027 behavior.",
+        "exampleEn":  "The study grants insight into dogs' behavior.",
         "exampleKo":  "그 연구는 개의 행동에 대한 통찰을 준다.",
         "memo":  ""
     },
@@ -12308,7 +12308,7 @@ const INITIAL_WORDS_DATA = [
                            "appropriately",
                            "correspondingly"
                        ],
-        "exampleEn":  "The hospital will respond accordingly to the patient\u0027s condition.",
+        "exampleEn":  "The hospital will respond accordingly to the patient's condition.",
         "exampleKo":  "병원은 환자의 상태에 따라 대응할 것이다.",
         "memo":  ""
     },
@@ -12971,7 +12971,7 @@ const INITIAL_WORDS_DATA = [
                            "dwindle",
                            "wither"
                        ],
-        "exampleEn":  "Alan\u0027s career began to fade after he was caught drunk on stage.",
+        "exampleEn":  "Alan's career began to fade after he was caught drunk on stage.",
         "exampleKo":  "앨런이 술 취한 채 무대에 오른 것이 발각된 후 그의 경력은 퇴색하기 시작했다.",
         "memo":  "지텔프 동의어: The popularity of the band was starting to fade due to their lack of originality. -> (a) wane"
     },
@@ -13184,7 +13184,7 @@ const INITIAL_WORDS_DATA = [
                            "nullify",
                            "annul"
                        ],
-        "exampleEn":  "The recent study invalidated Dr. Wong\u0027s findings.",
+        "exampleEn":  "The recent study invalidated Dr. Wong's findings.",
         "exampleKo":  "최근의 연구는 웡 박사의 연구 결과를 무효화했다.",
         "memo":  "지텔프 동의어: The scientific theory was invalidated by the experimental evidence. -> (a) disproved"
     },
@@ -13345,7 +13345,7 @@ const INITIAL_WORDS_DATA = [
                        ],
         "exampleEn":  "a habitual liar",
         "exampleKo":  "상습적인 거짓말쟁이",
-        "memo":  "지텔프 동의어: John\u0027s habitual tardiness caused him to miss some important deadlines. -> (a) persistent | Leah was wearing her habitual hat. (리아는 늘 하는 모자를 쓰고 있었다.)"
+        "memo":  "지텔프 동의어: John's habitual tardiness caused him to miss some important deadlines. -> (a) persistent | Leah was wearing her habitual hat. (리아는 늘 하는 모자를 쓰고 있었다.)"
     },
     {
         "id":  "d15-32",
@@ -13827,7 +13827,7 @@ const INITIAL_WORDS_DATA = [
                            "occupy",
                            "engage"
                        ],
-        "exampleEn":  "capture the enemy\u0027s base",
+        "exampleEn":  "capture the enemy's base",
         "exampleKo":  "적의 기지를 점령하다",
         "memo":  "capture the interest of the audience (관객의 흥미를 끌다)"
     },
@@ -14177,9 +14177,9 @@ const INITIAL_WORDS_DATA = [
                            "confront",
                            "disregard"
                        ],
-        "exampleEn":  "defy the government\u0027s rules and regulations",
+        "exampleEn":  "defy the government's rules and regulations",
         "exampleKo":  "정부의 규칙과 규제를 무시하다",
-        "memo":  "지텔프 동의어: Daniel defied the king\u0027s orders and was promptly executed. -> (b) disobeyed | defy explanation (설명이 불가능하다)"
+        "memo":  "지텔프 동의어: Daniel defied the king's orders and was promptly executed. -> (b) disobeyed | defy explanation (설명이 불가능하다)"
     },
     {
         "id":  "d16-29",
@@ -14365,7 +14365,7 @@ const INITIAL_WORDS_DATA = [
         "paraphrase":  [
 
                        ],
-        "exampleEn":  "The Beatles\u0027 music became legend.",
+        "exampleEn":  "The Beatles' music became legend.",
         "exampleKo":  "비틀즈의 음악은 전설이 되었다.",
         "memo":  ""
     },
@@ -14659,7 +14659,7 @@ const INITIAL_WORDS_DATA = [
         "paraphrase":  [
                            "official"
                        ],
-        "exampleEn":  "Ashley didn\u0027t attain formal education.",
+        "exampleEn":  "Ashley didn't attain formal education.",
         "exampleKo":  "애슐리는 정식 교육을 받지 못했다.",
         "memo":  "You should wear formal attire for the event. (당신은 그 행사를 위해 정장을 입어야 합니다.)"
     },
@@ -14768,7 +14768,7 @@ const INITIAL_WORDS_DATA = [
                            "foil",
                            "thwart"
                        ],
-        "exampleEn":  "be frustrated with the restaurant\u0027s service",
+        "exampleEn":  "be frustrated with the restaurant's service",
         "exampleKo":  "레스토랑의 서비스에 답답함을 느끼다",
         "memo":  "지텔프 동의어: The leg injury frustrated his attempts to win the race. -> (b) discouraged | The bad weather frustrated our plans. (나쁜 날씨는 우리의 계획을 좌절시켰다.)"
     },
@@ -14840,7 +14840,7 @@ const INITIAL_WORDS_DATA = [
                        ],
         "exampleEn":  "genetic traits of seeds",
         "exampleKo":  "씨앗의 유전적 특징",
-        "memo":  "지텔프 동의어: Some common traits of successful people are hard work and determination. -> (a) characteristics | a dog\u0027s behavioral traits (개의 행동 특성)"
+        "memo":  "지텔프 동의어: Some common traits of successful people are hard work and determination. -> (a) characteristics | a dog's behavioral traits (개의 행동 특성)"
     },
     {
         "id":  "d17-17",
@@ -15199,7 +15199,7 @@ const INITIAL_WORDS_DATA = [
                        ],
         "exampleEn":  "surpass our expectations",
         "exampleKo":  "우리의 기대를 능가하다",
-        "memo":  "Erica has surpassed her teacher\u0027s swimming ability. (에리카는 선생님의 수영 실력을 능가했다.)"
+        "memo":  "Erica has surpassed her teacher's swimming ability. (에리카는 선생님의 수영 실력을 능가했다.)"
     },
     {
         "id":  "d17-37",
@@ -15446,5 +15446,883 @@ const INITIAL_WORDS_DATA = [
         "exampleEn":  "smarter than her peers",
         "exampleKo":  "그녀의 또래들보다 더 똑똑한",
         "memo":  "peer pressure (또래[동료]들로부터 받는 압력)"
+    },
+  {
+        "id":  "d18-01",
+        "day":  "Day 18",
+        "no":  "01",
+        "word":  "accord",
+        "phonetic":  "[əkɔ́ːrd]",
+        "partOfSpeech":  "명사",
+        "meaning":  "합의, 일치",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "agreement",
+                           "harmony",
+                           "accordance"
+                       ],
+        "exampleEn":  "Jason's explanation is not in accord with the facts.",
+        "exampleKo":  "제이슨의 설명은 사실과 일치하지 않는다.",
+        "memo":  "지텔프 동의어: The results of the study were not in accord with what was expected. -> (b) agreement"
+    },
+    {
+        "id":  "d18-02",
+        "day":  "Day 18",
+        "no":  "02",
+        "word":  "distributor",
+        "phonetic":  "[distríbjətər]",
+        "partOfSpeech":  "명사",
+        "meaning":  "유통업체, 배급사",
+        "relatedForms":  "distribute (동) 분배하다; 배급하다, distribution (명) 분배; 배급",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "a film distributor",
+        "exampleKo":  "영화 배급사",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-03",
+        "day":  "Day 18",
+        "no":  "03",
+        "word":  "noticeable",
+        "phonetic":  "[nóutisəbl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "뚜렷한, 현저한",
+        "relatedForms":  "notice (동) 알아차리다, (명) 공고(문); 주목",
+        "paraphrase":  [
+                           "clear",
+                           "obvious",
+                           "conspicuous"
+                       ],
+        "exampleEn":  "a noticeable difference in the number of students",
+        "exampleKo":  "학생 수의 현저한 차이",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-04",
+        "day":  "Day 18",
+        "no":  "04",
+        "word":  "sparingly",
+        "phonetic":  "[spέəriŋli]",
+        "partOfSpeech":  "부사",
+        "meaning":  "조금씩, 아껴서",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "infrequently",
+                           "frugally"
+                       ],
+        "exampleEn":  "use water sparingly",
+        "exampleKo":  "물을 아껴[조금씩] 쓰다",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-05",
+        "day":  "Day 18",
+        "no":  "05",
+        "word":  "monument",
+        "phonetic":  "[mάnjəmənt]",
+        "partOfSpeech":  "명사",
+        "meaning":  "기념비, 기념물",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "memorial"
+                       ],
+        "exampleEn":  "a historic monument",
+        "exampleKo":  "역사적 기념물",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-06",
+        "day":  "Day 18",
+        "no":  "06",
+        "word":  "noble",
+        "phonetic":  "[nóubl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "고귀한, 숭고한",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "honorable",
+                           "virtuous"
+                       ],
+        "exampleEn":  "Martin Luther King fought for a noble cause.",
+        "exampleKo":  "마틴 루터 킹은 숭고한 대의를 위해 싸웠다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-07",
+        "day":  "Day 18",
+        "no":  "07",
+        "word":  "fundraising",
+        "phonetic":  "[fʌ́ndrèisiŋ]",
+        "partOfSpeech":  "명사",
+        "meaning":  "모금",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "hold a fundraising event",
+        "exampleKo":  "모금 행사를 열다",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-08",
+        "day":  "Day 18",
+        "no":  "08",
+        "word":  "malfunctioning",
+        "phonetic":  "[mæ̀lfʌ́ŋkʃəniŋ]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "오작동하는, 고장 난",
+        "relatedForms":  "malfunction (동) 오작동하다, 고장 나다",
+        "paraphrase":  [
+                           "flawed",
+                           "defective",
+                           "faulty"
+                       ],
+        "exampleEn":  "a malfunctioning machine",
+        "exampleKo":  "고장 난 기계",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-09",
+        "day":  "Day 18",
+        "no":  "09",
+        "word":  "obesity",
+        "phonetic":  "[oubíːsəti]",
+        "partOfSpeech":  "명사",
+        "meaning":  "비만",
+        "relatedForms":  "obese (형) 비만의",
+        "paraphrase":  [
+                           "corpulence",
+                           "fatness"
+                       ],
+        "exampleEn":  "prevent obesity",
+        "exampleKo":  "비만을 예방하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-10",
+        "day":  "Day 18",
+        "no":  "10",
+        "word":  "unforeseen",
+        "phonetic":  "[ʌ̀nfrsíːn]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "예기치 못한, 뜻밖의",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "unexpected",
+                           "unpredicted",
+                           "unanticipated"
+                       ],
+        "exampleEn":  "Unforeseen circumstances may arise.",
+        "exampleKo":  "예기치 못한 상황이 발생할 수 있다.",
+        "memo":  "지텔프 동의어: Unforeseen circumstances led to the cancellation of the event. -> (a) Unexpected"
+    },
+    {
+        "id":  "d18-11",
+        "day":  "Day 18",
+        "no":  "11",
+        "word":  "overlook",
+        "phonetic":  "[òuvərlúk]",
+        "partOfSpeech":  "동사",
+        "meaning":  "간과하다 / ~가 내려다보이다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "neglect",
+                           "miss"
+                       ],
+        "exampleEn":  "overlook the importance of communication",
+        "exampleKo":  "의사소통의 중요성을 간과하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-12",
+        "day":  "Day 18",
+        "no":  "12",
+        "word":  "byproduct",
+        "phonetic":  "[báiprάdəkt]",
+        "partOfSpeech":  "명사",
+        "meaning":  "부산물, 부차적 결과",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "A byproduct of industrialization is environmental pollution.",
+        "exampleKo":  "산업화의 부산물은 환경 오염이다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-13",
+        "day":  "Day 18",
+        "no":  "13",
+        "word":  "sanctuary",
+        "phonetic":  "[sǽŋktʃuèri]",
+        "partOfSpeech":  "명사",
+        "meaning":  "보호 구역",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "reserve",
+                           "shelter"
+                       ],
+        "exampleEn":  "a wildlife sanctuary",
+        "exampleKo":  "야생 동물 보호 구역",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-14",
+        "day":  "Day 18",
+        "no":  "14",
+        "word":  "prolonged",
+        "phonetic":  "[prəlɔ́ːŋd]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "오래 계속되는, 장기간의",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "extended",
+                           "long",
+                           "lengthy",
+                           "protracted"
+                       ],
+        "exampleEn":  "Prolonged exposure to loud noise can cause hearing loss.",
+        "exampleKo":  "큰 소음에 장기간 노출되면 청력 손실을 초래할 수 있다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-15",
+        "day":  "Day 18",
+        "no":  "15",
+        "word":  "petition",
+        "phonetic":  "[pətíʃən]",
+        "partOfSpeech":  "명사/동사",
+        "meaning":  "청원(서), 탄원(서) / 청원하다, 탄원하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "appeal",
+                           "entreaty"
+                       ],
+        "exampleEn":  "submit a petition",
+        "exampleKo":  "청원서를 제출하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-16",
+        "day":  "Day 18",
+        "no":  "16",
+        "word":  "moisture",
+        "phonetic":  "[mɔ́istʃər]",
+        "partOfSpeech":  "명사",
+        "meaning":  "수분, 습기",
+        "relatedForms":  "moisturize (동) 수분을 공급하다, 촉촉하게 하다",
+        "paraphrase":  [
+                           "dampness",
+                           "humidity"
+                       ],
+        "exampleEn":  "absorb moisture from the soil",
+        "exampleKo":  "토양에서 수분을 흡수하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-17",
+        "day":  "Day 18",
+        "no":  "17",
+        "word":  "spouse",
+        "phonetic":  "[spaus]",
+        "partOfSpeech":  "명사",
+        "meaning":  "배우자",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "partner",
+                           "husband",
+                           "wife",
+                           "mate"
+                       ],
+        "exampleEn":  "his spouse's incurable disease",
+        "exampleKo":  "그의 배우자의 난치병",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-18",
+        "day":  "Day 18",
+        "no":  "18",
+        "word":  "obey",
+        "phonetic":  "[oubéi]",
+        "partOfSpeech":  "동사",
+        "meaning":  "복종하다, 따르다",
+        "relatedForms":  "obedience (명) 복종, 순종",
+        "paraphrase":  [
+                           "follow",
+                           "execute"
+                       ],
+        "exampleEn":  "obey an order",
+        "exampleKo":  "명령에 복종하다",
+        "memo":  "지텔프 동의어: The defendant was required to obey the order of the court. -> (a) execute | obey the rules of the workplace (직장 규칙을 따르다)"
+    },
+    {
+        "id":  "d18-19",
+        "day":  "Day 18",
+        "no":  "19",
+        "word":  "stimulate",
+        "phonetic":  "[stímjəlèit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "자극하다, 촉진시키다",
+        "relatedForms":  "stimulation (명) 자극, 촉진",
+        "paraphrase":  [
+                           "encourage",
+                           "provoke"
+                       ],
+        "exampleEn":  "stimulate the brain",
+        "exampleKo":  "두뇌를 자극하다",
+        "memo":  "stimulate the release of hormones (호르몬 분비를 촉진시키다)"
+    },
+    {
+        "id":  "d18-20",
+        "day":  "Day 18",
+        "no":  "20",
+        "word":  "immoral",
+        "phonetic":  "[imɔ́ːrəl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "비도덕적인, 부도덕한",
+        "relatedForms":  "moral (형) 도덕의; 도덕적인",
+        "paraphrase":  [
+                           "wicked",
+                           "bad",
+                           "malicious",
+                           "unethical"
+                       ],
+        "exampleEn":  "It is immoral to cheat on a test.",
+        "exampleKo":  "시험에서 부정행위를 하는 것은 부도덕한 일이다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-21",
+        "day":  "Day 18",
+        "no":  "21",
+        "word":  "skillfully",
+        "phonetic":  "[skílfəli]",
+        "partOfSpeech":  "부사",
+        "meaning":  "능숙하게",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "expertly",
+                           "adeptly",
+                           "proficiently"
+                       ],
+        "exampleEn":  "skillfully play the piano",
+        "exampleKo":  "피아노를 능숙하게 연주하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-22",
+        "day":  "Day 18",
+        "no":  "22",
+        "word":  "tenant",
+        "phonetic":  "[ténənt]",
+        "partOfSpeech":  "명사",
+        "meaning":  "세입자",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "renter",
+                           "occupant"
+                       ],
+        "exampleEn":  "landlord and tenant",
+        "exampleKo":  "집주인과 세입자",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-23",
+        "day":  "Day 18",
+        "no":  "23",
+        "word":  "prone",
+        "phonetic":  "[proun]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "~하기 쉬운",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "liable",
+                           "inclined"
+                       ],
+        "exampleEn":  "Children are prone to getting hurt.",
+        "exampleKo":  "아이들은 다치기 쉽다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-24",
+        "day":  "Day 18",
+        "no":  "24",
+        "word":  "surrender",
+        "phonetic":  "[səréndər]",
+        "partOfSpeech":  "동사",
+        "meaning":  "항복하다 / 넘겨주다, 내주다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "submit",
+                           "yield",
+                           "abandon"
+                       ],
+        "exampleEn":  "surrender the weapons to the enemy",
+        "exampleKo":  "무기를 적에게 내주다",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-25",
+        "day":  "Day 18",
+        "no":  "25",
+        "word":  "influential",
+        "phonetic":  "[ìnfluénʃəl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "영향력 있는",
+        "relatedForms":  "influence (명) 영향(력), (동) 영향을 미치다",
+        "paraphrase":  [
+                           "leading"
+                       ],
+        "exampleEn":  "an influential artist",
+        "exampleKo":  "영향력 있는 예술가",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-26",
+        "day":  "Day 18",
+        "no":  "26",
+        "word":  "offspring",
+        "phonetic":  "[ɔ́ːfsprìŋ]",
+        "partOfSpeech":  "명사",
+        "meaning":  "자식, 새끼",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "The rabbit produced six offspring.",
+        "exampleKo":  "토끼는 새끼 여섯 마리를 낳았다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-27",
+        "day":  "Day 18",
+        "no":  "27",
+        "word":  "skeptical",
+        "phonetic":  "[sképtikəl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "회의적인, 의심 많은",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "doubtful",
+                           "dubious",
+                           "unsure"
+                       ],
+        "exampleEn":  "Adam is skeptical of the results of the study.",
+        "exampleKo":  "아담은 그 연구 결과에 대해 회의적이다.",
+        "memo":  "지텔프 동의어: Eric was skeptical about his chances of winning. -> (b) doubtful"
+    },
+    {
+        "id":  "d18-28",
+        "day":  "Day 18",
+        "no":  "28",
+        "word":  "superstition",
+        "phonetic":  "[sjùːpərstíʃən]",
+        "partOfSpeech":  "명사",
+        "meaning":  "미신",
+        "relatedForms":  "-",
+        "paraphrase":  [
+
+                       ],
+        "exampleEn":  "believe in superstition",
+        "exampleKo":  "미신을 믿다",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-29",
+        "day":  "Day 18",
+        "no":  "29",
+        "word":  "tribe",
+        "phonetic":  "[traib]",
+        "partOfSpeech":  "명사",
+        "meaning":  "종족, 부족",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "people"
+                       ],
+        "exampleEn":  "trade between different tribes",
+        "exampleKo":  "서로 다른 부족 간의 무역",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-30",
+        "day":  "Day 18",
+        "no":  "30",
+        "word":  "multiple",
+        "phonetic":  "[mʌ́ltəpl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "다수의, 여럿의",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "several",
+                           "many",
+                           "numerous"
+                       ],
+        "exampleEn":  "make multiple copies",
+        "exampleKo":  "여러 부를 복사하다",
+        "memo":  "a multiple choice question (객관식 문제)"
+    },
+    {
+        "id":  "d18-31",
+        "day":  "Day 18",
+        "no":  "31",
+        "word":  "trace",
+        "phonetic":  "[treis]",
+        "partOfSpeech":  "동사/명사",
+        "meaning":  "추적하다, 밝혀내다 / 흔적, 자취",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "follow",
+                           "track",
+                           "remains",
+                           "track",
+                           "mark"
+                       ],
+        "exampleEn":  "The origins of the universe can be traced back to the Big Bang.",
+        "exampleKo":  "우주의 기원은 빅뱅으로 거슬러 올라갈 수 있다.",
+        "memo":  "find traces of blood at the crime scene (범죄 현장에서 혈흔을 발견하다) | 숙어: trace back to (~로 거슬러 올라가다)"
+    },
+    {
+        "id":  "d18-32",
+        "day":  "Day 18",
+        "no":  "32",
+        "word":  "elaborate",
+        "phonetic":  "[ilǽbərət] / [ilǽbərèit]",
+        "partOfSpeech":  "형용사/동사",
+        "meaning":  "정교한, 정밀한 / 상세히 말하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "complicated",
+                           "complex",
+                           "detailed"
+                       ],
+        "exampleEn":  "The dress has an elaborate design.",
+        "exampleKo":  "그 드레스는 디자인이 정교하다.",
+        "memo":  "elaborate on the main points (요점을 상세히 설명하다)"
+    },
+    {
+        "id":  "d18-33",
+        "day":  "Day 18",
+        "no":  "33",
+        "word":  "genuine",
+        "phonetic":  "[dʒénjuin]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "진짜의, 진품의 / 진정한, 진실된",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "original",
+                           "authentic",
+                           "sincere",
+                           "earnest"
+                       ],
+        "exampleEn":  "a genuine article",
+        "exampleKo":  "진품",
+        "memo":  "take a genuine interest in fashion (패션에 진정한 관심을 갖다)"
+    },
+    {
+        "id":  "d18-34",
+        "day":  "Day 18",
+        "no":  "34",
+        "word":  "pertaining to",
+        "phonetic":  "[pərtéiniŋ]",
+        "partOfSpeech":  "전치사",
+        "meaning":  "~와 관련된",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "relating to",
+                           "concerning",
+                           "regarding"
+                       ],
+        "exampleEn":  "All information pertaining to the incident is confidential.",
+        "exampleKo":  "그 사건과 관련된 모든 정보는 기밀이다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-35",
+        "day":  "Day 18",
+        "no":  "35",
+        "word":  "endorse",
+        "phonetic":  "[indɔ́ːrs]",
+        "partOfSpeech":  "동사",
+        "meaning":  "<정책·의견 등> 지지하다, 승인하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "support",
+                           "approve",
+                           "back",
+                           "sanction",
+                           "authorize"
+                       ],
+        "exampleEn":  "The president refused to endorse the bill.",
+        "exampleKo":  "대통령은 그 법안에 대한 승인을 거부했다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-36",
+        "day":  "Day 18",
+        "no":  "36",
+        "word":  "prolifically",
+        "phonetic":  "[prəlífikəli]",
+        "partOfSpeech":  "부사",
+        "meaning":  "다작으로, 다산으로",
+        "relatedForms":  "prolific (형) 다작의, 다산의",
+        "paraphrase":  [
+                           "productively",
+                           "frequently"
+                       ],
+        "exampleEn":  "Writing prolifically is a great way to improve writing skills.",
+        "exampleKo":  "글을 많이 쓰는 것은 글쓰기 능력을 향상시키는 좋은 방법이다.",
+        "memo":  "지텔프 동의어: Ernest Hemingway published prolifically throughout his life. -> (a) frequently"
+    },
+    {
+        "id":  "d18-37",
+        "day":  "Day 18",
+        "no":  "37",
+        "word":  "surveillance",
+        "phonetic":  "[sərvéiləns]",
+        "partOfSpeech":  "명사",
+        "meaning":  "감시",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "watch",
+                           "observation"
+                       ],
+        "exampleEn":  "install a surveillance camera",
+        "exampleKo":  "감시 카메라를 설치하다",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-38",
+        "day":  "Day 18",
+        "no":  "38",
+        "word":  "versatile",
+        "phonetic":  "[və́ːrsətl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "다용도의, 다목적의, 다재다능한",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "all-round"
+                       ],
+        "exampleEn":  "Salt is a versatile ingredient that can be used in many different dishes.",
+        "exampleKo":  "소금은 다양한 요리에 사용될 수 있는 다용도 재료이다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-39",
+        "day":  "Day 18",
+        "no":  "39",
+        "word":  "wane",
+        "phonetic":  "[wein]",
+        "partOfSpeech":  "동사",
+        "meaning":  "<영향력 등> 약해지다, 줄어들다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "fade",
+                           "decline",
+                           "weaken",
+                           "diminish",
+                           "subside"
+                       ],
+        "exampleEn":  "The popularity of the show has been slowly waning.",
+        "exampleKo":  "그 쇼의 인기는 서서히 떨어지고 있다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-40",
+        "day":  "Day 18",
+        "no":  "40",
+        "word":  "ritual",
+        "phonetic":  "[rítʃuəl]",
+        "partOfSpeech":  "명사",
+        "meaning":  "의식, 의례",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "ceremony",
+                           "rite"
+                       ],
+        "exampleEn":  "The ritual of baptism is a Christian tradition.",
+        "exampleKo":  "침례 의식은 기독교의 전통이다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-41",
+        "day":  "Day 18",
+        "no":  "41",
+        "word":  "texture",
+        "phonetic":  "[tékstʃər]",
+        "partOfSpeech":  "명사",
+        "meaning":  "질감, 감촉",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "feel"
+                       ],
+        "exampleEn":  "the soft texture of the fabric",
+        "exampleKo":  "원단의 부드러운 질감",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-42",
+        "day":  "Day 18",
+        "no":  "42",
+        "word":  "hardship",
+        "phonetic":  "[hάːrdʃip]",
+        "partOfSpeech":  "명사",
+        "meaning":  "어려움, 역경",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "trouble",
+                           "difficulty",
+                           "adversity"
+                       ],
+        "exampleEn":  "suffer financial hardship",
+        "exampleKo":  "재정적인 어려움을 겪다",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-43",
+        "day":  "Day 18",
+        "no":  "43",
+        "word":  "provoke",
+        "phonetic":  "[prəvóuk]",
+        "partOfSpeech":  "동사",
+        "meaning":  "유발하다, 불러일으키다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "spark",
+                           "cause",
+                           "arouse",
+                           "generate",
+                           "prompt",
+                           "induce"
+                       ],
+        "exampleEn":  "provoke a lot of debate",
+        "exampleKo":  "많은 논쟁을 불러일으키다",
+        "memo":  "지텔프 동의어: The new law provoked strong criticism from civil rights groups. -> (b) sparked"
+    },
+    {
+        "id":  "d18-44",
+        "day":  "Day 18",
+        "no":  "44",
+        "word":  "uphold",
+        "phonetic":  "[ʌphóuld]",
+        "partOfSpeech":  "동사",
+        "meaning":  "옹호하다, 유지시키다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "maintain",
+                           "support",
+                           "sustain"
+                       ],
+        "exampleEn":  "The courts have a duty to uphold the law.",
+        "exampleKo":  "법원은 법을 수호할 의무가 있다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-45",
+        "day":  "Day 18",
+        "no":  "45",
+        "word":  "slate",
+        "phonetic":  "[sleit]",
+        "partOfSpeech":  "동사",
+        "meaning":  "계획하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "schedule",
+                           "arrange",
+                           "plan"
+                       ],
+        "exampleEn":  "The exhibition is slated for November.",
+        "exampleKo":  "전시회는 11월로 예정되어 있다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-46",
+        "day":  "Day 18",
+        "no":  "46",
+        "word":  "vanish",
+        "phonetic":  "[vǽniʃ]",
+        "partOfSpeech":  "동사",
+        "meaning":  "(갑자기) 사라지다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "disappear"
+                       ],
+        "exampleEn":  "The car vanished without trace from the parking lot.",
+        "exampleKo":  "그 차는 주차장에서 흔적도 없이 사라졌다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-47",
+        "day":  "Day 18",
+        "no":  "47",
+        "word":  "findings",
+        "phonetic":  "[fáindiŋz]",
+        "partOfSpeech":  "명사",
+        "meaning":  "(연구·조사 등) 결과",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "result",
+                           "conclusion"
+                       ],
+        "exampleEn":  "The new findings will be presented at the conference.",
+        "exampleKo":  "새로운 연구 결과가 학회에서 발표될 것이다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-48",
+        "day":  "Day 18",
+        "no":  "48",
+        "word":  "viable",
+        "phonetic":  "[váiəbl]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "실행 가능한, 실현 가능한",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "possible",
+                           "practical",
+                           "feasible",
+                           "realistic",
+                           "workable"
+                       ],
+        "exampleEn":  "The proposed merger is not viable.",
+        "exampleKo":  "제안된 합병은 실현 가능하지 않다.",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-49",
+        "day":  "Day 18",
+        "no":  "49",
+        "word":  "vicious",
+        "phonetic":  "[víʃəs]",
+        "partOfSpeech":  "형용사",
+        "meaning":  "악랄한, 잔인한",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "malicious",
+                           "cruel",
+                           "violent"
+                       ],
+        "exampleEn":  "a vicious attack",
+        "exampleKo":  "잔인한 공격",
+        "memo":  ""
+    },
+    {
+        "id":  "d18-50",
+        "day":  "Day 18",
+        "no":  "50",
+        "word":  "cater to",
+        "phonetic":  "[kéitər]",
+        "partOfSpeech":  "동사구",
+        "meaning":  "~에 맞춰 제공하다, ~을 충족하다",
+        "relatedForms":  "-",
+        "paraphrase":  [
+                           "serve",
+                           "satisfy",
+                           "meet"
+                       ],
+        "exampleEn":  "cater to the client's specific preferences",
+        "exampleKo":  "고객의 특정 취향에 맞추다",
+        "memo":  ""
     }
 ];
