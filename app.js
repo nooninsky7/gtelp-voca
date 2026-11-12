@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v3.8.5_20261112_1120';
+    const APP_CURRENT_VER = 'v3.9.0_20261112_1145';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -1808,9 +1808,19 @@
 
     days.forEach(day => {
       const count = words.filter(w => w.day === day).length;
+      const paraRounds = getDayRoundCount(day, 'paraphrase');
       html += `
         <button class="scope-btn p-3 rounded-2xl border border-slate-200 hover:bg-slate-50 text-left transition" data-scope="${day}">
-          <div class="text-xs font-black text-slate-800">${day} 전용</div>
+          <div class="flex items-center justify-between gap-1 mb-0.5">
+            <span class="text-xs font-black text-slate-800">${day}</span>
+            <span class="px-1.5 py-0.5 rounded text-[10px] font-black ${
+              paraRounds > 0 
+                ? 'bg-rose-100 text-rose-800 border border-rose-200' 
+                : 'bg-slate-100 text-slate-400 border border-slate-200'
+            }">
+              ${paraRounds > 0 ? `${paraRounds}회독` : '0회독'}
+            </span>
+          </div>
           <div class="text-[11px] text-slate-500">${count}개 단어</div>
         </button>
       `;
@@ -2615,9 +2625,15 @@
           renderCurrentParaQuestion();
         } else {
           clearCurrentLearningSession();
+          const isSpecialParaScope = ['all', 'wrong', 'selected'].includes(activeQuiz.currentScope);
+          if (!activeQuiz.isRetry && activeQuiz.currentScope && !isSpecialParaScope) {
+            const newRound = incrementDayRoundCount(activeQuiz.currentScope, 'paraphrase');
+            showToast(`${activeQuiz.currentScope} 패러프레이징 ${newRound}회독 달성! 🎉`);
+          }
           alert(`패러프레이징 퀴즈 완료! 맞힌 문제: ${activeQuiz.correctCount} / ${activeQuiz.questionList.length}`);
           document.getElementById('paraActiveCard').classList.add('hidden');
           document.getElementById('paraSetupCard').classList.remove('hidden');
+          setupQuizScopeUI('paraphrase');
         }
       };
     }
@@ -3212,7 +3228,9 @@
       if (confirm('모든 Day의 4지선다 및 빈칸 문제 회독 차수를 0회로 초기화하시겠습니까?')) {
         resetDayRoundStats();
         setupQuizScopeUI('standard');
+        setupQuizScopeUI('paraphrase');
         setupClozeScopeUI();
+        setupFlashcardScopeUI();
         renderDayGridModal();
         closeModal('dataManageModal');
         showToast('Day별 회독 기록이 초기화되었습니다.');
@@ -3851,7 +3869,9 @@
         renderWordList();
         renderStats();
         setupQuizScopeUI('standard');
+        setupQuizScopeUI('paraphrase');
         setupClozeScopeUI();
+        setupFlashcardScopeUI();
         renderDayGridModal();
       }
 
@@ -3944,7 +3964,9 @@
         renderWordList();
         renderStats();
         setupQuizScopeUI('standard');
+        setupQuizScopeUI('paraphrase');
         setupClozeScopeUI();
+        setupFlashcardScopeUI();
         renderDayGridModal();
       }
 
@@ -4113,13 +4135,23 @@
     days.forEach(day => {
       const count = words.filter(w => w.day === day).length;
       const savedIdx = getFlashcardLastIndex(day);
+      const fcRounds = getDayRoundCount(day, 'flashcard');
       const progressBadge = (savedIdx > 0 && savedIdx < count)
         ? `<span class="text-[10px] text-amber-700 bg-amber-100 font-extrabold px-1.5 py-0.5 rounded-md inline-block mt-0.5">${savedIdx + 1}/${count}번 이어보기</span>`
         : `<span class="text-[11px] text-slate-500">${count}개 단어</span>`;
 
       html += `
         <button class="fc-scope-btn p-3 rounded-2xl border border-slate-200 hover:bg-slate-50 text-left transition" data-scope="${day}">
-          <div class="text-xs font-black text-slate-800">${day} 전용</div>
+          <div class="flex items-center justify-between gap-1 mb-0.5">
+            <span class="text-xs font-black text-slate-800">${day}</span>
+            <span class="px-1.5 py-0.5 rounded text-[10px] font-black ${
+              fcRounds > 0 
+                ? 'bg-amber-100 text-amber-800 border border-amber-200' 
+                : 'bg-slate-100 text-slate-400 border border-slate-200'
+            }">
+              ${fcRounds > 0 ? `${fcRounds}회독` : '0회독'}
+            </span>
+          </div>
           <div>${progressBadge}</div>
         </button>
       `;
@@ -4422,6 +4454,14 @@
   function finishFlashcard() {
     saveFlashcardProgress(flashcardCurrentScope, 0);
     clearCurrentLearningSession();
+
+    // 플래시카드 Day별 회독 차수 카운트
+    const isSpecialFcScope = ['all', 'wrong', 'selected'].includes(flashcardCurrentScope);
+    if (flashcardCurrentScope && !isSpecialFcScope) {
+      const newRound = incrementDayRoundCount(flashcardCurrentScope, 'flashcard');
+      showToast(`${flashcardCurrentScope} 플래시카드 ${newRound}회독 달성! 🎉`);
+    }
+
     document.getElementById('flashcardActiveCard').classList.add('hidden');
     document.getElementById('flashcardResultCard').classList.remove('hidden');
 
@@ -4508,9 +4548,15 @@
       const clozeRounds = getDayRoundCount(day, 'cloze');
       html += `
         <button class="cloze-scope-btn p-3 rounded-2xl border border-slate-200 hover:bg-slate-50 text-left transition" data-scope="${day}">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-black text-slate-800">${day} 전용</span>
-            ${clozeRounds > 0 ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-200">${clozeRounds}회독</span>` : ''}
+          <div class="flex items-center justify-between gap-1 mb-0.5">
+            <span class="text-xs font-black text-slate-800">${day}</span>
+            <span class="px-1.5 py-0.5 rounded text-[10px] font-black ${
+              clozeRounds > 0 
+                ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' 
+                : 'bg-slate-100 text-slate-400 border border-slate-200'
+            }">
+              ${clozeRounds > 0 ? `${clozeRounds}회독` : '0회독'}
+            </span>
           </div>
           <div class="text-[11px] text-slate-500">${count}개 단어</div>
         </button>
