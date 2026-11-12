@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v3.9.5_20261112_1350';
+    const APP_CURRENT_VER = 'v3.9.6_20261112_1420';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -803,7 +803,7 @@
           <button type="button" class="px-2 py-1 flex items-center gap-1 cursor-pointer active:scale-95 hover:text-indigo-900 touch-manipulation" onclick="event.stopPropagation(); window.openQuizOptionDetail('${regId}', '${cleanWord}', '${(item.desc || '').replace(/'/g, "\\'")}', '${parentWordId || ''}')" title="'${item.word}' 단어 상세정보 보기">
             <i class="fa-solid fa-book-open text-[10px] text-indigo-600 group-hover:scale-110 transition-transform pointer-events-none"></i>
             <span class="font-bold underline decoration-indigo-300 pointer-events-none">${item.word}</span>
-            <span class="text-[9px] bg-indigo-200 text-indigo-900 font-black px-1.5 py-0.2 rounded pointer-events-none">상세</span>
+            <span class="text-[9px] bg-amber-400 text-amber-950 font-black px-1.5 py-0.2 rounded pointer-events-none">상세</span>
             ${item.desc ? `<span class="text-[10px] text-slate-500 font-normal pointer-events-none">(${item.desc})</span>` : ''}
           </button>
           <button type="button" class="px-1.5 py-1 text-indigo-600 hover:text-indigo-950 hover:bg-indigo-200 border-l border-indigo-200 transition cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.speakText('${cleanWord}', event)" title="'${item.word}' 발음 듣기">
@@ -1490,11 +1490,26 @@
       };
     }
 
-    document.getElementById('modalDayBadge').textContent = item.day || '어휘 보기';
+    // Day 배지 정규화: 항상 깔끔한 "Day 숫자" (또는 "기초단어")로만 표시 ("연계", "관련" 제거)
+    let displayDay = item.day || 'Day 01';
+    displayDay = displayDay.replace(/\s*(연계|관련|보기).*/g, '').trim();
+    if (!displayDay) displayDay = 'Day 01';
+    const dayMatch = displayDay.match(/^Day\s*(\d+)$/i);
+    if (dayMatch) {
+      displayDay = `Day ${String(dayMatch[1]).padStart(2, '0')}`;
+    }
+    document.getElementById('modalDayBadge').textContent = displayDay;
+
+    // No 배지 정규화: 항상 깔끔한 "No.숫자"로만 표시 ("No.no." 및 '관련', '연계' 중복 제거)
     const noBadge = document.getElementById('modalNoBadge');
     if (noBadge) {
-      if (item.no) {
-        noBadge.textContent = `No.${item.no}`;
+      let rawNo = String(item.no || '').trim();
+      rawNo = rawNo.replace(/^no\.?\s*/gi, '').replace(/^no\.?\s*/gi, '').replace(/\s*(관련|연계).*/g, '').trim();
+      if (rawNo) {
+        if (/^\d+$/.test(rawNo)) {
+          rawNo = String(rawNo).padStart(2, '0');
+        }
+        noBadge.textContent = `No.${rawNo}`;
         noBadge.classList.remove('hidden');
       } else {
         noBadge.classList.add('hidden');
@@ -1545,7 +1560,7 @@
             <button type="button" class="px-2.5 py-1.5 flex items-center gap-1.5 hover:text-amber-900 cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.openQuizOptionDetail('${foundId}', '${safeP}', '', '${item.id}')" title="'${cleanP}' 단어 상세정보 보기">
               <i class="fa-solid fa-book-open text-[11px] text-amber-700 pointer-events-none"></i>
               <span class="pointer-events-none">${cleanP}</span>
-              <span class="text-[10px] bg-amber-300 text-amber-900 px-1.5 py-0.2 rounded font-black pointer-events-none">상세</span>
+              <span class="text-[10px] bg-amber-400 text-amber-950 font-black px-1.5 py-0.2 rounded pointer-events-none">상세</span>
             </button>
             <button type="button" class="px-2 py-1.5 text-amber-700 hover:text-amber-950 hover:bg-amber-200 border-l border-amber-300 transition cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.speakText('${safeP}', event)" title="발음 듣기">
               <i class="fa-solid fa-volume-high text-[11px] pointer-events-none"></i>
@@ -2581,7 +2596,7 @@
           <button type="button" class="px-2.5 py-1.5 flex items-center gap-1.5 hover:text-amber-900 cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.openQuizOptionDetail('${idParam}', '${safeP}', '', '${q.id}')" title="'${cleanP}' 단어 상세정보 보기">
             <i class="fa-solid fa-book-open text-[11px] text-amber-700 pointer-events-none"></i>
             <span class="pointer-events-none">${cleanP}</span>
-            <span class="text-[10px] bg-amber-300 text-amber-900 px-1.5 py-0.2 rounded font-black pointer-events-none">상세</span>
+            <span class="text-[10px] bg-amber-400 text-amber-950 font-black px-1.5 py-0.2 rounded pointer-events-none">상세</span>
           </button>
           <button type="button" class="px-2 py-1.5 text-amber-700 hover:text-amber-950 hover:bg-amber-200 border-l border-amber-300 transition cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.speakText('${safeP}', event)" title="발음 듣기">
             <i class="fa-solid fa-volume-high text-[11px] pointer-events-none"></i>
@@ -2736,8 +2751,8 @@
       exampleEn: exampleEn,
       exampleKo: exampleKo,
       memo: memo,
-      day: parent ? `${parent.day || 'Day'} 연계` : '기출 연계',
-      no: parent ? (parent.no ? `No.${parent.no} 관련` : '') : '',
+      day: parent ? (parent.day || 'Day 01') : 'Day 01',
+      no: parent ? (parent.no ? String(parent.no).replace(/^no\.?\s*/gi, '').trim() : '') : '',
       isSynthetic: true,
       parentWord: parent ? parent.word : null,
       parentId: parent ? parent.id : null
@@ -4302,8 +4317,10 @@
     document.getElementById('fcBackWord').textContent = item.word;
     const backNoEl = document.getElementById('fcBackNo');
     if (backNoEl) {
-      if (item.no) {
-        backNoEl.textContent = `No.${item.no}`;
+      let rawNo = String(item.no || '').replace(/^no\.?\s*/gi, '').replace(/\s*(관련|연계).*/g, '').trim();
+      if (rawNo) {
+        if (/^\d+$/.test(rawNo)) rawNo = String(rawNo).padStart(2, '0');
+        backNoEl.textContent = `No.${rawNo}`;
         backNoEl.classList.remove('hidden');
       } else {
         backNoEl.classList.add('hidden');
@@ -4329,7 +4346,7 @@
             <button type="button" class="px-3 py-1.5 flex items-center gap-1.5 cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.openQuizOptionDetail('${isReg ? regWord.id : ''}', '${safeP}')" title="'${cleanP}' 단어 상세정보 보기">
               <i class="fa-solid fa-book-open text-xs text-amber-300 group-hover:scale-110 transition-transform pointer-events-none"></i>
               <span class="underline decoration-amber-300/40 pointer-events-none">${cleanP}</span>
-              <span class="text-[10px] ${isReg ? 'bg-amber-400 text-amber-950 font-black' : 'bg-amber-400/30 text-amber-200 font-extrabold'} px-1.5 py-0.2 rounded-md pointer-events-none">상세</span>
+              <span class="text-[10px] bg-amber-400 text-amber-950 font-black px-1.5 py-0.2 rounded-md pointer-events-none">상세</span>
             </button>
             <button type="button" class="px-2.5 py-1.5 text-amber-300 hover:text-white hover:bg-white/20 border-l border-amber-300/30 transition cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.speakText('${safeP}', event)" title="'${cleanP}' 발음 듣기">
               <i class="fa-solid fa-volume-high text-xs pointer-events-none"></i>
@@ -4360,7 +4377,7 @@
               <button type="button" class="px-3 py-1.5 flex items-center gap-1.5 cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.openQuizOptionDetail('${isReg ? regWord.id : ''}', '${safeWord}', '${(rf.desc || '').replace(/'/g, "\\'")}')" title="'${cleanWord}' 단어 상세정보 보기">
                 <i class="fa-solid fa-book-open text-xs text-indigo-200 group-hover:scale-110 transition-transform pointer-events-none"></i>
                 <span class="font-bold underline decoration-white/50 group-hover:text-amber-200 pointer-events-none">${cleanWord}</span>
-                <span class="text-[10px] ${isReg ? 'bg-indigo-300 text-indigo-950 font-black' : 'bg-indigo-400/30 text-indigo-100 font-extrabold'} px-1.5 py-0.2 rounded-md pointer-events-none">상세</span>
+                <span class="text-[10px] bg-amber-400 text-amber-950 font-black px-1.5 py-0.2 rounded-md pointer-events-none">상세</span>
                 ${rf.desc ? `<span class="text-xs text-indigo-100 font-normal pointer-events-none">(${rf.desc})</span>` : ''}
               </button>
               <button type="button" class="px-2.5 py-1.5 text-indigo-200 hover:text-white hover:bg-white/20 border-l border-white/20 transition cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.speakText('${safeWord}', event)" title="'${cleanWord}' 발음 듣기">
