@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v3.7.5_20261112_1040';
+    const APP_CURRENT_VER = 'v3.8.0_20261112_1100';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -2571,37 +2571,129 @@
     }
   }
 
-  window.openQuizOptionDetail = function(id, word, fallbackDef = '') {
+  // 모든 단어(동의어, 파생어, 혼동 어휘)를 유기적으로 연결하여 100% 상세정보를 구성하는 엔진
+  function getWordDetailsComprehensive(wordOrId, contextParent = null) {
+    if (!wordOrId) return null;
+    const clean = String(wordOrId).trim();
+    const cleanLower = clean.toLowerCase();
+
+    // 1. 직접 ID 매칭
+    let found = words.find(w => w && w.id === clean);
+    // 2. 정확한 영단어 매칭
+    if (!found) {
+      found = words.find(w => w && w.word && w.word.toLowerCase() === cleanLower);
+    }
+    // 3. 기호/공백 정규화 매칭
+    if (!found) {
+      const cleanAlpha = cleanLower.replace(/[^a-z]/g, '');
+      if (cleanAlpha.length >= 2) {
+        found = words.find(w => w && w.word && w.word.toLowerCase().replace(/[^a-z]/g, '') === cleanAlpha);
+      }
+    }
+
+    if (found) {
+      return { ...found, isRegistered: true };
+    }
+
+    // 4. 단어장에 직접 등록되지 않은 동의어/파생어인 경우:
+    // 이 단어가 어느 부모 단어의 paraphrase 또는 relatedForms에 속해있는지 유기적 역방향 탐색!
+    let parent = contextParent;
+    if (!parent || !parent.word) {
+      // paraphrase에서 역탐색
+      parent = words.find(w => Array.isArray(w.paraphrase) && w.paraphrase.some(p => (p || '').toLowerCase() === cleanLower));
+    }
+    if (!parent) {
+      // relatedForms에서 역탐색
+      parent = words.find(w => w.relatedForms && w.relatedForms.toLowerCase().includes(cleanLower));
+    }
+
+    // 파생어인 경우 파생어 뜻 파싱 시도
+    let relatedDesc = '';
+    if (parent && parent.relatedForms) {
+      const parsedList = parseRelatedForms(parent.relatedForms);
+      const match = parsedList.find(rf => (rf.word || '').toLowerCase() === cleanLower);
+      if (match && match.desc) {
+        relatedDesc = match.desc;
+      }
+    }
+
+    let meaning = '';
+    let partOfSpeech = '어휘';
+    let exampleEn = '';
+    let exampleKo = '';
+    let memo = '';
+
+    if (parent) {
+      if (relatedDesc) {
+        meaning = `${relatedDesc} ("${parent.word}"의 파생어)`;
+        partOfSpeech = relatedDesc.includes('명') ? '명사' : (relatedDesc.includes('형') ? '형용사' : (relatedDesc.includes('부') ? '부사' : (parent.partOfSpeech || '어휘')));
+      } else {
+        meaning = `${parent.meaning} ("${parent.word}"의 핵심 동의어)`;
+        partOfSpeech = parent.partOfSpeech || '어휘';
+      }
+
+      // 예문 생성: 부모 단어의 예문에서 부모 단어를 해당 동의어로 치환하거나 문맥 제공!
+      if (parent.exampleEn) {
+        const regex = new RegExp('\\b' + parent.word + '\\b', 'gi');
+        if (regex.test(parent.exampleEn)) {
+          exampleEn = parent.exampleEn.replace(regex, clean);
+          exampleKo = parent.exampleKo || '';
+        } else {
+          exampleEn = `${parent.exampleEn}`;
+          exampleKo = `${parent.exampleKo || ''} (동의어: ${clean} ↔ ${parent.word})`;
+        }
+      }
+
+      memo = `[지텔프 핵심 포인트] "${parent.word}" (${parent.meaning})와 상호 치환 출제되는 필수 패러프레이징/파생어 표현입니다.`;
+    } else {
+      meaning = '지텔프 기출 핵심 연계 어휘';
+      partOfSpeech = '어휘';
+      memo = '지텔프 기출 4지선다 보기 및 패러프레이징 연계 어휘입니다.';
+    }
+
+    return {
+      id: 'syn-' + cleanLower.replace(/[^a-z0-9]/g, '-'),
+      word: clean,
+      phonetic: '',
+      partOfSpeech: partOfSpeech,
+      meaning: meaning,
+      relatedForms: parent ? `${parent.word} (${parent.partOfSpeech || '원문'})` : '-',
+      paraphrase: parent ? [parent.word, ...(parent.paraphrase || []).filter(p => (p || '').toLowerCase() !== cleanLower)] : [],
+      exampleEn: exampleEn,
+      exampleKo: exampleKo,
+      memo: memo,
+      day: parent ? `${parent.day || 'Day'} 연계` : '기출 연계',
+      no: parent ? (parent.no ? `No.${parent.no} 관련` : '') : '',
+      isSynthetic: true,
+      parentWord: parent ? parent.word : null,
+      parentId: parent ? parent.id : null
+    };
+  }
+
+  window.openQuizOptionDetail = function(id, word, fallbackDef = '', contextParent = null) {
     const cleanWord = (word || '').trim();
     if (cleanWord) speak(cleanWord);
 
-    let item = null;
-    if (id) {
-      item = words.find(w => w && w.id === id);
-    }
-    if (!item && cleanWord) {
-      item = words.find(w => w && w.word && w.word.toLowerCase() === cleanWord.toLowerCase());
+    // 플래시카드 현재 단어 또는 퀴즈의 현재 문제 단어를 contextParent로 활용
+    let parent = contextParent;
+    if (!parent && currentTab === 'flashcard' && flashcardDeck && flashcardDeck[flashcardCurrentIndex]) {
+      parent = flashcardDeck[flashcardCurrentIndex];
+    } else if (!parent && currentTab === 'quiz' && activeQuiz && activeQuiz.questionList) {
+      parent = activeQuiz.questionList[activeQuiz.currentIndex];
+    } else if (!parent && currentTab === 'cloze-quiz' && activeClozeQuiz && activeClozeQuiz.questionList) {
+      parent = activeClozeQuiz.questionList[activeClozeQuiz.currentIndex];
     }
 
-    if (item) {
-      openWordDetailModal(item, true);
-    } else if (cleanWord) {
-      const synthetic = {
-        id: 'distractor-' + cleanWord.toLowerCase(),
-        day: '혼동 어휘',
-        word: cleanWord,
-        phonetic: '',
-        partOfSpeech: '어휘',
-        meaning: fallbackDef || '지텔프 기출 관련 어휘',
-        relatedForms: '-',
-        paraphrase: [],
-        exampleEn: '',
-        exampleKo: '',
-        memo: `지텔프 기출 4지선다 혼동 어휘 보기입니다. 뜻: ${fallbackDef || cleanWord}`
-      };
-      openWordDetailModal(synthetic, true);
+    const detailItem = getWordDetailsComprehensive(id || cleanWord, parent);
+    if (detailItem) {
+      if (fallbackDef && (!detailItem.meaning || detailItem.meaning.includes('관련 어휘'))) {
+        detailItem.meaning = fallbackDef;
+      }
+      openWordDetailModal(detailItem, true);
     }
   };
+
+  window.openWordComprehensiveDetail = window.openQuizOptionDetail;
 
   // --------------------------------------------------------------------------
   // 7. 오답 통계 뷰
@@ -2821,6 +2913,10 @@
     });
 
     document.getElementById('btnFcPrev')?.addEventListener('click', () => {
+      handleFlashcardPrev();
+    });
+
+    document.getElementById('btnFcPrevBottom')?.addEventListener('click', () => {
       handleFlashcardPrev();
     });
 
@@ -4116,7 +4212,7 @@
     document.getElementById('fcBackPos').textContent = item.partOfSpeech || '품사';
     document.getElementById('fcBackMeaning').textContent = item.meaning;
 
-    // 동의어 (패러프레이징 - 등록된 단어 터치 시 상세정보 모달 팝업, 스피커 터치 시 발음)
+    // 동의어 (패러프레이징 - 100% 유기적 단어 상세정보 & 원터치 발음)
     const paraBox = document.getElementById('fcBackParaphraseBox');
     const paraEl = document.getElementById('fcBackParaphrase');
     const paraphrases = Array.isArray(item.paraphrase) ? item.paraphrase : [];
@@ -4125,37 +4221,27 @@
       paraEl.innerHTML = paraphrases.map(p => {
         const cleanP = (p || '').trim();
         const safeP = cleanP.replace(/'/g, "\\'");
-        const registeredWord = words.find(w => w && w.word && w.word.toLowerCase() === cleanP.toLowerCase());
+        const regWord = words.find(w => w && w.word && w.word.toLowerCase() === cleanP.toLowerCase());
+        const isReg = !!regWord;
 
-        if (registeredWord) {
-          const regId = registeredWord.id || '';
-          const safeDef = (registeredWord.meaning || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
-          return `
-            <div class="inline-flex items-center rounded-xl bg-white/20 hover:bg-white/30 text-amber-200 hover:text-white border border-amber-300/40 shadow-xs transition text-sm font-bold overflow-hidden group">
-              <button type="button" class="px-3 py-1.5 flex items-center gap-1.5 cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.openQuizOptionDetail('${regId}', '${safeP}', '${safeDef}')" title="'${cleanP}' 단어 상세정보 (예문/파생어/암기팁) 보기">
-                <i class="fa-solid fa-book-open text-xs text-amber-300 group-hover:scale-110 transition-transform"></i>
-                <span class="underline decoration-amber-300/40">${cleanP}</span>
-                <span class="text-[10px] bg-amber-400/30 text-amber-200 px-1.5 py-0.2 rounded-md font-extrabold">상세</span>
-              </button>
-              <button type="button" class="px-2.5 py-1.5 text-amber-300 hover:text-white hover:bg-white/20 border-l border-amber-300/30 transition cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.speakText('${safeP}', event)" title="'${cleanP}' 발음 듣기">
-                <i class="fa-solid fa-volume-high text-xs"></i>
-              </button>
-            </div>
-          `;
-        } else {
-          return `
-            <button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/20 hover:bg-white/35 active:scale-95 text-amber-200 hover:text-white font-bold text-sm cursor-pointer transition shadow-xs border border-amber-300/30 group" onclick="event.stopPropagation(); window.openQuizOptionDetail('', '${safeP}', '')" title="'${cleanP}' 단어 상세정보 및 발음 듣기">
-              <span>${cleanP}</span>
-              <i class="fa-solid fa-volume-high text-xs text-amber-300 group-hover:scale-110 transition-transform"></i>
+        return `
+          <div class="inline-flex items-center rounded-xl bg-white/20 hover:bg-white/30 text-amber-200 hover:text-white border border-amber-300/40 shadow-xs transition text-sm font-bold overflow-hidden group">
+            <button type="button" class="px-3 py-1.5 flex items-center gap-1.5 cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.openQuizOptionDetail('', '${safeP}')" title="'${cleanP}' 단어 상세정보 (한글 뜻/예문/파생어/암기팁) 보기">
+              <i class="fa-solid fa-book-open text-xs text-amber-300 group-hover:scale-110 transition-transform"></i>
+              <span class="underline decoration-amber-300/40">${cleanP}</span>
+              <span class="text-[10px] ${isReg ? 'bg-amber-400 text-amber-950 font-black' : 'bg-amber-400/30 text-amber-200 font-extrabold'} px-1.5 py-0.2 rounded-md">상세</span>
             </button>
-          `;
-        }
+            <button type="button" class="px-2.5 py-1.5 text-amber-300 hover:text-white hover:bg-white/20 border-l border-amber-300/30 transition cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.speakText('${safeP}', event)" title="'${cleanP}' 발음 듣기">
+              <i class="fa-solid fa-volume-high text-xs"></i>
+            </button>
+          </div>
+        `;
       }).join('');
     } else {
       paraBox.classList.add('hidden');
     }
 
-    // 파생어 (유사품사어 - 등록된 단어 터치 시 상세정보 모달 팝업, 스피커 터치 시 발음)
+    // 파생어 (유사품사어 - 100% 유기적 단어 상세정보 & 원터치 발음)
     const relatedBox = document.getElementById('fcBackRelatedBox');
     const relatedEl = document.getElementById('fcBackRelated');
     if (relatedBox && relatedEl) {
@@ -4166,33 +4252,22 @@
           if (!rf.word) return `<span class="text-slate-300 text-sm font-medium">${rf.desc}</span>`;
           const cleanWord = (rf.word || '').trim();
           const safeWord = cleanWord.replace(/'/g, "\\'");
-          const registeredWord = words.find(w => w && w.word && w.word.toLowerCase() === cleanWord.toLowerCase());
+          const regWord = words.find(w => w && w.word && w.word.toLowerCase() === cleanWord.toLowerCase());
+          const isReg = !!regWord;
 
-          if (registeredWord) {
-            const regId = registeredWord.id || '';
-            const safeDef = (registeredWord.meaning || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
-            return `
-              <div class="inline-flex items-center rounded-xl bg-white/20 hover:bg-white/30 text-white border border-white/25 shadow-xs transition text-sm font-semibold overflow-hidden group">
-                <button type="button" class="px-3 py-1.5 flex items-center gap-1.5 cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.openQuizOptionDetail('${regId}', '${safeWord}', '${safeDef}')" title="'${cleanWord}' 단어 상세정보 보기">
-                  <i class="fa-solid fa-book-open text-xs text-indigo-200 group-hover:scale-110 transition-transform"></i>
-                  <span class="font-bold underline decoration-white/50 group-hover:text-amber-200">${cleanWord}</span>
-                  <span class="text-[10px] bg-indigo-400/30 text-indigo-100 px-1.5 py-0.2 rounded-md font-extrabold">상세</span>
-                  ${rf.desc ? `<span class="text-xs text-indigo-100 font-normal">(${rf.desc})</span>` : ''}
-                </button>
-                <button type="button" class="px-2.5 py-1.5 text-indigo-200 hover:text-white hover:bg-white/20 border-l border-white/20 transition cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.speakText('${safeWord}', event)" title="'${cleanWord}' 발음 듣기">
-                  <i class="fa-solid fa-volume-high text-xs"></i>
-                </button>
-              </div>
-            `;
-          } else {
-            return `
-              <button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/20 hover:bg-white/35 active:scale-95 text-white font-semibold text-sm cursor-pointer transition shadow-xs border border-white/20 group" onclick="event.stopPropagation(); window.speakText('${safeWord}', event)" title="'${cleanWord}' 발음 듣기">
+          return `
+            <div class="inline-flex items-center rounded-xl bg-white/20 hover:bg-white/30 text-white border border-white/25 shadow-xs transition text-sm font-semibold overflow-hidden group">
+              <button type="button" class="px-3 py-1.5 flex items-center gap-1.5 cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.openQuizOptionDetail('', '${safeWord}')" title="'${cleanWord}' 단어 상세정보 (한글 뜻/품사/예문) 보기">
+                <i class="fa-solid fa-book-open text-xs text-indigo-200 group-hover:scale-110 transition-transform"></i>
                 <span class="font-bold underline decoration-white/50 group-hover:text-amber-200">${cleanWord}</span>
-                <i class="fa-solid fa-volume-high text-xs text-indigo-200 group-hover:scale-110 transition-transform"></i>
+                <span class="text-[10px] ${isReg ? 'bg-indigo-300 text-indigo-950 font-black' : 'bg-indigo-400/30 text-indigo-100 font-extrabold'} px-1.5 py-0.2 rounded-md">상세</span>
                 ${rf.desc ? `<span class="text-xs text-indigo-100 font-normal">(${rf.desc})</span>` : ''}
               </button>
-            `;
-          }
+              <button type="button" class="px-2.5 py-1.5 text-indigo-200 hover:text-white hover:bg-white/20 border-l border-white/20 transition cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.speakText('${safeWord}', event)" title="'${cleanWord}' 발음 듣기">
+                <i class="fa-solid fa-volume-high text-xs"></i>
+              </button>
+            </div>
+          `;
         }).join(' ');
       } else {
         relatedBox.classList.add('hidden');
@@ -4251,18 +4326,21 @@
       }
     }
 
-    // 상단 이전 버튼 & 하단 다음 버튼 상태 갱신
+    // 상단 이전 버튼 & 하단 이전 버튼 상태 갱신
     const prevBtn = document.getElementById('btnFcPrev');
-    if (prevBtn) {
-      const isFirst = flashcardCurrentIndex === 0;
-      prevBtn.disabled = isFirst;
-      prevBtn.style.opacity = isFirst ? '0.4' : '1';
-      prevBtn.style.pointerEvents = isFirst ? 'none' : 'auto';
-    }
+    const prevBtnBottom = document.getElementById('btnFcPrevBottom');
+    const isFirst = flashcardCurrentIndex === 0;
+    [prevBtn, prevBtnBottom].forEach(btn => {
+      if (btn) {
+        btn.disabled = isFirst;
+        btn.style.opacity = isFirst ? '0.4' : '1';
+        btn.style.pointerEvents = isFirst ? 'none' : 'auto';
+      }
+    });
 
     const nextBtnSpan = document.querySelector('#btnFcNext span');
     if (nextBtnSpan) {
-      nextBtnSpan.textContent = (flashcardCurrentIndex === flashcardDeck.length - 1) ? '학습 완료 (Next)' : '다음 단어 (Next)';
+      nextBtnSpan.textContent = (flashcardCurrentIndex === flashcardDeck.length - 1) ? '학습 완료' : '다음 단어';
     }
   }
 

@@ -254,7 +254,7 @@
         </div>
 
         <!-- 3D 플립 카드 본체 -->
-        <div class="perspective-1000 w-full h-[480px] sm:h-[460px] cursor-pointer select-none" onclick="window.flipCurrentFlashcard()">
+        <div class="perspective-1000 w-full h-[500px] sm:h-[480px] cursor-pointer select-none" onclick="window.flipCurrentFlashcard()">
           <div id="flashcardInner" class="flip-card-inner shadow-lg">
             
             <!-- 앞면 (Front) -->
@@ -358,20 +358,21 @@
           </div>
         </div>
 
-        <!-- 하단 액션 버튼 3개 -->
-        <div class="grid grid-cols-3 gap-2.5 pt-1">
-          <button id="btnFcWrong" class="py-3.5 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-black text-xs sm:text-sm transition border border-rose-200 flex flex-col items-center justify-center gap-1 active:scale-95 cursor-pointer">
-            <i class="fa-solid fa-xmark text-lg"></i>
-            <span>몰라요 (다시 보기)</span>
+        <!-- 슬림형 하단 네비게이션 버튼 (이전 / 다음 / 알아요) -->
+        <div class="flex items-center gap-2 pt-1">
+          <button id="btnFcPrevBottom" type="button" class="flex-1 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 font-bold text-xs sm:text-sm transition flex items-center justify-center gap-1.5 border border-slate-200 active:scale-95 cursor-pointer shadow-2xs" title="이전 단어로 이동">
+            <i class="fa-solid fa-arrow-left text-[11px]"></i>
+            <span>이전 단어</span>
           </button>
           
-          <button id="btnFcNext" class="py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm transition shadow-md shadow-indigo-200 flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95">
-            <i class="fa-solid fa-arrow-right text-lg"></i>
-            <span>다음 단어 (Next)</span>
+          <button id="btnFcNext" type="button" class="flex-[1.2] py-2.5 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-black text-xs sm:text-sm transition shadow-sm shadow-indigo-200 flex items-center justify-center gap-1.5 cursor-pointer active:scale-95" title="다음 단어로 이동">
+            <span>다음 단어</span>
+            <i class="fa-solid fa-arrow-right text-[11px]"></i>
           </button>
-          <button id="btnFcKnow" class="py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm transition shadow-md shadow-emerald-200 flex flex-col items-center justify-center gap-1 active:scale-95 cursor-pointer">
-            <i class="fa-solid fa-check text-lg"></i>
-            <span>알아요 (완료)</span>
+          
+          <button id="btnFcKnow" type="button" class="flex-1 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-black text-xs sm:text-sm transition shadow-sm shadow-emerald-200 flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer" title="이 단어는 완벽히 외웠음으로 표시">
+            <i class="fa-solid fa-check text-xs"></i>
+            <span>알아요</span>
           </button>
         </div>
       </div>
@@ -1408,7 +1409,7 @@
   </div>
 
   <!-- 스크립트 연결 (캐시 무효화 버전 파라미터 적용) -->
-  <script src="data.js?v=v3_7_5_fc_memo_order_20261112"></script>
-  <script src="app.js?v=v3_7_5_fc_memo_order_20261112"></script>
+  <script src="data.js?v=v3_8_0_organic_detail_buttons_20261112"></script>
+  <script src="app.js?v=v3_8_0_organic_detail_buttons_20261112"></script>
 </body>
 </html>
