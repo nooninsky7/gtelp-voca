@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v3.9.0_20261112_1145';
+    const APP_CURRENT_VER = 'v3.9.5_20261112_1350';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -800,14 +800,14 @@
 
       return `
         <div class="inline-flex items-center rounded-lg bg-indigo-50/90 hover:bg-indigo-100 text-indigo-950 border border-indigo-200/90 shadow-2xs text-xs font-semibold overflow-hidden transition group">
-          <button type="button" class="px-2 py-1 flex items-center gap-1 cursor-pointer active:scale-95 hover:text-indigo-900" onclick="event.stopPropagation(); window.openQuizOptionDetail('${regId}', '${cleanWord}', '${(item.desc || '').replace(/'/g, "\\'")}', ${parentWordId ? `words.find(x => x.id === '${parentWordId}')` : 'null'})" title="'${item.word}' 단어 상세정보 보기">
-            <i class="fa-solid fa-book-open text-[10px] text-indigo-600 group-hover:scale-110 transition-transform"></i>
-            <span class="font-bold underline decoration-indigo-300">${item.word}</span>
-            <span class="text-[9px] bg-indigo-200 text-indigo-900 font-black px-1.5 py-0.2 rounded">상세</span>
-            ${item.desc ? `<span class="text-[10px] text-slate-500 font-normal">(${item.desc})</span>` : ''}
+          <button type="button" class="px-2 py-1 flex items-center gap-1 cursor-pointer active:scale-95 hover:text-indigo-900 touch-manipulation" onclick="event.stopPropagation(); window.openQuizOptionDetail('${regId}', '${cleanWord}', '${(item.desc || '').replace(/'/g, "\\'")}', '${parentWordId || ''}')" title="'${item.word}' 단어 상세정보 보기">
+            <i class="fa-solid fa-book-open text-[10px] text-indigo-600 group-hover:scale-110 transition-transform pointer-events-none"></i>
+            <span class="font-bold underline decoration-indigo-300 pointer-events-none">${item.word}</span>
+            <span class="text-[9px] bg-indigo-200 text-indigo-900 font-black px-1.5 py-0.2 rounded pointer-events-none">상세</span>
+            ${item.desc ? `<span class="text-[10px] text-slate-500 font-normal pointer-events-none">(${item.desc})</span>` : ''}
           </button>
-          <button type="button" class="px-1.5 py-1 text-indigo-600 hover:text-indigo-950 hover:bg-indigo-200 border-l border-indigo-200 transition cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.speakText('${cleanWord}', event)" title="'${item.word}' 발음 듣기">
-            <i class="fa-solid fa-volume-high text-[10px]"></i>
+          <button type="button" class="px-1.5 py-1 text-indigo-600 hover:text-indigo-950 hover:bg-indigo-200 border-l border-indigo-200 transition cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.speakText('${cleanWord}', event)" title="'${item.word}' 발음 듣기">
+            <i class="fa-solid fa-volume-high text-[10px] pointer-events-none"></i>
           </button>
         </div>
       `;
@@ -1317,13 +1317,13 @@
                   const regId = regWord ? regWord.id : '';
                   return `
                     <div class="inline-flex items-center rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300/80 shadow-2xs text-xs font-bold overflow-hidden transition group">
-                      <button type="button" class="px-2 py-1 flex items-center gap-1 cursor-pointer active:scale-95 hover:text-amber-900" onclick="event.stopPropagation(); window.openQuizOptionDetail('${regId}', '${safeP}', '', words.find(x => x.id === '${w.id}'))" title="'${cleanP}' 단어 상세정보 보기">
-                        <i class="fa-solid fa-book-open text-[10px] text-amber-700 group-hover:scale-110 transition-transform"></i>
-                        <span class="underline decoration-amber-300">${highlightText(cleanP, query)}</span>
-                        <span class="text-[9px] bg-amber-400 text-amber-950 font-black px-1.5 py-0.2 rounded">상세</span>
+                      <button type="button" class="px-2 py-1 flex items-center gap-1 cursor-pointer active:scale-95 hover:text-amber-900 touch-manipulation" onclick="event.stopPropagation(); window.openQuizOptionDetail('${regId}', '${safeP}', '', '${w.id}')" title="'${cleanP}' 단어 상세정보 보기">
+                        <i class="fa-solid fa-book-open text-[10px] text-amber-700 group-hover:scale-110 transition-transform pointer-events-none"></i>
+                        <span class="underline decoration-amber-300 pointer-events-none">${highlightText(cleanP, query)}</span>
+                        <span class="text-[9px] bg-amber-400 text-amber-950 font-black px-1.5 py-0.2 rounded pointer-events-none">상세</span>
                       </button>
-                      <button type="button" class="px-1.5 py-1 text-amber-700 hover:text-amber-950 hover:bg-amber-200 border-l border-amber-300 transition cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.speakText('${safeP}', event)" title="'${cleanP}' 발음 듣기">
-                        <i class="fa-solid fa-volume-high text-[10px]"></i>
+                      <button type="button" class="px-1.5 py-1 text-amber-700 hover:text-amber-950 hover:bg-amber-200 border-l border-amber-300 transition cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.speakText('${safeP}', event)" title="'${cleanP}' 발음 듣기">
+                        <i class="fa-solid fa-volume-high text-[10px] pointer-events-none"></i>
                       </button>
                     </div>
                   `;
@@ -1542,13 +1542,13 @@
 
         return `
           <div class="inline-flex items-center rounded-xl bg-amber-100 text-amber-950 border border-amber-300 shadow-xs hover:bg-amber-200 transition text-xs font-bold overflow-hidden">
-            <button type="button" class="px-2.5 py-1.5 flex items-center gap-1.5 hover:text-amber-900 cursor-pointer active:scale-95" onclick="window.openQuizOptionDetail('${foundId}', '${safeP}', '', words.find(x => x.id === '${item.id}'))" title="'${cleanP}' 단어 상세정보 보기">
-              <i class="fa-solid fa-book-open text-[11px] text-amber-700"></i>
-              <span>${cleanP}</span>
-              <span class="text-[10px] bg-amber-300 text-amber-900 px-1.5 py-0.2 rounded font-black">상세</span>
+            <button type="button" class="px-2.5 py-1.5 flex items-center gap-1.5 hover:text-amber-900 cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.openQuizOptionDetail('${foundId}', '${safeP}', '', '${item.id}')" title="'${cleanP}' 단어 상세정보 보기">
+              <i class="fa-solid fa-book-open text-[11px] text-amber-700 pointer-events-none"></i>
+              <span class="pointer-events-none">${cleanP}</span>
+              <span class="text-[10px] bg-amber-300 text-amber-900 px-1.5 py-0.2 rounded font-black pointer-events-none">상세</span>
             </button>
-            <button type="button" class="px-2 py-1.5 text-amber-700 hover:text-amber-950 hover:bg-amber-200 border-l border-amber-300 transition cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.speakText('${safeP}', event)" title="발음 듣기">
-              <i class="fa-solid fa-volume-high text-[11px]"></i>
+            <button type="button" class="px-2 py-1.5 text-amber-700 hover:text-amber-950 hover:bg-amber-200 border-l border-amber-300 transition cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.speakText('${safeP}', event)" title="발음 듣기">
+              <i class="fa-solid fa-volume-high text-[11px] pointer-events-none"></i>
             </button>
           </div>
         `;
@@ -2578,13 +2578,13 @@
       const idParam = found ? found.id : '';
       return `
         <div class="inline-flex items-center rounded-xl bg-amber-100 text-amber-950 border border-amber-300 shadow-xs hover:bg-amber-200 transition text-xs font-bold overflow-hidden">
-          <button type="button" class="px-2.5 py-1.5 flex items-center gap-1.5 hover:text-amber-900 cursor-pointer active:scale-95" onclick="window.openQuizOptionDetail('${idParam}', '${safeP}', '', words.find(x => x.id === '${q.id}'))" title="'${cleanP}' 단어 상세정보 보기">
-            <i class="fa-solid fa-book-open text-[11px] text-amber-700"></i>
-            <span>${cleanP}</span>
-            <span class="text-[10px] bg-amber-300 text-amber-900 px-1.5 py-0.2 rounded font-black">상세</span>
+          <button type="button" class="px-2.5 py-1.5 flex items-center gap-1.5 hover:text-amber-900 cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.openQuizOptionDetail('${idParam}', '${safeP}', '', '${q.id}')" title="'${cleanP}' 단어 상세정보 보기">
+            <i class="fa-solid fa-book-open text-[11px] text-amber-700 pointer-events-none"></i>
+            <span class="pointer-events-none">${cleanP}</span>
+            <span class="text-[10px] bg-amber-300 text-amber-900 px-1.5 py-0.2 rounded font-black pointer-events-none">상세</span>
           </button>
-          <button type="button" class="px-2 py-1.5 text-amber-700 hover:text-amber-950 hover:bg-amber-200 border-l border-amber-300 transition cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.speakText('${safeP}', event)" title="발음 듣기">
-            <i class="fa-solid fa-volume-high text-[11px]"></i>
+          <button type="button" class="px-2 py-1.5 text-amber-700 hover:text-amber-950 hover:bg-amber-200 border-l border-amber-300 transition cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.speakText('${safeP}', event)" title="발음 듣기">
+            <i class="fa-solid fa-volume-high text-[11px] pointer-events-none"></i>
           </button>
         </div>
       `;
@@ -2748,19 +2748,29 @@
     const cleanWord = (word || '').trim();
     if (cleanWord) speak(cleanWord);
 
-    // 플래시카드 현재 단어 또는 퀴즈의 현재 문제 단어를 contextParent로 활용
-    let parent = contextParent;
-    if (!parent && currentTab === 'flashcard' && flashcardDeck && flashcardDeck[flashcardCurrentIndex]) {
-      parent = flashcardDeck[flashcardCurrentIndex];
-    } else if (!parent && currentTab === 'quiz' && activeQuiz && activeQuiz.questionList) {
-      parent = activeQuiz.questionList[activeQuiz.currentIndex];
-    } else if (!parent && currentTab === 'cloze-quiz' && activeClozeQuiz && activeClozeQuiz.questionList) {
-      parent = activeClozeQuiz.questionList[activeClozeQuiz.currentIndex];
+    // 부모 단어 식별 (문맥 파악용 - 객체 또는 문자열 ID 지원)
+    let parent = null;
+    if (contextParent && typeof contextParent === 'object') {
+      parent = contextParent;
+    } else if (typeof contextParent === 'string' && contextParent.trim()) {
+      const pid = contextParent.trim().toLowerCase();
+      parent = words.find(w => w && (w.id === pid || (w.word && w.word.toLowerCase() === pid)));
+    }
+
+    // 플래시카드 현재 단어 또는 퀴즈의 현재 문제 단어를 contextParent로 자동 활용
+    if (!parent) {
+      if (currentTab === 'flashcard' && flashcardDeck && flashcardDeck[flashcardCurrentIndex]) {
+        parent = flashcardDeck[flashcardCurrentIndex];
+      } else if (currentTab === 'quiz' && activeQuiz && activeQuiz.questionList) {
+        parent = activeQuiz.questionList[activeQuiz.currentIndex];
+      } else if (currentTab === 'cloze-quiz' && activeClozeQuiz && activeClozeQuiz.questionList) {
+        parent = activeClozeQuiz.questionList[activeClozeQuiz.currentIndex];
+      }
     }
 
     const detailItem = getWordDetailsComprehensive(id || cleanWord, parent);
     if (detailItem) {
-      if (fallbackDef && (!detailItem.meaning || detailItem.meaning.includes('관련 어휘'))) {
+      if (fallbackDef && (!detailItem.meaning || detailItem.meaning.includes('관련 어휘') || detailItem.meaning.includes('핵심 동의어'))) {
         detailItem.meaning = fallbackDef;
       }
       openWordDetailModal(detailItem, true);
@@ -4316,13 +4326,13 @@
 
         return `
           <div class="inline-flex items-center rounded-xl bg-white/20 hover:bg-white/30 text-amber-200 hover:text-white border border-amber-300/40 shadow-xs transition text-sm font-bold overflow-hidden group">
-            <button type="button" class="px-3 py-1.5 flex items-center gap-1.5 cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.openQuizOptionDetail('${isReg ? regWord.id : ''}', '${safeP}', '', flashcardDeck[flashcardCurrentIndex])" title="'${cleanP}' 단어 상세정보 (한글 뜻/예문/파생어/암기팁) 보기">
-              <i class="fa-solid fa-book-open text-xs text-amber-300 group-hover:scale-110 transition-transform"></i>
-              <span class="underline decoration-amber-300/40">${cleanP}</span>
-              <span class="text-[10px] ${isReg ? 'bg-amber-400 text-amber-950 font-black' : 'bg-amber-400/30 text-amber-200 font-extrabold'} px-1.5 py-0.2 rounded-md">상세</span>
+            <button type="button" class="px-3 py-1.5 flex items-center gap-1.5 cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.openQuizOptionDetail('${isReg ? regWord.id : ''}', '${safeP}')" title="'${cleanP}' 단어 상세정보 보기">
+              <i class="fa-solid fa-book-open text-xs text-amber-300 group-hover:scale-110 transition-transform pointer-events-none"></i>
+              <span class="underline decoration-amber-300/40 pointer-events-none">${cleanP}</span>
+              <span class="text-[10px] ${isReg ? 'bg-amber-400 text-amber-950 font-black' : 'bg-amber-400/30 text-amber-200 font-extrabold'} px-1.5 py-0.2 rounded-md pointer-events-none">상세</span>
             </button>
-            <button type="button" class="px-2.5 py-1.5 text-amber-300 hover:text-white hover:bg-white/20 border-l border-amber-300/30 transition cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.speakText('${safeP}', event)" title="'${cleanP}' 발음 듣기">
-              <i class="fa-solid fa-volume-high text-xs"></i>
+            <button type="button" class="px-2.5 py-1.5 text-amber-300 hover:text-white hover:bg-white/20 border-l border-amber-300/30 transition cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.speakText('${safeP}', event)" title="'${cleanP}' 발음 듣기">
+              <i class="fa-solid fa-volume-high text-xs pointer-events-none"></i>
             </button>
           </div>
         `;
@@ -4347,14 +4357,14 @@
 
           return `
             <div class="inline-flex items-center rounded-xl bg-white/20 hover:bg-white/30 text-white border border-white/25 shadow-xs transition text-sm font-semibold overflow-hidden group">
-              <button type="button" class="px-3 py-1.5 flex items-center gap-1.5 cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.openQuizOptionDetail('${isReg ? regWord.id : ''}', '${safeWord}', '${(rf.desc || '').replace(/'/g, "\\'")}', flashcardDeck[flashcardCurrentIndex])" title="'${cleanWord}' 단어 상세정보 (한글 뜻/품사/예문) 보기">
-                <i class="fa-solid fa-book-open text-xs text-indigo-200 group-hover:scale-110 transition-transform"></i>
-                <span class="font-bold underline decoration-white/50 group-hover:text-amber-200">${cleanWord}</span>
-                <span class="text-[10px] ${isReg ? 'bg-indigo-300 text-indigo-950 font-black' : 'bg-indigo-400/30 text-indigo-100 font-extrabold'} px-1.5 py-0.2 rounded-md">상세</span>
-                ${rf.desc ? `<span class="text-xs text-indigo-100 font-normal">(${rf.desc})</span>` : ''}
+              <button type="button" class="px-3 py-1.5 flex items-center gap-1.5 cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.openQuizOptionDetail('${isReg ? regWord.id : ''}', '${safeWord}', '${(rf.desc || '').replace(/'/g, "\\'")}')" title="'${cleanWord}' 단어 상세정보 보기">
+                <i class="fa-solid fa-book-open text-xs text-indigo-200 group-hover:scale-110 transition-transform pointer-events-none"></i>
+                <span class="font-bold underline decoration-white/50 group-hover:text-amber-200 pointer-events-none">${cleanWord}</span>
+                <span class="text-[10px] ${isReg ? 'bg-indigo-300 text-indigo-950 font-black' : 'bg-indigo-400/30 text-indigo-100 font-extrabold'} px-1.5 py-0.2 rounded-md pointer-events-none">상세</span>
+                ${rf.desc ? `<span class="text-xs text-indigo-100 font-normal pointer-events-none">(${rf.desc})</span>` : ''}
               </button>
-              <button type="button" class="px-2.5 py-1.5 text-indigo-200 hover:text-white hover:bg-white/20 border-l border-white/20 transition cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.speakText('${safeWord}', event)" title="'${cleanWord}' 발음 듣기">
-                <i class="fa-solid fa-volume-high text-xs"></i>
+              <button type="button" class="px-2.5 py-1.5 text-indigo-200 hover:text-white hover:bg-white/20 border-l border-white/20 transition cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.speakText('${safeWord}', event)" title="'${cleanWord}' 발음 듣기">
+                <i class="fa-solid fa-volume-high text-xs pointer-events-none"></i>
               </button>
             </div>
           `;
