@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v3.9.6_20261112_1420';
+    const APP_CURRENT_VER = 'v3.9.7_20261112_1510';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -991,41 +991,139 @@
     }
   };
 
+  let activeSyntheticSearchWords = []; // 검색 결과로 동적 생성된 동의어/파생어 합성 카드 캐시
+
   function getFilteredAndSortedWords() {
     const query = (document.getElementById('searchInput')?.value || '').trim().toLowerCase();
 
-    let result = words.filter(w => {
-      // Day 필터 (상단 검색창에 검색어가 비어있을 때만 Day 필터 적용)
-      if (!query && activeDayFilter !== 'ALL' && normalizeDayName(w.day) !== normalizeDayName(activeDayFilter)) {
-        return false;
-      }
-      // 검색어 필터 (영단어, 한글 뜻, 품사, 패러프레이징, 파생어, Day, 메모)
-      if (query) {
-        const inWord = (w.word || '').toLowerCase().includes(query);
-        const inMeaning = (w.meaning || '').toLowerCase().includes(query);
-        const inPos = (w.partOfSpeech || '').toLowerCase().includes(query);
-        const inPara = (w.paraphrase || []).some(p => (p || '').toLowerCase().includes(query));
-        const inDay = (w.day || '').toLowerCase().includes(query);
-        const inRelated = (w.relatedForms || '').toLowerCase().includes(query);
-        const inMemo = (w.memo || '').toLowerCase().includes(query);
-        if (!inWord && !inMeaning && !inPos && !inPara && !inDay && !inRelated && !inMemo) {
+    // 1. 검색어가 없을 때: 기본 Day 필터 및 정렬 적용
+    if (!query) {
+      activeSyntheticSearchWords = [];
+      let result = words.filter(w => {
+        if (activeDayFilter !== 'ALL' && normalizeDayName(w.day) !== normalizeDayName(activeDayFilter)) {
           return false;
         }
-      }
-      return true;
-    });
+        return true;
+      });
 
-    // 정렬
-    if (currentSort === 'wrong-desc') {
-      result.sort((a, b) => getWrongCount(b.id) - getWrongCount(a.id));
-    } else if (currentSort === 'wrong-asc') {
-      result.sort((a, b) => getWrongCount(a.id) - getWrongCount(b.id));
-    } else if (currentSort === 'alphabet') {
-      result.sort((a, b) => (a.word || '').localeCompare(b.word || ''));
+      if (currentSort === 'wrong-desc') {
+        result.sort((a, b) => getWrongCount(b.id) - getWrongCount(a.id));
+      } else if (currentSort === 'wrong-asc') {
+        result.sort((a, b) => getWrongCount(a.id) - getWrongCount(b.id));
+      } else if (currentSort === 'alphabet') {
+        result.sort((a, b) => (a.word || '').localeCompare(b.word || ''));
+      }
+      return result;
     }
 
-    return result;
+    // 2. 검색어가 있을 때:
+    // A) 공식 등록 단어 중 매칭
+    let directMatches = words.filter(w => {
+      const inWord = (w.word || '').toLowerCase().includes(query);
+      const inMeaning = (w.meaning || '').toLowerCase().includes(query);
+      const inPos = (w.partOfSpeech || '').toLowerCase().includes(query);
+      const inPara = (w.paraphrase || []).some(p => (p || '').toLowerCase().includes(query));
+      const inDay = (w.day || '').toLowerCase().includes(query);
+      const inRelated = (w.relatedForms || '').toLowerCase().includes(query);
+      const inMemo = (w.memo || '').toLowerCase().includes(query);
+      return inWord || inMeaning || inPos || inPara || inDay || inRelated || inMemo;
+    });
+
+    // B) 동의어(paraphrase) 및 파생어(relatedForms)에서 검색어와 매칭되는 단어를 독립 카드로 합성!
+    // 요구사항: "검색한 실제 단어가 있음에도 파생어와 동의어만 나와. 실제 검색한 단어도 같이 잘 나올수 있게 보완해줘."
+    const syntheticMap = new Map();
+    const existingWordLowerSet = new Set(words.map(w => (w.word || '').toLowerCase()));
+
+    words.forEach(w => {
+      // 1) 동의어 목록 검사
+      if (Array.isArray(w.paraphrase)) {
+        w.paraphrase.forEach(p => {
+          const cleanP = (p || '').trim();
+          const lowerP = cleanP.toLowerCase();
+          if (lowerP && lowerP.includes(query) && !existingWordLowerSet.has(lowerP) && !syntheticMap.has(lowerP)) {
+            const synth = getWordDetailsComprehensive(cleanP, w);
+            if (synth) {
+              synth.isSynthetic = true;
+              synth.isSynonymSearchMatch = true;
+              syntheticMap.set(lowerP, synth);
+            }
+          }
+        });
+      }
+
+      // 2) 파생어 목록 검사
+      if (w.relatedForms && w.relatedForms !== '-' && w.relatedForms.trim()) {
+        const parsed = parseRelatedForms(w.relatedForms);
+        parsed.forEach(rf => {
+          if (rf && rf.word) {
+            const cleanRf = rf.word.trim();
+            const lowerRf = cleanRf.toLowerCase();
+            if (lowerRf && lowerRf.includes(query) && !existingWordLowerSet.has(lowerRf) && !syntheticMap.has(lowerRf)) {
+              const synth = getWordDetailsComprehensive(cleanRf, w);
+              if (synth) {
+                synth.isSynthetic = true;
+                synth.isRelatedSearchMatch = true;
+                syntheticMap.set(lowerRf, synth);
+              }
+            }
+          }
+        });
+      }
+    });
+
+    const syntheticMatches = Array.from(syntheticMap.values());
+    activeSyntheticSearchWords = syntheticMatches;
+
+    let combined = directMatches.concat(syntheticMatches);
+
+    // C) 정렬: 사용자가 오답순/알파벳순을 명시하지 않은 경우, 실제 검색어와 일치하는 단어가 최상단에 오도록 정확도(Relevance) 우선 정렬
+    if (currentSort === 'wrong-desc') {
+      combined.sort((a, b) => getWrongCount(b.id) - getWrongCount(a.id));
+    } else if (currentSort === 'wrong-asc') {
+      combined.sort((a, b) => getWrongCount(a.id) - getWrongCount(b.id));
+    } else if (currentSort === 'alphabet') {
+      combined.sort((a, b) => (a.word || '').localeCompare(b.word || ''));
+    } else {
+      const getRelevanceScore = (item) => {
+        const wLower = (item.word || '').toLowerCase();
+        const mLower = (item.meaning || '').toLowerCase();
+
+        // 1순위: 영단어 완벽 일치 (100점) -> 검색한 실제 단어가 맨 위에 즉시 노출!
+        if (wLower === query) return 100;
+        // 2순위: 영단어가 검색어로 시작 (80점)
+        if (wLower.startsWith(query)) return 80;
+        // 3순위: 영단어 내부에 검색어 포함 (60점)
+        if (wLower.includes(query)) return 60;
+        // 4순위: 한글 뜻 완벽 일치 (50점)
+        if (mLower === query) return 50;
+        // 5순위: 한글 뜻 내부에 검색어 포함 (40점)
+        if (mLower.includes(query)) return 40;
+        // 6순위: 부모 단어 또는 동의어/파생어 연계 매칭 (20점)
+        return 20;
+      };
+
+      combined.sort((a, b) => {
+        const scoreA = getRelevanceScore(a);
+        const scoreB = getRelevanceScore(b);
+        if (scoreB !== scoreA) {
+          return scoreB - scoreA;
+        }
+        // 동점일 경우: 정식 등록 단어 우선, 그 다음 합성 단어
+        if (Boolean(a.isSynthetic) !== Boolean(b.isSynthetic)) {
+          return a.isSynthetic ? 1 : -1;
+        }
+        const dayA = normalizeDayName(a.day);
+        const dayB = normalizeDayName(b.day);
+        if (dayA !== dayB) {
+          return dayA.localeCompare(dayB);
+        }
+        return (Number(a.no) || 999) - (Number(b.no) || 999);
+      });
+    }
+
+    return combined;
   }
+  window.getFilteredAndSortedWords = getFilteredAndSortedWords;
 
   let expandAllWordsInList = false;
 
@@ -1259,15 +1357,16 @@
       const paraphrases = Array.isArray(w.paraphrase) ? w.paraphrase : [];
 
       return `
-        <div class="word-card bg-white p-4 rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-md transition space-y-3 cursor-pointer" data-id="${w.id}">
+        <div class="word-card ${w.isSynthetic ? 'bg-amber-50/30 border-amber-300/80 ring-1 ring-amber-300/40' : 'bg-white border-slate-200/90'} p-4 rounded-2xl border shadow-sm hover:shadow-md transition space-y-3 cursor-pointer" data-id="${w.id}">
           
-          <!-- 카드 상단 행: 체크박스 + Day + 번호 + 품사 + 오답 배지 -->
+          <!-- 카드 상단 행: 체크박스 + Day + 번호 + 품사 + 연계 배지 + 오답 배지 -->
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-1.5 flex-wrap">
               <input type="checkbox" class="word-select-checkbox w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300 cursor-pointer" data-id="${w.id}" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation()">
-              <span class="px-2 py-0.5 rounded-full text-[11px] font-black bg-indigo-50 text-indigo-700">${w.day || 'Day 01'}</span>
-              ${w.no ? `<span class="px-1.5 py-0.5 rounded text-[11px] font-bold bg-slate-100 text-slate-700">No.${w.no}</span>` : ''}
+              <span class="px-2 py-0.5 rounded-full text-[11px] font-black ${w.isSynthetic ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-indigo-50 text-indigo-700'}">${w.day || 'Day 01'}</span>
+              ${w.no ? `<span class="px-1.5 py-0.5 rounded text-[11px] font-bold bg-slate-100 text-slate-700">No.${String(w.no).replace(/^no\.?\s*/gi, '').padStart(2, '0')}</span>` : ''}
               <span class="px-1.5 py-0.5 rounded text-[11px] font-semibold bg-slate-100 text-slate-600">${w.partOfSpeech || '품사'}</span>
+              ${w.isSynthetic ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-amber-950 shadow-2xs">${w.parentWord ? `"${w.parentWord}" 연계 단어` : '동의어/파생 연계'}</span>` : ''}
             </div>
 
             <!-- 틀린 횟수 배지 -->
@@ -1883,7 +1982,17 @@
 
   function getWordPoolForScope(scope) {
     if (scope === 'selected') {
-      return words.filter(w => selectedWordIds.has(w.id));
+      const selected = [];
+      selectedWordIds.forEach(id => {
+        const found = words.find(w => w.id === id);
+        if (found) {
+          selected.push(found);
+        } else {
+          const synth = getWordDetailsComprehensive(id);
+          if (synth) selected.push(synth);
+        }
+      });
+      return selected;
     }
     if (scope === 'wrong') {
       return words.filter(w => getWrongCount(w.id) > 0);
@@ -2659,16 +2768,17 @@
     if (!wordOrId) return null;
     const clean = String(wordOrId).trim();
     const cleanLower = clean.toLowerCase();
+    const pureWord = cleanLower.startsWith('syn-') ? cleanLower.substring(4).replace(/-/g, ' ').trim() : cleanLower;
 
     // 1. 직접 ID 매칭
     let found = words.find(w => w && w.id === clean);
     // 2. 정확한 영단어 매칭
     if (!found) {
-      found = words.find(w => w && w.word && w.word.toLowerCase() === cleanLower);
+      found = words.find(w => w && w.word && (w.word.toLowerCase() === cleanLower || w.word.toLowerCase() === pureWord));
     }
     // 3. 기호/공백 정규화 매칭
     if (!found) {
-      const cleanAlpha = cleanLower.replace(/[^a-z]/g, '');
+      const cleanAlpha = pureWord.replace(/[^a-z]/g, '');
       if (cleanAlpha.length >= 2) {
         found = words.find(w => w && w.word && w.word.toLowerCase().replace(/[^a-z]/g, '') === cleanAlpha);
       }
@@ -2683,18 +2793,24 @@
     let parent = contextParent;
     if (!parent || !parent.word) {
       // paraphrase에서 역탐색
-      parent = words.find(w => Array.isArray(w.paraphrase) && w.paraphrase.some(p => (p || '').toLowerCase() === cleanLower));
+      parent = words.find(w => Array.isArray(w.paraphrase) && w.paraphrase.some(p => {
+        const pLow = (p || '').toLowerCase();
+        return pLow === cleanLower || pLow === pureWord;
+      }));
     }
     if (!parent) {
       // relatedForms에서 역탐색
-      parent = words.find(w => w.relatedForms && w.relatedForms.toLowerCase().includes(cleanLower));
+      parent = words.find(w => w.relatedForms && (w.relatedForms.toLowerCase().includes(cleanLower) || w.relatedForms.toLowerCase().includes(pureWord)));
     }
 
     // 파생어인 경우 파생어 뜻 파싱 시도
     let relatedDesc = '';
     if (parent && parent.relatedForms) {
       const parsedList = parseRelatedForms(parent.relatedForms);
-      const match = parsedList.find(rf => (rf.word || '').toLowerCase() === cleanLower);
+      const match = parsedList.find(rf => {
+        const rfLow = (rf.word || '').toLowerCase();
+        return rfLow === cleanLower || rfLow === pureWord;
+      });
       if (match && match.desc) {
         relatedDesc = match.desc;
       }
@@ -2705,6 +2821,8 @@
     let exampleEn = '';
     let exampleKo = '';
     let memo = '';
+
+    const displayWord = cleanLower.startsWith('syn-') ? pureWord : clean;
 
     if (parent) {
       if (relatedDesc) {
@@ -2721,11 +2839,11 @@
           const escapedWord = (parent.word || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
           const regex = new RegExp('\\b' + escapedWord + '\\b', 'gi');
           if (regex.test(parent.exampleEn)) {
-            exampleEn = parent.exampleEn.replace(regex, clean);
+            exampleEn = parent.exampleEn.replace(regex, displayWord);
             exampleKo = parent.exampleKo || '';
           } else {
             exampleEn = `${parent.exampleEn}`;
-            exampleKo = `${parent.exampleKo || ''} (동의어: ${clean} ↔ ${parent.word})`;
+            exampleKo = `${parent.exampleKo || ''} (동의어: ${displayWord} ↔ ${parent.word})`;
           }
         } catch (e) {
           exampleEn = parent.exampleEn || '';
@@ -2741,13 +2859,13 @@
     }
 
     return {
-      id: 'syn-' + cleanLower.replace(/[^a-z0-9]/g, '-'),
-      word: clean,
+      id: 'syn-' + displayWord.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+      word: displayWord,
       phonetic: '',
       partOfSpeech: partOfSpeech,
       meaning: meaning,
       relatedForms: parent ? `${parent.word} (${parent.partOfSpeech || '원문'})` : '-',
-      paraphrase: parent ? [parent.word, ...(parent.paraphrase || []).filter(p => (p || '').toLowerCase() !== cleanLower)] : [],
+      paraphrase: parent ? [parent.word, ...(parent.paraphrase || []).filter(p => (p || '').toLowerCase() !== displayWord.toLowerCase())] : [],
       exampleEn: exampleEn,
       exampleKo: exampleKo,
       memo: memo,
