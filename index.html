@@ -408,8 +408,8 @@
           <button id="btnRetryFlashcard" class="py-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs transition">
             몰랐던 단어만 다시 외우기
           </button>
-          <button onclick="switchTab('list')" class="py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition">
-            단어장으로 가기
+          <button onclick="window.returnToFlashcardSetup()" class="py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-list text-[11px]"></i> 플래시카드 Day 목록으로
           </button>
         </div>
       </div>
@@ -1409,7 +1409,7 @@
   </div>
 
   <!-- 스크립트 연결 (캐시 무효화 버전 파라미터 적용) -->
-  <script src="data.js?v=v3_9_7_search_actual_word_priority_20261112"></script>
-  <script src="app.js?v=v3_9_7_search_actual_word_priority_20261112"></script>
+  <script src="data.js?v=v3_9_8_flashcard_auto_return_setup_20261112"></script>
+  <script src="app.js?v=v3_9_8_flashcard_auto_return_setup_20261112"></script>
 </body>
 </html>

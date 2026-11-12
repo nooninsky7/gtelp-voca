@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v3.9.7_20261112_1510';
+    const APP_CURRENT_VER = 'v3.9.8_20261112_1545';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -685,10 +685,14 @@
       renderWordList();
     } else if (tabId === 'flashcard') {
       const fcActive = document.getElementById('flashcardActiveCard');
-      if (fcActive && !fcActive.classList.contains('hidden') && flashcardDeck && flashcardDeck.length > 0) {
+      if (fcActive && !fcActive.classList.contains('hidden') && flashcardDeck && flashcardDeck.length > 0 && flashcardCurrentIndex < flashcardDeck.length) {
         // 이미 진행 중인 카드 화면 유지
       } else {
+        document.getElementById('flashcardActiveCard')?.classList.add('hidden');
+        document.getElementById('flashcardResultCard')?.classList.add('hidden');
+        document.getElementById('flashcardSetupCard')?.classList.remove('hidden');
         setupFlashcardScopeUI();
+        updateResumeBanners();
       }
     } else if (tabId === 'quiz') {
       const quizActive = document.getElementById('quizActiveCard');
@@ -3104,9 +3108,7 @@
       if (confirm('플래시카드 학습을 잠시 중단하시겠습니까? (현재 보던 위치가 자동 저장됩니다)')) {
         saveFlashcardProgress(flashcardCurrentScope, flashcardCurrentIndex);
         saveCurrentLearningSession();
-        document.getElementById('flashcardActiveCard').classList.add('hidden');
-        document.getElementById('flashcardSetupCard').classList.remove('hidden');
-        setupFlashcardScopeUI();
+        window.returnToFlashcardSetup();
       }
     });
 
@@ -4596,49 +4598,33 @@
     if (item && item.exampleEn) speak(item.exampleEn, e);
   };
 
+  window.returnToFlashcardSetup = function() {
+    document.getElementById('flashcardActiveCard')?.classList.add('hidden');
+    document.getElementById('flashcardResultCard')?.classList.add('hidden');
+    document.getElementById('flashcardSetupCard')?.classList.remove('hidden');
+    setupFlashcardScopeUI();
+    updateResumeBanners();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   function finishFlashcard() {
-    saveFlashcardProgress(flashcardCurrentScope, 0);
+    const scope = flashcardCurrentScope;
+    saveFlashcardProgress(scope, 0);
     clearCurrentLearningSession();
 
     // 플래시카드 Day별 회독 차수 카운트
-    const isSpecialFcScope = ['all', 'wrong', 'selected'].includes(flashcardCurrentScope);
-    if (flashcardCurrentScope && !isSpecialFcScope) {
-      const newRound = incrementDayRoundCount(flashcardCurrentScope, 'flashcard');
-      showToast(`${flashcardCurrentScope} 플래시카드 ${newRound}회독 달성! 🎉`);
+    const isSpecialFcScope = ['all', 'wrong', 'selected'].includes(scope);
+    let roundText = '';
+    if (scope && !isSpecialFcScope) {
+      const newRound = incrementDayRoundCount(scope, 'flashcard');
+      roundText = ` (${newRound}회독 달성! 🎉)`;
     }
 
-    document.getElementById('flashcardActiveCard').classList.add('hidden');
-    document.getElementById('flashcardResultCard').classList.remove('hidden');
+    // 사용자의 명확한 요구: "한 항목의 플래시카드를 다보면 플래시카드탭의 첫화면이 보이게 해줘"
+    // 완료 시 즉시 플래시카드 첫화면(Day 선택 목록)으로 자동 복귀하여 업데이트된 회독 차수를 확인!
+    window.returnToFlashcardSetup();
 
-    const totalEl = document.getElementById('fcResultTotal');
-    const knownEl = document.getElementById('fcResultKnown');
-    const unknownEl = document.getElementById('fcResultUnknown');
-    if (totalEl) totalEl.textContent = flashcardDeck.length;
-    if (knownEl) knownEl.textContent = flashcardKnown.length;
-    if (unknownEl) unknownEl.textContent = flashcardUnknown.length;
-
-    const retryBtn = document.getElementById('btnRetryFlashcard');
-    if (retryBtn) {
-      if (flashcardUnknown.length > 0) {
-        retryBtn.classList.remove('hidden');
-        retryBtn.textContent = `몰랐던 단어 (${flashcardUnknown.length}개) 다시 외우기`;
-        retryBtn.onclick = () => {
-          flashcardDeck = shuffle([...flashcardUnknown]);
-          flashcardCurrentIndex = 0;
-          flashcardIsFlipped = false;
-          flashcardKnown = [];
-          flashcardUnknown = [];
-          document.getElementById('flashcardResultCard').classList.add('hidden');
-          document.getElementById('flashcardActiveCard').classList.remove('hidden');
-          renderCurrentFlashcard();
-        };
-      } else {
-        retryBtn.textContent = '처음부터 다시 보기';
-        retryBtn.onclick = () => {
-          startFlashcard(flashcardCurrentScope, true);
-        };
-      }
-    }
+    showToast(`🎉 ${scope} 플래시카드 학습을 모두 완료했습니다!${roundText}`);
   }
 
   window.startStandardQuiz = startStandardQuiz;
