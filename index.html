@@ -251,77 +251,90 @@
         </div>
 
         <!-- 3D 플립 카드 본체 -->
-        <div class="perspective-1000 w-full h-[360px] cursor-pointer select-none" onclick="window.flipCurrentFlashcard()">
+        <div class="perspective-1000 w-full h-[450px] sm:h-[430px] cursor-pointer select-none" onclick="window.flipCurrentFlashcard()">
           <div id="flashcardInner" class="flip-card-inner shadow-lg">
             
             <!-- 앞면 (Front) -->
-            <div class="flip-card-front bg-white border-2 border-indigo-100 flex flex-col justify-between p-7">
-              <div class="flex items-center justify-between text-xs">
-                <span id="fcFrontDay" class="px-2 py-0.5 rounded-md bg-slate-100 font-bold text-slate-600">Day 01</span>
-                <span id="fcFrontPos" class="px-2 py-0.5 rounded-md bg-indigo-50 font-bold text-indigo-700">동사</span>
+            <div class="flip-card-front bg-white border-2 border-indigo-100 flex flex-col justify-between p-6 sm:p-7 shadow-sm">
+              <div class="flex items-center justify-between">
+                <span id="fcFrontDay" class="px-3 py-1 rounded-xl bg-slate-100 font-extrabold text-slate-700 text-xs sm:text-sm">Day 01</span>
+                <span id="fcFrontPos" class="px-3 py-1 rounded-xl bg-indigo-50 font-extrabold text-indigo-700 text-xs sm:text-sm">동사</span>
               </div>
 
-              <div class="my-auto space-y-2">
-                <div class="flex items-center justify-center gap-2">
-                  <h3 id="fcFrontWord" class="text-4xl font-black text-slate-900 tracking-tight">ensure</h3>
-                  <button type="button" class="w-9 h-9 rounded-full bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-600 flex items-center justify-center transition" onclick="event.stopPropagation(); window.speakFlashcardCurrentWord()" title="발음 듣기">
-                    <i class="fa-solid fa-volume-high text-sm"></i>
+              <div class="my-auto space-y-3">
+                <div class="flex items-center justify-center gap-3">
+                  <h3 id="fcFrontWord" class="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">ensure</h3>
+                  <button type="button" class="w-11 h-11 rounded-2xl bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-600 flex items-center justify-center transition shadow-xs active:scale-95 cursor-pointer" onclick="event.stopPropagation(); window.speakFlashcardCurrentWord()" title="단어 발음 듣기">
+                    <i class="fa-solid fa-volume-high text-lg"></i>
                   </button>
                 </div>
-                <div id="fcFrontPhonetic" class="text-sm font-mono text-slate-400">[inʃúər]</div>
+                <div id="fcFrontPhonetic" class="text-base sm:text-lg font-mono text-slate-400 font-semibold">[inʃúər]</div>
               </div>
 
-              <div class="text-[11px] font-bold text-slate-400 flex items-center justify-center gap-1.5 animate-pulse">
-                <i class="fa-solid fa-hand-pointer text-indigo-400"></i> 터치하면 뜻과 예문이 보입니다
+              <div class="text-xs sm:text-sm font-bold text-slate-400 flex items-center justify-center gap-2 animate-pulse">
+                <i class="fa-solid fa-hand-pointer text-indigo-500"></i> 터치하면 뜻과 예문이 보입니다
               </div>
             </div>
 
             <!-- 뒷면 (Back) -->
-            <div class="flip-card-back bg-gradient-to-b from-indigo-900 to-slate-900 text-white flex flex-col justify-between p-6 text-left">
-              <div class="flex items-center justify-between">
-                <span id="fcBackWord" class="font-black text-lg text-indigo-200">ensure</span>
-                <span id="fcBackPos" class="px-2 py-0.5 rounded-md bg-white/10 font-bold text-xs text-indigo-300">동사</span>
+            <div class="flip-card-back bg-gradient-to-b from-indigo-900 via-indigo-950 to-slate-900 text-white flex flex-col justify-between p-5 sm:p-6 text-left overflow-hidden shadow-sm">
+              <!-- 상단 단어 및 품사 -->
+              <div class="flex items-center justify-between pb-2 border-b border-white/15 shrink-0">
+                <div class="flex items-center gap-2.5">
+                  <span id="fcBackWord" class="font-black text-xl sm:text-2xl text-indigo-100 tracking-tight">ensure</span>
+                  <button type="button" class="w-8 h-8 rounded-xl bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition shadow-2xs active:scale-95 cursor-pointer" onclick="event.stopPropagation(); window.speakFlashcardCurrentWord()" title="단어 발음 다시 듣기">
+                    <i class="fa-solid fa-volume-high text-xs text-indigo-200"></i>
+                  </button>
+                </div>
+                <span id="fcBackPos" class="px-2.5 py-1 rounded-xl bg-white/15 font-black text-xs sm:text-sm text-indigo-200">동사</span>
               </div>
 
-              <div class="my-auto space-y-3">
+              <!-- 스크롤 가능한 본문 영역 -->
+              <div class="flex-1 my-2 py-1 space-y-3.5 overflow-y-auto no-scrollbar pr-1">
                 <div>
-                  <div class="text-xs text-indigo-300 font-bold uppercase tracking-wider">주요 뜻</div>
-                  <div id="fcBackMeaning" class="text-2xl font-black text-white leading-snug">보장하다, 확실하게 하다</div>
+                  <div class="text-xs font-black text-indigo-300 uppercase tracking-wider mb-1">주요 뜻</div>
+                  <div id="fcBackMeaning" class="text-2xl sm:text-3xl font-black text-white leading-snug">보장하다, 확실하게 하다</div>
                 </div>
 
-                <!-- 동의어 -->
-                <div id="fcBackParaphraseBox" class="space-y-1">
-                  <div class="text-[11px] text-amber-300 font-bold flex items-center gap-1">
-                    <i class="fa-solid fa-shuffle"></i> 패러프레이징 (동의어):
+                <!-- 동의어 (터치 시 발음 재생) -->
+                <div id="fcBackParaphraseBox" class="space-y-1.5">
+                  <div class="text-xs sm:text-sm font-black text-amber-300 flex items-center gap-1.5">
+                    <i class="fa-solid fa-shuffle"></i> 패러프레이징 (동의어 - 터치 시 발음):
                   </div>
-                  <div id="fcBackParaphrase" class="flex flex-wrap gap-1 text-xs"></div>
+                  <div id="fcBackParaphrase" class="flex flex-wrap gap-2 text-sm"></div>
                 </div>
 
-                <!-- 파생어 (유사품사어) -->
-                <div id="fcBackRelatedBox" class="space-y-1 hidden">
-                  <div class="text-[11px] text-indigo-200 font-bold flex items-center gap-1">
-                    <i class="fa-solid fa-network-wired"></i> 유사 품사어 (파생어):
+                <!-- 파생어 (유사품사어 - 터치 시 발음 재생) -->
+                <div id="fcBackRelatedBox" class="space-y-1.5 hidden">
+                  <div class="text-xs sm:text-sm font-black text-indigo-200 flex items-center gap-1.5">
+                    <i class="fa-solid fa-network-wired"></i> 유사 품사어 (파생어 - 터치 시 발음):
                   </div>
-                  <div id="fcBackRelated" class="flex flex-wrap gap-1 text-xs"></div>
+                  <div id="fcBackRelated" class="flex flex-wrap gap-2 text-sm"></div>
                 </div>
 
-                <!-- 예문 -->
-                <div id="fcBackExampleBox" class="p-3 bg-white/10 rounded-xl space-y-1 text-xs border border-white/10">
-                  <div id="fcBackExampleEn" class="font-semibold text-indigo-100 leading-snug"></div>
-                  <div id="fcBackExampleKo" class="text-slate-300 text-[11px]"></div>
+                <!-- 예문 & 해석 (터치 시 발음 재생) -->
+                <div id="fcBackExampleBox" class="p-3.5 bg-white/10 hover:bg-white/20 rounded-2xl space-y-1.5 border border-white/15 transition cursor-pointer group active:scale-[0.99]" onclick="event.stopPropagation(); window.speakFlashcardExample(event)" title="예문 발음 듣기">
+                  <div class="flex items-start justify-between gap-2.5">
+                    <div id="fcBackExampleEn" class="font-bold text-white text-sm sm:text-base leading-snug group-hover:text-amber-200 transition-colors"></div>
+                    <button type="button" class="shrink-0 w-8 h-8 rounded-xl bg-white/20 hover:bg-white/35 text-white flex items-center justify-center transition shadow-xs" onclick="event.stopPropagation(); window.speakFlashcardExample(event)" title="예문 전체 발음 듣기">
+                      <i class="fa-solid fa-volume-high text-xs text-amber-200"></i>
+                    </button>
+                  </div>
+                  <div id="fcBackExampleKo" class="text-indigo-200 text-xs sm:text-sm font-medium leading-relaxed"></div>
                 </div>
 
                 <!-- 출제 포인트 & 수기 암기 팁 -->
-                <div id="fcBackMemoBox" class="p-2.5 bg-amber-400/20 rounded-xl space-y-0.5 text-xs border border-amber-300/30 hidden">
-                  <div class="text-[10px] font-bold text-amber-200 flex items-center gap-1">
+                <div id="fcBackMemoBox" class="p-3 bg-amber-400/20 rounded-2xl space-y-1 border border-amber-300/35 hidden">
+                  <div class="text-xs sm:text-sm font-black text-amber-200 flex items-center gap-1.5">
                     <i class="fa-solid fa-pen-nib"></i> 출제 포인트 & 암기 팁
                   </div>
-                  <div id="fcBackMemo" class="text-white text-[11px] font-medium leading-relaxed"></div>
+                  <div id="fcBackMemo" class="text-white text-xs sm:text-sm font-semibold leading-relaxed"></div>
                 </div>
               </div>
 
-              <div class="text-[10px] text-center text-slate-400">
-                카드를 다시 터치하면 앞면으로 뒤집힙니다
+              <!-- 하단 안내 문구 -->
+              <div class="text-xs text-center text-indigo-300 font-medium pt-1 shrink-0">
+                <i class="fa-solid fa-arrows-rotate text-[11px] mr-1"></i> 카드를 터치하면 앞면으로 뒤집힙니다
               </div>
             </div>
 
@@ -330,17 +343,17 @@
 
         <!-- 하단 액션 버튼 3개 -->
         <div class="grid grid-cols-3 gap-2.5 pt-1">
-          <button id="btnFcWrong" class="py-3 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-black text-xs transition border border-rose-200 flex flex-col items-center justify-center gap-0.5">
-            <i class="fa-solid fa-xmark text-base"></i>
+          <button id="btnFcWrong" class="py-3.5 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-black text-xs sm:text-sm transition border border-rose-200 flex flex-col items-center justify-center gap-1 active:scale-95 cursor-pointer">
+            <i class="fa-solid fa-xmark text-lg"></i>
             <span>몰라요 (다시 보기)</span>
           </button>
           
-          <button id="btnFcNext" class="py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs transition shadow-md shadow-indigo-200 flex flex-col items-center justify-center gap-0.5 cursor-pointer">
-            <i class="fa-solid fa-arrow-right text-base"></i>
+          <button id="btnFcNext" class="py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm transition shadow-md shadow-indigo-200 flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95">
+            <i class="fa-solid fa-arrow-right text-lg"></i>
             <span>다음 단어 (Next)</span>
           </button>
-          <button id="btnFcKnow" class="py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs transition shadow-md shadow-emerald-200 flex flex-col items-center justify-center gap-0.5">
-            <i class="fa-solid fa-check text-base"></i>
+          <button id="btnFcKnow" class="py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm transition shadow-md shadow-emerald-200 flex flex-col items-center justify-center gap-1 active:scale-95 cursor-pointer">
+            <i class="fa-solid fa-check text-lg"></i>
             <span>알아요 (완료)</span>
           </button>
         </div>
@@ -1378,7 +1391,7 @@
   </div>
 
   <!-- 스크립트 연결 (캐시 무효화 버전 파라미터 적용) -->
-  <script src="data.js?v=v3_6_5_mobile_touch_scroll_20261111_2215"></script>
-  <script src="app.js?v=v3_6_5_mobile_touch_scroll_20261111_2215"></script>
+  <script src="data.js?v=v3_7_0_flashcard_tts_font_20261112"></script>
+  <script src="app.js?v=v3_7_0_flashcard_tts_font_20261112"></script>
 </body>
 </html>

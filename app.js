@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v3.6.5_20261111_2215';
+    const APP_CURRENT_VER = 'v3.7.0_20261112_1010';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -4028,22 +4028,26 @@
     document.getElementById('fcBackPos').textContent = item.partOfSpeech || '품사';
     document.getElementById('fcBackMeaning').textContent = item.meaning;
 
-    // 동의어
+    // 동의어 (패러프레이징 - 터치 시 발음 듣기)
     const paraBox = document.getElementById('fcBackParaphraseBox');
     const paraEl = document.getElementById('fcBackParaphrase');
     const paraphrases = Array.isArray(item.paraphrase) ? item.paraphrase : [];
     if (paraphrases.length > 0) {
       paraBox.classList.remove('hidden');
-      paraEl.innerHTML = paraphrases.map(p => `
-        <span class="px-2 py-0.5 rounded-md bg-white/20 text-amber-200 font-bold text-xs">
-          ${p}
-        </span>
-      `).join('');
+      paraEl.innerHTML = paraphrases.map(p => {
+        const cleanP = (p || '').trim().replace(/'/g, "\\'");
+        return `
+          <button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/20 hover:bg-white/35 active:scale-95 text-amber-200 hover:text-white font-bold text-sm cursor-pointer transition shadow-xs border border-amber-300/30 group" onclick="event.stopPropagation(); window.speakText('${cleanP}', event)" title="'${cleanP}' 발음 듣기">
+            <span>${p}</span>
+            <i class="fa-solid fa-volume-high text-xs text-amber-300 group-hover:scale-110 transition-transform"></i>
+          </button>
+        `;
+      }).join('');
     } else {
       paraBox.classList.add('hidden');
     }
 
-    // 파생어 (유사품사어)
+    // 파생어 (유사품사어 - 터치 시 발음 듣기)
     const relatedBox = document.getElementById('fcBackRelatedBox');
     const relatedEl = document.getElementById('fcBackRelated');
     if (relatedBox && relatedEl) {
@@ -4051,14 +4055,14 @@
         relatedBox.classList.remove('hidden');
         const list = parseRelatedForms(item.relatedForms);
         relatedEl.innerHTML = list.map(rf => {
-          if (!rf.word) return `<span class="text-slate-300">${rf.desc}</span>`;
+          if (!rf.word) return `<span class="text-slate-300 text-sm font-medium">${rf.desc}</span>`;
           const cleanWord = rf.word.replace(/'/g, "\\'");
           return `
-            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-white/20 hover:bg-white/30 text-white font-medium cursor-pointer transition shadow-xs group" onclick="event.stopPropagation(); window.speakText('${cleanWord}', event)" title="'${cleanWord}' 발음 듣기">
+            <button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/20 hover:bg-white/35 active:scale-95 text-white font-semibold text-sm cursor-pointer transition shadow-xs border border-white/20 group" onclick="event.stopPropagation(); window.speakText('${cleanWord}', event)" title="'${cleanWord}' 발음 듣기">
               <span class="font-bold underline decoration-white/50 group-hover:text-amber-200">${rf.word}</span>
-              <i class="fa-solid fa-volume-high text-[10px] text-indigo-200"></i>
-              ${rf.desc ? `<span class="text-[11px] text-indigo-100 font-normal">${rf.desc}</span>` : ''}
-            </span>
+              <i class="fa-solid fa-volume-high text-xs text-indigo-200 group-hover:scale-110 transition-transform"></i>
+              ${rf.desc ? `<span class="text-xs text-indigo-100 font-normal">(${rf.desc})</span>` : ''}
+            </button>
           `;
         }).join(' ');
       } else {
@@ -4066,7 +4070,7 @@
       }
     }
 
-    // 예문
+    // 예문 (터치 시 발음 재생)
     const exBox = document.getElementById('fcBackExampleBox');
     const exEn = document.getElementById('fcBackExampleEn');
     const exKo = document.getElementById('fcBackExampleKo');
@@ -4113,7 +4117,13 @@
 
   window.speakFlashcardCurrentWord = function() {
     const item = flashcardDeck[flashcardCurrentIndex];
-    if (item) speak(item.word);
+    if (item && item.word) speak(item.word);
+  };
+
+  window.speakFlashcardExample = function(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    const item = flashcardDeck[flashcardCurrentIndex];
+    if (item && item.exampleEn) speak(item.exampleEn, e);
   };
 
   function finishFlashcard() {
@@ -4158,6 +4168,7 @@
   window.handleFlashcardAnswer = handleFlashcardAnswer;
   window.handleFlashcardNext = handleFlashcardNext;
   window.handleFlashcardPrev = handleFlashcardPrev;
+  window.speakFlashcardExample = speakFlashcardExample;
 
   // --------------------------------------------------------------------------
   // 13. 실전 문장 빈칸 채우기 퀴즈 (Cloze Test Module)
