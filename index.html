@@ -229,8 +229,8 @@
         </div>
 
         <div class="flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
-          <span class="font-bold text-slate-700">단어 순서 무작위 셔플</span>
-          <input type="checkbox" id="flashcardShuffleToggle" checked class="w-4 h-4 text-amber-600 rounded focus:ring-amber-500 border-slate-300">
+          <span class="font-bold text-slate-700">단어 순서 무작위 셔플 (체크 해제 시 교재 번호 순)</span>
+          <input type="checkbox" id="flashcardShuffleToggle" class="w-4 h-4 text-amber-600 rounded focus:ring-amber-500 border-slate-300">
         </div>
 
         <button id="btnStartFlashcard" class="w-full py-3.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-black text-base shadow-lg shadow-amber-200 transition flex items-center justify-center gap-2">
@@ -242,22 +242,25 @@
       <div id="flashcardActiveCard" class="hidden space-y-4">
         <!-- 상단 바 -->
         <div class="flex items-center justify-between px-2">
-          <div class="flex items-center gap-2">
-            <button id="btnFcPrev" class="px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1 transition" title="이전 단어"><i class="fa-solid fa-arrow-left text-[10px]"></i> 이전</button>
+          <div class="flex items-center gap-2 flex-wrap">
+            <button id="btnFcPrev" class="px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1 transition cursor-pointer" title="이전 단어"><i class="fa-solid fa-arrow-left text-[10px]"></i> 이전</button>
             <span id="flashcardScopeBadge" class="px-2.5 py-0.5 rounded-full text-xs font-black bg-amber-100 text-amber-800">Day 01</span>
-            <span class="text-xs font-bold text-slate-500">진행: <span id="flashcardCurrentIdx" class="text-amber-600 font-black">1</span> / <span id="flashcardTotalIdx">10</span></span>
+            <span class="text-xs font-bold text-slate-500">진행: <span id="flashcardCurrentIdx" class="text-amber-600 font-black">1</span> / <span id="flashcardTotalIdx">50</span></span>
+            <button type="button" id="btnFcResetToStart" class="px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 text-[11px] font-bold transition cursor-pointer flex items-center gap-1" title="1번 단어로 돌아가기">
+              <i class="fa-solid fa-rotate-left text-[10px]"></i> 1번부터
+            </button>
           </div>
-          <button id="btnQuitFlashcard" class="text-xs text-slate-400 hover:text-rose-500 font-bold transition">종료</button>
+          <button id="btnQuitFlashcard" class="text-xs text-slate-400 hover:text-rose-500 font-bold transition cursor-pointer">종료</button>
         </div>
 
         <!-- 3D 플립 카드 본체 -->
-        <div class="perspective-1000 w-full h-[450px] sm:h-[430px] cursor-pointer select-none" onclick="window.flipCurrentFlashcard()">
+        <div class="perspective-1000 w-full h-[480px] sm:h-[460px] cursor-pointer select-none" onclick="window.flipCurrentFlashcard()">
           <div id="flashcardInner" class="flip-card-inner shadow-lg">
             
             <!-- 앞면 (Front) -->
             <div class="flip-card-front bg-white border-2 border-indigo-100 flex flex-col justify-between p-6 sm:p-7 shadow-sm">
               <div class="flex items-center justify-between">
-                <span id="fcFrontDay" class="px-3 py-1 rounded-xl bg-slate-100 font-extrabold text-slate-700 text-xs sm:text-sm">Day 01</span>
+                <span id="fcFrontDay" class="px-3 py-1 rounded-xl bg-slate-100 font-extrabold text-slate-700 text-xs sm:text-sm">Day 01 · No.01</span>
                 <span id="fcFrontPos" class="px-3 py-1 rounded-xl bg-indigo-50 font-extrabold text-indigo-700 text-xs sm:text-sm">동사</span>
               </div>
 
@@ -278,7 +281,7 @@
 
             <!-- 뒷면 (Back) -->
             <div class="flip-card-back bg-gradient-to-b from-indigo-900 via-indigo-950 to-slate-900 text-white flex flex-col justify-between p-5 sm:p-6 text-left overflow-hidden shadow-sm">
-              <!-- 상단 단어 및 품사 -->
+              <!-- 상단 단어 및 품사/순번 -->
               <div class="flex items-center justify-between pb-2 border-b border-white/15 shrink-0">
                 <div class="flex items-center gap-2.5">
                   <span id="fcBackWord" class="font-black text-xl sm:text-2xl text-indigo-100 tracking-tight">ensure</span>
@@ -286,7 +289,10 @@
                     <i class="fa-solid fa-volume-high text-xs text-indigo-200"></i>
                   </button>
                 </div>
-                <span id="fcBackPos" class="px-2.5 py-1 rounded-xl bg-white/15 font-black text-xs sm:text-sm text-indigo-200">동사</span>
+                <div class="flex items-center gap-1.5">
+                  <span id="fcBackNo" class="px-2 py-0.5 rounded-lg bg-white/15 font-black text-xs text-amber-200">No.01</span>
+                  <span id="fcBackPos" class="px-2.5 py-1 rounded-xl bg-white/15 font-black text-xs sm:text-sm text-indigo-200">동사</span>
+                </div>
               </div>
 
               <!-- 스크롤 가능한 본문 영역 -->
@@ -296,18 +302,18 @@
                   <div id="fcBackMeaning" class="text-2xl sm:text-3xl font-black text-white leading-snug">보장하다, 확실하게 하다</div>
                 </div>
 
-                <!-- 동의어 (터치 시 발음 재생) -->
+                <!-- 동의어 (패러프레이징) -->
                 <div id="fcBackParaphraseBox" class="space-y-1.5">
                   <div class="text-xs sm:text-sm font-black text-amber-300 flex items-center gap-1.5">
-                    <i class="fa-solid fa-shuffle"></i> 패러프레이징 (동의어 - 터치 시 발음):
+                    <i class="fa-solid fa-shuffle"></i> <span>패러프레이징 (동의어):</span>
                   </div>
                   <div id="fcBackParaphrase" class="flex flex-wrap gap-2 text-sm"></div>
                 </div>
 
-                <!-- 파생어 (유사품사어 - 터치 시 발음 재생) -->
+                <!-- 파생어 (유사품사어) -->
                 <div id="fcBackRelatedBox" class="space-y-1.5 hidden">
                   <div class="text-xs sm:text-sm font-black text-indigo-200 flex items-center gap-1.5">
-                    <i class="fa-solid fa-network-wired"></i> 유사 품사어 (파생어 - 터치 시 발음):
+                    <i class="fa-solid fa-network-wired"></i> <span>유사 품사어 (파생어):</span>
                   </div>
                   <div id="fcBackRelated" class="flex flex-wrap gap-2 text-sm"></div>
                 </div>
@@ -323,12 +329,23 @@
                   <div id="fcBackExampleKo" class="text-indigo-200 text-xs sm:text-sm font-medium leading-relaxed"></div>
                 </div>
 
-                <!-- 출제 포인트 & 수기 암기 팁 -->
-                <div id="fcBackMemoBox" class="p-3 bg-amber-400/20 rounded-2xl space-y-1 border border-amber-300/35 hidden">
-                  <div class="text-xs sm:text-sm font-black text-amber-200 flex items-center gap-1.5">
-                    <i class="fa-solid fa-pen-nib"></i> 출제 포인트 & 암기 팁
+                <!-- 나만의 출제 포인트 & 수기 암기 팁 (직접 작성/수정 시 단어 상세정보에 자동 반영) -->
+                <div class="p-3 bg-amber-400/20 hover:bg-amber-400/25 rounded-2xl space-y-1.5 border border-amber-300/35 transition" onclick="event.stopPropagation()">
+                  <div class="flex items-center justify-between">
+                    <label for="fcBackMemoInput" class="text-xs sm:text-sm font-black text-amber-200 flex items-center gap-1.5 cursor-pointer">
+                      <i class="fa-solid fa-pen-nib"></i> <span>출제 포인트 & 나만의 암기 팁</span>
+                    </label>
+                    <div class="flex items-center gap-1.5">
+                      <span id="fcBackMemoSaveBadge" class="text-[10px] sm:text-xs text-amber-300 font-bold opacity-0 transition-opacity flex items-center gap-1">
+                        <i class="fa-solid fa-circle-check"></i> 저장됨
+                      </span>
+                      <button type="button" id="btnFcSaveMemo" class="px-2.5 py-0.5 rounded-lg bg-amber-500 hover:bg-amber-600 active:scale-95 text-white font-bold text-xs shadow-2xs transition cursor-pointer" title="메모 즉시 저장">
+                        저장
+                      </button>
+                    </div>
                   </div>
-                  <div id="fcBackMemo" class="text-white text-xs sm:text-sm font-semibold leading-relaxed"></div>
+
+                  <textarea id="fcBackMemoInput" rows="2" placeholder="이 단어만의 암기법, 기출 팁, 나만의 연상 메모를 적어보세요 (단어 상세정보에 자동 반영)" class="w-full p-2.5 rounded-xl bg-black/35 hover:bg-black/45 focus:bg-black/50 text-white placeholder-amber-200/50 text-xs sm:text-sm font-medium border border-white/20 focus:border-amber-300 focus:outline-none focus:ring-1 focus:ring-amber-300/50 resize-none leading-relaxed transition" onclick="event.stopPropagation()"></textarea>
                 </div>
               </div>
 
@@ -1391,7 +1408,7 @@
   </div>
 
   <!-- 스크립트 연결 (캐시 무효화 버전 파라미터 적용) -->
-  <script src="data.js?v=v3_7_0_flashcard_tts_font_20261112"></script>
-  <script src="app.js?v=v3_7_0_flashcard_tts_font_20261112"></script>
+  <script src="data.js?v=v3_7_5_fc_memo_order_20261112"></script>
+  <script src="app.js?v=v3_7_5_fc_memo_order_20261112"></script>
 </body>
 </html>

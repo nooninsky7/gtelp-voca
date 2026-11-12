@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v3.7.0_20261112_1010';
+    const APP_CURRENT_VER = 'v3.7.5_20261112_1040';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -708,6 +708,13 @@
       modalWordHistory = [];
       currentDetailWordId = null;
       document.getElementById('modalBackWordContainer')?.classList.add('hidden');
+      if (currentTab === 'flashcard' && flashcardDeck && flashcardDeck[flashcardCurrentIndex]) {
+        const cur = flashcardDeck[flashcardCurrentIndex];
+        const fcInput = document.getElementById('fcBackMemoInput');
+        if (fcInput && cur.memo !== undefined) {
+          fcInput.value = cur.memo || '';
+        }
+      }
     }
     document.getElementById(modalId)?.classList.add('hidden');
   };
@@ -2785,10 +2792,23 @@
     });
 
     document.getElementById('btnQuitFlashcard')?.addEventListener('click', () => {
-      if (confirm('플래시카드 학습을 종료하시겠습니까?')) {
-        clearCurrentLearningSession();
+      if (confirm('플래시카드 학습을 잠시 중단하시겠습니까? (현재 보던 위치가 자동 저장됩니다)')) {
+        saveFlashcardProgress(flashcardCurrentScope, flashcardCurrentIndex);
+        saveCurrentLearningSession();
         document.getElementById('flashcardActiveCard').classList.add('hidden');
         document.getElementById('flashcardSetupCard').classList.remove('hidden');
+        setupFlashcardScopeUI();
+      }
+    });
+
+    document.getElementById('btnFcResetToStart')?.addEventListener('click', (e) => {
+      if (e && e.stopPropagation) e.stopPropagation();
+      if (confirm('첫 번째 단어(1번)부터 다시 시작하시겠습니까?')) {
+        flashcardCurrentIndex = 0;
+        saveFlashcardProgress(flashcardCurrentScope, 0);
+        saveCurrentLearningSession();
+        renderCurrentFlashcard();
+        showToast('1번 단어로 이동했습니다.');
       }
     });
 
@@ -3868,7 +3888,7 @@
   }
 
   // --------------------------------------------------------------------------
-  // 12. 이동 시간용 플래시카드(Flashcard) 암기 모드
+  // 12. 이동 시간용 플래시카드(Flashcard) 암기 모드 & 진도 이어보기
   // --------------------------------------------------------------------------
   let flashcardDeck = [];
   let flashcardCurrentIndex = 0;
@@ -3876,6 +3896,39 @@
   let flashcardKnown = [];
   let flashcardUnknown = [];
   let flashcardCurrentScope = 'all';
+
+  const FC_PROGRESS_KEY = 'gtelp_fc_last_progress';
+
+  function getFlashcardProgressMap() {
+    try {
+      const raw = localStorage.getItem(FC_PROGRESS_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveFlashcardProgress(scope, index) {
+    if (!scope) return;
+    try {
+      const map = getFlashcardProgressMap();
+      map[scope] = {
+        index: Math.max(0, index || 0),
+        updatedAt: Date.now()
+      };
+      localStorage.setItem(FC_PROGRESS_KEY, JSON.stringify(map));
+    } catch (e) {}
+  }
+
+  function getFlashcardLastIndex(scope) {
+    if (!scope) return 0;
+    try {
+      const map = getFlashcardProgressMap();
+      return map[scope] ? (map[scope].index || 0) : 0;
+    } catch (e) {
+      return 0;
+    }
+  }
 
   function setupFlashcardScopeUI() {
     const container = document.getElementById('flashcardScopeContainer');
@@ -3905,10 +3958,15 @@
 
     days.forEach(day => {
       const count = words.filter(w => w.day === day).length;
+      const savedIdx = getFlashcardLastIndex(day);
+      const progressBadge = (savedIdx > 0 && savedIdx < count)
+        ? `<span class="text-[10px] text-amber-700 bg-amber-100 font-extrabold px-1.5 py-0.5 rounded-md inline-block mt-0.5">${savedIdx + 1}/${count}번 이어보기</span>`
+        : `<span class="text-[11px] text-slate-500">${count}개 단어</span>`;
+
       html += `
         <button class="fc-scope-btn p-3 rounded-2xl border border-slate-200 hover:bg-slate-50 text-left transition" data-scope="${day}">
           <div class="text-xs font-black text-slate-800">${day} 전용</div>
-          <div class="text-[11px] text-slate-500">${count}개 단어</div>
+          <div>${progressBadge}</div>
         </button>
       `;
     });
@@ -3933,7 +3991,7 @@
     updateResumeBanners();
   }
 
-  function startFlashcard(scope) {
+  function startFlashcard(scope, forceReset = false) {
     flashcardCurrentScope = scope || getSelectedScope('flashcard') || 'Day 01';
     let pool = getWordPoolForScope(flashcardCurrentScope);
     if (pool.length === 0) {
@@ -3941,9 +3999,24 @@
       return;
     }
 
-    const shouldShuffle = document.getElementById('flashcardShuffleToggle')?.checked ?? true;
+    // 기본 정렬: 교재 원래 순번(No. 01 ~ No. 50) 엄격 오름차순
+    pool.sort((a, b) => (parseInt(a.no, 10) || 0) - (parseInt(b.no, 10) || 0));
+
+    const shouldShuffle = document.getElementById('flashcardShuffleToggle')?.checked ?? false;
     flashcardDeck = shouldShuffle ? shuffle(pool) : [...pool];
-    flashcardCurrentIndex = 0;
+
+    if (!forceReset && !shouldShuffle) {
+      const savedIdx = getFlashcardLastIndex(flashcardCurrentScope);
+      if (savedIdx > 0 && savedIdx < flashcardDeck.length) {
+        flashcardCurrentIndex = savedIdx;
+        showToast(`📍 ${flashcardCurrentScope} (${savedIdx + 1}/${flashcardDeck.length}번)로 이어서 시작합니다!`);
+      } else {
+        flashcardCurrentIndex = 0;
+      }
+    } else {
+      flashcardCurrentIndex = 0;
+    }
+
     flashcardIsFlipped = false;
     flashcardKnown = [];
     flashcardUnknown = [];
@@ -3958,6 +4031,7 @@
     document.getElementById('flashcardActiveCard').classList.remove('hidden');
 
     renderCurrentFlashcard();
+    saveFlashcardProgress(flashcardCurrentScope, flashcardCurrentIndex);
     saveCurrentLearningSession();
   }
 
@@ -3972,6 +4046,7 @@
     }
 
     flashcardCurrentIndex++;
+    saveFlashcardProgress(flashcardCurrentScope, flashcardCurrentIndex);
     saveCurrentLearningSession();
     if (flashcardCurrentIndex < flashcardDeck.length) {
       renderCurrentFlashcard();
@@ -3986,6 +4061,7 @@
       return;
     }
     flashcardCurrentIndex++;
+    saveFlashcardProgress(flashcardCurrentScope, flashcardCurrentIndex);
     saveCurrentLearningSession();
     renderCurrentFlashcard();
   }
@@ -3993,6 +4069,7 @@
   function handleFlashcardPrev() {
     if (flashcardCurrentIndex > 0) {
       flashcardCurrentIndex--;
+      saveFlashcardProgress(flashcardCurrentScope, flashcardCurrentIndex);
       saveCurrentLearningSession();
       renderCurrentFlashcard();
     }
@@ -4010,12 +4087,14 @@
     const inner = document.getElementById('flashcardInner');
     if (inner) inner.classList.remove('flipped');
 
-    // 카운터
+    // 카운터 및 진행도
     document.getElementById('flashcardCurrentIdx').textContent = flashcardCurrentIndex + 1;
     document.getElementById('flashcardTotalIdx').textContent = flashcardDeck.length;
 
-    // 앞면 (Front)
-    document.getElementById('fcFrontDay').textContent = item.day || 'Day 01';
+    // 앞면 (Front): Day 및 교재 순번(No.) 명확히 표기
+    const dayText = item.day || 'Day 01';
+    const noText = item.no ? ` · No.${item.no}` : '';
+    document.getElementById('fcFrontDay').textContent = dayText + noText;
     document.getElementById('fcFrontPos').textContent = item.partOfSpeech || '품사';
     document.getElementById('fcFrontWord').textContent = item.word;
     document.getElementById('fcFrontPhonetic').textContent = item.phonetic || '';
@@ -4023,31 +4102,60 @@
     // 단어 발음 자동 1회 낭독
     speak(item.word);
 
-    // 뒷면 (Back)
+    // 뒷면 (Back): 단어, 교재 순번, 품사, 주요 뜻
     document.getElementById('fcBackWord').textContent = item.word;
+    const backNoEl = document.getElementById('fcBackNo');
+    if (backNoEl) {
+      if (item.no) {
+        backNoEl.textContent = `No.${item.no}`;
+        backNoEl.classList.remove('hidden');
+      } else {
+        backNoEl.classList.add('hidden');
+      }
+    }
     document.getElementById('fcBackPos').textContent = item.partOfSpeech || '품사';
     document.getElementById('fcBackMeaning').textContent = item.meaning;
 
-    // 동의어 (패러프레이징 - 터치 시 발음 듣기)
+    // 동의어 (패러프레이징 - 등록된 단어 터치 시 상세정보 모달 팝업, 스피커 터치 시 발음)
     const paraBox = document.getElementById('fcBackParaphraseBox');
     const paraEl = document.getElementById('fcBackParaphrase');
     const paraphrases = Array.isArray(item.paraphrase) ? item.paraphrase : [];
     if (paraphrases.length > 0) {
       paraBox.classList.remove('hidden');
       paraEl.innerHTML = paraphrases.map(p => {
-        const cleanP = (p || '').trim().replace(/'/g, "\\'");
-        return `
-          <button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/20 hover:bg-white/35 active:scale-95 text-amber-200 hover:text-white font-bold text-sm cursor-pointer transition shadow-xs border border-amber-300/30 group" onclick="event.stopPropagation(); window.speakText('${cleanP}', event)" title="'${cleanP}' 발음 듣기">
-            <span>${p}</span>
-            <i class="fa-solid fa-volume-high text-xs text-amber-300 group-hover:scale-110 transition-transform"></i>
-          </button>
-        `;
+        const cleanP = (p || '').trim();
+        const safeP = cleanP.replace(/'/g, "\\'");
+        const registeredWord = words.find(w => w && w.word && w.word.toLowerCase() === cleanP.toLowerCase());
+
+        if (registeredWord) {
+          const regId = registeredWord.id || '';
+          const safeDef = (registeredWord.meaning || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+          return `
+            <div class="inline-flex items-center rounded-xl bg-white/20 hover:bg-white/30 text-amber-200 hover:text-white border border-amber-300/40 shadow-xs transition text-sm font-bold overflow-hidden group">
+              <button type="button" class="px-3 py-1.5 flex items-center gap-1.5 cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.openQuizOptionDetail('${regId}', '${safeP}', '${safeDef}')" title="'${cleanP}' 단어 상세정보 (예문/파생어/암기팁) 보기">
+                <i class="fa-solid fa-book-open text-xs text-amber-300 group-hover:scale-110 transition-transform"></i>
+                <span class="underline decoration-amber-300/40">${cleanP}</span>
+                <span class="text-[10px] bg-amber-400/30 text-amber-200 px-1.5 py-0.2 rounded-md font-extrabold">상세</span>
+              </button>
+              <button type="button" class="px-2.5 py-1.5 text-amber-300 hover:text-white hover:bg-white/20 border-l border-amber-300/30 transition cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.speakText('${safeP}', event)" title="'${cleanP}' 발음 듣기">
+                <i class="fa-solid fa-volume-high text-xs"></i>
+              </button>
+            </div>
+          `;
+        } else {
+          return `
+            <button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/20 hover:bg-white/35 active:scale-95 text-amber-200 hover:text-white font-bold text-sm cursor-pointer transition shadow-xs border border-amber-300/30 group" onclick="event.stopPropagation(); window.openQuizOptionDetail('', '${safeP}', '')" title="'${cleanP}' 단어 상세정보 및 발음 듣기">
+              <span>${cleanP}</span>
+              <i class="fa-solid fa-volume-high text-xs text-amber-300 group-hover:scale-110 transition-transform"></i>
+            </button>
+          `;
+        }
       }).join('');
     } else {
       paraBox.classList.add('hidden');
     }
 
-    // 파생어 (유사품사어 - 터치 시 발음 듣기)
+    // 파생어 (유사품사어 - 등록된 단어 터치 시 상세정보 모달 팝업, 스피커 터치 시 발음)
     const relatedBox = document.getElementById('fcBackRelatedBox');
     const relatedEl = document.getElementById('fcBackRelated');
     if (relatedBox && relatedEl) {
@@ -4056,21 +4164,42 @@
         const list = parseRelatedForms(item.relatedForms);
         relatedEl.innerHTML = list.map(rf => {
           if (!rf.word) return `<span class="text-slate-300 text-sm font-medium">${rf.desc}</span>`;
-          const cleanWord = rf.word.replace(/'/g, "\\'");
-          return `
-            <button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/20 hover:bg-white/35 active:scale-95 text-white font-semibold text-sm cursor-pointer transition shadow-xs border border-white/20 group" onclick="event.stopPropagation(); window.speakText('${cleanWord}', event)" title="'${cleanWord}' 발음 듣기">
-              <span class="font-bold underline decoration-white/50 group-hover:text-amber-200">${rf.word}</span>
-              <i class="fa-solid fa-volume-high text-xs text-indigo-200 group-hover:scale-110 transition-transform"></i>
-              ${rf.desc ? `<span class="text-xs text-indigo-100 font-normal">(${rf.desc})</span>` : ''}
-            </button>
-          `;
+          const cleanWord = (rf.word || '').trim();
+          const safeWord = cleanWord.replace(/'/g, "\\'");
+          const registeredWord = words.find(w => w && w.word && w.word.toLowerCase() === cleanWord.toLowerCase());
+
+          if (registeredWord) {
+            const regId = registeredWord.id || '';
+            const safeDef = (registeredWord.meaning || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+            return `
+              <div class="inline-flex items-center rounded-xl bg-white/20 hover:bg-white/30 text-white border border-white/25 shadow-xs transition text-sm font-semibold overflow-hidden group">
+                <button type="button" class="px-3 py-1.5 flex items-center gap-1.5 cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.openQuizOptionDetail('${regId}', '${safeWord}', '${safeDef}')" title="'${cleanWord}' 단어 상세정보 보기">
+                  <i class="fa-solid fa-book-open text-xs text-indigo-200 group-hover:scale-110 transition-transform"></i>
+                  <span class="font-bold underline decoration-white/50 group-hover:text-amber-200">${cleanWord}</span>
+                  <span class="text-[10px] bg-indigo-400/30 text-indigo-100 px-1.5 py-0.2 rounded-md font-extrabold">상세</span>
+                  ${rf.desc ? `<span class="text-xs text-indigo-100 font-normal">(${rf.desc})</span>` : ''}
+                </button>
+                <button type="button" class="px-2.5 py-1.5 text-indigo-200 hover:text-white hover:bg-white/20 border-l border-white/20 transition cursor-pointer active:scale-95" onclick="event.stopPropagation(); window.speakText('${safeWord}', event)" title="'${cleanWord}' 발음 듣기">
+                  <i class="fa-solid fa-volume-high text-xs"></i>
+                </button>
+              </div>
+            `;
+          } else {
+            return `
+              <button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/20 hover:bg-white/35 active:scale-95 text-white font-semibold text-sm cursor-pointer transition shadow-xs border border-white/20 group" onclick="event.stopPropagation(); window.speakText('${safeWord}', event)" title="'${cleanWord}' 발음 듣기">
+                <span class="font-bold underline decoration-white/50 group-hover:text-amber-200">${cleanWord}</span>
+                <i class="fa-solid fa-volume-high text-xs text-indigo-200 group-hover:scale-110 transition-transform"></i>
+                ${rf.desc ? `<span class="text-xs text-indigo-100 font-normal">(${rf.desc})</span>` : ''}
+              </button>
+            `;
+          }
         }).join(' ');
       } else {
         relatedBox.classList.add('hidden');
       }
     }
 
-    // 예문 (터치 시 발음 재생)
+    // 예문 & 해석 (터치 시 발음 재생)
     const exBox = document.getElementById('fcBackExampleBox');
     const exEn = document.getElementById('fcBackExampleEn');
     const exKo = document.getElementById('fcBackExampleKo');
@@ -4082,15 +4211,43 @@
       exBox.classList.add('hidden');
     }
 
-    // 출제 포인트 & 암기 팁
-    const memoBox = document.getElementById('fcBackMemoBox');
-    const memoEl = document.getElementById('fcBackMemo');
-    if (memoBox && memoEl) {
-      if (item.memo && item.memo.trim()) {
-        memoBox.classList.remove('hidden');
-        memoEl.textContent = item.memo.trim();
-      } else {
-        memoBox.classList.add('hidden');
+    // 출제 포인트 & 나만의 암기 팁 메모 입력창 (단어 상세정보와 실시간 양방향 연동)
+    const fcMemoInput = document.getElementById('fcBackMemoInput');
+    const fcMemoSaveBtn = document.getElementById('btnFcSaveMemo');
+    const fcMemoSaveBadge = document.getElementById('fcBackMemoSaveBadge');
+
+    if (fcMemoInput) {
+      fcMemoInput.value = item.memo || '';
+
+      let fcMemoTimer = null;
+      const doSaveFcMemo = (showBadge = false) => {
+        const val = (fcMemoInput.value || '').trim();
+        if (item.memo !== val) {
+          item.memo = val;
+          saveWordCustomMemo(item.id, val);
+          if (showBadge && fcMemoSaveBadge) {
+            fcMemoSaveBadge.classList.remove('opacity-0');
+            setTimeout(() => fcMemoSaveBadge.classList.add('opacity-0'), 1500);
+          }
+          renderWordList();
+        }
+      };
+
+      fcMemoInput.oninput = () => {
+        if (fcMemoTimer) clearTimeout(fcMemoTimer);
+        fcMemoTimer = setTimeout(() => doSaveFcMemo(true), 600);
+      };
+
+      fcMemoInput.onblur = () => {
+        doSaveFcMemo(true);
+      };
+
+      if (fcMemoSaveBtn) {
+        fcMemoSaveBtn.onclick = (e) => {
+          if (e && e.stopPropagation) e.stopPropagation();
+          doSaveFcMemo(true);
+          showToast('암기 팁이 저장되었습니다!');
+        };
       }
     }
 
@@ -4127,6 +4284,7 @@
   };
 
   function finishFlashcard() {
+    saveFlashcardProgress(flashcardCurrentScope, 0);
     clearCurrentLearningSession();
     document.getElementById('flashcardActiveCard').classList.add('hidden');
     document.getElementById('flashcardResultCard').classList.remove('hidden');
@@ -4156,7 +4314,7 @@
       } else {
         retryBtn.textContent = '처음부터 다시 보기';
         retryBtn.onclick = () => {
-          startFlashcard(flashcardCurrentScope);
+          startFlashcard(flashcardCurrentScope, true);
         };
       }
     }
