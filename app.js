@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v4.0.0_20261112_1700';
+    const APP_CURRENT_VER = 'v4.0.1_20261115_1505';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -951,11 +951,7 @@
               <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-600">
                 오답 ${wrongCount}개
               </span>
-            ` : `
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">
-                완벽 마스터
-              </span>
-            `}
+            ` : ''}
           </div>
 
           <!-- 액션 버튼들 -->
@@ -1812,11 +1808,7 @@
                     <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-rose-50 text-rose-600 border border-rose-100">
                       오답 ${wrongCount}개
                     </span>
-                  ` : `
-                    <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
-                      완벽 마스터
-                    </span>
-                  `}
+                  ` : ''}
                 </div>
 
                 <!-- 4지선다 회독 차수 배지 -->
