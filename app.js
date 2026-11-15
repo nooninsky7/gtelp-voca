@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v3.9.8_20261112_1545';
+    const APP_CURRENT_VER = 'v4.0.0_20261112_1700';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -483,7 +483,7 @@
     } catch (e) {}
   }
 
-  function restoreActiveLearningSession() {
+  function restoreActiveLearningSession(targetType) {
     try {
       const raw = localStorage.getItem(SESSION_KEY);
       if (!raw) return false;
@@ -494,6 +494,11 @@
       if (Date.now() - data.savedAt > 48 * 60 * 60 * 1000) {
         clearCurrentLearningSession();
         return false;
+      }
+
+      if (targetType) {
+        const matches = (data.tab === targetType) || (data.type === targetType);
+        if (!matches) return false;
       }
 
       if (data.tab === 'quiz' && data.type === 'standard') {
@@ -666,7 +671,7 @@
     saveCurrentLearningSession();
     currentTab = tabId;
     document.querySelectorAll('.nav-tab').forEach(btn => {
-      const active = (btn.dataset.tab === tabId) || (tabId === 'quiz' && btn.dataset.tab === 'list');
+      const active = (btn.dataset.tab === tabId);
       btn.classList.toggle('border-indigo-600', active);
       btn.classList.toggle('text-indigo-600', active);
       btn.classList.toggle('font-bold', active);
@@ -696,10 +701,17 @@
       }
     } else if (tabId === 'quiz') {
       const quizActive = document.getElementById('quizActiveCard');
-      if (quizActive && !quizActive.classList.contains('hidden') && activeQuiz && activeQuiz.type === 'standard' && activeQuiz.questionList && activeQuiz.questionList.length > 0) {
-        // 이미 진행 중인 퀴즈 화면 유지
+      if (quizActive && !quizActive.classList.contains('hidden') && activeQuiz && activeQuiz.type === 'standard' && activeQuiz.questionList && activeQuiz.questionList.length > 0 && activeQuiz.currentIndex < activeQuiz.questionList.length) {
+        // 이미 진행 중인 퀴즈 화면 유지 - 풀던 문제 그대로 유지!
       } else {
-        setupQuizScopeUI('standard');
+        const restored = restoreActiveLearningSession('quiz');
+        if (!restored) {
+          document.getElementById('quizActiveCard')?.classList.add('hidden');
+          document.getElementById('quizResultCard')?.classList.add('hidden');
+          document.getElementById('quizSetupCard')?.classList.remove('hidden');
+          setupQuizScopeUI('standard');
+          updateResumeBanners();
+        }
       }
     } else if (tabId === 'cloze-quiz') {
       const clozeActive = document.getElementById('clozeActiveCard');
@@ -1253,25 +1265,11 @@
             </span>
           </div>
 
-          <!-- [메인 터치 버튼: 단어 목록 보기] 터치 시 즉시 해당 Day의 50단어 전체 목록 표시 -->
+          <!-- [메인 터치 버튼: 단어 목록 보기] 터치 시 즉시 해당 Day의 전체 단어 목록 표시 -->
           <button type="button" onclick="event.stopPropagation(); window.selectDayFolder('${d}')" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-black text-xs sm:text-sm transition text-center shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-98">
             <i class="fa-solid fa-book-open text-xs"></i>
             <span>${d} 단어 목록 보기 (${dayWords.length}단어)</span>
           </button>
-
-          <!-- 보조 액션 버튼들 (4지선다, 문장 빈칸, 플래시카드 즉시 시작) -->
-          <div class="grid grid-cols-3 gap-1.5 pt-0.5 text-[11px]">
-            <button type="button" onclick="event.stopPropagation(); window.startDayDirectQuiz('${d}', 'standard')" class="py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 font-bold transition text-center shadow-2xs" title="4지선다 퀴즈">
-              <i class="fa-solid fa-play text-indigo-600 text-[10px]"></i> 4지선다
-            </button>
-            <button type="button" onclick="event.stopPropagation(); window.startDayDirectQuiz('${d}', 'cloze')" class="py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 active:scale-95 text-emerald-800 font-bold transition text-center shadow-2xs" title="빈칸 문맥 퀴즈">
-              <i class="fa-solid fa-pen text-emerald-600 text-[10px]"></i> 문장 빈칸
-            </button>
-            <button type="button" onclick="event.stopPropagation(); window.startDayDirectQuiz('${d}', 'flashcard')" class="py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 active:scale-95 text-amber-800 font-bold transition text-center shadow-2xs" title="플래시카드 암기">
-              <i class="fa-solid fa-clone text-amber-600 text-[10px]"></i> 플래시카드
-            </button>
-          </div>
-
         </div>
       `;
     });
@@ -1717,7 +1715,9 @@
           if (showToastMsg) {
             showToast('암기 팁이 저장되었습니다!');
           }
-          renderWordList();
+          if (currentTab === 'list') {
+            renderWordList();
+          }
           if (typeof debouncedCloudPush === 'function') debouncedCloudPush();
         }
       };
@@ -1762,7 +1762,9 @@
           resetWordWrongCount(item.id);
           closeModal('wordDetailModal');
           renderDayFilters();
-          renderWordList();
+          if (currentTab === 'list') {
+            renderWordList();
+          }
           renderStats();
           showToast(`'${item.word}' 단어가 삭제되었습니다.`);
         }
@@ -1817,47 +1819,29 @@
                   `}
                 </div>
 
-                <!-- 4지선다 & 빈칸 회독 차수 배지 -->
+                <!-- 4지선다 회독 차수 배지 -->
                 <div class="flex items-center gap-1.5 flex-wrap">
                   <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-[11px] font-bold ${
                     stdRounds > 0 
                       ? 'bg-indigo-100 text-indigo-900 border border-indigo-200' 
-                      : 'bg-slate-100 text-slate-400 border border-slate-200'
+                      : 'bg-slate-100 text-slate-500 border border-slate-200'
                   }">
                     <i class="fa-solid ${stdRounds > 0 ? 'fa-circle-check text-indigo-600' : 'fa-circle text-slate-300 text-[8px]'}"></i>
                     <span>4지선다:</span>
-                    <strong class="${stdRounds > 0 ? 'text-indigo-800 font-black' : 'text-slate-400 font-medium'}">${stdRounds > 0 ? `${stdRounds}회독 완료` : '미진행'}</strong>
-                  </span>
-
-                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-[11px] font-bold ${
-                    clozeRounds > 0 
-                      ? 'bg-emerald-100 text-emerald-900 border border-emerald-200' 
-                      : 'bg-slate-100 text-slate-400 border border-slate-200'
-                  }">
-                    <i class="fa-solid ${clozeRounds > 0 ? 'fa-circle-check text-emerald-600' : 'fa-circle text-slate-300 text-[8px]'}"></i>
-                    <span>빈칸:</span>
-                    <strong class="${clozeRounds > 0 ? 'text-emerald-800 font-black' : 'text-slate-400 font-medium'}">${clozeRounds > 0 ? `${clozeRounds}회독 완료` : '미진행'}</strong>
+                    <strong class="${stdRounds > 0 ? 'text-indigo-800 font-black' : 'text-slate-500 font-bold'}">${stdRounds > 0 ? `${stdRounds}회독 완료` : '0회독'}</strong>
                   </span>
                 </div>
 
                 <div class="text-[11px] text-slate-500">지텔프 실전 4지선다 출제 기준 (혼동 어휘 4지선다 매칭)</div>
               </div>
-              <div class="flex items-center gap-1.5 shrink-0 flex-wrap">
-                <button onclick="window.switchTab('list'); window.selectDayFolder('${day}');" class="px-2.5 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-700 font-bold text-xs flex items-center gap-1 border border-indigo-200 transition" title="단어 목록 보기">
-                  <i class="fa-solid fa-book-open text-[10px]"></i>
+              <div class="flex items-center gap-2 shrink-0">
+                <button onclick="window.switchTab('list'); window.selectDayFolder('${day}');" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 font-bold text-xs flex items-center gap-1.5 border border-slate-200 transition" title="단어 목록 보기">
+                  <i class="fa-solid fa-book-open text-xs text-indigo-600"></i>
                   <span>단어 목록</span>
                 </button>
-                <button onclick="window.startStandardQuiz('${day}')" class="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs flex items-center justify-center gap-1.5 shadow-sm transition">
+                <button onclick="window.startStandardQuiz('${day}')" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs flex items-center justify-center gap-1.5 shadow-sm transition active:scale-95">
                   <i class="fa-solid fa-play text-[10px]"></i>
-                  <span>4지선다</span>
-                </button>
-                <button onclick="window.startDayDirectQuiz('${day}', 'cloze')" class="px-2.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold text-xs flex items-center gap-1 border border-emerald-200 transition" title="실전 문장 빈칸 채우기">
-                  <i class="fa-solid fa-pen-to-square text-[10px]"></i>
-                  <span>빈칸</span>
-                </button>
-                <button onclick="window.startDayDirectQuiz('${day}', 'flashcard')" class="px-2.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-600 hover:text-white text-amber-800 font-bold text-xs flex items-center gap-1 border border-amber-200 transition" title="플래시카드 암기">
-                  <i class="fa-solid fa-clone text-[10px]"></i>
-                  <span>카드</span>
+                  <span>4지선다 풀기</span>
                 </button>
               </div>
             </div>
@@ -2060,6 +2044,32 @@
     if (pool.length === 0) {
       alert('출제할 단어가 없습니다. 범위를 다시 선택해주세요.');
       return;
+    }
+
+    // 풀던 문제 이어풀기 확인: 메모리 또는 저장된 세션에 풀던 문제가 있는 경우
+    if (activeQuiz && activeQuiz.type === 'standard' && activeQuiz.currentScope === scope && activeQuiz.currentIndex > 0 && activeQuiz.currentIndex < activeQuiz.questionList.length) {
+      const continueExam = confirm(`${scope} 4지선다 퀴즈를 ${activeQuiz.currentIndex + 1}번 문제까지 풀던 중이었습니다.\n\n이어서 푸시겠습니까?\n[확인: 이어서 풀기 / 취소: 처음부터 새로 풀기]`);
+      if (continueExam) {
+        document.getElementById('quizSetupCard').classList.add('hidden');
+        document.getElementById('quizResultCard').classList.add('hidden');
+        document.getElementById('quizActiveCard').classList.remove('hidden');
+        renderCurrentStandardQuestion();
+        return;
+      }
+    } else {
+      try {
+        const raw = localStorage.getItem(SESSION_KEY);
+        if (raw) {
+          const data = JSON.parse(raw);
+          if (data && data.tab === 'quiz' && data.type === 'standard' && data.currentScope === scope && (data.currentIndex || 0) > 0 && data.currentIndex < (data.questionList || []).length) {
+            const continueExam = confirm(`${scope} 4지선다 퀴즈를 ${(data.currentIndex || 0) + 1}번 문제까지 풀던 중이었습니다.\n\n이어서 푸시겠습니까?\n[확인: 이어서 풀기 / 취소: 처음부터 새로 풀기]`);
+            if (continueExam) {
+              restoreActiveLearningSession('quiz');
+              return;
+            }
+          }
+        }
+      } catch (e) {}
     }
 
     isStandardTimeAttack = localStorage.getItem('gtelp_timeattack_enabled') === 'true';
@@ -2998,12 +3008,13 @@
       tab.addEventListener('click', () => switchTab(tab.dataset.tab));
     });
 
-    // 상단 상시 고정 검색
+    // 상단 상시 고정 검색 (180ms 디바운스 적용으로 자판 입력 렉 완전히 제거)
     const searchInput = document.getElementById('searchInput');
     const clearSearchBtn = document.getElementById('clearSearchBtn');
-    searchInput?.addEventListener('input', () => {
-      const val = (searchInput.value || '').trim();
-      clearSearchBtn.classList.toggle('hidden', !val);
+    let searchDebounceTimer = null;
+
+    const performSearch = () => {
+      const val = (searchInput?.value || '').trim();
       if (val) {
         // 어느 탭(퀴즈, 플래시카드, 통계 등)에 있든 즉시 단어 검색 뷰로 자동 전환
         if (currentTab !== 'list') {
@@ -3014,8 +3025,26 @@
         expandAllWordsInList = false;
       }
       renderWordList();
+    };
+
+    searchInput?.addEventListener('input', () => {
+      const val = (searchInput.value || '').trim();
+      clearSearchBtn.classList.toggle('hidden', !val);
+
+      if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(performSearch, 180);
     });
+
+    searchInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+        performSearch();
+        searchInput.blur();
+      }
+    });
+
     clearSearchBtn?.addEventListener('click', () => {
+      if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
       searchInput.value = '';
       clearSearchBtn.classList.add('hidden');
       expandAllWordsInList = false;
@@ -3351,7 +3380,9 @@
             saveDayRoundStats(imported.dayRoundStats);
           }
           renderDayFilters();
-          renderWordList();
+          if (currentTab === 'list') {
+            renderWordList();
+          }
           renderStats();
           setupQuizScopeUI('standard');
           setupClozeScopeUI();
@@ -4541,7 +4572,9 @@
             fcMemoSaveBadge.classList.remove('opacity-0');
             setTimeout(() => fcMemoSaveBadge.classList.add('opacity-0'), 1500);
           }
-          renderWordList();
+          if (currentTab === 'list') {
+            renderWordList();
+          }
         }
       };
 
