@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v4.1.0_20261123_1800';
+    const APP_CURRENT_VER = 'v4.2.0_20261123_1815';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -1537,6 +1537,256 @@
   }
 
   // --------------------------------------------------------------------------
+  // 4-B. 기출 혼동 어휘 지능형 자동 탐색 및 원터치 수집 엔진
+  // --------------------------------------------------------------------------
+  const GTELP_CONFUSABLES_MAP = {
+    "initial": [
+      { word: "initiative", def: "계획, 주도권; 진취성" },
+      { word: "intimate", def: "친밀한; 은밀한" },
+      { word: "imitate", def: "모방하다, 흉내내다" }
+    ],
+    "initiative": [
+      { word: "initial", def: "처음의, 초기의" },
+      { word: "intimate", def: "친밀한" },
+      { word: "initiate", def: "시작하다, 착수하다" }
+    ],
+    "intimate": [
+      { word: "initial", def: "처음의, 초기의" },
+      { word: "initiative", def: "계획, 주도권" },
+      { word: "imitate", def: "모방하다, 흉내내다" }
+    ],
+    "ensure": [
+      { word: "assure", def: "확신시키다, 장담하다" },
+      { word: "insure", def: "보험에 들다" },
+      { word: "endure", def: "견디다, 참다" }
+    ],
+    "assure": [
+      { word: "ensure", def: "보장하다, 확실히 하다" },
+      { word: "assume", def: "추정하다, 떠맡다" },
+      { word: "assist", def: "돕다, 조력하다" }
+    ],
+    "apparent": [
+      { word: "appear", def: "나타나다, ~인 것 같다" },
+      { word: "appeal", def: "호소하다, 매력" },
+      { word: "applaud", def: "박수갈채를 보내다" }
+    ],
+    "credit": [
+      { word: "critic", def: "비평가, 평론가" },
+      { word: "create", def: "창조하다, 만들다" },
+      { word: "credible", def: "믿을 수 있는" }
+    ],
+    "run": [
+      { word: "race", def: "경주하다; 인종" },
+      { word: "ruin", def: "망치다, 파멸" },
+      { word: "rush", def: "서두르다, 돌진하다" }
+    ],
+    "define": [
+      { word: "decline", def: "거절하다, 감소하다" },
+      { word: "defend", def: "방어하다, 변호하다" },
+      { word: "defeat", def: "패배시키다, 패배" }
+    ],
+    "essential": [
+      { word: "efficient", def: "효율적인, 유능한" },
+      { word: "effective", def: "효과적인, 유효한" },
+      { word: "effortless", def: "노력이 들지 않는" }
+    ],
+    "focus": [
+      { word: "force", def: "강요하다; 힘" },
+      { word: "found", def: "설립하다" },
+      { word: "follow", def: "따르다, 따라가다" }
+    ],
+    "consequence": [
+      { word: "sequence", def: "연속, 순서" },
+      { word: "frequency", def: "빈도, 주파수" },
+      { word: "convenience", def: "편의, 편리" }
+    ],
+    "assess": [
+      { word: "access", def: "접근하다; 접근" },
+      { word: "assert", def: "주장하다, 단언하다" },
+      { word: "assist", def: "돕다, 조력하다" }
+    ],
+    "principle": [
+      { word: "principal", def: "주요한; 교장" },
+      { word: "prince", def: "왕자" },
+      { word: "priority", def: "우선순위, 우선권" }
+    ],
+    "principal": [
+      { word: "principle", def: "원칙, 원리" },
+      { word: "prince", def: "왕자" },
+      { word: "primary", def: "주요한, 최초의" }
+    ],
+    "legal": [
+      { word: "illegal", def: "불법적인 (반의어)" },
+      { word: "lethal", def: "치명적인" },
+      { word: "loyal", def: "충실한, 충성스러운" }
+    ],
+    "maintain": [
+      { word: "contain", def: "포함하다, 담고 있다" },
+      { word: "obtain", def: "얻다, 획득하다" },
+      { word: "retain", def: "보유하다, 간직하다" }
+    ],
+    "remove": [
+      { word: "remote", def: "원격의, 외딴" },
+      { word: "remind", def: "상기시키다" },
+      { word: "remain", def: "남아있다, 머무르다" }
+    ],
+    "prevent": [
+      { word: "protect", def: "보호하다, 지키다" },
+      { word: "preserve", def: "보존하다, 유지하다" },
+      { word: "predict", def: "예측하다, 예견하다" }
+    ],
+    "correct": [
+      { word: "collect", def: "모으다, 수집하다" },
+      { word: "connect", def: "연결하다, 이어지다" },
+      { word: "corrupt", def: "부패한, 타락시키다" }
+    ],
+    "publish": [
+      { word: "punish", def: "처벌하다, 벌주다" },
+      { word: "publicize", def: "광고하다, 홍보하다" },
+      { word: "purchase", def: "구매하다, 사다" }
+    ],
+    "former": [
+      { word: "farmer", def: "농부" },
+      { word: "formal", def: "공식적인, 격식 차린" },
+      { word: "formula", def: "공식, 제조법" }
+    ],
+    "construct": [
+      { word: "destroy", def: "파괴하다, 망치다 (반의어)" },
+      { word: "instruct", def: "지시하다, 가르치다" },
+      { word: "restrict", def: "제한하다, 통제하다" }
+    ],
+    "increase": [
+      { word: "decrease", def: "감소하다, 줄이다 (반의어)" },
+      { word: "include", def: "포함하다" },
+      { word: "improve", def: "개선하다, 향상시키다" }
+    ]
+  };
+
+  function getConfusableWordsFor(targetItem) {
+    if (!targetItem || !targetItem.word) return [];
+    const targetWord = (targetItem.word || '').trim().toLowerCase();
+    const results = [];
+    const seenWords = new Set([targetWord]);
+
+    // 0. GTELP_CONFUSABLES_MAP 사전 정의 혼동 어휘 쌍 우선 탐색
+    if (GTELP_CONFUSABLES_MAP[targetWord]) {
+      GTELP_CONFUSABLES_MAP[targetWord].forEach(opt => {
+        const cleanOw = (opt.word || '').trim().toLowerCase();
+        if (cleanOw && !seenWords.has(cleanOw)) {
+          seenWords.add(cleanOw);
+          const found = words.find(w => w && w.word && w.word.toLowerCase() === cleanOw);
+          results.push(found || { word: opt.word, meaning: opt.def || '혼동 기출 보기', isSynthetic: true });
+        }
+      });
+    }
+
+    // 1. targetItem에 직접 등록된 4지선다 보기 options가 있다면 추출
+    if (Array.isArray(targetItem.options)) {
+      targetItem.options.forEach(opt => {
+        const ow = typeof opt === 'string' ? opt : (opt && opt.word ? opt.word : '');
+        const cleanOw = ow.trim().toLowerCase();
+        if (cleanOw && !seenWords.has(cleanOw)) {
+          seenWords.add(cleanOw);
+          const found = words.find(w => w && w.word && w.word.toLowerCase() === cleanOw);
+          results.push(found || { word: ow, meaning: (opt && opt.def) || '혼동 기출 보기', isSynthetic: true });
+        }
+      });
+    }
+
+    // 2. 다른 단어의 options나 기출 혼동어휘에서 targetWord와 연계된 단어 역탐색
+    words.forEach(w => {
+      if (results.length >= 4) return;
+      if (Array.isArray(w.options)) {
+        const hasTarget = w.options.some(opt => {
+          const ow = typeof opt === 'string' ? opt : (opt && opt.word ? opt.word : '');
+          return ow.toLowerCase() === targetWord;
+        });
+        if (hasTarget) {
+          w.options.forEach(opt => {
+            const ow = typeof opt === 'string' ? opt : (opt && opt.word ? opt.word : '');
+            const cleanOw = ow.trim().toLowerCase();
+            if (cleanOw && !seenWords.has(cleanOw)) {
+              seenWords.add(cleanOw);
+              const found = words.find(x => x && x.word && x.word.toLowerCase() === cleanOw);
+              results.push(found || { word: ow, meaning: (opt && opt.def) || '혼동 기출 보기', isSynthetic: true });
+            }
+          });
+        }
+      }
+    });
+
+    // 3. 어원/철자/발음 유사도 기반 자동 매칭 (앞 3글자 일치 또는 길이 차이 <= 2)
+    if (results.length < 3) {
+      const candidates = words.filter(w => {
+        if (!w || !w.word) return false;
+        const cw = w.word.toLowerCase();
+        if (seenWords.has(cw)) return false;
+        
+        if (targetWord.length >= 4 && cw.length >= 4) {
+          if (targetWord.slice(0, 3) === cw.slice(0, 3) && Math.abs(targetWord.length - cw.length) <= 2) {
+            return true;
+          }
+        }
+        return false;
+      });
+
+      for (const c of candidates) {
+        if (results.length >= 3) break;
+        const cw = c.word.toLowerCase();
+        seenWords.add(cw);
+        results.push(c);
+      }
+    }
+
+    return results.slice(0, 3);
+  }
+
+  window.addWordToConfusionFolder = function(word, meaning = '') {
+    const clean = (word || '').trim();
+    if (!clean) return;
+    const cleanLower = clean.toLowerCase();
+
+    // 1. 이미 등록되어 있는 단어인지 확인
+    let existing = words.find(w => w && w.word && w.word.toLowerCase() === cleanLower);
+    if (existing) {
+      if (existing.day !== '기출 혼동어휘') {
+        existing.day = '기출 혼동어휘';
+        saveWords();
+        showToast(`'${clean}' 단어가 [기출 혼동어휘] 폴더에 등록되었습니다! 👏`);
+        renderDayFilters();
+        if (currentTab === 'list') renderWordList();
+      } else {
+        showToast(`'${clean}' 단어는 이미 [기출 혼동어휘]에 보관 중입니다.`);
+      }
+      if (typeof openWordDetailModal === 'function') openWordDetailModal(existing.id, false);
+      return;
+    }
+
+    // 2. 신규 혼동 단어로 등록
+    const nextNo = String(words.filter(w => w.day === '기출 혼동어휘').length + 1).padStart(2, '0');
+    const newConfWord = {
+      id: 'conf-' + Date.now().toString(36),
+      day: '기출 혼동어휘',
+      no: nextNo,
+      word: clean,
+      phonetic: '',
+      partOfSpeech: '어휘',
+      meaning: meaning || '지텔프 빈출 혼동 어휘',
+      relatedForms: '-',
+      paraphrase: [],
+      exampleEn: '',
+      exampleKo: '',
+      memo: '[자동 수집] 지텔프 기출 4지선다 혼동 어휘장에서 자동 수집된 단어입니다.'
+    };
+    words.push(newConfWord);
+    saveWords();
+    showToast(`'${clean}' 단어가 [기출 혼동어휘]에 신규 추가되었습니다! 🎉`);
+    renderDayFilters();
+    if (currentTab === 'list') renderWordList();
+    if (typeof openWordDetailModal === 'function') openWordDetailModal(newConfWord.id, false);
+  };
+
+  // --------------------------------------------------------------------------
   // 5. 단어 상세 정보 모달 (영단어 클릭 시 원터치 펼침 & 유의어 클릭 시 팝업 전환 및 뒤로가기 지원)
   // --------------------------------------------------------------------------
   let modalWordHistory = [];
@@ -1686,6 +1936,39 @@
       }).join('');
     } else {
       paraContainer.innerHTML = '<span class="text-xs text-slate-400">등록된 동의어가 없습니다.</span>';
+    }
+
+    // 💡 2-B. 헷갈리기 쉬운 기출 혼동 어휘 자동 매칭 & 원터치 수집 렌더링
+    const confusionSec = document.getElementById('modalConfusionSection');
+    const confusionList = document.getElementById('modalConfusionList');
+    if (confusionSec && confusionList) {
+      const confusables = getConfusableWordsFor(item);
+      if (confusables.length > 0) {
+        confusionSec.classList.remove('hidden');
+        confusionList.innerHTML = confusables.map(cw => {
+          const cleanWord = cw.word;
+          const safeWord = cleanWord.replace(/'/g, "\\'");
+          const isAlreadyInConf = cw.day === '기출 혼동어휘';
+          return `
+            <div class="inline-flex items-center rounded-xl bg-rose-50 text-rose-950 border border-rose-200 shadow-2xs hover:bg-rose-100 transition text-xs font-bold overflow-hidden p-1 gap-1.5">
+              <button type="button" class="flex items-center gap-1.5 px-2 py-0.5 text-slate-800 hover:text-rose-700 cursor-pointer" onclick="event.stopPropagation(); window.openQuizOptionDetail('${cw.id || ''}', '${safeWord}', '${(cw.meaning || '').replace(/'/g, "\\'")}')" title="'${cleanWord}' 상세정보 보기">
+                <i class="fa-solid fa-triangle-exclamation text-rose-500 text-[10px]"></i>
+                <span class="font-black text-rose-950">${cleanWord}</span>
+                <span class="text-[11px] text-slate-500 font-medium">: ${cw.meaning || '혼동 어휘'}</span>
+              </button>
+              ${isAlreadyInConf ? `
+                <span class="text-[10px] bg-rose-200 text-rose-800 px-1.5 py-0.5 rounded-lg font-bold">혼동장 보관됨</span>
+              ` : `
+                <button type="button" class="text-[10px] bg-rose-600 hover:bg-rose-700 text-white px-2 py-0.5 rounded-lg font-bold cursor-pointer active:scale-95 transition" onclick="event.stopPropagation(); window.addWordToConfusionFolder('${safeWord}', '${(cw.meaning || '').replace(/'/g, "\\'")}')" title="'기출 혼동어휘' 폴더에 자동 추가">
+                  + 혼동장 추가
+                </button>
+              `}
+            </div>
+          `;
+        }).join('');
+      } else {
+        confusionSec.classList.add('hidden');
+      }
     }
 
     // 예문 & 해석
@@ -2297,7 +2580,20 @@
       statusEl.innerHTML = `<span class="text-rose-600"><i class="fa-solid fa-stopwatch text-lg"></i> ⏱️ 10초 시간 초과! 정답은 <strong>"${q.word}"</strong>입니다.</span>`;
     } else {
       box.className = 'p-4 rounded-2xl border space-y-3 bg-rose-50/60 border-rose-200 fade-in';
-      statusEl.innerHTML = `<span class="text-rose-600"><i class="fa-solid fa-circle-xmark text-lg"></i> 아쉽네요! 정답은 <strong>"${q.word}"</strong>입니다.</span>`;
+      const userWrongWord = (activeQuiz.userAnswers && activeQuiz.userAnswers[activeQuiz.currentIndex]) ? activeQuiz.userAnswers[activeQuiz.currentIndex].selectedWord : '';
+      statusEl.innerHTML = `
+        <div class="space-y-1.5">
+          <div class="text-rose-600 font-bold"><i class="fa-solid fa-circle-xmark text-lg"></i> 아쉽네요! 정답은 <strong>"${q.word}"</strong>입니다.</div>
+          ${userWrongWord && userWrongWord !== q.word ? `
+            <div class="flex items-center justify-between p-2 rounded-xl bg-white border border-rose-200 text-xs gap-2">
+              <span class="text-slate-700 truncate">헷갈렸던 보기 <strong>"${userWrongWord}"</strong>를 복습하시겠습니까?</span>
+              <button type="button" onclick="window.addWordToConfusionFolder('${userWrongWord}')" class="px-2.5 py-1 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-bold text-[11px] shadow-xs shrink-0 active:scale-95 transition">
+                + 혼동장 자동 보관
+              </button>
+            </div>
+          ` : ''}
+        </div>
+      `;
     }
 
     // 정답 단어 전체 상세정보 열기 버튼
@@ -2364,6 +2660,12 @@
               <i class="fa-solid fa-book-open text-[11px]"></i>
               <span>상세</span>
             </button>
+            ${!isTarget ? `
+              <button type="button" onclick="event.stopPropagation(); window.addWordToConfusionFolder('${optWord}', '${safeDefForAttr}')" class="px-2 py-1 rounded-xl bg-rose-50 hover:bg-rose-600 hover:text-white text-rose-700 font-bold text-xs flex items-center gap-1 transition shadow-2xs border border-rose-200 cursor-pointer active:scale-95" title="'${optWord}' 단어를 [기출 혼동어휘]에 보관">
+                <i class="fa-solid fa-plus text-[10px]"></i>
+                <span>혼동장</span>
+              </button>
+            ` : ''}
           </div>
         </div>
       `;
@@ -5028,6 +5330,12 @@
               <i class="fa-solid fa-book-open text-[11px]"></i>
               <span>상세</span>
             </button>
+            ${!isTarget ? `
+              <button type="button" onclick="event.stopPropagation(); window.addWordToConfusionFolder('${optWord}', '${safeDefForAttr}')" class="px-2 py-1 rounded-xl bg-rose-50 hover:bg-rose-600 hover:text-white text-rose-700 font-bold text-xs flex items-center gap-1 transition shadow-2xs border border-rose-200 cursor-pointer active:scale-95" title="'${optWord}' 단어를 [기출 혼동어휘]에 보관">
+                <i class="fa-solid fa-plus text-[10px]"></i>
+                <span>혼동장</span>
+              </button>
+            ` : ''}
           </div>
         </div>
       `;
@@ -5147,108 +5455,6 @@
       retryWrongBtn.classList.add('hidden');
     }
   }
-  const GTELP_CONFUSABLES_MAP = {
-    "ensure": [
-      { word: "assure", def: "확신시키다, 장담하다" },
-      { word: "insure", def: "보험에 들다" },
-      { word: "endure", def: "견디다, 참다" }
-    ],
-    "assure": [
-      { word: "ensure", def: "보장하다, 확실히 하다" },
-      { word: "assume", def: "추정하다, 떠맡다" },
-      { word: "assist", def: "돕다, 조력하다" }
-    ],
-    "apparent": [
-      { word: "appear", def: "나타나다, ~인 것 같다" },
-      { word: "appeal", def: "호소하다, 매력" },
-      { word: "applaud", def: "박수갈채를 보내다" }
-    ],
-    "credit": [
-      { word: "critic", def: "비평가, 평론가" },
-      { word: "create", def: "창조하다, 만들다" },
-      { word: "credible", def: "믿을 수 있는" }
-    ],
-    "run": [
-      { word: "race", def: "경주하다; 인종" },
-      { word: "ruin", def: "망치다, 파멸" },
-      { word: "rush", def: "서두르다, 돌진하다" }
-    ],
-    "define": [
-      { word: "decline", def: "거절하다, 감소하다" },
-      { word: "defend", def: "방어하다, 변호하다" },
-      { word: "defeat", def: "패배시키다, 패배" }
-    ],
-    "essential": [
-      { word: "efficient", def: "효율적인, 유능한" },
-      { word: "effective", def: "효과적인, 유효한" },
-      { word: "effortless", def: "노력이 들지 않는" }
-    ],
-    "focus": [
-      { word: "force", def: "강요하다; 힘" },
-      { word: "found", def: "설립하다" },
-      { word: "follow", def: "따르다, 따라가다" }
-    ],
-    "consequence": [
-      { word: "sequence", def: "연속, 순서" },
-      { word: "frequency", def: "빈도, 주파수" },
-      { word: "convenience", def: "편의, 편리" }
-    ],
-    "assess": [
-      { word: "access", def: "접근하다; 접근" },
-      { word: "assert", def: "주장하다, 단언하다" },
-      { word: "assist", def: "돕다, 조력하다" }
-    ],
-    "principle": [
-      { word: "principal", def: "주요한; 교장" },
-      { word: "prince", def: "왕자" },
-      { word: "priority", def: "우선순위, 우선권" }
-    ],
-    "legal": [
-      { word: "illegal", def: "불법적인 (반의어)" },
-      { word: "lethal", def: "치명적인" },
-      { word: "loyal", def: "충실한, 충성스러운" }
-    ],
-    "maintain": [
-      { word: "contain", def: "포함하다, 담고 있다" },
-      { word: "obtain", def: "얻다, 획득하다" },
-      { word: "retain", def: "보유하다, 간직하다" }
-    ],
-    "remove": [
-      { word: "remote", def: "원격의, 외딴" },
-      { word: "remind", def: "상기시키다" },
-      { word: "remain", def: "남아있다, 머무르다" }
-    ],
-    "prevent": [
-      { word: "protect", def: "보호하다, 지키다" },
-      { word: "preserve", def: "보존하다, 유지하다" },
-      { word: "predict", def: "예측하다, 예견하다" }
-    ],
-    "correct": [
-      { word: "collect", def: "모으다, 수집하다" },
-      { word: "connect", def: "연결하다, 이어지다" },
-      { word: "corrupt", def: "부패한, 타락시키다" }
-    ],
-    "publish": [
-      { word: "punish", def: "처벌하다, 벌주다" },
-      { word: "publicize", def: "광고하다, 홍보하다" },
-      { word: "purchase", def: "구매하다, 사다" }
-    ],
-    "former": [
-      { word: "farmer", def: "농부" },
-      { word: "formal", def: "공식적인, 격식 차린" },
-      { word: "formula", def: "공식, 제조법" }
-    ],
-    "construct": [
-      { word: "destroy", def: "파괴하다, 망치다 (반의어)" },
-      { word: "instruct", def: "지시하다, 가르치다" },
-      { word: "restrict", def: "제한하다, 통제하다" }
-    ],
-    "increase": [
-      { word: "decrease", def: "감소하다, 줄이다 (반의어)" },
-      { word: "include", def: "포함하다" },
-      { word: "improve", def: "개선하다, 향상시키다" }
-    ]
-  };
 
   function generateGtelpSmartDistractors(targetItem, allWords) {
     const targetWord = (targetItem && targetItem.word ? targetItem.word : '').toLowerCase();
@@ -5404,6 +5610,31 @@
             words.push(newWordObj);
           }
           addedCount++;
+
+          // 만약 item.options에 혼동 어휘가 있다면, 미등록된 보기는 [기출 혼동어휘]에 자동 수집
+          if (Array.isArray(item.options)) {
+            item.options.forEach(opt => {
+              const ow = typeof opt === 'string' ? opt : (opt && opt.word ? opt.word : '');
+              const cleanOw = ow.trim().toLowerCase();
+              if (cleanOw && !words.some(w => w && w.word && w.word.toLowerCase() === cleanOw)) {
+                const nextNo = String(words.filter(w => w.day === '기출 혼동어휘').length + 1).padStart(2, '0');
+                words.push({
+                  id: `conf-auto-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+                  day: '기출 혼동어휘',
+                  no: nextNo,
+                  word: ow.trim(),
+                  phonetic: '',
+                  partOfSpeech: '어휘',
+                  meaning: (opt && opt.def) || '지텔프 기출 혼동 보기 어휘',
+                  relatedForms: '-',
+                  paraphrase: [],
+                  exampleEn: '',
+                  exampleKo: '',
+                  memo: `[자동 수집] "${cleanWord}"의 기출 4지선다 보기 어휘에서 자동 수집되었습니다.`
+                });
+              }
+            });
+          }
         });
 
         saveWords();

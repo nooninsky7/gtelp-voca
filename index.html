@@ -993,6 +993,19 @@
           </div>
         </div>
 
+        <!-- 2-B. 헷갈리기 쉬운 기출 혼동 어휘 (자동 매칭 & 원터치 수집) -->
+        <div id="modalConfusionSection" class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> 혼동 주의 어휘 (자동 비교)
+            </div>
+            <span class="text-[10px] text-slate-400 font-medium">철자·발음 유사 기출 어휘</span>
+          </div>
+          <div id="modalConfusionList" class="flex flex-wrap gap-2">
+            <!-- 동적으로 생성된 혼동 단어 비교 카드 -->
+          </div>
+        </div>
+
         <!-- 3. 영어단어 문장 및 해석 -->
         <div class="space-y-1.5">
           <div class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -1412,7 +1425,7 @@
   </div>
 
   <!-- 스크립트 연결 (캐시 무효화 버전 파라미터 적용) -->
-  <script src="data.js?v=v4_1_0_confusion_words_20261123"></script>
-  <script src="app.js?v=v4_1_0_confusion_words_20261123"></script>
+  <script src="data.js?v=v4_2_0_auto_confusion_engine_20261123"></script>
+  <script src="app.js?v=v4_2_0_auto_confusion_engine_20261123"></script>
 </body>
 </html>
