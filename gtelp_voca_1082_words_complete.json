@@ -100,7 +100,7 @@
                            "qualification",
                            "level"
                        ],
-        "exampleEn":  "a master's degree",
+        "exampleEn":  "a master\u0027s degree",
         "exampleKo":  "석사 학위",
         "memo":  ""
     },
@@ -469,7 +469,7 @@
                            "defend",
                            "preserve"
                        ],
-        "exampleEn":  "protect one's privacy",
+        "exampleEn":  "protect one\u0027s privacy",
         "exampleKo":  "사생활을 보호하다",
         "memo":  ""
     },
@@ -841,7 +841,7 @@
                            "refer to",
                            "note"
                        ],
-        "exampleEn":  "mention one's name",
+        "exampleEn":  "mention one\u0027s name",
         "exampleKo":  "이름을 언급하다",
         "memo":  ""
     },
@@ -861,7 +861,7 @@
                        ],
         "exampleEn":  "the influence of the media",
         "exampleKo":  "미디어의 영향력",
-        "memo":  "influence people's behaviors (사람들의 행동에 영향을 미치다)"
+        "memo":  "influence people\u0027s behaviors (사람들의 행동에 영향을 미치다)"
     },
     {
         "id":  "basic-50",
@@ -1568,7 +1568,7 @@
                        ],
         "exampleEn":  "prefer to work remotely",
         "exampleKo":  "원격으로 일하는 것을 선호하다",
-        "memo":  "지텔프 동의어: Julie began to work as a nurse. -> (a) serve",
+        "memo":  "지텔프 동의어: Julie began to work as a nurse. -\u003e (a) serve",
         "options":  [
                         {
                             "word":  "work",
@@ -1746,7 +1746,7 @@
                        ],
         "exampleEn":  "The restaurant assured customers that it will not raise the prices.",
         "exampleKo":  "그 식당은 가격을 올리지 않을 것이라고 고객들에게 확신을 주었다.",
-        "memo":  "지텔프 동의어: The mechanics assured me that the repair would be finished by Monday. -> (b) promised",
+        "memo":  "지텔프 동의어: The mechanics assured me that the repair would be finished by Monday. -\u003e (b) promised",
         "options":  [
                         {
                             "word":  "assure",
@@ -1820,7 +1820,7 @@
                        ],
         "exampleEn":  "secure a contract",
         "exampleKo":  "계약을 따내다",
-        "memo":  "지텔프 동의어: Jack is looking for a secure job. -> (a) stable"
+        "memo":  "지텔프 동의어: Jack is looking for a secure job. -\u003e (a) stable"
     },
     {
         "id":  "d01-13",
@@ -1924,7 +1924,7 @@
                        ],
         "exampleEn":  "float on the surface of the water",
         "exampleKo":  "물의 표면에 뜨다",
-        "memo":  "지텔프 동의어: The surface of the coin was very clean. -> (b) face"
+        "memo":  "지텔프 동의어: The surface of the coin was very clean. -\u003e (b) face"
     },
     {
         "id":  "d01-19",
@@ -1960,7 +1960,7 @@
                        ],
         "exampleEn":  "address the problem promptly",
         "exampleKo":  "문제를 신속히 해결하다",
-        "memo":  "지텔프 동의어: Our service team will address the issue promptly. -> (a) resolve"
+        "memo":  "지텔프 동의어: Our service team will address the issue promptly. -\u003e (a) resolve"
     },
     {
         "id":  "d01-21",
@@ -2062,7 +2062,7 @@
                        ],
         "exampleEn":  "Research indicates that sunshine can help you sleep better.",
         "exampleKo":  "연구는 햇빛이 잠을 더 잘 자도록 도와줄 수 있다는 것을 보여주고 있다.",
-        "memo":  "지텔프 동의어: Polls indicate that over 60% of the residents are against the policy. -> (b) suggest"
+        "memo":  "지텔프 동의어: Polls indicate that over 60% of the residents are against the policy. -\u003e (b) suggest"
     },
     {
         "id":  "d01-27",
@@ -2202,7 +2202,7 @@
                        ],
         "exampleEn":  "need a solid foundation",
         "exampleKo":  "단단한 기반을 필요로 하다",
-        "memo":  "지텔프 동의어: This table has solid construction. -> (a) sturdy"
+        "memo":  "지텔프 동의어: This table has solid construction. -\u003e (a) sturdy"
     },
     {
         "id":  "d01-35",
@@ -2217,7 +2217,7 @@
                            "particular",
                            "special"
                        ],
-        "exampleEn":  "meet customers' specific needs",
+        "exampleEn":  "meet customers\u0027 specific needs",
         "exampleKo":  "고객의 구체적인 요구를 충족시키다",
         "memo":  ""
     },
@@ -2341,7 +2341,7 @@
                        ],
         "exampleEn":  "be appointed as chairman",
         "exampleKo":  "의장으로 임명되다",
-        "memo":  "지텔프 동의어: Serena Williams was appointed UNICEF's Goodwill Ambassador. -> (b) named"
+        "memo":  "지텔프 동의어: Serena Williams was appointed UNICEF\u0027s Goodwill Ambassador. -\u003e (b) named"
     },
     {
         "id":  "d01-43",
@@ -2533,7 +2533,7 @@
                            "honor",
                            "recognition"
                        ],
-        "exampleEn":  "Haley is credited with[for] boosting the team's confidence.",
+        "exampleEn":  "Haley is credited with[for] boosting the team\u0027s confidence.",
         "exampleKo":  "헤일리는 팀의 자신감을 높여준 공로를 인정받고 있다.",
         "memo":  "숙어: be credited to (~의 덕분이다 = be attributed to)",
         "options":  [
@@ -2572,7 +2572,7 @@
                        ],
         "exampleEn":  "run an enterprise",
         "exampleKo":  "기업을 경영하다",
-        "memo":  "지텔프 동의어: Recently, Josh started to run a café. -> (b) manage | 숙어: run out of (~이 다 떨어지다, ~을 다 써버리다)",
+        "memo":  "지텔프 동의어: Recently, Josh started to run a café. -\u003e (b) manage | 숙어: run out of (~이 다 떨어지다, ~을 다 써버리다)",
         "options":  [
                         {
                             "word":  "run",
@@ -2824,7 +2824,7 @@
                            "unique",
                            "separate"
                        ],
-        "exampleEn":  "meet customers' individual needs",
+        "exampleEn":  "meet customers\u0027 individual needs",
         "exampleKo":  "고객의 개별 요구를 충족시키다",
         "memo":  ""
     },
@@ -2845,7 +2845,7 @@
                        ],
         "exampleEn":  "identify and arrest the suspects",
         "exampleKo":  "용의자들을 확인하여 체포하다",
-        "memo":  "지텔프 동의어: We could identify her as an FBI agent. -> (a) recognize"
+        "memo":  "지텔프 동의어: We could identify her as an FBI agent. -\u003e (a) recognize"
     },
     {
         "id":  "d02-12",
@@ -3041,7 +3041,7 @@
                        ],
         "exampleEn":  "cover travel expenses",
         "exampleKo":  "출장 비용을 치르다",
-        "memo":  "지텔프 동의어: The company will gladly cover all your lodging expenses. -> (b) pay"
+        "memo":  "지텔프 동의어: The company will gladly cover all your lodging expenses. -\u003e (b) pay"
     },
     {
         "id":  "d02-23",
@@ -3144,7 +3144,7 @@
                        ],
         "exampleEn":  "draw attention to environmental problems",
         "exampleKo":  "환경 문제로 관심을 끌다",
-        "memo":  "지텔프 동의어: The novel continues to draw people's interest. -> (a) attract"
+        "memo":  "지텔프 동의어: The novel continues to draw people\u0027s interest. -\u003e (a) attract"
     },
     {
         "id":  "d02-29",
@@ -3385,7 +3385,7 @@
                        ],
         "exampleEn":  "a religiously divided society",
         "exampleKo":  "종교적으로 분열된 사회",
-        "memo":  "지텔프 동의어: Insects are divided into three body parts. -> (b) segmented"
+        "memo":  "지텔프 동의어: Insects are divided into three body parts. -\u003e (b) segmented"
     },
     {
         "id":  "d02-43",
@@ -3511,7 +3511,7 @@
                        ],
         "exampleEn":  "establish a church",
         "exampleKo":  "교회를 설립하다",
-        "memo":  "지텔프 동의어: The police established that Michael acted in self-defense. -> (a) demonstrated"
+        "memo":  "지텔프 동의어: The police established that Michael acted in self-defense. -\u003e (a) demonstrated"
     },
     {
         "id":  "d02-50",
@@ -3570,7 +3570,7 @@
                        ],
         "exampleEn":  "settle conflicts through listening",
         "exampleKo":  "경청을 통해 갈등을 해결하다",
-        "memo":  "지텔프 동의어: Jason is trying to settle the mystery of the murder. -> (b) solve"
+        "memo":  "지텔프 동의어: Jason is trying to settle the mystery of the murder. -\u003e (b) solve"
     },
     {
         "id":  "d03-03",
@@ -3658,7 +3658,7 @@
                        ],
         "exampleEn":  "return the favor",
         "exampleKo":  "호의를 되돌려주다, 보답하다",
-        "memo":  "지텔프 동의어: Mike favors loose-fitting and comfortable clothes. -> (a) prefers | 숙어: in favor of (~을 지지[찬성]하는)"
+        "memo":  "지텔프 동의어: Mike favors loose-fitting and comfortable clothes. -\u003e (a) prefers | 숙어: in favor of (~을 지지[찬성]하는)"
     },
     {
         "id":  "d03-08",
@@ -3789,7 +3789,7 @@
                        ],
         "exampleEn":  "a gradual decline in population",
         "exampleKo":  "인구의 점진적인 감소",
-        "memo":  "지텔프 동의어: The service quality of the restaurant declined steadily. -> (b) worsened | 예문: decline a job offer (채용 제안을 거절하다)"
+        "memo":  "지텔프 동의어: The service quality of the restaurant declined steadily. -\u003e (b) worsened | 예문: decline a job offer (채용 제안을 거절하다)"
     },
     {
         "id":  "d03-15",
@@ -3881,7 +3881,7 @@
                        ],
         "exampleEn":  "limit caffeine intake to 200 mg a day",
         "exampleKo":  "카페인 섭취량을 하루에 200mg으로 제한하다",
-        "memo":  "지텔프 동의어: The use of cell phones is limited to business calls. -> (b) confined"
+        "memo":  "지텔프 동의어: The use of cell phones is limited to business calls. -\u003e (b) confined"
     },
     {
         "id":  "d03-20",
@@ -4151,7 +4151,7 @@
                        ],
         "exampleEn":  "assign Sean some household duties",
         "exampleKo":  "숀에게 일부 집안일을 할당하다",
-        "memo":  "지텔프 동의어: Justin was assigned as Executive Officer. -> (a) appointed"
+        "memo":  "지텔프 동의어: Justin was assigned as Executive Officer. -\u003e (a) appointed"
     },
     {
         "id":  "d03-35",
@@ -4269,9 +4269,9 @@
                            "advantage",
                            "lead"
                        ],
-        "exampleEn":  "The café is situated at the water's edge.",
+        "exampleEn":  "The café is situated at the water\u0027s edge.",
         "exampleKo":  "그 카페는 물가에 위치해 있다.",
-        "memo":  "지텔프 동의어: The new shoes will give runners a performance edge in the race. -> (a) advantage"
+        "memo":  "지텔프 동의어: The new shoes will give runners a performance edge in the race. -\u003e (a) advantage"
     },
     {
         "id":  "d03-42",
@@ -4427,7 +4427,7 @@
                        ],
         "exampleEn":  "complete the first phase of the project",
         "exampleKo":  "프로젝트의 첫 번째 단계를 완료하다",
-        "memo":  "지텔프 동의어: The work will be done in four phases. -> (a) stages"
+        "memo":  "지텔프 동의어: The work will be done in four phases. -\u003e (a) stages"
     },
     {
         "id":  "d04-01",
@@ -4446,7 +4446,7 @@
                        ],
         "exampleEn":  "encounter various problems",
         "exampleKo":  "여러 가지 문제에 직면하다",
-        "memo":  "지텔프 동의어: William encountered bandits during the trip. -> (b) met"
+        "memo":  "지텔프 동의어: William encountered bandits during the trip. -\u003e (b) met"
     },
     {
         "id":  "d04-02",
@@ -4508,7 +4508,7 @@
         "paraphrase":  [
                            "wellbeing"
                        ],
-        "exampleEn":  "be committed to improving children's welfare",
+        "exampleEn":  "be committed to improving children\u0027s welfare",
         "exampleKo":  "아동 복지 향상에 힘쓰다",
         "memo":  ""
     },
@@ -4678,7 +4678,7 @@
                        ],
         "exampleEn":  "volunteer at an animal shelter",
         "exampleKo":  "동물 보호소에서 자원봉사를 하다",
-        "memo":  "지텔프 동의어: Hannah volunteered to help us clean up. -> (a) offered"
+        "memo":  "지텔프 동의어: Hannah volunteered to help us clean up. -\u003e (a) offered"
     },
     {
         "id":  "d04-16",
@@ -4825,7 +4825,7 @@
                        ],
         "exampleEn":  "high demand for tickets",
         "exampleKo":  "티켓에 대한 높은 수요",
-        "memo":  "지텔프 동의어: The population growth led to a huge demand for more housing. -> (a) requirement"
+        "memo":  "지텔프 동의어: The population growth led to a huge demand for more housing. -\u003e (a) requirement"
     },
     {
         "id":  "d04-24",
@@ -4911,7 +4911,7 @@
                        ],
         "exampleEn":  "be equipped with a GPS system",
         "exampleKo":  "GPS 시스템을 갖추다",
-        "memo":  "지텔프 동의어: We need to equip the room with more chairs. -> (a) furnish"
+        "memo":  "지텔프 동의어: We need to equip the room with more chairs. -\u003e (a) furnish"
     },
     {
         "id":  "d04-29",
@@ -5206,7 +5206,7 @@
                        ],
         "exampleEn":  "fight for equal status",
         "exampleKo":  "평등한 지위를 위해 싸우다",
-        "memo":  "a patient's health status (환자의 건강 상태)"
+        "memo":  "a patient\u0027s health status (환자의 건강 상태)"
     },
     {
         "id":  "d04-46",
@@ -5225,7 +5225,7 @@
                        ],
         "exampleEn":  "have good taste in art",
         "exampleKo":  "예술에 대한 안목이 높다",
-        "memo":  "지텔프 동의어: Frank has developed a taste for sushi. -> (a) liking | 예문: The soup tastes delicious. (그 수프는 맛이 좋다.)"
+        "memo":  "지텔프 동의어: Frank has developed a taste for sushi. -\u003e (a) liking | 예문: The soup tastes delicious. (그 수프는 맛이 좋다.)"
     },
     {
         "id":  "d04-47",
@@ -5342,7 +5342,7 @@
                            "answer",
                            "reply"
                        ],
-        "exampleEn":  "respond to a customer's complaint",
+        "exampleEn":  "respond to a customer\u0027s complaint",
         "exampleKo":  "고객의 항의에 대응하다",
         "memo":  "respond to messages (메시지에 응답하다)"
     },
@@ -5430,7 +5430,7 @@
                        ],
         "exampleEn":  "commit a crime",
         "exampleKo":  "범죄를 저지르다",
-        "memo":  "지텔프 동의어: Scott is committed to his studies. -> (b) dedicated | commit to going to the gym three times a week (일주일에 세 번 체육관에 가기로 약속하다)"
+        "memo":  "지텔프 동의어: Scott is committed to his studies. -\u003e (b) dedicated | commit to going to the gym three times a week (일주일에 세 번 체육관에 가기로 약속하다)"
     },
     {
         "id":  "d05-09",
@@ -5462,7 +5462,7 @@
                        ],
         "exampleEn":  "The elevator exceeded its maximum capacity.",
         "exampleKo":  "엘리베이터가 정원을 초과하였다.",
-        "memo":  "지텔프 동의어: The cost of the project exceeded one million dollars. -> (b) surpassed"
+        "memo":  "지텔프 동의어: The cost of the project exceeded one million dollars. -\u003e (b) surpassed"
     },
     {
         "id":  "d05-11",
@@ -5532,7 +5532,7 @@
                        ],
         "exampleEn":  "complimentary shuttle service",
         "exampleKo":  "무료 셔틀 서비스",
-        "memo":  "Rachel's teacher was complimentary about her essay. (레이첼의 선생님은 그녀의 에세이를 칭찬했다.)"
+        "memo":  "Rachel\u0027s teacher was complimentary about her essay. (레이첼의 선생님은 그녀의 에세이를 칭찬했다.)"
     },
     {
         "id":  "d05-15",
@@ -5548,7 +5548,7 @@
                        ],
         "exampleEn":  "Patients with diabetes require treatment with insulin.",
         "exampleKo":  "당뇨병 환자는 인슐린 치료를 필요로 한다.",
-        "memo":  "require information about the project's timeline (프로젝트 일정에 대한 정보를 요구하다)"
+        "memo":  "require information about the project\u0027s timeline (프로젝트 일정에 대한 정보를 요구하다)"
     },
     {
         "id":  "d05-16",
@@ -5651,7 +5651,7 @@
                        ],
         "exampleEn":  "raise awareness of the importance of recycling",
         "exampleKo":  "재활용의 중요성에 대한 인식을 높이다",
-        "memo":  "지텔프 동의어: Lauren raised concerns about the new policy. -> (b) mentioned | raise their hands (그들의 손을 들다), raise a child (아이를 키우다)"
+        "memo":  "지텔프 동의어: Lauren raised concerns about the new policy. -\u003e (b) mentioned | raise their hands (그들의 손을 들다), raise a child (아이를 키우다)"
     },
     {
         "id":  "d05-22",
@@ -5751,7 +5751,7 @@
                        ],
         "exampleEn":  "The jury will determine the guilt or innocence of the defendant.",
         "exampleKo":  "배심원들은 피고의 유무죄를 결정할 것이다.",
-        "memo":  "지텔프 동의어: Psychologists use tests to determine a person's IQ. -> (a) identify"
+        "memo":  "지텔프 동의어: Psychologists use tests to determine a person\u0027s IQ. -\u003e (a) identify"
     },
     {
         "id":  "d05-28",
@@ -5875,7 +5875,7 @@
                        ],
         "exampleEn":  "The success of the event is attributed to the hard work of the organizers.",
         "exampleKo":  "행사의 성공은 주최 측의 노력 때문이다.",
-        "memo":  "지텔프 동의어: The most important attribute of a leader is courage. -> (b) trait | 숙어: be attributed to (~의 덕분이다, ~의 탓으로 보다)"
+        "memo":  "지텔프 동의어: The most important attribute of a leader is courage. -\u003e (b) trait | 숙어: be attributed to (~의 덕분이다, ~의 탓으로 보다)"
     },
     {
         "id":  "d05-35",
@@ -5944,7 +5944,7 @@
                        ],
         "exampleEn":  "It is important to recognize the signs of depression.",
         "exampleKo":  "우울증의 징후를 알아차리는 것은 중요하다.",
-        "memo":  "지텔프 동의어: Ashley was recognized as a gifted artist at a young age. -> (b) accepted"
+        "memo":  "지텔프 동의어: Ashley was recognized as a gifted artist at a young age. -\u003e (b) accepted"
     },
     {
         "id":  "d05-39",
@@ -6138,7 +6138,7 @@
                        ],
         "exampleEn":  "The window reflected the image of the clouds.",
         "exampleKo":  "창문에 구름의 모습이 비쳤다.",
-        "memo":  "지텔프 동의어: The price of the stock reflects the company's performance. -> (b) reveals | Sunlight reflects on the water. (햇빛이 물에 반사된다.)"
+        "memo":  "지텔프 동의어: The price of the stock reflects the company\u0027s performance. -\u003e (b) reveals | Sunlight reflects on the water. (햇빛이 물에 반사된다.)"
     },
     {
         "id":  "d05-49",
@@ -6156,7 +6156,7 @@
                        ],
         "exampleEn":  "Eric altered his plans for the trip.",
         "exampleKo":  "에릭은 여행 계획을 바꿨다.",
-        "memo":  "Ronald's behavior was altered by the medication. (로널드의 행동은 그 약에 의해 변했다.)"
+        "memo":  "Ronald\u0027s behavior was altered by the medication. (로널드의 행동은 그 약에 의해 변했다.)"
     },
     {
         "id":  "d05-50",
@@ -6189,7 +6189,7 @@
                        ],
         "exampleEn":  "conduct a detailed study",
         "exampleKo":  "상세한 연구를 수행하다",
-        "memo":  "지텔프 동의어: A renowned expert will conduct the workshop. -> (b) lead"
+        "memo":  "지텔프 동의어: A renowned expert will conduct the workshop. -\u003e (b) lead"
     },
     {
         "id":  "d06-02",
@@ -6418,7 +6418,7 @@
                        ],
         "exampleEn":  "the most frequent cause of head injuries",
         "exampleKo":  "머리 부상의 가장 빈번한 원인",
-        "memo":  "지텔프 동의어: The café is frequented by families with young children. -> (b) visited"
+        "memo":  "지텔프 동의어: The café is frequented by families with young children. -\u003e (b) visited"
     },
     {
         "id":  "d06-15",
@@ -6616,7 +6616,7 @@
                        ],
         "exampleEn":  "Gary acknowledged that he was wrong.",
         "exampleKo":  "게리는 자신이 틀렸다는 것을 인정했다.",
-        "memo":  "지텔프 동의어: We would like to acknowledge your continued support. -> (b) recognize"
+        "memo":  "지텔프 동의어: We would like to acknowledge your continued support. -\u003e (b) recognize"
     },
     {
         "id":  "d06-26",
@@ -6796,7 +6796,7 @@
                        ],
         "exampleEn":  "fix the leak in the ceiling",
         "exampleKo":  "천장의 누수를 고치다",
-        "memo":  "지텔프 동의어: We can't leave until we fix the flat tire. -> (b) repair"
+        "memo":  "지텔프 동의어: We can\u0027t leave until we fix the flat tire. -\u003e (b) repair"
     },
     {
         "id":  "d06-36",
@@ -6957,7 +6957,7 @@
                        ],
         "exampleEn":  "train a dog to respond to human commands",
         "exampleKo":  "사람의 명령에 반응하도록 개를 훈련시키다",
-        "memo":  "지텔프 동의어: The captain commanded the troops to halt. -> (a) ordered"
+        "memo":  "지텔프 동의어: The captain commanded the troops to halt. -\u003e (a) ordered"
     },
     {
         "id":  "d06-45",
@@ -7011,7 +7011,7 @@
                        ],
         "exampleEn":  "Megan had to be fingerprinted to verify her identity.",
         "exampleKo":  "메건은 신원을 확인하기 위해 지문을 채취해야 했다.",
-        "memo":  "지텔프 동의어: A blood test has verified that the patient has the flu. -> (a) confirmed"
+        "memo":  "지텔프 동의어: A blood test has verified that the patient has the flu. -\u003e (a) confirmed"
     },
     {
         "id":  "d06-48",
@@ -7133,7 +7133,7 @@
                        ],
         "exampleEn":  "an exclusive interview with a famous actor",
         "exampleKo":  "유명 배우와의 단독 인터뷰",
-        "memo":  "지텔프 동의어: The members of the club have exclusive use of the clubhouse on weekends. -> (a) private"
+        "memo":  "지텔프 동의어: The members of the club have exclusive use of the clubhouse on weekends. -\u003e (a) private"
     },
     {
         "id":  "d07-05",
@@ -7303,7 +7303,7 @@
                        ],
         "exampleEn":  "manage to persuade the shareholders to approve the merger",
         "exampleKo":  "간신히 주주들을 설득하여 합병을 승인받다",
-        "memo":  "지텔프 동의어: The company is managed by a board of directors. -> (a) run | manage time effectively (시간을 효율적으로 관리하다)"
+        "memo":  "지텔프 동의어: The company is managed by a board of directors. -\u003e (a) run | manage time effectively (시간을 효율적으로 관리하다)"
     },
     {
         "id":  "d07-15",
@@ -7423,7 +7423,7 @@
                        ],
         "exampleEn":  "The road was extended by two miles.",
         "exampleKo":  "도로가 2마일 연장되었다.",
-        "memo":  "지텔프 동의어: The deadline for the project has been extended by two weeks. -> (b) prolonged"
+        "memo":  "지텔프 동의어: The deadline for the project has been extended by two weeks. -\u003e (b) prolonged"
     },
     {
         "id":  "d07-22",
@@ -7591,7 +7591,7 @@
                        ],
         "exampleEn":  "a dependable friend",
         "exampleKo":  "신뢰할 수 있는 친구",
-        "memo":  "지텔프 동의어: Michelle is looking for a dependable babysitter to watch her kids. -> (a) reliable"
+        "memo":  "지텔프 동의어: Michelle is looking for a dependable babysitter to watch her kids. -\u003e (a) reliable"
     },
     {
         "id":  "d07-32",
@@ -7662,7 +7662,7 @@
                        ],
         "exampleEn":  "soaring prices",
         "exampleKo":  "치솟는 물가",
-        "memo":  "지텔프 동의어: The athlete's popularity soared after he won the gold medal. -> (b) increased"
+        "memo":  "지텔프 동의어: The athlete\u0027s popularity soared after he won the gold medal. -\u003e (b) increased"
     },
     {
         "id":  "d07-36",
@@ -7786,7 +7786,7 @@
                        ],
         "exampleEn":  "carefully monitor the growth of a plant",
         "exampleKo":  "식물의 성장을 주의 깊게 관찰하다",
-        "memo":  "지텔프 동의어: The nurse constantly monitored the patient's heart rate. -> (b) observed"
+        "memo":  "지텔프 동의어: The nurse constantly monitored the patient\u0027s heart rate. -\u003e (b) observed"
     },
     {
         "id":  "d07-43",
@@ -7801,7 +7801,7 @@
                            "persuade",
                            "assure"
                        ],
-        "exampleEn":  "The jury was not convinced by the defendant's story.",
+        "exampleEn":  "The jury was not convinced by the defendant\u0027s story.",
         "exampleKo":  "배심원들은 피고의 이야기를 납득하지 못했다.",
         "memo":  ""
     },
@@ -7906,7 +7906,7 @@
                        ],
         "exampleEn":  "get a grant for the research",
         "exampleKo":  "연구비를 지원받다",
-        "memo":  "지텔프 동의어: The school will grant you a scholarship if you have good grades. -> (a) give"
+        "memo":  "지텔프 동의어: The school will grant you a scholarship if you have good grades. -\u003e (a) give"
     },
     {
         "id":  "d07-50",
@@ -7960,7 +7960,7 @@
                        ],
         "exampleEn":  "solve a problem",
         "exampleKo":  "문제를 해결하다",
-        "memo":  "지텔프 동의어: The detective is working to solve the mystery of the missing jewels. -> (a) settle"
+        "memo":  "지텔프 동의어: The detective is working to solve the mystery of the missing jewels. -\u003e (a) settle"
     },
     {
         "id":  "d08-03",
@@ -8085,7 +8085,7 @@
                            "passion",
                            "devotion"
                        ],
-        "exampleEn":  "disappointed with the speaker's lack of enthusiasm",
+        "exampleEn":  "disappointed with the speaker\u0027s lack of enthusiasm",
         "exampleKo":  "연설자의 열의 부족에 실망한",
         "memo":  ""
     },
@@ -8172,7 +8172,7 @@
                        ],
         "exampleEn":  "obtain a map of the area",
         "exampleKo":  "그 지역의 지도를 입수하다",
-        "memo":  "지텔프 동의어: Benjamin obtained a degree in history last year. -> (b) gained"
+        "memo":  "지텔프 동의어: Benjamin obtained a degree in history last year. -\u003e (b) gained"
     },
     {
         "id":  "d08-15",
@@ -8367,7 +8367,7 @@
                        ],
         "exampleEn":  "gather information about the subject",
         "exampleKo":  "그 주제에 관한 정보를 수집하다",
-        "memo":  "지텔프 동의어: A large number of swans gathered together. -> (b) flocked"
+        "memo":  "지텔프 동의어: A large number of swans gathered together. -\u003e (b) flocked"
     },
     {
         "id":  "d08-26",
@@ -8554,7 +8554,7 @@
                        ],
         "exampleEn":  "observe the behavior of the child",
         "exampleKo":  "아이의 행동을 관찰하다",
-        "memo":  "지텔프 동의어: Employees are required to observe the dress code. -> (a) follow"
+        "memo":  "지텔프 동의어: Employees are required to observe the dress code. -\u003e (a) follow"
     },
     {
         "id":  "d08-36",
@@ -8608,7 +8608,7 @@
                        ],
         "exampleEn":  "for a short period of time",
         "exampleKo":  "짧은 기간 동안",
-        "memo":  "지텔프 동의어: We are still in the early period of the research. -> (b) stage"
+        "memo":  "지텔프 동의어: We are still in the early period of the research. -\u003e (b) stage"
     },
     {
         "id":  "d08-39",
@@ -8683,7 +8683,7 @@
                        ],
         "exampleEn":  "proceed with the original plan",
         "exampleKo":  "원래의 계획을 계속 진행하다",
-        "memo":  "지텔프 동의어: Ashley developed a truly original recipe for apple pie. -> (b) creative | an original idea (독창적인 아이디어)"
+        "memo":  "지텔프 동의어: Ashley developed a truly original recipe for apple pie. -\u003e (b) creative | an original idea (독창적인 아이디어)"
     },
     {
         "id":  "d08-43",
@@ -8757,7 +8757,7 @@
                        ],
         "exampleEn":  "exposed to pollution",
         "exampleKo":  "오염에 노출된",
-        "memo":  "지텔프 동의어: The wires were exposed and sparking. -> (a) unprotected"
+        "memo":  "지텔프 동의어: The wires were exposed and sparking. -\u003e (a) unprotected"
     },
     {
         "id":  "d08-47",
@@ -8875,7 +8875,7 @@
         "paraphrase":  [
 
                        ],
-        "exampleEn":  "Waking up early and going for a run has become Crystal's routine.",
+        "exampleEn":  "Waking up early and going for a run has become Crystal\u0027s routine.",
         "exampleKo":  "일찍 일어나서 달리기를 하는 것은 크리스탈의 일과가 되었다.",
         "memo":  ""
     },
@@ -8895,7 +8895,7 @@
                        ],
         "exampleEn":  "propel the boat forward",
         "exampleKo":  "보트를 전진시키다",
-        "memo":  "지텔프 동의어: The rocket's engines will propel it into orbit. -> (a) push"
+        "memo":  "지텔프 동의어: The rocket\u0027s engines will propel it into orbit. -\u003e (a) push"
     },
     {
         "id":  "d09-05",
@@ -8949,7 +8949,7 @@
                        ],
         "exampleEn":  "promise to finish the homework by 9 p.m.",
         "exampleKo":  "숙제를 9시까지 끝내겠다고 약속하다",
-        "memo":  "지텔프 동의어: This new medication shows promise in treating cancer. -> (b) potential"
+        "memo":  "지텔프 동의어: This new medication shows promise in treating cancer. -\u003e (b) potential"
     },
     {
         "id":  "d09-08",
@@ -8966,7 +8966,7 @@
                            "wonderful",
                            "extraordinary"
                        ],
-        "exampleEn":  "The Wright brothers' first flight was a remarkable feat.",
+        "exampleEn":  "The Wright brothers\u0027 first flight was a remarkable feat.",
         "exampleKo":  "라이트 형제의 첫 비행은 놀라운 업적이었다.",
         "memo":  ""
     },
@@ -9075,7 +9075,7 @@
                        ],
         "exampleEn":  "recover from the surgery",
         "exampleKo":  "수술에서 회복하다",
-        "memo":  "지텔프 동의어: George recovered consciousness after being in a coma for three days. -> (a) regained"
+        "memo":  "지텔프 동의어: George recovered consciousness after being in a coma for three days. -\u003e (a) regained"
     },
     {
         "id":  "d09-15",
@@ -9108,7 +9108,7 @@
                            "confront",
                            "defy"
                        ],
-        "exampleEn":  "can't resist eating chocolate cake",
+        "exampleEn":  "can\u0027t resist eating chocolate cake",
         "exampleKo":  "초콜릿 케이크를 먹지 않을 수 없다",
         "memo":  "resist negative changes (부정적인 변화에 저항하다)"
     },
@@ -9127,7 +9127,7 @@
                        ],
         "exampleEn":  "work the night shift",
         "exampleKo":  "야간 근무를 하다",
-        "memo":  "The Earth's axis has shifted from its original position. (지구의 축이 원래의 위치에서 벗어났다.)"
+        "memo":  "The Earth\u0027s axis has shifted from its original position. (지구의 축이 원래의 위치에서 벗어났다.)"
     },
     {
         "id":  "d09-18",
@@ -9149,7 +9149,7 @@
                        ],
         "exampleEn":  "stir soup with a spoon",
         "exampleKo":  "숟가락으로 수프를 젓다",
-        "memo":  "지텔프 동의어: The increase in crime has stirred concerns among residents. -> (a) raised"
+        "memo":  "지텔프 동의어: The increase in crime has stirred concerns among residents. -\u003e (a) raised"
     },
     {
         "id":  "d09-19",
@@ -9321,7 +9321,7 @@
                        ],
         "exampleEn":  "find someone to replace the retiring CEO",
         "exampleKo":  "은퇴하는 CEO를 대신할 사람을 찾다",
-        "memo":  "지텔프 동의어: James will replace the roof on the house. -> (a) change"
+        "memo":  "지텔프 동의어: James will replace the roof on the house. -\u003e (a) change"
     },
     {
         "id":  "d09-29",
@@ -9339,7 +9339,7 @@
                            "applause",
                            "tout"
                        ],
-        "exampleEn":  "The actor's outstanding performance was praised by the director.",
+        "exampleEn":  "The actor\u0027s outstanding performance was praised by the director.",
         "exampleKo":  "그 배우의 뛰어난 연기는 감독으로부터 칭찬을 받았다.",
         "memo":  ""
     },
@@ -9446,7 +9446,7 @@
                        ],
         "exampleEn":  "The heart is a vital organ in the human body.",
         "exampleKo":  "심장은 인체에 필수적인 기관이다.",
-        "memo":  "지텔프 동의어: It is vital that all products are thoroughly tested before they are released. -> (a) important"
+        "memo":  "지텔프 동의어: It is vital that all products are thoroughly tested before they are released. -\u003e (a) important"
     },
     {
         "id":  "d09-36",
@@ -9561,7 +9561,7 @@
                        ],
         "exampleEn":  "sufficient time to complete the task",
         "exampleKo":  "임무를 완수하기에 충분한 시간",
-        "memo":  "지텔프 동의어: Getting sufficient sleep can help improve concentration. -> (b) enough"
+        "memo":  "지텔프 동의어: Getting sufficient sleep can help improve concentration. -\u003e (b) enough"
     },
     {
         "id":  "d09-43",
@@ -9824,7 +9824,7 @@
                        ],
         "exampleEn":  "perform a variety of tasks",
         "exampleKo":  "다양한 일을 수행하다",
-        "memo":  "지텔프 동의어: There are four varieties of apples in this box. -> (b) kinds | grow three varieties of tomatoes (세 가지 종류의 토마토를 재배하다)"
+        "memo":  "지텔프 동의어: There are four varieties of apples in this box. -\u003e (b) kinds | grow three varieties of tomatoes (세 가지 종류의 토마토를 재배하다)"
     },
     {
         "id":  "d10-08",
@@ -9877,7 +9877,7 @@
                        ],
         "exampleEn":  "transform the prince into a frog",
         "exampleKo":  "왕자를 개구리로 변신시키다",
-        "memo":  "지텔프 동의어: Containerization transformed the shipping industry. -> (a) revolutionized"
+        "memo":  "지텔프 동의어: Containerization transformed the shipping industry. -\u003e (a) revolutionized"
     },
     {
         "id":  "d10-11",
@@ -10070,7 +10070,7 @@
                        ],
         "exampleEn":  "coordinate the schedule",
         "exampleKo":  "일정을 조정하다",
-        "memo":  "지텔프 동의어: Chris wanted to coordinate the table and chairs. -> (a) match"
+        "memo":  "지텔프 동의어: Chris wanted to coordinate the table and chairs. -\u003e (a) match"
     },
     {
         "id":  "d10-22",
@@ -10195,7 +10195,7 @@
                        ],
         "exampleEn":  "be deemed to be accurate",
         "exampleKo":  "정확하다고 간주되다",
-        "memo":  "지텔프 동의어: Taj Mahal is deemed an architectural masterpiece. -> (a) considered"
+        "memo":  "지텔프 동의어: Taj Mahal is deemed an architectural masterpiece. -\u003e (a) considered"
     },
     {
         "id":  "d10-29",
@@ -10323,7 +10323,7 @@
                            "observe",
                            "abide by"
                        ],
-        "exampleEn":  "The tiles won't adhere to the floor properly.",
+        "exampleEn":  "The tiles won\u0027t adhere to the floor properly.",
         "exampleKo":  "타일이 바닥에 제대로 붙지 않는다.",
         "memo":  "adhere to the terms of the contract (계약 조건을 지키다)"
     },
@@ -10356,7 +10356,7 @@
         "paraphrase":  [
 
                        ],
-        "exampleEn":  "each person's unique genetic makeup",
+        "exampleEn":  "each person\u0027s unique genetic makeup",
         "exampleKo":  "개개인의 고유한 유전자 구성",
         "memo":  ""
     },
@@ -10449,9 +10449,9 @@
                            "manage",
                            "direct"
                        ],
-        "exampleEn":  "oversee the company's operations",
+        "exampleEn":  "oversee the company\u0027s operations",
         "exampleKo":  "회사의 운영을 감독하다",
-        "memo":  "지텔프 동의어: Craig Kenney was appointed to oversee the construction project. -> (a) supervise"
+        "memo":  "지텔프 동의어: Craig Kenney was appointed to oversee the construction project. -\u003e (a) supervise"
     },
     {
         "id":  "d10-43",
@@ -10465,7 +10465,7 @@
         "paraphrase":  [
                            "most"
                        ],
-        "exampleEn":  "the majority of the world's population",
+        "exampleEn":  "the majority of the world\u0027s population",
         "exampleKo":  "세계 인구의 대부분",
         "memo":  ""
     },
@@ -10658,7 +10658,7 @@
                        ],
         "exampleEn":  "Michael is suited for the position.",
         "exampleKo":  "마이클이 그 직책에 적합하다.",
-        "memo":  "지텔프 동의어: The tools were not suited for the job. -> (b) adapted"
+        "memo":  "지텔프 동의어: The tools were not suited for the job. -\u003e (b) adapted"
     },
     {
         "id":  "d11-05",
@@ -10826,9 +10826,9 @@
                            "assign",
                            "entrust"
                        ],
-        "exampleEn":  "Johnson was his company's delegate to the conference.",
+        "exampleEn":  "Johnson was his company\u0027s delegate to the conference.",
         "exampleKo":  "존슨은 콘퍼런스에서 회사의 대표였다.",
-        "memo":  "지텔프 동의어: In order to be productive, Lauren learned how to delegate some tasks. -> (a) assign | delegate responsibilities to team members (팀원들에게 업무를 위임하다)"
+        "memo":  "지텔프 동의어: In order to be productive, Lauren learned how to delegate some tasks. -\u003e (a) assign | delegate responsibilities to team members (팀원들에게 업무를 위임하다)"
     },
     {
         "id":  "d11-14",
@@ -10955,7 +10955,7 @@
                        ],
         "exampleEn":  "The boss induced Edgar to take the job.",
         "exampleKo":  "상사는 에드가를 설득해서 그 일을 맡도록 만들었다.",
-        "memo":  "지텔프 동의어: The strong smell of bleach may induce a headache. -> (b) cause | induce vomiting (구토를 유발하다)"
+        "memo":  "지텔프 동의어: The strong smell of bleach may induce a headache. -\u003e (b) cause | induce vomiting (구토를 유발하다)"
     },
     {
         "id":  "d11-21",
@@ -11084,7 +11084,7 @@
                        ],
         "exampleEn":  "Children imitate what they see.",
         "exampleKo":  "아이들은 자신이 보는 것을 따라한다.",
-        "memo":  "지텔프 동의어: Adam is working hard to imitate the success of his favorite author. -> (b) emulate"
+        "memo":  "지텔프 동의어: Adam is working hard to imitate the success of his favorite author. -\u003e (b) emulate"
     },
     {
         "id":  "d11-28",
@@ -11098,7 +11098,7 @@
         "paraphrase":  [
                            "forefather"
                        ],
-        "exampleEn":  "Mary's ancestors were farmers in Ireland.",
+        "exampleEn":  "Mary\u0027s ancestors were farmers in Ireland.",
         "exampleKo":  "메리의 조상은 아일랜드의 농부였다.",
         "memo":  ""
     },
@@ -11151,9 +11151,9 @@
                            "shocking",
                            "disturbing"
                        ],
-        "exampleEn":  "an alarming rise in Earth's temperatures",
+        "exampleEn":  "an alarming rise in Earth\u0027s temperatures",
         "exampleKo":  "지구 기온의 걱정스러울 정도의 상승",
-        "memo":  "지텔프 동의어: The world's climate is changing at an alarming rate. -> (b) worrying"
+        "memo":  "지텔프 동의어: The world\u0027s climate is changing at an alarming rate. -\u003e (b) worrying"
     },
     {
         "id":  "d11-32",
@@ -11224,7 +11224,7 @@
         "word":  "venture",
         "phonetic":  "[véntʃər]",
         "partOfSpeech":  "명사/동사",
-        "meaning":  "벤처 (사업) / <위험을 감수하며> ~에 가보다, 뛰어들다",
+        "meaning":  "벤처 (사업) / \u003c위험을 감수하며\u003e ~에 가보다, 뛰어들다",
         "relatedForms":  "-",
         "paraphrase":  [
 
@@ -11283,7 +11283,7 @@
                        ],
         "exampleEn":  "Alan achieved his objective of becoming an accountant.",
         "exampleKo":  "앨런은 회계사가 되겠다는 목표를 달성했다.",
-        "memo":  "지텔프 동의어: The main objective of the research was to find a cure for cancer. -> (a) goal | an objective assessment (객관적인 평가)"
+        "memo":  "지텔프 동의어: The main objective of the research was to find a cure for cancer. -\u003e (a) goal | an objective assessment (객관적인 평가)"
     },
     {
         "id":  "d11-39",
@@ -11419,9 +11419,9 @@
                            "kill",
                            "hang"
                        ],
-        "exampleEn":  "The dog successfully executed its master's commands.",
+        "exampleEn":  "The dog successfully executed its master\u0027s commands.",
         "exampleKo":  "그 개는 성공적으로 주인의 명령을 실행했다.",
-        "memo":  "지텔프 동의어: The prisoners were executed for their part in the rebellion. -> (a) killed | The man was executed for being a spy. (그 남자는 스파이라는 이유로 처형당했다.)"
+        "memo":  "지텔프 동의어: The prisoners were executed for their part in the rebellion. -\u003e (a) killed | The man was executed for being a spy. (그 남자는 스파이라는 이유로 처형당했다.)"
     },
     {
         "id":  "d11-46",
@@ -11499,7 +11499,7 @@
                        ],
         "exampleEn":  "characteristics of tropical fish",
         "exampleKo":  "열대어의 특징",
-        "memo":  "지텔프 동의어: Larry's easygoing attitude is characteristic of him. -> (b) typical"
+        "memo":  "지텔프 동의어: Larry\u0027s easygoing attitude is characteristic of him. -\u003e (b) typical"
     },
     {
         "id":  "d11-50",
@@ -11651,7 +11651,7 @@
                        ],
         "exampleEn":  "have considerable merit",
         "exampleKo":  "상당한 가치가 있다",
-        "memo":  "지텔프 동의어: Andrea has been working hard to merit a pay rise. -> (a) justify | The student's essay merits attention. (그 학생의 에세이는 주목받을 만하다.)"
+        "memo":  "지텔프 동의어: Andrea has been working hard to merit a pay rise. -\u003e (a) justify | The student\u0027s essay merits attention. (그 학생의 에세이는 주목받을 만하다.)"
     },
     {
         "id":  "d12-08",
@@ -11703,7 +11703,7 @@
                        ],
         "exampleEn":  "The trial will commence on Monday.",
         "exampleKo":  "재판은 월요일에 시작될 것이다.",
-        "memo":  "지텔프 동의어: The construction project will commence next week. -> (a) start"
+        "memo":  "지텔프 동의어: The construction project will commence next week. -\u003e (a) start"
     },
     {
         "id":  "d12-11",
@@ -11906,7 +11906,7 @@
                        ],
         "exampleEn":  "The problem persists in our society today.",
         "exampleKo":  "오늘날에도 그 문제는 우리 사회에 남아 있다.",
-        "memo":  "지텔프 동의어: Despite his ankle pain, Shawn persisted and finished the race. -> (b) continued"
+        "memo":  "지텔프 동의어: Despite his ankle pain, Shawn persisted and finished the race. -\u003e (b) continued"
     },
     {
         "id":  "d12-22",
@@ -12035,7 +12035,7 @@
                        ],
         "exampleEn":  "fragile glass",
         "exampleKo":  "깨지기 쉬운 유리",
-        "memo":  "지텔프 동의어: Newly hatched snails are known to have fragile shells. -> (a) delicate"
+        "memo":  "지텔프 동의어: Newly hatched snails are known to have fragile shells. -\u003e (a) delicate"
     },
     {
         "id":  "d12-29",
@@ -12086,7 +12086,7 @@
                        ],
         "exampleEn":  "restrict movement to prevent the spread of disease",
         "exampleKo":  "질병 확산을 막기 위해 이동을 제한하다",
-        "memo":  "지텔프 동의어: This jacket may feel tight but doesn't restrict movement. -> (b) impede"
+        "memo":  "지텔프 동의어: This jacket may feel tight but doesn\u0027t restrict movement. -\u003e (b) impede"
     },
     {
         "id":  "d12-32",
@@ -12179,7 +12179,7 @@
                        ],
         "exampleEn":  "refine crude oil",
         "exampleKo":  "원유를 정제하다",
-        "memo":  "지텔프 동의어: In order to refine her acting, Maria practiced in front of a mirror. -> (a) improve | refine the manufacturing process (제조 공정을 개선하다)"
+        "memo":  "지텔프 동의어: In order to refine her acting, Maria practiced in front of a mirror. -\u003e (a) improve | refine the manufacturing process (제조 공정을 개선하다)"
     },
     {
         "id":  "d12-37",
@@ -12282,7 +12282,7 @@
                        ],
         "exampleEn":  "a stable relationship",
         "exampleKo":  "안정적인 관계",
-        "memo":  "지텔프 동의어: Charles needed to start investing for a stable future. -> (b) secure | a stable job (안정적인 직업)"
+        "memo":  "지텔프 동의어: Charles needed to start investing for a stable future. -\u003e (b) secure | a stable job (안정적인 직업)"
     },
     {
         "id":  "d12-43",
@@ -12433,7 +12433,7 @@
         "word":  "thrive",
         "phonetic":  "[θraiv]",
         "partOfSpeech":  "동사",
-        "meaning":  "<식물 등> 잘 자라다 / <사업 등> 번창하다",
+        "meaning":  "\u003c식물 등\u003e 잘 자라다 / \u003c사업 등\u003e 번창하다",
         "relatedForms":  "-",
         "paraphrase":  [
                            "succeed",
@@ -12443,7 +12443,7 @@
                        ],
         "exampleEn":  "The plants are thriving in the new greenhouse.",
         "exampleKo":  "식물들이 새 온실에서 잘 자라고 있다.",
-        "memo":  "지텔프 동의어: The school managed to thrive during the years of budget cuts. -> (a) succeed | The small town thrived on tourism. (그 작은 마을은 관광으로 번창했다.)"
+        "memo":  "지텔프 동의어: The school managed to thrive during the years of budget cuts. -\u003e (a) succeed | The small town thrived on tourism. (그 작은 마을은 관광으로 번창했다.)"
     },
     {
         "id":  "d13-02",
@@ -12452,7 +12452,7 @@
         "word":  "conform",
         "phonetic":  "[kənfɔ́ːrm]",
         "partOfSpeech":  "동사",
-        "meaning":  "순응하다, (집단의) 다른 구성원들과 같이 행동하다 / <규칙, 법 등을> 준수하다, 따르다",
+        "meaning":  "순응하다, (집단의) 다른 구성원들과 같이 행동하다 / \u003c규칙, 법 등을\u003e 준수하다, 따르다",
         "relatedForms":  "-",
         "paraphrase":  [
                            "adjust",
@@ -12511,7 +12511,7 @@
                            "discern",
                            "segregate"
                        ],
-        "exampleEn":  "Melissa can't differentiate between red and orange.",
+        "exampleEn":  "Melissa can\u0027t differentiate between red and orange.",
         "exampleKo":  "멜리사는 붉은색과 주황색을 구별하지 못한다.",
         "memo":  ""
     },
@@ -12522,7 +12522,7 @@
         "word":  "handle",
         "phonetic":  "[hǽndl]",
         "partOfSpeech":  "동사",
-        "meaning":  "<상황, 업무, 사람 등을> 다루다, 처리하다",
+        "meaning":  "\u003c상황, 업무, 사람 등을\u003e 다루다, 처리하다",
         "relatedForms":  "-",
         "paraphrase":  [
                            "address",
@@ -12586,7 +12586,7 @@
                        ],
         "exampleEn":  "loyal customers",
         "exampleKo":  "충성 고객",
-        "memo":  "지텔프 동의어: Jeffrey has been a loyal member of the organization for many years. -> (b) devoted | The queen was loyal to her country. (여왕은 자신의 국가에 충성했다.)"
+        "memo":  "지텔프 동의어: Jeffrey has been a loyal member of the organization for many years. -\u003e (b) devoted | The queen was loyal to her country. (여왕은 자신의 국가에 충성했다.)"
     },
     {
         "id":  "d13-10",
@@ -12728,7 +12728,7 @@
                        ],
         "exampleEn":  "Bryan was compelled to go to medical school.",
         "exampleKo":  "브라이언은 어쩔 수 없이 의대에 진학했다.",
-        "memo":  "지텔프 동의어: The family was compelled to leave their home after the hurricane hit. -> (a) forced"
+        "memo":  "지텔프 동의어: The family was compelled to leave their home after the hurricane hit. -\u003e (a) forced"
     },
     {
         "id":  "d13-18",
@@ -12737,7 +12737,7 @@
         "word":  "treatment",
         "phonetic":  "[tríːtmənt]",
         "partOfSpeech":  "명사",
-        "meaning":  "치료(법) / <사람에 대한> 대우 / <약품 등의> 처리",
+        "meaning":  "치료(법) / \u003c사람에 대한\u003e 대우 / \u003c약품 등의\u003e 처리",
         "relatedForms":  "treat (동) 치료하다; 대우하다; 처리하다, (명) 선물; 대접",
         "paraphrase":  [
                            "cure",
@@ -12745,7 +12745,7 @@
                            "handling",
                            "management"
                        ],
-        "exampleEn":  "The patient's costly treatment was not effective.",
+        "exampleEn":  "The patient\u0027s costly treatment was not effective.",
         "exampleKo":  "그 환자의 값비싼 치료는 효과가 없었다.",
         "memo":  "inadequate treatment of prisoners (죄수들에 대한 부적절한 처우)"
     },
@@ -12780,7 +12780,7 @@
                            "freedom",
                            "release"
                        ],
-        "exampleEn":  "women's liberation movement",
+        "exampleEn":  "women\u0027s liberation movement",
         "exampleKo":  "여성 해방 운동",
         "memo":  ""
     },
@@ -12855,7 +12855,7 @@
                        ],
         "exampleEn":  "We should confine the use of the phone to emergencies.",
         "exampleKo":  "우리는 전화의 사용을 긴급 상황으로 제한해야 한다.",
-        "memo":  "지텔프 동의어: We tried to confine the discussion to the relevant topics. -> (a) restrict | I was confined in a wheelchair for six months after my accident. (나는 사고 후 6개월 동안 휠체어에 갇혀 있었다.)"
+        "memo":  "지텔프 동의어: We tried to confine the discussion to the relevant topics. -\u003e (a) restrict | I was confined in a wheelchair for six months after my accident. (나는 사고 후 6개월 동안 휠체어에 갇혀 있었다.)"
     },
     {
         "id":  "d13-25",
@@ -12981,7 +12981,7 @@
                        ],
         "exampleEn":  "Julie is a prominent figure in the arts.",
         "exampleKo":  "줄리는 예술계에서 저명한 인물이다.",
-        "memo":  "지텔프 동의어: Lucretia Mott was a prominent figure in the feminist movement. -> (b) leading | The painting hung in a prominent position in the museum. (그림은 박물관에서 눈에 잘 띄는 곳에 걸려 있었다.)"
+        "memo":  "지텔프 동의어: Lucretia Mott was a prominent figure in the feminist movement. -\u003e (b) leading | The painting hung in a prominent position in the museum. (그림은 박물관에서 눈에 잘 띄는 곳에 걸려 있었다.)"
     },
     {
         "id":  "d13-32",
@@ -12997,7 +12997,7 @@
                            "opposed",
                            "counter"
                        ],
-        "exampleEn":  "Timothy chose to study psychology contrary to his parents' wishes.",
+        "exampleEn":  "Timothy chose to study psychology contrary to his parents\u0027 wishes.",
         "exampleKo":  "티모시는 부모님의 바람과는 달리 심리학을 공부하기로 선택했다.",
         "memo":  ""
     },
@@ -13041,7 +13041,7 @@
         "word":  "convene",
         "phonetic":  "[kənvíːn]",
         "partOfSpeech":  "동사",
-        "meaning":  "<회의 등> 소집하다, 모이다",
+        "meaning":  "\u003c회의 등\u003e 소집하다, 모이다",
         "relatedForms":  "-",
         "paraphrase":  [
                            "gather",
@@ -13088,7 +13088,7 @@
                        ],
         "exampleEn":  "The Greek word \"agape\" denotes unconditional love.",
         "exampleKo":  "그리스어 아가페는 무조건적인 사랑을 의미한다.",
-        "memo":  "지텔프 동의어: In literature, the color blue often denotes sadness. -> (b) means"
+        "memo":  "지텔프 동의어: In literature, the color blue often denotes sadness. -\u003e (b) means"
     },
     {
         "id":  "d13-38",
@@ -13097,7 +13097,7 @@
         "word":  "embrace",
         "phonetic":  "[imbréis]",
         "partOfSpeech":  "동사",
-        "meaning":  "<적극적으로> 수용하다, 받아들이다 / 껴안다, 포옹하다",
+        "meaning":  "\u003c적극적으로\u003e 수용하다, 받아들이다 / 껴안다, 포옹하다",
         "relatedForms":  "-",
         "paraphrase":  [
                            "accept",
@@ -13273,7 +13273,7 @@
         "paraphrase":  [
                            "understanding"
                        ],
-        "exampleEn":  "The study grants insight into dogs' behavior.",
+        "exampleEn":  "The study grants insight into dogs\u0027 behavior.",
         "exampleKo":  "그 연구는 개의 행동에 대한 통찰을 준다.",
         "memo":  ""
     },
@@ -13293,7 +13293,7 @@
                        ],
         "exampleEn":  "Researchers speculate that the universe is infinite.",
         "exampleKo":  "연구자들은 우주가 무한하다고 추측한다.",
-        "memo":  "지텔프 동의어: Some scientists speculate that the universe began with a big bang. -> (a) suppose"
+        "memo":  "지텔프 동의어: Some scientists speculate that the universe began with a big bang. -\u003e (a) suppose"
     },
     {
         "id":  "d13-50",
@@ -13388,7 +13388,7 @@
                        ],
         "exampleEn":  "conceal his true identity",
         "exampleKo":  "그의 진짜 신분을 숨기다",
-        "memo":  "지텔프 동의어: Frank was able to conceal the gun in his jacket without being seen. -> (a) hide"
+        "memo":  "지텔프 동의어: Frank was able to conceal the gun in his jacket without being seen. -\u003e (a) hide"
     },
     {
         "id":  "d14-05",
@@ -13449,7 +13449,7 @@
         "word":  "invoke",
         "phonetic":  "[invóuk]",
         "partOfSpeech":  "동사",
-        "meaning":  "<법·규칙 등> 발동하다 / (주장을 뒷받침하려고) 언급하다",
+        "meaning":  "\u003c법·규칙 등\u003e 발동하다 / (주장을 뒷받침하려고) 언급하다",
         "relatedForms":  "-",
         "paraphrase":  [
                            "implement",
@@ -13477,7 +13477,7 @@
                        ],
         "exampleEn":  "regulate the use of pesticides in agriculture",
         "exampleKo":  "농업에서 살충제 사용을 규제하다",
-        "memo":  "지텔프 동의어: The government will regulate the prices of essential goods. -> (b) control"
+        "memo":  "지텔프 동의어: The government will regulate the prices of essential goods. -\u003e (b) control"
     },
     {
         "id":  "d14-10",
@@ -13652,7 +13652,7 @@
                        ],
         "exampleEn":  "A notable feature of the product is its durability.",
         "exampleKo":  "그 제품의 두드러진 특징은 내구성이다.",
-        "memo":  "지텔프 동의어: Rebecca made a notable contribution to the community. -> (a) remarkable | a notable figure (유명 인사)"
+        "memo":  "지텔프 동의어: Rebecca made a notable contribution to the community. -\u003e (a) remarkable | a notable figure (유명 인사)"
     },
     {
         "id":  "d14-20",
@@ -13725,7 +13725,7 @@
                            "appropriately",
                            "correspondingly"
                        ],
-        "exampleEn":  "The hospital will respond accordingly to the patient's condition.",
+        "exampleEn":  "The hospital will respond accordingly to the patient\u0027s condition.",
         "exampleKo":  "병원은 환자의 상태에 따라 대응할 것이다.",
         "memo":  ""
     },
@@ -13837,7 +13837,7 @@
                        ],
         "exampleEn":  "earn fortunes in real estate",
         "exampleKo":  "부동산으로 재산을 모으다",
-        "memo":  "지텔프 동의어: Sheryl Sandberg is an independent woman who has earned the respect of many. -> (b) gained | earn a reputation (평판을 얻다)"
+        "memo":  "지텔프 동의어: Sheryl Sandberg is an independent woman who has earned the respect of many. -\u003e (b) gained | earn a reputation (평판을 얻다)"
     },
     {
         "id":  "d14-30",
@@ -13991,7 +13991,7 @@
                        ],
         "exampleEn":  "The team is too reliant on its star player.",
         "exampleKo":  "그 팀은 스타 선수에게 너무 의존하고 있다.",
-        "memo":  "지텔프 동의어: Jack is reliant on his coach for motivation. -> (b) dependent"
+        "memo":  "지텔프 동의어: Jack is reliant on his coach for motivation. -\u003e (b) dependent"
     },
     {
         "id":  "d14-39",
@@ -14100,7 +14100,7 @@
                        ],
         "exampleEn":  "Answer the following question.",
         "exampleKo":  "다음 질문에 답하세요.",
-        "memo":  "지텔프 동의어: In the following chapter, the book will explore the theme of loss. -> (b) succeeding | the following year (그 다음 해)"
+        "memo":  "지텔프 동의어: In the following chapter, the book will explore the theme of loss. -\u003e (b) succeeding | the following year (그 다음 해)"
     },
     {
         "id":  "d14-45",
@@ -14227,7 +14227,7 @@
                        ],
         "exampleEn":  "endeavor to reduce waste",
         "exampleKo":  "쓰레기를 줄이기 위해 노력하다",
-        "memo":  "지텔프 동의어: Harry was making an endeavor to develop his career. -> (b) effort"
+        "memo":  "지텔프 동의어: Harry was making an endeavor to develop his career. -\u003e (b) effort"
     },
     {
         "id":  "d15-02",
@@ -14388,9 +14388,9 @@
                            "dwindle",
                            "wither"
                        ],
-        "exampleEn":  "Alan's career began to fade after he was caught drunk on stage.",
+        "exampleEn":  "Alan\u0027s career began to fade after he was caught drunk on stage.",
         "exampleKo":  "앨런이 술 취한 채 무대에 오른 것이 발각된 후 그의 경력은 퇴색하기 시작했다.",
-        "memo":  "지텔프 동의어: The popularity of the band was starting to fade due to their lack of originality. -> (a) wane"
+        "memo":  "지텔프 동의어: The popularity of the band was starting to fade due to their lack of originality. -\u003e (a) wane"
     },
     {
         "id":  "d15-11",
@@ -14536,7 +14536,7 @@
                        ],
         "exampleEn":  "I received a product with minor damage.",
         "exampleKo":  "나는 사소한 손상이 있는 상품을 받았다.",
-        "memo":  "지텔프 동의어: The tax cut will have a minor effect on the economy. -> (b) negligible"
+        "memo":  "지텔프 동의어: The tax cut will have a minor effect on the economy. -\u003e (b) negligible"
     },
     {
         "id":  "d15-19",
@@ -14601,9 +14601,9 @@
                            "nullify",
                            "annul"
                        ],
-        "exampleEn":  "The recent study invalidated Dr. Wong's findings.",
+        "exampleEn":  "The recent study invalidated Dr. Wong\u0027s findings.",
         "exampleKo":  "최근의 연구는 웡 박사의 연구 결과를 무효화했다.",
-        "memo":  "지텔프 동의어: The scientific theory was invalidated by the experimental evidence. -> (a) disproved"
+        "memo":  "지텔프 동의어: The scientific theory was invalidated by the experimental evidence. -\u003e (a) disproved"
     },
     {
         "id":  "d15-23",
@@ -14656,7 +14656,7 @@
                        ],
         "exampleEn":  "The nerves transmit information to the brain.",
         "exampleKo":  "신경은 정보를 뇌로 전달한다.",
-        "memo":  "지텔프 동의어: We will transmit the payment using our secure system. -> (a) send | The disease is transmitted by mosquitoes. (그 병은 모기에 의해 전염된다.)"
+        "memo":  "지텔프 동의어: We will transmit the payment using our secure system. -\u003e (a) send | The disease is transmitted by mosquitoes. (그 병은 모기에 의해 전염된다.)"
     },
     {
         "id":  "d15-26",
@@ -14762,7 +14762,7 @@
                        ],
         "exampleEn":  "a habitual liar",
         "exampleKo":  "상습적인 거짓말쟁이",
-        "memo":  "지텔프 동의어: John's habitual tardiness caused him to miss some important deadlines. -> (a) persistent | Leah was wearing her habitual hat. (리아는 늘 하는 모자를 쓰고 있었다.)"
+        "memo":  "지텔프 동의어: John\u0027s habitual tardiness caused him to miss some important deadlines. -\u003e (a) persistent | Leah was wearing her habitual hat. (리아는 늘 하는 모자를 쓰고 있었다.)"
     },
     {
         "id":  "d15-32",
@@ -14889,7 +14889,7 @@
                        ],
         "exampleEn":  "grasp the main idea of the book",
         "exampleKo":  "책의 핵심 내용을 파악하다",
-        "memo":  "지텔프 동의어: The instructions were so difficult to grasp. -> (b) understand | grasp every opportunity (모든 기회를 붙잡다) | The product manager has a good grasp of what the market wants. (상품 매니저는 시장이 무엇을 원하는지 잘 이해하고 있다.)"
+        "memo":  "지텔프 동의어: The instructions were so difficult to grasp. -\u003e (b) understand | grasp every opportunity (모든 기회를 붙잡다) | The product manager has a good grasp of what the market wants. (상품 매니저는 시장이 무엇을 원하는지 잘 이해하고 있다.)"
     },
     {
         "id":  "d15-39",
@@ -14948,7 +14948,7 @@
                        ],
         "exampleEn":  "The movie prompted me to abandon my aspiration of becoming a teacher.",
         "exampleKo":  "그 영화를 보고 나는 교사가 되겠다는 열망을 버리게 되었다.",
-        "memo":  "지텔프 동의어: The death of her best friend prompted her to become a doctor. -> (a) motivated | a prompt reply (신속한 응답)"
+        "memo":  "지텔프 동의어: The death of her best friend prompted her to become a doctor. -\u003e (a) motivated | a prompt reply (신속한 응답)"
     },
     {
         "id":  "d15-42",
@@ -15009,7 +15009,7 @@
         "word":  "breed",
         "phonetic":  "[briːd]",
         "partOfSpeech":  "명사/동사",
-        "meaning":  "<동물이나 식물의> 품종 / 사육하다, 번식하다",
+        "meaning":  "\u003c동물이나 식물의\u003e 품종 / 사육하다, 번식하다",
         "relatedForms":  "-",
         "paraphrase":  [
                            "kind",
@@ -15096,7 +15096,7 @@
         "word":  "prey",
         "phonetic":  "[prei]",
         "partOfSpeech":  "명사",
-        "meaning":  "<동물의> 먹이",
+        "meaning":  "\u003c동물의\u003e 먹이",
         "relatedForms":  "-",
         "paraphrase":  [
 
@@ -15156,7 +15156,7 @@
                        ],
         "exampleEn":  "Ricky showed dedication to his project.",
         "exampleKo":  "리키는 그의 프로젝트에 헌신적인 모습을 보였다.",
-        "memo":  "지텔프 동의어: From a young age, Kelly showed dedication to becoming a doctor. -> (b) commitment"
+        "memo":  "지텔프 동의어: From a young age, Kelly showed dedication to becoming a doctor. -\u003e (b) commitment"
     },
     {
         "id":  "d16-04",
@@ -15233,7 +15233,7 @@
         "word":  "capture",
         "phonetic":  "[kǽptʃər]",
         "partOfSpeech":  "동사",
-        "meaning":  "<사람·동물> 포획하다 / 점령하다 / <흥미·관심> 사로잡다",
+        "meaning":  "\u003c사람·동물\u003e 포획하다 / 점령하다 / \u003c흥미·관심\u003e 사로잡다",
         "relatedForms":  "-",
         "paraphrase":  [
                            "take",
@@ -15244,7 +15244,7 @@
                            "occupy",
                            "engage"
                        ],
-        "exampleEn":  "capture the enemy's base",
+        "exampleEn":  "capture the enemy\u0027s base",
         "exampleKo":  "적의 기지를 점령하다",
         "memo":  "capture the interest of the audience (관객의 흥미를 끌다)"
     },
@@ -15316,7 +15316,7 @@
                        ],
         "exampleEn":  "vitamin D deficiency",
         "exampleKo":  "비타민 D 결핍증",
-        "memo":  "지텔프 동의어: A deficiency of magnesium can lead to muscle cramps. -> (a) shortage"
+        "memo":  "지텔프 동의어: A deficiency of magnesium can lead to muscle cramps. -\u003e (a) shortage"
     },
     {
         "id":  "d16-13",
@@ -15457,7 +15457,7 @@
                        ],
         "exampleEn":  "conserve the environment by recycling",
         "exampleKo":  "재활용하여 환경을 보호하다",
-        "memo":  "지텔프 동의어: We have a responsibility to conserve our woodlands to ensure a healthy environment. -> (b) preserve"
+        "memo":  "지텔프 동의어: We have a responsibility to conserve our woodlands to ensure a healthy environment. -\u003e (b) preserve"
     },
     {
         "id":  "d16-21",
@@ -15594,9 +15594,9 @@
                            "confront",
                            "disregard"
                        ],
-        "exampleEn":  "defy the government's rules and regulations",
+        "exampleEn":  "defy the government\u0027s rules and regulations",
         "exampleKo":  "정부의 규칙과 규제를 무시하다",
-        "memo":  "지텔프 동의어: Daniel defied the king's orders and was promptly executed. -> (b) disobeyed | defy explanation (설명이 불가능하다)"
+        "memo":  "지텔프 동의어: Daniel defied the king\u0027s orders and was promptly executed. -\u003e (b) disobeyed | defy explanation (설명이 불가능하다)"
     },
     {
         "id":  "d16-29",
@@ -15768,7 +15768,7 @@
                        ],
         "exampleEn":  "The participants deviated from the expected behavior.",
         "exampleKo":  "참가자들은 예상된 행동에서 벗어났다.",
-        "memo":  "지텔프 동의어: Michelle decided to deviate from the norm. -> (a) differ"
+        "memo":  "지텔프 동의어: Michelle decided to deviate from the norm. -\u003e (a) differ"
     },
     {
         "id":  "d16-39",
@@ -15782,7 +15782,7 @@
         "paraphrase":  [
 
                        ],
-        "exampleEn":  "The Beatles' music became legend.",
+        "exampleEn":  "The Beatles\u0027 music became legend.",
         "exampleKo":  "비틀즈의 음악은 전설이 되었다.",
         "memo":  ""
     },
@@ -15900,7 +15900,7 @@
         "word":  "shed",
         "phonetic":  "[ʃed]",
         "partOfSpeech":  "동사",
-        "meaning":  "~을 밝히다, 조명하다 / <껍질 등> 벗기다",
+        "meaning":  "~을 밝히다, 조명하다 / \u003c껍질 등\u003e 벗기다",
         "relatedForms":  "-",
         "paraphrase":  [
                            "remove",
@@ -15951,7 +15951,7 @@
         "word":  "portray",
         "phonetic":  "[pɔːrtréi]",
         "partOfSpeech":  "동사",
-        "meaning":  "<글, 그림 등으로> 묘사하다, 표현하다",
+        "meaning":  "\u003c글, 그림 등으로\u003e 묘사하다, 표현하다",
         "relatedForms":  "-",
         "paraphrase":  [
                            "depict",
@@ -15960,7 +15960,7 @@
                        ],
         "exampleEn":  "portray the character as a villain",
         "exampleKo":  "그 인물을 악역으로 표현하다",
-        "memo":  "지텔프 동의어: The novel portrays the struggles of a family during the war. -> (a) depicts"
+        "memo":  "지텔프 동의어: The novel portrays the struggles of a family during the war. -\u003e (a) depicts"
     },
     {
         "id":  "d16-50",
@@ -15986,7 +15986,7 @@
         "word":  "proximity",
         "phonetic":  "[prɑksíməti]",
         "partOfSpeech":  "명사",
-        "meaning":  "<거리·시간 등> 가까움, 근접(성)",
+        "meaning":  "\u003c거리·시간 등\u003e 가까움, 근접(성)",
         "relatedForms":  "-",
         "paraphrase":  [
                            "nearness",
@@ -15995,7 +15995,7 @@
                        ],
         "exampleEn":  "The hotel is in proximity to the airport.",
         "exampleKo":  "그 호텔은 공항에서 가깝다.",
-        "memo":  "지텔프 동의어: The proximity of the two countries makes trade between them easier. -> (a) nearness"
+        "memo":  "지텔프 동의어: The proximity of the two countries makes trade between them easier. -\u003e (a) nearness"
     },
     {
         "id":  "d17-02",
@@ -16055,7 +16055,7 @@
         "word":  "erupt",
         "phonetic":  "[irʌ́pt]",
         "partOfSpeech":  "동사",
-        "meaning":  "<화산이> 폭발하다, 분출하다 / <사태 등이> 발생하다, 터지다",
+        "meaning":  "\u003c화산이\u003e 폭발하다, 분출하다 / \u003c사태 등이\u003e 발생하다, 터지다",
         "relatedForms":  "-",
         "paraphrase":  [
                            "explode"
@@ -16076,7 +16076,7 @@
         "paraphrase":  [
                            "official"
                        ],
-        "exampleEn":  "Ashley didn't attain formal education.",
+        "exampleEn":  "Ashley didn\u0027t attain formal education.",
         "exampleKo":  "애슐리는 정식 교육을 받지 못했다.",
         "memo":  "You should wear formal attire for the event. (당신은 그 행사를 위해 정장을 입어야 합니다.)"
     },
@@ -16175,7 +16175,7 @@
         "word":  "frustrate",
         "phonetic":  "[frʌ́streit]",
         "partOfSpeech":  "동사",
-        "meaning":  "짜증나게 하다, 답답하게 하다 / <시도, 계획 등> 좌절시키다",
+        "meaning":  "짜증나게 하다, 답답하게 하다 / \u003c시도, 계획 등\u003e 좌절시키다",
         "relatedForms":  "frustration (명) 짜증, 답답함; 좌절",
         "paraphrase":  [
                            "annoy",
@@ -16185,9 +16185,9 @@
                            "foil",
                            "thwart"
                        ],
-        "exampleEn":  "be frustrated with the restaurant's service",
+        "exampleEn":  "be frustrated with the restaurant\u0027s service",
         "exampleKo":  "레스토랑의 서비스에 답답함을 느끼다",
-        "memo":  "지텔프 동의어: The leg injury frustrated his attempts to win the race. -> (b) discouraged | The bad weather frustrated our plans. (나쁜 날씨는 우리의 계획을 좌절시켰다.)"
+        "memo":  "지텔프 동의어: The leg injury frustrated his attempts to win the race. -\u003e (b) discouraged | The bad weather frustrated our plans. (나쁜 날씨는 우리의 계획을 좌절시켰다.)"
     },
     {
         "id":  "d17-13",
@@ -16257,7 +16257,7 @@
                        ],
         "exampleEn":  "genetic traits of seeds",
         "exampleKo":  "씨앗의 유전적 특징",
-        "memo":  "지텔프 동의어: Some common traits of successful people are hard work and determination. -> (a) characteristics | a dog's behavioral traits (개의 행동 특성)"
+        "memo":  "지텔프 동의어: Some common traits of successful people are hard work and determination. -\u003e (a) characteristics | a dog\u0027s behavioral traits (개의 행동 특성)"
     },
     {
         "id":  "d17-17",
@@ -16323,7 +16323,7 @@
         "word":  "evaporate",
         "phonetic":  "[ivǽpərèit]",
         "partOfSpeech":  "동사",
-        "meaning":  "<액체 등> 증발하다, 증발시키다",
+        "meaning":  "\u003c액체 등\u003e 증발하다, 증발시키다",
         "relatedForms":  "-",
         "paraphrase":  [
 
@@ -16356,7 +16356,7 @@
         "word":  "maturity",
         "phonetic":  "[mətʃúərəti]",
         "partOfSpeech":  "명사",
-        "meaning":  "<사람, 동식물 등> 다 자란 상태 / 성숙함, 어른스러움",
+        "meaning":  "\u003c사람, 동식물 등\u003e 다 자란 상태 / 성숙함, 어른스러움",
         "relatedForms":  "mature (형) 다 자란; 어른스러운, 성숙한",
         "paraphrase":  [
                            "adulthood"
@@ -16401,7 +16401,7 @@
                        ],
         "exampleEn":  "foster teamwork and collaboration",
         "exampleKo":  "팀워크와 협동심을 기르다[발전시키다]",
-        "memo":  "지텔프 동의어: It is important to foster a sense of cooperation among team members. -> (a) encourage | decide to foster a child from the local orphanage (지역 고아원에서 아이를 입양하기로 결정하다)"
+        "memo":  "지텔프 동의어: It is important to foster a sense of cooperation among team members. -\u003e (a) encourage | decide to foster a child from the local orphanage (지역 고아원에서 아이를 입양하기로 결정하다)"
     },
     {
         "id":  "d17-25",
@@ -16429,7 +16429,7 @@
         "word":  "evade",
         "phonetic":  "[ivéid]",
         "partOfSpeech":  "동사",
-        "meaning":  "피하다 / <의무 등> 회피하다",
+        "meaning":  "피하다 / \u003c의무 등\u003e 회피하다",
         "relatedForms":  "-",
         "paraphrase":  [
                            "avoid",
@@ -16446,7 +16446,7 @@
         "word":  "fulfill",
         "phonetic":  "[fulfíl]",
         "partOfSpeech":  "동사",
-        "meaning":  "<의무 등> 수행하다, 완료하다 / <꿈, 목표를> 달성하다, 이루다",
+        "meaning":  "\u003c의무 등\u003e 수행하다, 완료하다 / \u003c꿈, 목표를\u003e 달성하다, 이루다",
         "relatedForms":  "fulfillment (명) 성취(감); 수행, 이행",
         "paraphrase":  [
                            "perform",
@@ -16561,7 +16561,7 @@
                        ],
         "exampleEn":  "adverse weather conditions",
         "exampleKo":  "불리한 기상 조건",
-        "memo":  "지텔프 동의어: The adverse effects of smoking can lead to a variety of health problems. -> (b) harmful | adverse effect (역효과)"
+        "memo":  "지텔프 동의어: The adverse effects of smoking can lead to a variety of health problems. -\u003e (b) harmful | adverse effect (역효과)"
     },
     {
         "id":  "d17-34",
@@ -16616,7 +16616,7 @@
                        ],
         "exampleEn":  "surpass our expectations",
         "exampleKo":  "우리의 기대를 능가하다",
-        "memo":  "Erica has surpassed her teacher's swimming ability. (에리카는 선생님의 수영 실력을 능가했다.)"
+        "memo":  "Erica has surpassed her teacher\u0027s swimming ability. (에리카는 선생님의 수영 실력을 능가했다.)"
     },
     {
         "id":  "d17-37",
@@ -16688,7 +16688,7 @@
                        ],
         "exampleEn":  "copious amounts of time",
         "exampleKo":  "방대한 시간",
-        "memo":  "지텔프 동의어: The copious use of resources has led to the depletion of the rainforest. -> (a) large | copious evidence (방대한 증거)"
+        "memo":  "지텔프 동의어: The copious use of resources has led to the depletion of the rainforest. -\u003e (a) large | copious evidence (방대한 증거)"
     },
     {
         "id":  "d17-41",
@@ -16813,7 +16813,7 @@
                        ],
         "exampleEn":  "pending tasks",
         "exampleKo":  "곧 해야 하는 업무들",
-        "memo":  "지텔프 동의어: Bryan is getting frustrated with all the pending matters. -> (b) unsettled | Nicole was suspended from work pending an investigation. (니콜은 조사를 기다리는 동안 업무 정지를 당했다.)"
+        "memo":  "지텔프 동의어: Bryan is getting frustrated with all the pending matters. -\u003e (b) unsettled | Nicole was suspended from work pending an investigation. (니콜은 조사를 기다리는 동안 업무 정지를 당했다.)"
     },
     {
         "id":  "d17-48",
@@ -16878,9 +16878,9 @@
                            "harmony",
                            "accordance"
                        ],
-        "exampleEn":  "Jason's explanation is not in accord with the facts.",
+        "exampleEn":  "Jason\u0027s explanation is not in accord with the facts.",
         "exampleKo":  "제이슨의 설명은 사실과 일치하지 않는다.",
-        "memo":  "지텔프 동의어: The results of the study were not in accord with what was expected. -> (b) agreement"
+        "memo":  "지텔프 동의어: The results of the study were not in accord with what was expected. -\u003e (b) agreement"
     },
     {
         "id":  "d18-02",
@@ -17033,7 +17033,7 @@
                        ],
         "exampleEn":  "Unforeseen circumstances may arise.",
         "exampleKo":  "예기치 못한 상황이 발생할 수 있다.",
-        "memo":  "지텔프 동의어: Unforeseen circumstances led to the cancellation of the event. -> (a) Unexpected"
+        "memo":  "지텔프 동의어: Unforeseen circumstances led to the cancellation of the event. -\u003e (a) Unexpected"
     },
     {
         "id":  "d18-11",
@@ -17153,7 +17153,7 @@
                            "wife",
                            "mate"
                        ],
-        "exampleEn":  "his spouse's incurable disease",
+        "exampleEn":  "his spouse\u0027s incurable disease",
         "exampleKo":  "그의 배우자의 난치병",
         "memo":  ""
     },
@@ -17172,7 +17172,7 @@
                        ],
         "exampleEn":  "obey an order",
         "exampleKo":  "명령에 복종하다",
-        "memo":  "지텔프 동의어: The defendant was required to obey the order of the court. -> (a) execute | obey the rules of the workplace (직장 규칙을 따르다)"
+        "memo":  "지텔프 동의어: The defendant was required to obey the order of the court. -\u003e (a) execute | obey the rules of the workplace (직장 규칙을 따르다)"
     },
     {
         "id":  "d18-19",
@@ -17328,7 +17328,7 @@
                        ],
         "exampleEn":  "Adam is skeptical of the results of the study.",
         "exampleKo":  "아담은 그 연구 결과에 대해 회의적이다.",
-        "memo":  "지텔프 동의어: Eric was skeptical about his chances of winning. -> (b) doubtful"
+        "memo":  "지텔프 동의어: Eric was skeptical about his chances of winning. -\u003e (b) doubtful"
     },
     {
         "id":  "d18-28",
@@ -17462,7 +17462,7 @@
         "word":  "endorse",
         "phonetic":  "[indɔ́ːrs]",
         "partOfSpeech":  "동사",
-        "meaning":  "<정책·의견 등> 지지하다, 승인하다",
+        "meaning":  "\u003c정책·의견 등\u003e 지지하다, 승인하다",
         "relatedForms":  "-",
         "paraphrase":  [
                            "support",
@@ -17490,7 +17490,7 @@
                        ],
         "exampleEn":  "Writing prolifically is a great way to improve writing skills.",
         "exampleKo":  "글을 많이 쓰는 것은 글쓰기 능력을 향상시키는 좋은 방법이다.",
-        "memo":  "지텔프 동의어: Ernest Hemingway published prolifically throughout his life. -> (a) frequently"
+        "memo":  "지텔프 동의어: Ernest Hemingway published prolifically throughout his life. -\u003e (a) frequently"
     },
     {
         "id":  "d18-37",
@@ -17532,7 +17532,7 @@
         "word":  "wane",
         "phonetic":  "[wein]",
         "partOfSpeech":  "동사",
-        "meaning":  "<영향력 등> 약해지다, 줄어들다",
+        "meaning":  "\u003c영향력 등\u003e 약해지다, 줄어들다",
         "relatedForms":  "-",
         "paraphrase":  [
                            "fade",
@@ -17615,7 +17615,7 @@
                        ],
         "exampleEn":  "provoke a lot of debate",
         "exampleKo":  "많은 논쟁을 불러일으키다",
-        "memo":  "지텔프 동의어: The new law provoked strong criticism from civil rights groups. -> (b) sparked"
+        "memo":  "지텔프 동의어: The new law provoked strong criticism from civil rights groups. -\u003e (b) sparked"
     },
     {
         "id":  "d18-44",
@@ -17738,7 +17738,7 @@
                            "satisfy",
                            "meet"
                        ],
-        "exampleEn":  "cater to the client's specific preferences",
+        "exampleEn":  "cater to the client\u0027s specific preferences",
         "exampleKo":  "고객의 특정 취향에 맞추다",
         "memo":  ""
     },
@@ -17814,7 +17814,7 @@
                        ],
         "exampleEn":  "tackle a problem",
         "exampleKo":  "문제에 대처하다",
-        "memo":  "지텔프 동의어: The group will meet to discuss how to tackle the issue of climate change. -> (a) address | tackle the crisis (위기에 대처하다)"
+        "memo":  "지텔프 동의어: The group will meet to discuss how to tackle the issue of climate change. -\u003e (a) address | tackle the crisis (위기에 대처하다)"
     },
     {
         "id":  "d19-05",
@@ -17868,7 +17868,7 @@
                            "expose",
                            "uncover"
                        ],
-        "exampleEn":  "disclose details of the company's future plans",
+        "exampleEn":  "disclose details of the company\u0027s future plans",
         "exampleKo":  "회사의 장래 계획을 밝히다",
         "memo":  "finally disclose the truth (마침내 진실을 밝히다)"
     },
@@ -17944,7 +17944,7 @@
                        ],
         "exampleEn":  "avert famine",
         "exampleKo":  "기근을 방지하다",
-        "memo":  "지텔프 동의어: The country is taking steps to avert an environmental disaster. -> (b) stop | Avert your thoughts from problems. (문제로부터 당신의 생각을 돌리세요.)"
+        "memo":  "지텔프 동의어: The country is taking steps to avert an environmental disaster. -\u003e (b) stop | Avert your thoughts from problems. (문제로부터 당신의 생각을 돌리세요.)"
     },
     {
         "id":  "d19-12",
@@ -18048,7 +18048,7 @@
                        ],
         "exampleEn":  "bolster the economy",
         "exampleKo":  "경제를 강화하다",
-        "memo":  "지텔프 동의어: The company's cutting-edge products bolster its reputation as an industry leader. -> (b) enhance | bolster her confidence (그녀의 자신감을 북돋우다)"
+        "memo":  "지텔프 동의어: The company\u0027s cutting-edge products bolster its reputation as an industry leader. -\u003e (b) enhance | bolster her confidence (그녀의 자신감을 북돋우다)"
     },
     {
         "id":  "d19-18",
@@ -18145,7 +18145,7 @@
                        ],
         "exampleEn":  "The fish of this lake reproduce during the rainy season.",
         "exampleKo":  "이 호수의 물고기는 장마철에 번식한다.",
-        "memo":  "reproduce the artist's work on T-shirts (티셔츠에 작가의 작품을 재현하다)"
+        "memo":  "reproduce the artist\u0027s work on T-shirts (티셔츠에 작가의 작품을 재현하다)"
     },
     {
         "id":  "d19-23",
@@ -18181,7 +18181,7 @@
                        ],
         "exampleEn":  "alleviate pain",
         "exampleKo":  "고통을 경감시키다",
-        "memo":  "지텔프 동의어: There are many ways to alleviate pain without medication. -> (a) reduce | alleviate poverty (빈곤을 완화시키다)"
+        "memo":  "지텔프 동의어: There are many ways to alleviate pain without medication. -\u003e (a) reduce | alleviate poverty (빈곤을 완화시키다)"
     },
     {
         "id":  "d19-25",
@@ -18282,7 +18282,7 @@
                        ],
         "exampleEn":  "in a temperate region",
         "exampleKo":  "기후가 온화한 지역에서",
-        "memo":  "지텔프 동의어: The temperate climate of the Pacific Northwest is perfect for growing grapes. -> (b) mild"
+        "memo":  "지텔프 동의어: The temperate climate of the Pacific Northwest is perfect for growing grapes. -\u003e (b) mild"
     },
     {
         "id":  "d19-31",
@@ -18333,7 +18333,7 @@
                        ],
         "exampleEn":  "show solidarity with the young generation",
         "exampleKo":  "젊은 세대와의 연대를 보이다",
-        "memo":  "지텔프 동의어: There is a great need for solidarity among all members of our team. -> (a) unity"
+        "memo":  "지텔프 동의어: There is a great need for solidarity among all members of our team. -\u003e (a) unity"
     },
     {
         "id":  "d19-34",
@@ -18474,7 +18474,7 @@
                        ],
         "exampleEn":  "The hunting of sea lions has been banned.",
         "exampleKo":  "바다사자의 사냥은 금지되었다.",
-        "memo":  "지텔프 동의어: The school has decided to ban cell phones during class hours. -> (a) prohibit"
+        "memo":  "지텔프 동의어: The school has decided to ban cell phones during class hours. -\u003e (a) prohibit"
     },
     {
         "id":  "d19-42",
@@ -18598,7 +18598,7 @@
                        ],
         "exampleEn":  "Plants are vulnerable to pests and diseases.",
         "exampleKo":  "식물은 해충과 질병에 취약하다.",
-        "memo":  "지텔프 동의어: Rickey is vulnerable to criticism because he tends to be very hard on himself. -> (a) open"
+        "memo":  "지텔프 동의어: Rickey is vulnerable to criticism because he tends to be very hard on himself. -\u003e (a) open"
     },
     {
         "id":  "d19-49",
@@ -18650,9 +18650,9 @@
                            "stop",
                            "disrupt"
                        ],
-        "exampleEn":  "The war impeded the country's economic development.",
+        "exampleEn":  "The war impeded the country\u0027s economic development.",
         "exampleKo":  "전쟁은 나라의 경제 발전을 저해했다.",
-        "memo":  "지텔프 동의어: The growth of the plant was impeded by the lack of sunlight. -> (a) restricted"
+        "memo":  "지텔프 동의어: The growth of the plant was impeded by the lack of sunlight. -\u003e (a) restricted"
     },
     {
         "id":  "d20-02",
@@ -18700,7 +18700,7 @@
         "word":  "sophisticated",
         "phonetic":  "[səfístəkèitid]",
         "partOfSpeech":  "형용사",
-        "meaning":  "<기계·기술 등> 정교한, 복잡한 / 세련된, 교양 있는",
+        "meaning":  "\u003c기계·기술 등\u003e 정교한, 복잡한 / 세련된, 교양 있는",
         "relatedForms":  "",
         "paraphrase":  [
                            "advanced",
@@ -18713,7 +18713,7 @@
                        ],
         "exampleEn":  "sophisticated algorithmic techniques",
         "exampleKo":  "정교한 알고리즘 기술",
-        "memo":  "Katie's manner is very sophisticated. (케이티의 태도는 매우 세련되었다.)"
+        "memo":  "Katie\u0027s manner is very sophisticated. (케이티의 태도는 매우 세련되었다.)"
     },
     {
         "id":  "d20-05",
@@ -18739,7 +18739,7 @@
         "word":  "accrue",
         "phonetic":  "[əkrúː]",
         "partOfSpeech":  "동사",
-        "meaning":  "<이자·수익 등> 늘어나다, 불어나다",
+        "meaning":  "\u003c이자·수익 등\u003e 늘어나다, 불어나다",
         "relatedForms":  "",
         "paraphrase":  [
                            "accumulate",
@@ -18865,7 +18865,7 @@
                            "dissertation",
                            "paper"
                        ],
-        "exampleEn":  "write a master's thesis",
+        "exampleEn":  "write a master\u0027s thesis",
         "exampleKo":  "석사 논문을 쓰다",
         "memo":  ""
     },
@@ -18886,7 +18886,7 @@
                        ],
         "exampleEn":  "the widely acclaimed album",
         "exampleKo":  "널리 호평을 받은 앨범",
-        "memo":  "지텔프 동의어: The novel has been acclaimed as a modern classic. -> (b) praised | receive critical acclaim (비평가의 찬사를 받다)"
+        "memo":  "지텔프 동의어: The novel has been acclaimed as a modern classic. -\u003e (b) praised | receive critical acclaim (비평가의 찬사를 받다)"
     },
     {
         "id":  "d20-15",
@@ -18957,7 +18957,7 @@
                        ],
         "exampleEn":  "guess the culprit of the mystery novel",
         "exampleKo":  "추리 소설의 범인을 추측하다",
-        "memo":  "지텔프 동의어: The main culprit of the disease is still unknown. -> (a) cause"
+        "memo":  "지텔프 동의어: The main culprit of the disease is still unknown. -\u003e (a) cause"
     },
     {
         "id":  "d20-19",
@@ -18998,7 +18998,7 @@
         "word":  "proprietor",
         "phonetic":  "[prəpráiətər]",
         "partOfSpeech":  "명사",
-        "meaning":  "<사업·기업 등> 소유주, 주인",
+        "meaning":  "\u003c사업·기업 등\u003e 소유주, 주인",
         "relatedForms":  "",
         "paraphrase":  [
                            "owner",
@@ -19057,7 +19057,7 @@
                            "manipulate",
                            "contrive"
                        ],
-        "exampleEn":  "a pilot's skillful maneuver",
+        "exampleEn":  "a pilot\u0027s skillful maneuver",
         "exampleKo":  "조종사의 능숙한 조종",
         "memo":  ""
     },
@@ -19112,7 +19112,7 @@
                        ],
         "exampleEn":  "a large number of casualties",
         "exampleKo":  "많은 수의 사상자",
-        "memo":  "지텔프 동의어: The earthquake caused heavy casualties and extensive damage. -> (a) losses"
+        "memo":  "지텔프 동의어: The earthquake caused heavy casualties and extensive damage. -\u003e (a) losses"
     },
     {
         "id":  "d20-28",
@@ -19197,7 +19197,7 @@
                        ],
         "exampleEn":  "emulate the habits of successful people",
         "exampleKo":  "성공한 사람들의 습관을 모방하다",
-        "memo":  "지텔프 동의어: Edward always tries to find role models in life and emulate their behavior. -> (a) imitate"
+        "memo":  "지텔프 동의어: Edward always tries to find role models in life and emulate their behavior. -\u003e (a) imitate"
     },
     {
         "id":  "d20-33",
@@ -19333,7 +19333,7 @@
                            "praise",
                            "recognize"
                        ],
-        "exampleEn":  "Anthony's work has been heralded as a masterpiece.",
+        "exampleEn":  "Anthony\u0027s work has been heralded as a masterpiece.",
         "exampleKo":  "앤서니의 작품은 걸작으로 인정받아 왔다.",
         "memo":  ""
     },
@@ -19368,9 +19368,9 @@
                            "cheer",
                            "delight"
                        ],
-        "exampleEn":  "rejoice at the news of the baby's birth",
+        "exampleEn":  "rejoice at the news of the baby\u0027s birth",
         "exampleKo":  "아기의 탄생 소식에 대단히 기뻐하다",
-        "memo":  "지텔프 동의어: They rejoiced when they were finally able to be together again. -> (a) cheered"
+        "memo":  "지텔프 동의어: They rejoiced when they were finally able to be together again. -\u003e (a) cheered"
     },
     {
         "id":  "d20-43",
@@ -19479,7 +19479,7 @@
                        ],
         "exampleEn":  "congregate in the square to listen to the guide",
         "exampleKo":  "가이드의 말을 듣기 위해 광장에 모이다",
-        "memo":  "지텔프 동의어: The committee members congregated in the library to discuss the proposal. -> (b) gathered"
+        "memo":  "지텔프 동의어: The committee members congregated in the library to discuss the proposal. -\u003e (b) gathered"
     },
     {
         "id":  "d20-49",
@@ -19517,5 +19517,512 @@
         "exampleEn":  "happen by accident",
         "exampleKo":  "우연히 일어나다",
         "memo":  "be involved in a car accident (교통사고를 당하다)"
+    },
+    {
+        "word":  "insure",
+        "paraphrase":  [
+                           "protect",
+                           "guarantee",
+                           "cover"
+                       ],
+        "id":  "conf-01",
+        "no":  "01",
+        "exampleKo":  "화재에 대비해 건물에 보험을 들다",
+        "day":  "기출 혼동어휘",
+        "meaning":  "보험에 들다, 보증하다",
+        "phonetic":  "[inʃúər]",
+        "partOfSpeech":  "동사",
+        "exampleEn":  "insure the building against fire",
+        "relatedForms":  "insurance (명) 보험, 보증",
+        "memo":  "[지텔프 혼동 주의] ensure(확실히 하다), assure(확신시키다)와 3대 어원 혼동 동사입니다."
+    },
+    {
+        "word":  "beware",
+        "paraphrase":  [
+                           "watch out",
+                           "be careful",
+                           "mind"
+                       ],
+        "id":  "conf-02",
+        "no":  "02",
+        "exampleKo":  "기상 조건의 급격한 변화를 경계하라.",
+        "day":  "기출 혼동어휘",
+        "meaning":  "조심하다, 경계하다",
+        "phonetic":  "[biwέər]",
+        "partOfSpeech":  "동사",
+        "exampleEn":  "Beware of sudden changes in weather conditions.",
+        "relatedForms":  "wary (형) 조심하는, 경계하는",
+        "memo":  "[지텔프 혼동 주의] aware(알고 있는)와 철자가 흡사하나 \u0027조심하다, 경계하다\u0027를 뜻하는 동사입니다."
+    },
+    {
+        "word":  "award",
+        "paraphrase":  [
+                           "grant",
+                           "give",
+                           "prize"
+                       ],
+        "id":  "conf-03",
+        "no":  "03",
+        "exampleKo":  "최저가 입찰자에게 계약을 수여하다",
+        "day":  "기출 혼동어휘",
+        "meaning":  "수여하다; 상",
+        "phonetic":  "[əwɔ́ːrd]",
+        "partOfSpeech":  "동사",
+        "exampleEn":  "award a contract to the lowest bidder",
+        "relatedForms":  "awardee (명) 수상자",
+        "memo":  "[지텔프 혼동 주의] aware(알고 있는), reward(보상하다)와 철자 혼동을 유도하는 필수 어휘입니다."
+    },
+    {
+        "word":  "elevator",
+        "paraphrase":  [
+                           "lift"
+                       ],
+        "id":  "conf-04",
+        "no":  "04",
+        "exampleKo":  "엘리베이터를 타고 10층으로 가다",
+        "day":  "기출 혼동어휘",
+        "meaning":  "엘리베이터, 승강기",
+        "phonetic":  "[éləvèitər]",
+        "partOfSpeech":  "명사",
+        "exampleEn":  "take the elevator to the tenth floor",
+        "relatedForms":  "elevate (동) 들어올리다, 승진시키다",
+        "memo":  "[지텔프 혼동 주의] element(요소, 요인), eliminate(제거하다)와 철자 혼동으로 자주 출제되는 보기 어휘입니다."
+    },
+    {
+        "word":  "elegant",
+        "paraphrase":  [
+                           "graceful",
+                           "refined",
+                           "sophisticated"
+                       ],
+        "id":  "conf-05",
+        "no":  "05",
+        "exampleKo":  "복잡한 문제에 대한 우아하고 명쾌한 해결책을 찾다",
+        "day":  "기출 혼동어휘",
+        "meaning":  "우아한, 품격 있는",
+        "phonetic":  "[éligənt]",
+        "partOfSpeech":  "형용사",
+        "exampleEn":  "find an elegant solution to the complicated problem",
+        "relatedForms":  "elegance (명) 우아함, 품격",
+        "memo":  "[지텔프 혼동 주의] element(요소), eliminate(제거하다)와 발음/철자 유사성이 높은 형용사입니다."
+    },
+    {
+        "word":  "walk",
+        "paraphrase":  [
+                           "stroll",
+                           "pace",
+                           "march"
+                       ],
+        "id":  "conf-06",
+        "no":  "06",
+        "exampleKo":  "매일 아침 걸어서 출근하다",
+        "day":  "기출 혼동어휘",
+        "meaning":  "걷다, 산책하다",
+        "phonetic":  "[wɔːk]",
+        "partOfSpeech":  "동사",
+        "exampleEn":  "walk to work every morning",
+        "relatedForms":  "walker (명) 걷는 사람, 보행기",
+        "memo":  "[기초 혼동 어휘] work(일하다), wake(깨어나다)와 유사 발음 및 철자 혼동 어휘입니다."
+    },
+    {
+        "word":  "wake",
+        "paraphrase":  [
+                           "awaken",
+                           "arouse"
+                       ],
+        "id":  "conf-07",
+        "no":  "07",
+        "exampleKo":  "아침 기차를 타기 위해 일찍 깨어나다",
+        "day":  "기출 혼동어휘",
+        "meaning":  "깨어나다, 일어나다",
+        "phonetic":  "[weik]",
+        "partOfSpeech":  "동사",
+        "exampleEn":  "wake up early to catch the morning train",
+        "relatedForms":  "awake (형) 깨어 있는",
+        "memo":  "[기초 혼동 어휘] work(일하다), walk(걷다)와 청취 및 독해 보기 혼동 어휘입니다."
+    },
+    {
+        "word":  "word",
+        "paraphrase":  [
+                           "term",
+                           "expression",
+                           "vocabulary"
+                       ],
+        "id":  "conf-08",
+        "no":  "08",
+        "exampleKo":  "고객과의 약속(말)을 지키다",
+        "day":  "기출 혼동어휘",
+        "meaning":  "단어, 말",
+        "phonetic":  "[wəːrd]",
+        "partOfSpeech":  "명사",
+        "exampleEn":  "keep one\u0027s word to the client",
+        "relatedForms":  "wording (명) 단어 선택, 표현",
+        "memo":  "[기초 혼동 어휘] work(일하다), world(세계)와 혼동하기 쉬운 기초 어휘입니다."
+    },
+    {
+        "word":  "initiative",
+        "paraphrase":  [
+                           "plan",
+                           "project",
+                           "leadership",
+                           "drive"
+                       ],
+        "id":  "conf-09",
+        "no":  "09",
+        "exampleKo":  "고객의 불만을 해결하기 위해 주도권을 잡고 솔선수범하다",
+        "day":  "기출 혼동어휘",
+        "meaning":  "계획, 주도권; 진취성",
+        "phonetic":  "[iníʃətiv]",
+        "partOfSpeech":  "명사",
+        "exampleEn":  "take the initiative to solve the customer complaint",
+        "relatedForms":  "initiate (동) 시작하다, 착수하다",
+        "memo":  "[지텔프 핵심 포인트] initial(처음의, 초기의)과 어원이 같으나 품사가 \u0027명사\u0027이며 \u0027새로운 계획, 주도권\u0027을 뜻합니다."
+    },
+    {
+        "word":  "intimate",
+        "paraphrase":  [
+                           "close",
+                           "familiar",
+                           "friendly",
+                           "confidential"
+                       ],
+        "id":  "conf-10",
+        "no":  "10",
+        "exampleKo":  "지역 시장에 대한 깊이 있고 친밀한 이해를 갖추다",
+        "day":  "기출 혼동어휘",
+        "meaning":  "친밀한; 은밀한",
+        "phonetic":  "[íntimət]",
+        "partOfSpeech":  "형용사",
+        "exampleEn":  "have an intimate understanding of the local market",
+        "relatedForms":  "intimacy (명) 친밀함",
+        "memo":  "[지텔프 핵심 포인트] initial(초기의), imitate(모방하다)와 철자 형태가 흡사한 필수 형용사입니다."
+    },
+    {
+        "word":  "illegal",
+        "paraphrase":  [
+                           "unlawful",
+                           "illicit",
+                           "prohibited"
+                       ],
+        "id":  "conf-11",
+        "no":  "11",
+        "exampleKo":  "허가 없이 저작권이 있는 자료를 배포하는 것은 불법이다.",
+        "day":  "기출 혼동어휘",
+        "meaning":  "불법적인",
+        "phonetic":  "[ilíːgəl]",
+        "partOfSpeech":  "형용사",
+        "exampleEn":  "It is illegal to distribute copyrighted materials without permission.",
+        "relatedForms":  "illegally (부) 불법적으로",
+        "memo":  "[지텔프 혼동 주의] legal(합법적인)의 반의어이며, lethal(치명적인), loyal(충성스러운)과 철자 혼동 주의."
+    },
+    {
+        "word":  "lethal",
+        "paraphrase":  [
+                           "fatal",
+                           "deadly",
+                           "mortal"
+                       ],
+        "id":  "conf-12",
+        "no":  "12",
+        "exampleKo":  "그 공장 사고는 화학물질 유출의 치명적인 결합으로 인해 발생했다.",
+        "day":  "기출 혼동어휘",
+        "meaning":  "치명적인",
+        "phonetic":  "[líːθəl]",
+        "partOfSpeech":  "형용사",
+        "exampleEn":  "The factory accident resulted from a lethal combination of chemical leaks.",
+        "relatedForms":  "lethality (명) 치명성",
+        "memo":  "[지텔프 고난도 어휘] legal(합법적인), loyal(충성스러운)과 철자 모양이 매우 흡사한 함정 어휘입니다."
+    },
+    {
+        "word":  "appear",
+        "paraphrase":  [
+                           "emerge",
+                           "seem",
+                           "look"
+                       ],
+        "id":  "conf-13",
+        "no":  "13",
+        "exampleKo":  "질문에 답하기 위해 위원회 앞에 나타나다(출석하다)",
+        "day":  "기출 혼동어휘",
+        "meaning":  "나타나다; ~인 것 같다",
+        "phonetic":  "[əpíər]",
+        "partOfSpeech":  "동사",
+        "exampleEn":  "appear before the committee to answer questions",
+        "relatedForms":  "appearance (명) 출현, 외모",
+        "memo":  "[지텔프 기본 동사] apparent(명백한)의 동사 원형이며, appeal(호소하다, 매력)과 혼동 주의."
+    },
+    {
+        "word":  "applaud",
+        "paraphrase":  [
+                           "clap",
+                           "praise",
+                           "commend"
+                       ],
+        "id":  "conf-14",
+        "no":  "14",
+        "exampleKo":  "이사회는 분기 목표를 달성한 관리자에게 아낌없는 칭찬과 박수를 보냈다.",
+        "day":  "기출 혼동어휘",
+        "meaning":  "박수갈채를 보내다, 칭찬하다",
+        "phonetic":  "[əplɔ́ːd]",
+        "partOfSpeech":  "동사",
+        "exampleEn":  "The board applauded the manager for achieving the quarterly target.",
+        "relatedForms":  "applause (명) 박수갈채",
+        "memo":  "[지텔프 혼동 주의] apparent(명백한), appeal(호소하다)와 철자 유사성이 높은 보기 어휘입니다."
+    },
+    {
+        "word":  "credible",
+        "paraphrase":  [
+                           "reliable",
+                           "believable",
+                           "trustworthy"
+                       ],
+        "id":  "conf-15",
+        "no":  "15",
+        "exampleKo":  "그 보고서는 신뢰할 수 있는 출처와 정확한 데이터에 기반했다.",
+        "day":  "기출 혼동어휘",
+        "meaning":  "믿을 수 있는, 신뢰할 만한",
+        "phonetic":  "[krédəbl]",
+        "partOfSpeech":  "형용사",
+        "exampleEn":  "The report was based on credible sources and accurate data.",
+        "relatedForms":  "credibility (명) 신뢰성",
+        "memo":  "[지텔프 핵심 형용사] credit(신용, 공로를 인정하다)에서 파생되었으며, critical(비판적인)과 혼동 주의."
+    },
+    {
+        "word":  "race",
+        "paraphrase":  [
+                           "competition",
+                           "contest",
+                           "contestant"
+                       ],
+        "id":  "conf-16",
+        "no":  "16",
+        "exampleKo":  "시장에서 경쟁자들과의 경쟁(경주)에서 승리하다",
+        "day":  "기출 혼동어휘",
+        "meaning":  "경주하다; 인종",
+        "phonetic":  "[reis]",
+        "partOfSpeech":  "명사",
+        "exampleEn":  "win the race against the competitors in the market",
+        "relatedForms":  "racial (형) 인종의, 민족의",
+        "memo":  "[지텔프 혼동 어휘] run(운영하다), ruin(망치다), rush(돌진하다)와 묶여 출제되는 보기 어휘."
+    },
+    {
+        "word":  "ruin",
+        "paraphrase":  [
+                           "destroy",
+                           "spoil",
+                           "damage",
+                           "wreck"
+                       ],
+        "id":  "conf-17",
+        "no":  "17",
+        "exampleKo":  "단 한 번의 잘못된 결정이 전체 프로젝트를 망칠 수 있다.",
+        "day":  "기출 혼동어휘",
+        "meaning":  "망치다; 파멸, 폐허",
+        "phonetic":  "[rúːin]",
+        "partOfSpeech":  "동사",
+        "exampleEn":  "A single bad decision could ruin the entire project.",
+        "relatedForms":  "ruined (형) 파괴된, 폐허가 된",
+        "memo":  "[지텔프 혼동 주의] run(운영하다), rush(서두르다)와 철자가 혼동되는 파괴적 동사입니다."
+    },
+    {
+        "word":  "rush",
+        "paraphrase":  [
+                           "hurry",
+                           "dash",
+                           "hasten"
+                       ],
+        "id":  "conf-18",
+        "no":  "18",
+        "exampleKo":  "마감 시간 전에 계약을 최종 확정짓기 위해 서두르다",
+        "day":  "기출 혼동어휘",
+        "meaning":  "서두르다, 돌진하다; 돌진",
+        "phonetic":  "[rʌʃ]",
+        "partOfSpeech":  "동사",
+        "exampleEn":  "rush to finalize the contract before the deadline",
+        "relatedForms":  "rushed (형) 서두른",
+        "memo":  "[지텔프 혼동 주의] run(운영하다, 달리다), ruin(망치다)과 보기로 빈출 출제."
+    },
+    {
+        "word":  "defend",
+        "paraphrase":  [
+                           "protect",
+                           "guard",
+                           "shield",
+                           "advocate"
+                       ],
+        "id":  "conf-19",
+        "no":  "19",
+        "exampleKo":  "무단 사용으로부터 기업 브랜드를 방어하고 지키다",
+        "day":  "기출 혼동어휘",
+        "meaning":  "방어하다, 변호하다",
+        "phonetic":  "[difénd]",
+        "partOfSpeech":  "동사",
+        "exampleEn":  "defend the corporate brand from unauthorized use",
+        "relatedForms":  "defense (명) 방어, 변호 / defendant (명) 피고인",
+        "memo":  "[지텔프 혼동 4총사] define(정의하다), decline(감소하다, 거절하다), defeat(패배시키다)와 철자 혼동 주의."
+    },
+    {
+        "word":  "effective",
+        "paraphrase":  [
+                           "efficient",
+                           "successful",
+                           "valid",
+                           "operative"
+                       ],
+        "id":  "conf-20",
+        "no":  "20",
+        "exampleKo":  "새로운 정책은 다음 달부터 유효하게 시행될 예정이다.",
+        "day":  "기출 혼동어휘",
+        "meaning":  "효과적인; 유효한",
+        "phonetic":  "[iféktiv]",
+        "partOfSpeech":  "형용사",
+        "exampleEn":  "The new policy will become effective starting next month.",
+        "relatedForms":  "effectively (부) 효과적으로 / effect (명) 효과, 영향",
+        "memo":  "[지텔프 핵심 포인트] essential(필수적인), efficient(효율적인)과 뉘앙스 비교 출제 1순위 어휘."
+    },
+    {
+        "word":  "effortless",
+        "paraphrase":  [
+                           "easy",
+                           "simple",
+                           "smooth"
+                       ],
+        "id":  "conf-21",
+        "no":  "21",
+        "exampleKo":  "소프트웨어 전환을 힘들이지 않고 수월한 과정으로 만들다",
+        "day":  "기출 혼동어휘",
+        "meaning":  "노력이 들지 않는, 수월한",
+        "phonetic":  "[éfərtlis]",
+        "partOfSpeech":  "형용사",
+        "exampleEn":  "make the software migration an effortless process",
+        "relatedForms":  "effortlessly (부) 손쉽게, 힘들이지 않고",
+        "memo":  "[지텔프 혼동 주의] essential(필수적인), efficient(효율적인)과 철자 유사 보기 단어."
+    },
+    {
+        "word":  "force",
+        "paraphrase":  [
+                           "compel",
+                           "oblige",
+                           "power"
+                       ],
+        "id":  "conf-22",
+        "no":  "22",
+        "exampleKo":  "시장 상황으로 인해 회사는 가격을 강제로 인하해야만 했다.",
+        "day":  "기출 혼동어휘",
+        "meaning":  "강요하다; 힘, 무력",
+        "phonetic":  "[fɔːrs]",
+        "partOfSpeech":  "동사",
+        "exampleEn":  "Market conditions forced the company to reduce prices.",
+        "relatedForms":  "forceful (형) 강력한",
+        "memo":  "[지텔프 혼동 주의] focus(집중하다), found(설립하다)와 발음 및 형태 유사 어휘."
+    },
+    {
+        "word":  "follow",
+        "paraphrase":  [
+                           "comply with",
+                           "observe",
+                           "pursue"
+                       ],
+        "id":  "conf-23",
+        "no":  "23",
+        "exampleKo":  "확립된 모든 규정과 절차를 준수하여 따르다",
+        "day":  "기출 혼동어휘",
+        "meaning":  "따르다, 따라가다; 준수하다",
+        "phonetic":  "[fálou]",
+        "partOfSpeech":  "동사",
+        "exampleEn":  "follow all established protocol and procedures",
+        "relatedForms":  "following (형) 다음의 / follower (명) 추종자",
+        "memo":  "[지텔프 빈출 어휘] focus(집중하다), flow(흐르다)와 엮이는 빈출 보기 동사."
+    },
+    {
+        "word":  "frequency",
+        "paraphrase":  [
+                           "regularity",
+                           "rate",
+                           "periodicity"
+                       ],
+        "id":  "conf-24",
+        "no":  "24",
+        "exampleKo":  "교육 세션의 빈도(개최 주기)가 증가되었다.",
+        "day":  "기출 혼동어휘",
+        "meaning":  "빈도, 자주 일어남; 주파수",
+        "phonetic":  "[fríːkwənsi]",
+        "partOfSpeech":  "명사",
+        "exampleEn":  "The frequency of training sessions was increased.",
+        "relatedForms":  "frequent (형) 잦은, 빈번한 / frequently (부) 자주",
+        "memo":  "[지텔프 핵심 명사] consequence(결과), sequence(연속)와 -ence, -ency 어미 혼동 유발 어휘."
+    },
+    {
+        "word":  "convenience",
+        "paraphrase":  [
+                           "comfort",
+                           "handiness",
+                           "ease"
+                       ],
+        "id":  "conf-25",
+        "no":  "25",
+        "exampleKo":  "귀하께서 편하신 가장 빠른 시간에 (지텔프 서신 빈출 표현)",
+        "day":  "기출 혼동어휘",
+        "meaning":  "편의, 편리",
+        "phonetic":  "[kənvíːnjəns]",
+        "partOfSpeech":  "명사",
+        "exampleEn":  "at your earliest convenience",
+        "relatedForms":  "convenient (형) 편리한 / conveniently (부) 편리하게",
+        "memo":  "[지텔프 필수 명사] consequence(결과)와 철자/어미 형태 유사성으로 출제되는 보기 어휘."
+    },
+    {
+        "word":  "assert",
+        "paraphrase":  [
+                           "claim",
+                           "declare",
+                           "insist",
+                           "maintain"
+                       ],
+        "id":  "conf-26",
+        "no":  "26",
+        "exampleKo":  "새 디자인이 모든 안전 요구 사항을 충족한다고 단언하고 주장하다",
+        "day":  "기출 혼동어휘",
+        "meaning":  "주장하다, 단언하다",
+        "phonetic":  "[əsə́ːrt]",
+        "partOfSpeech":  "동사",
+        "exampleEn":  "assert that the new design meets all safety requirements",
+        "relatedForms":  "assertion (명) 단언, 주장 / assertive (형) 적극적인",
+        "memo":  "[지텔프 핵심 동사] assess(평가하다), access(접근하다)와 철자가 매우 유사한 고난도 필수 동사."
+    },
+    {
+        "word":  "principal",
+        "paraphrase":  [
+                           "main",
+                           "major",
+                           "chief",
+                           "primary"
+                       ],
+        "id":  "conf-27",
+        "no":  "27",
+        "exampleKo":  "그 프로젝트를 책임지는 주요 수석 건축가",
+        "day":  "기출 혼동어휘",
+        "meaning":  "주요한; 교장, 원금",
+        "phonetic":  "[prínsəpəl]",
+        "partOfSpeech":  "형용사",
+        "exampleEn":  "the principal architect responsible for the project",
+        "relatedForms":  "principally (부) 주로, 대개",
+        "memo":  "[지텔프 최고 빈출 혼동 어휘] principle(원칙, 원리)과 발음이 100% 동일한 대표적인 철자 혼동 어휘 (-pal vs -ple)."
+    },
+    {
+        "word":  "prince",
+        "paraphrase":  [
+                           "royal",
+                           "nobleman"
+                       ],
+        "id":  "conf-28",
+        "no":  "28",
+        "exampleKo":  "왕자는 외국의 대사들을 환영했다",
+        "day":  "기출 혼동어휘",
+        "meaning":  "왕자",
+        "phonetic":  "[prins]",
+        "partOfSpeech":  "명사",
+        "exampleEn":  "the prince welcomed the foreign ambassadors",
+        "relatedForms":  "princess (명) 공주 / princely (형) 왕자다운, 당당한",
+        "memo":  "[기초 혼동 어휘] principle(원칙), principal(주요한)과 어근 유사성으로 출제되는 기초 보기 어휘."
     }
 ]

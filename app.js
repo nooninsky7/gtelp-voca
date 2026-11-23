@@ -29,13 +29,15 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v4.0.1_20261115_1505';
+    const APP_CURRENT_VER = 'v4.1.0_20261123_1800';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
         localStorage.setItem('voca_installed_ver', APP_CURRENT_VER);
         // 이전 버전의 손상되거나 캐시된 세션 초기화
         localStorage.removeItem('gtelp_active_learning_session');
+        // 신규 어휘 데이터베이스(1,110단어 - 기출 혼동어휘 28단어 신설) 즉시 반영
+        localStorage.removeItem('voca_words');
       }
       localStorage.removeItem('gtelp_auth_state');
       sessionStorage.removeItem('gtelp_auth_state');
@@ -848,6 +850,13 @@
       // '기초단어'를 항상 최상단 맨 위로 배치
       if (a === '기초단어' || a === '기초01' || a === '기초 01') return -1;
       if (b === '기초단어' || b === '기초01' || b === '기초 01') return 1;
+
+      // '기출 혼동어휘' 및 추가/개인 폴더는 Day 01~20 다음의 마지막 폴더로 깔끔하게 배치
+      const isAConf = a.includes('혼동') || a.includes('추가') || a.includes('개인');
+      const isBConf = b.includes('혼동') || b.includes('추가') || b.includes('개인');
+      if (isAConf && !isBConf) return 1;
+      if (!isAConf && isBConf) return -1;
+
       return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
     });
   }
@@ -1587,29 +1596,39 @@
       };
     }
 
-    // Day 배지 정규화: 항상 깔끔한 "Day 숫자" (또는 "기초단어")로만 표시 ("연계", "관련" 제거)
+    // Day 배지 정규화: 항상 깔끔한 "Day 숫자" (또는 "기초단어", "기출 혼동어휘")로 표시
     let displayDay = item.day || 'Day 01';
-    displayDay = displayDay.replace(/\s*(연계|관련|보기).*/g, '').trim();
-    if (!displayDay) displayDay = 'Day 01';
-    const dayMatch = displayDay.match(/^Day\s*(\d+)$/i);
-    if (dayMatch) {
-      displayDay = `Day ${String(dayMatch[1]).padStart(2, '0')}`;
+    if (item.isSynthetic || displayDay.includes('연계') || displayDay.includes('보기')) {
+      displayDay = '기출 연계';
+    } else if (displayDay.includes('혼동')) {
+      displayDay = '기출 혼동어휘';
+    } else {
+      displayDay = displayDay.replace(/\s*(연계|관련|보기).*/g, '').trim();
+      if (!displayDay) displayDay = 'Day 01';
+      const dayMatch = displayDay.match(/^Day\s*(\d+)$/i);
+      if (dayMatch) {
+        displayDay = `Day ${String(dayMatch[1]).padStart(2, '0')}`;
+      }
     }
     document.getElementById('modalDayBadge').textContent = displayDay;
 
-    // No 배지 정규화: 항상 깔끔한 "No.숫자"로만 표시 ("No.no." 및 '관련', '연계' 중복 제거)
+    // No 배지 정규화: 항상 깔끔한 "No.숫자"로만 표시 (합성 단어나 미지정 시 숨김)
     const noBadge = document.getElementById('modalNoBadge');
     if (noBadge) {
-      let rawNo = String(item.no || '').trim();
-      rawNo = rawNo.replace(/^no\.?\s*/gi, '').replace(/^no\.?\s*/gi, '').replace(/\s*(관련|연계).*/g, '').trim();
-      if (rawNo) {
-        if (/^\d+$/.test(rawNo)) {
-          rawNo = String(rawNo).padStart(2, '0');
-        }
-        noBadge.textContent = `No.${rawNo}`;
-        noBadge.classList.remove('hidden');
-      } else {
+      if (item.isSynthetic || displayDay === '기출 연계' || !item.no) {
         noBadge.classList.add('hidden');
+      } else {
+        let rawNo = String(item.no || '').trim();
+        rawNo = rawNo.replace(/^no\.?\s*/gi, '').replace(/^no\.?\s*/gi, '').replace(/\s*(관련|연계).*/g, '').trim();
+        if (rawNo) {
+          if (/^\d+$/.test(rawNo)) {
+            rawNo = String(rawNo).padStart(2, '0');
+          }
+          noBadge.textContent = `No.${rawNo}`;
+          noBadge.classList.remove('hidden');
+        } else {
+          noBadge.classList.add('hidden');
+        }
       }
     }
     document.getElementById('modalPosBadge').textContent = item.partOfSpeech || '품사';
@@ -2829,8 +2848,15 @@
     let memo = '';
 
     const displayWord = cleanLower.startsWith('syn-') ? pureWord : clean;
+    const isActualSynonym = Boolean(parent && Array.isArray(parent.paraphrase) && parent.paraphrase.some(p => {
+      const pLow = (p || '').toLowerCase().trim();
+      return pLow === cleanLower || pLow === pureWord;
+    }));
+    const isActualRelated = Boolean(parent && parent.relatedForms && (
+      parent.relatedForms.toLowerCase().includes(cleanLower) || parent.relatedForms.toLowerCase().includes(pureWord)
+    ));
 
-    if (parent) {
+    if (parent && (isActualSynonym || isActualRelated)) {
       if (relatedDesc) {
         meaning = `${relatedDesc} ("${parent.word}"의 파생어)`;
         partOfSpeech = relatedDesc.includes('명') ? '명사' : (relatedDesc.includes('형') ? '형용사' : (relatedDesc.includes('부') ? '부사' : (parent.partOfSpeech || '어휘')));
@@ -2859,9 +2885,11 @@
 
       memo = `[지텔프 핵심 포인트] "${parent.word}" (${parent.meaning})와 상호 치환 출제되는 필수 패러프레이징/파생어 표현입니다.`;
     } else {
-      meaning = '지텔프 기출 핵심 연계 어휘';
+      meaning = '지텔프 기출 4지선다 보기 및 연계 어휘';
       partOfSpeech = '어휘';
-      memo = '지텔프 기출 4지선다 보기 및 패러프레이징 연계 어휘입니다.';
+      exampleEn = '';
+      exampleKo = '';
+      memo = parent ? `[지텔프 기출 연계] "${parent.word}" (${parent.meaning}) 문제의 보기(선택지)로 연계 출제되는 어휘입니다.` : '지텔프 기출 4지선다 연계 어휘입니다.';
     }
 
     return {
@@ -2870,13 +2898,13 @@
       phonetic: '',
       partOfSpeech: partOfSpeech,
       meaning: meaning,
-      relatedForms: parent ? `${parent.word} (${parent.partOfSpeech || '원문'})` : '-',
-      paraphrase: parent ? [parent.word, ...(parent.paraphrase || []).filter(p => (p || '').toLowerCase() !== displayWord.toLowerCase())] : [],
+      relatedForms: (parent && (isActualSynonym || isActualRelated)) ? `${parent.word} (${parent.partOfSpeech || '원문'})` : '-',
+      paraphrase: (parent && isActualSynonym) ? [parent.word, ...(parent.paraphrase || []).filter(p => (p || '').toLowerCase() !== displayWord.toLowerCase())] : [],
       exampleEn: exampleEn,
       exampleKo: exampleKo,
       memo: memo,
-      day: parent ? (parent.day || 'Day 01') : 'Day 01',
-      no: parent ? (parent.no ? String(parent.no).replace(/^no\.?\s*/gi, '').trim() : '') : '',
+      day: '기출 연계 어휘',
+      no: '',
       isSynthetic: true,
       parentWord: parent ? parent.word : null,
       parentId: parent ? parent.id : null
