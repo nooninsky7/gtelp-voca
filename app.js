@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v4.3.5_20261124_1515';
+    const APP_CURRENT_VER = 'v4.3.6_20261124_1725';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -2139,6 +2139,9 @@
                 <i class="fa-solid fa-triangle-exclamation text-rose-500 text-[10px]"></i>
                 <span class="font-black text-rose-950">${cleanWord}</span>
                 <span class="text-[11px] text-slate-500 font-medium">: ${cw.meaning || '혼동 어휘'}</span>
+              </button>
+              <button type="button" class="px-1.5 py-1 text-rose-600 hover:text-rose-900 hover:bg-rose-200/80 border-l border-rose-200 transition cursor-pointer active:scale-95 touch-manipulation" onclick="event.stopPropagation(); window.speakText('${safeWord}', event)" title="'${cleanWord}' 발음 듣기">
+                <i class="fa-solid fa-volume-high text-[11px] pointer-events-none"></i>
               </button>
               ${statusBadgeOrBtn}
             </div>
