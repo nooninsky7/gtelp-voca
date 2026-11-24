@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v4.3.4_20261124_1235';
+    const APP_CURRENT_VER = 'v4.3.5_20261124_1515';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -1921,14 +1921,11 @@
     // 1. 이미 등록되어 있는 단어인지 확인
     let existing = words.find(w => w && w.word && w.word.toLowerCase() === cleanLower);
     if (existing) {
-      if (existing.day !== '기출 혼동어휘') {
-        existing.day = '기출 혼동어휘';
-        saveWords();
-        showToast(`'${clean}' 단어가 [기출 혼동어휘] 폴더에 등록되었습니다! 👏`);
-        renderDayFilters();
-        if (currentTab === 'list') renderWordList();
-      } else {
+      if (existing.day === '기출 혼동어휘') {
         showToast(`'${clean}' 단어는 이미 [기출 혼동어휘]에 보관 중입니다.`);
+      } else {
+        // 교재 기존 Day(Day 01~20, 기초단어)에 등록된 정식 단어는 Day를 훼손하지 않고 100% 안전 보존!
+        showToast(`'${clean}' 단어는 이미 [${existing.day}]에 정식 수록되어 있습니다! (원본 Day 안전 유지) 👍`);
       }
       if (typeof openWordDetailModal === 'function') openWordDetailModal(existing.id, false);
       return;
@@ -2121,6 +2118,21 @@
           const cleanWord = cw.word;
           const safeWord = cleanWord.replace(/'/g, "\\'");
           const isAlreadyInConf = cw.day === '기출 혼동어휘';
+          const hasRegularDay = cw.day && cw.day !== '기출 혼동어휘';
+
+          let statusBadgeOrBtn = '';
+          if (isAlreadyInConf) {
+            statusBadgeOrBtn = `<span class="text-[10px] bg-rose-200 text-rose-800 px-1.5 py-0.5 rounded-lg font-bold">혼동장 보관됨</span>`;
+          } else if (hasRegularDay) {
+            statusBadgeOrBtn = `<span class="text-[10px] bg-indigo-100 text-indigo-700 border border-indigo-200 px-1.5 py-0.5 rounded-lg font-bold" title="'${cleanWord}' 단어는 이미 [${cw.day}]에 정식 수록되어 있습니다">${cw.day} 수록</span>`;
+          } else {
+            statusBadgeOrBtn = `
+              <button type="button" class="text-[10px] bg-rose-600 hover:bg-rose-700 text-white px-2 py-0.5 rounded-lg font-bold cursor-pointer active:scale-95 transition" onclick="event.stopPropagation(); window.addWordToConfusionFolder('${safeWord}', '${(cw.meaning || '').replace(/'/g, "\\'")}')" title="'기출 혼동어휘' 폴더에 신규 추가">
+                + 혼동장 추가
+              </button>
+            `;
+          }
+
           return `
             <div class="inline-flex items-center rounded-xl bg-rose-50 text-rose-950 border border-rose-200 shadow-2xs hover:bg-rose-100 transition text-xs font-bold overflow-hidden p-1 gap-1.5">
               <button type="button" class="flex items-center gap-1.5 px-2 py-0.5 text-slate-800 hover:text-rose-700 cursor-pointer" onclick="event.stopPropagation(); window.openQuizOptionDetail('${cw.id || ''}', '${safeWord}', '${(cw.meaning || '').replace(/'/g, "\\'")}')" title="'${cleanWord}' 상세정보 보기">
@@ -2128,13 +2140,7 @@
                 <span class="font-black text-rose-950">${cleanWord}</span>
                 <span class="text-[11px] text-slate-500 font-medium">: ${cw.meaning || '혼동 어휘'}</span>
               </button>
-              ${isAlreadyInConf ? `
-                <span class="text-[10px] bg-rose-200 text-rose-800 px-1.5 py-0.5 rounded-lg font-bold">혼동장 보관됨</span>
-              ` : `
-                <button type="button" class="text-[10px] bg-rose-600 hover:bg-rose-700 text-white px-2 py-0.5 rounded-lg font-bold cursor-pointer active:scale-95 transition" onclick="event.stopPropagation(); window.addWordToConfusionFolder('${safeWord}', '${(cw.meaning || '').replace(/'/g, "\\'")}')" title="'기출 혼동어휘' 폴더에 자동 추가">
-                  + 혼동장 추가
-                </button>
-              `}
+              ${statusBadgeOrBtn}
             </div>
           `;
         }).join('');
@@ -2834,12 +2840,21 @@
               <i class="fa-solid fa-book-open text-[11px]"></i>
               <span>상세</span>
             </button>
-            ${!isTarget ? `
-              <button type="button" onclick="event.stopPropagation(); window.addWordToConfusionFolder('${optWord}', '${safeDefForAttr}')" class="px-2 py-1 rounded-xl bg-rose-50 hover:bg-rose-600 hover:text-white text-rose-700 font-bold text-xs flex items-center gap-1 transition shadow-2xs border border-rose-200 cursor-pointer active:scale-95" title="'${optWord}' 단어를 [기출 혼동어휘]에 보관">
-                <i class="fa-solid fa-plus text-[10px]"></i>
-                <span>혼동장</span>
-              </button>
-            ` : ''}
+            ${!isTarget ? (() => {
+              const optExisting = words.find(w => w && w.word && w.word.toLowerCase() === optWord.toLowerCase());
+              if (optExisting && optExisting.day && optExisting.day !== '기출 혼동어휘') {
+                return `<span class="px-2 py-1 rounded-xl bg-indigo-50 text-indigo-700 font-bold text-[11px] border border-indigo-200" title="'${optWord}'는 이미 [${optExisting.day}]에 정식 수록된 단어입니다">${optExisting.day}</span>`;
+              }
+              if (optExisting && optExisting.day === '기출 혼동어휘') {
+                return `<span class="px-2 py-1 rounded-xl bg-rose-50 text-rose-700 font-bold text-[11px] border border-rose-200">혼동장</span>`;
+              }
+              return `
+                <button type="button" onclick="event.stopPropagation(); window.addWordToConfusionFolder('${optWord}', '${safeDefForAttr}')" class="px-2 py-1 rounded-xl bg-rose-50 hover:bg-rose-600 hover:text-white text-rose-700 font-bold text-xs flex items-center gap-1 transition shadow-2xs border border-rose-200 cursor-pointer active:scale-95" title="'${optWord}' 단어를 [기출 혼동어휘]에 신규 보관">
+                  <i class="fa-solid fa-plus text-[10px]"></i>
+                  <span>혼동장</span>
+                </button>
+              `;
+            })() : ''}
           </div>
         </div>
       `;
@@ -5876,12 +5891,21 @@
               <i class="fa-solid fa-book-open text-[11px]"></i>
               <span>상세</span>
             </button>
-            ${!isTarget ? `
-              <button type="button" onclick="event.stopPropagation(); window.addWordToConfusionFolder('${optWord}', '${safeDefForAttr}')" class="px-2 py-1 rounded-xl bg-rose-50 hover:bg-rose-600 hover:text-white text-rose-700 font-bold text-xs flex items-center gap-1 transition shadow-2xs border border-rose-200 cursor-pointer active:scale-95" title="'${optWord}' 단어를 [기출 혼동어휘]에 보관">
-                <i class="fa-solid fa-plus text-[10px]"></i>
-                <span>혼동장</span>
-              </button>
-            ` : ''}
+            ${!isTarget ? (() => {
+              const optExisting = words.find(w => w && w.word && w.word.toLowerCase() === optWord.toLowerCase());
+              if (optExisting && optExisting.day && optExisting.day !== '기출 혼동어휘') {
+                return `<span class="px-2 py-1 rounded-xl bg-indigo-50 text-indigo-700 font-bold text-[11px] border border-indigo-200" title="'${optWord}'는 이미 [${optExisting.day}]에 정식 수록된 단어입니다">${optExisting.day}</span>`;
+              }
+              if (optExisting && optExisting.day === '기출 혼동어휘') {
+                return `<span class="px-2 py-1 rounded-xl bg-rose-50 text-rose-700 font-bold text-[11px] border border-rose-200">혼동장</span>`;
+              }
+              return `
+                <button type="button" onclick="event.stopPropagation(); window.addWordToConfusionFolder('${optWord}', '${safeDefForAttr}')" class="px-2 py-1 rounded-xl bg-rose-50 hover:bg-rose-600 hover:text-white text-rose-700 font-bold text-xs flex items-center gap-1 transition shadow-2xs border border-rose-200 cursor-pointer active:scale-95" title="'${optWord}' 단어를 [기출 혼동어휘]에 신규 보관">
+                  <i class="fa-solid fa-plus text-[10px]"></i>
+                  <span>혼동장</span>
+                </button>
+              `;
+            })() : ''}
           </div>
         </div>
       `;
