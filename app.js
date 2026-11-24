@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v4.3.6_20261124_1725';
+    const APP_CURRENT_VER = 'v4.3.7_20261124_1755';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -897,6 +897,20 @@
       modalWordHistory = [];
       currentDetailWordId = null;
       document.getElementById('modalBackWordContainer')?.classList.add('hidden');
+
+      // 태블릿/모바일 가상 키보드 대응 스타일 원상 복구
+      const modalEl = document.getElementById('wordDetailModal');
+      const dialogEl = document.getElementById('wordDetailModalDialog');
+      const spacerEl = document.getElementById('modalMemoKeyboardSpacer');
+      const memoContEl = document.getElementById('modalMemoContainer');
+      if (spacerEl) spacerEl.style.height = '0px';
+      if (dialogEl) dialogEl.style.maxHeight = '';
+      if (modalEl) {
+        modalEl.classList.add('items-center');
+        modalEl.classList.remove('items-start', 'pt-2', 'sm:pt-4');
+      }
+      if (memoContEl) memoContEl.classList.remove('typing-active');
+
       if (currentTab === 'flashcard' && flashcardDeck && flashcardDeck[flashcardCurrentIndex]) {
         const cur = flashcardDeck[flashcardCurrentIndex];
         const fcInput = document.getElementById('fcBackMemoInput');
@@ -2201,11 +2215,70 @@
         }
       };
 
+      // 📱 태블릿 / 모바일 키보드 가림 완벽 방지: 포커스 시 입력창을 키보드 상단으로 스마트 부상
+      const handleTabletKeyboardFocus = () => {
+        const modal = document.getElementById('wordDetailModal');
+        const dialog = document.getElementById('wordDetailModalDialog');
+        const spacer = document.getElementById('modalMemoKeyboardSpacer');
+        const memoCont = document.getElementById('modalMemoContainer');
+
+        if (modal) {
+          modal.classList.remove('items-center');
+          modal.classList.add('items-start', 'pt-2', 'sm:pt-4');
+        }
+        if (dialog) {
+          const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+          dialog.style.maxHeight = Math.max(240, vh - 20) + 'px';
+        }
+        if (spacer) {
+          spacer.style.height = '350px';
+        }
+        if (memoCont) {
+          memoCont.classList.add('typing-active');
+        }
+
+        const scrollToMemo = () => {
+          memoInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        };
+        scrollToMemo();
+        setTimeout(scrollToMemo, 120);
+        setTimeout(scrollToMemo, 320);
+        setTimeout(scrollToMemo, 500);
+      };
+
+      const handleTabletKeyboardBlur = () => {
+        setTimeout(() => {
+          if (document.activeElement && (document.activeElement.id === 'modalMemoInput' || document.activeElement.id === 'modalMemoSaveBtn')) {
+            return;
+          }
+          const modal = document.getElementById('wordDetailModal');
+          const dialog = document.getElementById('wordDetailModalDialog');
+          const spacer = document.getElementById('modalMemoKeyboardSpacer');
+          const memoCont = document.getElementById('modalMemoContainer');
+
+          if (spacer) spacer.style.height = '0px';
+          if (dialog) dialog.style.maxHeight = '';
+          if (modal) {
+            modal.classList.add('items-center');
+            modal.classList.remove('items-start', 'pt-2', 'sm:pt-4');
+          }
+          if (memoCont) {
+            memoCont.classList.remove('typing-active');
+          }
+        }, 180);
+      };
+
+      memoInput.onfocus = handleTabletKeyboardFocus;
+
       if (memoSaveBtn) {
-        memoSaveBtn.onclick = () => doSaveMemo(true);
+        memoSaveBtn.onclick = () => {
+          memoInput.blur(); // 가상 키보드 즉시 닫기
+          doSaveMemo(true);
+        };
       }
 
       memoInput.onblur = () => {
+        handleTabletKeyboardBlur();
         doSaveMemo(false);
       };
 
@@ -2249,6 +2322,22 @@
         }
       };
     }
+
+    // 태블릿 키보드 대응 초기화
+    const modalEl = document.getElementById('wordDetailModal');
+    const dialogEl = document.getElementById('wordDetailModalDialog');
+    const spacerEl = document.getElementById('modalMemoKeyboardSpacer');
+    const memoContEl = document.getElementById('modalMemoContainer');
+    if (spacerEl) spacerEl.style.height = '0px';
+    if (dialogEl) {
+      dialogEl.style.maxHeight = '';
+      dialogEl.scrollTop = 0;
+    }
+    if (modalEl) {
+      modalEl.classList.add('items-center');
+      modalEl.classList.remove('items-start', 'pt-2', 'sm:pt-4');
+    }
+    if (memoContEl) memoContEl.classList.remove('typing-active');
 
     openModal('wordDetailModal');
   }
@@ -4155,6 +4244,27 @@
     document.getElementById('dataManageBtn')?.addEventListener('click', () => openModal('dataManageModal'));
     document.getElementById('btnToggleFullscreen')?.addEventListener('click', () => toggleFullscreen());
     document.getElementById('closeDetailModalBtn')?.addEventListener('click', () => closeModal('wordDetailModal'));
+    document.getElementById('wordDetailModal')?.addEventListener('click', (e) => {
+      if (e.target && e.target.id === 'wordDetailModal') {
+        closeModal('wordDetailModal');
+      }
+    });
+
+    // 📱 태블릿 / 모바일 가상 키보드 실시간 뷰포트 변화 감지 및 자동 중앙 정렬
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', () => {
+        const active = document.activeElement;
+        if (active && active.id === 'modalMemoInput') {
+          const dialog = document.getElementById('wordDetailModalDialog');
+          if (dialog) {
+            dialog.style.maxHeight = Math.max(220, window.visualViewport.height - 20) + 'px';
+          }
+          active.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else if (active && active.id === 'fcBackMemoInput') {
+          active.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    }
 
     // 데이터 백업 내보내기
     document.getElementById('btnExportData')?.addEventListener('click', () => {
@@ -5442,6 +5552,7 @@
     const fcMemoInput = document.getElementById('fcBackMemoInput');
     const fcMemoSaveBtn = document.getElementById('btnFcSaveMemo');
     const fcMemoSaveBadge = document.getElementById('fcBackMemoSaveBadge');
+    const fcScrollContainer = document.getElementById('fcBackScrollContainer');
 
     if (fcMemoInput) {
       fcMemoInput.value = item.memo || '';
@@ -5462,18 +5573,48 @@
         }
       };
 
+      // 📱 태블릿 / 모바일 키보드 가림 완벽 방지: 플래시카드 메모 입력창 상단 부상
+      const handleFcKeyboardFocus = () => {
+        if (fcScrollContainer) {
+          fcScrollContainer.style.paddingBottom = '280px';
+          fcScrollContainer.scrollTop = fcScrollContainer.scrollHeight;
+        }
+        const scrollToMemo = () => {
+          fcMemoInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        };
+        scrollToMemo();
+        setTimeout(scrollToMemo, 120);
+        setTimeout(scrollToMemo, 320);
+        setTimeout(scrollToMemo, 500);
+      };
+
+      const handleFcKeyboardBlur = () => {
+        setTimeout(() => {
+          if (document.activeElement && (document.activeElement.id === 'fcBackMemoInput' || document.activeElement.id === 'btnFcSaveMemo')) {
+            return;
+          }
+          if (fcScrollContainer) {
+            fcScrollContainer.style.paddingBottom = '';
+          }
+        }, 180);
+      };
+
+      fcMemoInput.onfocus = handleFcKeyboardFocus;
+
       fcMemoInput.oninput = () => {
         if (fcMemoTimer) clearTimeout(fcMemoTimer);
         fcMemoTimer = setTimeout(() => doSaveFcMemo(true), 600);
       };
 
       fcMemoInput.onblur = () => {
+        handleFcKeyboardBlur();
         doSaveFcMemo(true);
       };
 
       if (fcMemoSaveBtn) {
         fcMemoSaveBtn.onclick = (e) => {
           if (e && e.stopPropagation) e.stopPropagation();
+          fcMemoInput.blur(); // 가상 키보드 닫기
           doSaveFcMemo(true);
           showToast('암기 팁이 저장되었습니다!');
         };

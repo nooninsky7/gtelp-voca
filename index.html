@@ -347,7 +347,7 @@
               </div>
 
               <!-- 스크롤 가능한 본문 영역 -->
-              <div class="flex-1 my-2 py-1 space-y-3.5 overflow-y-auto no-scrollbar pr-1">
+              <div id="fcBackScrollContainer" class="flex-1 my-2 py-1 space-y-3.5 overflow-y-auto no-scrollbar pr-1 transition-all duration-200">
                 <div>
                   <div class="text-xs font-black text-indigo-300 uppercase tracking-wider mb-1">주요 뜻</div>
                   <div id="fcBackMeaning" class="text-2xl sm:text-3xl font-black text-white leading-snug">보장하다, 확실하게 하다</div>
@@ -1086,8 +1086,8 @@
   </div>
 
   <!-- [단어 상세 정보 모달] (영단어 클릭 시 한 번에 펼쳐짐) -->
-  <div id="wordDetailModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-100 animate-in fade-in zoom-in duration-200">
+  <div id="wordDetailModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 transition-all duration-200">
+    <div id="wordDetailModalDialog" class="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-100 animate-in fade-in zoom-in duration-200 transition-all duration-200">
       <!-- 모달 상단 -->
       <div class="p-5 border-b border-slate-100 flex items-start justify-between bg-slate-50/70 rounded-t-3xl">
         <div class="space-y-1">
@@ -1120,7 +1120,7 @@
       </div>
 
       <!-- 모달 본문 상세 내용들 -->
-      <div class="p-6 space-y-4">
+      <div id="wordDetailModalBody" class="p-6 space-y-4">
         <!-- 1. 유사품사어 / 파생어 -->
         <div class="space-y-1.5">
           <div class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -1171,7 +1171,7 @@
         </div>
 
         <!-- 4. 출제 포인트 및 수기 메모 -->
-        <div class="space-y-1.5">
+        <div id="modalMemoContainer" class="space-y-1.5 transition-all duration-200">
           <div class="flex items-center justify-between">
             <div class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
               <i class="fa-solid fa-pen-nib text-purple-500"></i> 출제 포인트 & 나만의 암기 팁
@@ -1194,6 +1194,8 @@
             <span class="text-purple-600 font-medium"><i class="fa-solid fa-cloud"></i> 실시간 기기 동기화 지원</span>
           </div>
         </div>
+        <!-- 태블릿/모바일 가상 키보드 대비 동적 스페이서 -->
+        <div id="modalMemoKeyboardSpacer" class="transition-all duration-200 h-0"></div>
       </div>
 
       <!-- 모달 하단 버튼 -->
