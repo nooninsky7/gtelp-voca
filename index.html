@@ -93,7 +93,7 @@
         <i class="fa-solid fa-shuffle text-rose-500"></i> 패러프레이징
       </button>
       <button class="nav-tab flex items-center gap-1.5 py-2.5 sm:py-3 px-3 sm:px-3.5 font-semibold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition shrink-0" data-tab="stats">
-        <i class="fa-solid fa-chart-pie text-slate-400"></i> 오답 분석
+        <i class="fa-solid fa-calendar-check text-indigo-500"></i> 학습 진도표 & 분석
       </button>
     </div>
   </header>
@@ -911,9 +911,80 @@
       </div>
     </section>
 
-    <!-- [뷰 4: 오답 및 학습 통계] -->
-    <section id="view-stats" class="hidden max-w-2xl mx-auto space-y-4">
-      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+    <!-- [뷰 4: 학습 진도표 & 오답 분석] -->
+    <section id="view-stats" class="hidden max-w-4xl mx-auto space-y-5">
+
+      <!-- [섹션 1: 데일리 4단계 학습 진도 매트릭스 & 복습 체크표] -->
+      <div class="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-200 shadow-sm space-y-4">
+        <!-- 상단 헤더 & 일자 이동 바 -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+          <div>
+            <h2 class="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-calendar-check text-indigo-600"></i> 데일리 학습 진도 매트릭스 & 복습 체크표
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">
+              하루 2Day 목표! 4단계 회독(<span class="text-amber-600 font-bold">①플래시카드</span> ➔ <span class="text-indigo-600 font-bold">②4지선다</span> ➔ <span class="text-emerald-600 font-bold">③문장빈칸</span> ➔ <span class="text-rose-600 font-bold">④패러프레이징</span>)을 날짜별로 한눈에 확인하고 체크하세요.
+            </p>
+          </div>
+
+          <!-- 날짜 네비게이션 컨트롤 -->
+          <div class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl self-start sm:self-auto shrink-0">
+            <button id="btnMatrixPrevWeek" class="px-2.5 py-1.5 rounded-lg bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs shadow-xs transition" title="이전 7일">
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button id="btnMatrixToday" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs shadow-xs transition">
+              오늘
+            </button>
+            <button id="btnMatrixNextWeek" class="px-2.5 py-1.5 rounded-lg bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs shadow-xs transition" title="다음 7일">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- [오늘의 하루 2Day 진도 & 복습 가이드 박스] -->
+        <div id="studyMatrixGuideBox">
+          <!-- JS 동적 생성 -->
+        </div>
+
+        <!-- Day 필터 칩 바 -->
+        <div class="flex flex-wrap items-center gap-1.5 pt-1">
+          <span class="text-xs font-bold text-slate-500 mr-1"><i class="fa-solid fa-filter text-slate-400"></i> Day 필터:</span>
+          <button class="matrix-filter-btn active px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-600 text-white shadow-xs" data-filter="ALL">전체 Day</button>
+          <button class="matrix-filter-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-600" data-filter="D1_10">Day 01~10</button>
+          <button class="matrix-filter-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-600" data-filter="D11_20">Day 11~20</button>
+          <button class="matrix-filter-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-600" data-filter="SPECIAL">기초 & 혼동</button>
+          <button class="matrix-filter-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-600" data-filter="IN_PROGRESS">진행 중인 Day</button>
+        </div>
+
+        <!-- 4단계 범례 가이드 -->
+        <div class="flex flex-wrap items-center gap-2 p-2.5 bg-slate-50 rounded-xl text-[11px] text-slate-600 border border-slate-100">
+          <span class="font-bold text-slate-700">4단계 학습 순서:</span>
+          <span class="inline-flex items-center gap-1 font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
+            <i class="fa-solid fa-clone text-amber-500"></i> 1단계: 플래시카드 (암기)
+          </span>
+          <span class="text-slate-300 font-bold">➔</span>
+          <span class="inline-flex items-center gap-1 font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-200">
+            <i class="fa-solid fa-graduation-cap text-indigo-500"></i> 2단계: 4지선다 (테스트)
+          </span>
+          <span class="text-slate-300 font-bold">➔</span>
+          <span class="inline-flex items-center gap-1 font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+            <i class="fa-solid fa-pen-to-square text-emerald-500"></i> 3단계: 문장빈칸 (문맥)
+          </span>
+          <span class="text-slate-300 font-bold">➔</span>
+          <span class="inline-flex items-center gap-1 font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-md border border-rose-200">
+            <i class="fa-solid fa-shuffle text-rose-500"></i> 4단계: 패러프레이징 (실전)
+          </span>
+          <span class="ml-auto text-slate-400 text-[10px]">※ 셀 클릭: 바로 해당 학습 시작 or 완료 수동 체크</span>
+        </div>
+
+        <!-- 매트릭스 표 컨테이너 -->
+        <div id="studyMatrixTableContainer" class="overflow-x-auto border border-slate-200 rounded-2xl shadow-xs max-h-[600px] overflow-y-auto">
+          <!-- JS 동적 생성 -->
+        </div>
+      </div>
+
+      <!-- [섹션 2: 오답 취약 단어 집중 관리] -->
+      <div class="bg-white p-5 rounded-2xl sm:rounded-3xl border border-slate-200 shadow-sm space-y-4">
         <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
           <i class="fa-solid fa-triangle-exclamation text-rose-500"></i> 오답 취약 단어 집중 관리
         </h2>
@@ -936,6 +1007,30 @@
     </section>
 
   </main>
+
+  <!-- [학습 매트릭스 셀 액션 모달] -->
+  <div id="studyMatrixActionModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-5 shadow-2xl border border-slate-100 space-y-4 animate-in fade-in zoom-in duration-150">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div>
+          <span id="matrixModalDateBadge" class="text-[11px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">2026-11-24</span>
+          <h3 id="matrixModalTitle" class="text-base font-black text-slate-900 mt-1">Day 01 • 1단계 플래시카드</h3>
+        </div>
+        <button onclick="closeModal('studyMatrixActionModal')" class="text-slate-400 hover:text-slate-600 p-1">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="space-y-2 text-xs">
+        <button id="matrixModalStartStudyBtn" class="w-full py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold flex items-center justify-center gap-2 shadow-sm transition active:scale-95">
+          <i class="fa-solid fa-play"></i> 지금 바로 이 항목 학습 시작하기
+        </button>
+        <button id="matrixModalToggleCheckBtn" class="w-full py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold flex items-center justify-center gap-2 transition">
+          <i class="fa-solid fa-check"></i> <span id="matrixModalToggleCheckText">이 날짜에 1회독 완료로 수동 체크</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- [단어 상세 정보 모달] (영단어 클릭 시 한 번에 펼쳐짐) -->
   <div id="wordDetailModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
@@ -1425,7 +1520,7 @@
   </div>
 
   <!-- 스크립트 연결 (캐시 무효화 버전 파라미터 적용) -->
-  <script src="data.js?v=v4_2_0_auto_confusion_engine_20261123"></script>
-  <script src="app.js?v=v4_2_0_auto_confusion_engine_20261123"></script>
+  <script src="data.js?v=v4_3_0_study_progress_matrix_20261124"></script>
+  <script src="app.js?v=v4_3_0_study_progress_matrix_20261124"></script>
 </body>
 </html>

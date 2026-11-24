@@ -29,15 +29,13 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v4.2.0_20261123_1815';
+    const APP_CURRENT_VER = 'v4.3.0_20261124_1115';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
         localStorage.setItem('voca_installed_ver', APP_CURRENT_VER);
-        // 이전 버전의 손상되거나 캐시된 세션 초기화
+        // 이전 버전의 세션 캐시 초기화
         localStorage.removeItem('gtelp_active_learning_session');
-        // 신규 어휘 데이터베이스(1,110단어 - 기출 혼동어휘 28단어 신설) 즉시 반영
-        localStorage.removeItem('voca_words');
       }
       localStorage.removeItem('gtelp_auth_state');
       sessionStorage.removeItem('gtelp_auth_state');
@@ -217,8 +215,9 @@
     }
   }
 
-  // --- [Day별 회독 차수 관리] ---
+  // --- [Day별 회독 차수 & 날짜별 학습 매트릭스 관리] ---
   const DAY_ROUND_STATS_KEY = 'gtelp_day_round_stats';
+  const STUDY_DATE_MATRIX_KEY = 'gtelp_study_date_matrix';
 
   function getDayRoundStats() {
     try {
@@ -237,6 +236,112 @@
     }
   }
 
+  function getStudyDateMatrix() {
+    try {
+      const raw = localStorage.getItem(STUDY_DATE_MATRIX_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveStudyDateMatrix(matrix) {
+    try {
+      localStorage.setItem(STUDY_DATE_MATRIX_KEY, JSON.stringify(matrix));
+    } catch (e) {
+      console.error('Failed to save study date matrix', e);
+    }
+  }
+
+  function getTodayDateStr(offsetDays = 0) {
+    const d = new Date();
+    if (offsetDays !== 0) d.setDate(d.getDate() + offsetDays);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+
+  function recordStudyDateCompletion(day, type, dateStr = null) {
+    if (!day || ['all', 'wrong', 'selected'].includes(day)) return;
+    const normDay = normalizeDayName(day);
+    const targetDate = dateStr || getTodayDateStr();
+    const matrix = getStudyDateMatrix();
+    if (!matrix[targetDate]) matrix[targetDate] = {};
+    if (!matrix[targetDate][normDay]) matrix[targetDate][normDay] = {};
+
+    const cur = Number(matrix[targetDate][normDay][type]) || 0;
+    matrix[targetDate][normDay][type] = cur + 1;
+    saveStudyDateMatrix(matrix);
+  }
+
+  function toggleStudyDateCompletion(day, type, dateStr) {
+    if (!day || !type || !dateStr) return;
+    const normDay = normalizeDayName(day);
+    const matrix = getStudyDateMatrix();
+    if (!matrix[dateStr]) matrix[dateStr] = {};
+    if (!matrix[dateStr][normDay]) matrix[dateStr][normDay] = {};
+
+    const cur = Number(matrix[dateStr][normDay][type]) || 0;
+    if (cur > 0) {
+      delete matrix[dateStr][normDay][type];
+      if (Object.keys(matrix[dateStr][normDay]).length === 0) {
+        delete matrix[dateStr][normDay];
+      }
+      if (Object.keys(matrix[dateStr]).length === 0) {
+        delete matrix[dateStr];
+      }
+      // 누적 회독수도 동기화
+      const stats = getDayRoundStats();
+      if (stats[normDay] && stats[normDay][type] > 0) {
+        stats[normDay][type] = Math.max(0, Number(stats[normDay][type]) - 1);
+        saveDayRoundStats(stats);
+      }
+    } else {
+      matrix[dateStr][normDay][type] = 1;
+      const stats = getDayRoundStats();
+      if (!stats[normDay]) stats[normDay] = {};
+      stats[normDay][type] = (Number(stats[normDay][type]) || 0) + 1;
+      saveDayRoundStats(stats);
+    }
+    saveStudyDateMatrix(matrix);
+
+    if (typeof syncPushToCloud === 'function' && typeof getCloudSyncKey === 'function' && getCloudSyncKey()) {
+      syncPushToCloud(true);
+    }
+    renderStudyProgressMatrix();
+  }
+
+  function seedStudyDateMatrixIfEmpty() {
+    const matrix = getStudyDateMatrix();
+    if (Object.keys(matrix).length === 0) {
+      const stats = getDayRoundStats();
+      const today = getTodayDateStr();
+      let hasData = false;
+      const seeded = {};
+      seeded[today] = {};
+      const stepKeys = ['flashcard', 'standard', 'cloze', 'paraphrase'];
+      for (const day in stats) {
+        if (stats[day]) {
+          const normDay = normalizeDayName(day);
+          seeded[today][normDay] = {};
+          stepKeys.forEach(k => {
+            if (stats[day][k] && stats[day][k] > 0) {
+              seeded[today][normDay][k] = stats[day][k];
+              hasData = true;
+            }
+          });
+          if (Object.keys(seeded[today][normDay]).length === 0) {
+            delete seeded[today][normDay];
+          }
+        }
+      }
+      if (hasData) {
+        saveStudyDateMatrix(seeded);
+      }
+    }
+  }
+
   function getDayRoundCount(day, type) {
     if (!day) return 0;
     const stats = getDayRoundStats();
@@ -252,6 +357,10 @@
     const next = current + 1;
     stats[day][type] = next;
     saveDayRoundStats(stats);
+
+    // 날짜별 학습 매트릭스에 오늘 일자로 자동 기록!
+    recordStudyDateCompletion(day, type);
+
     // 클라우드 동기화 키가 있으면 즉시 자동 업로드
     if (typeof syncPushToCloud === 'function' && typeof getCloudSyncKey === 'function' && getCloudSyncKey()) {
       syncPushToCloud(true);
@@ -3249,9 +3358,335 @@
   window.openWordComprehensiveDetail = window.openQuizOptionDetail;
 
   // --------------------------------------------------------------------------
-  // 7. 오답 통계 뷰
+  // 7. 데일리 학습 진도 매트릭스 & 오답 통계 뷰
   // --------------------------------------------------------------------------
+  let studyMatrixOffsetWeeks = 0;
+  let studyMatrixDayFilter = 'ALL';
+  let matrixActiveTarget = null;
+
+  const STUDY_STEPS = [
+    { key: 'flashcard', stepNum: 1, name: '1단계: 플래시카드', shortName: '플래시카드', desc: '암기', icon: 'fa-solid fa-clone', color: 'amber', bg: 'bg-amber-500', hoverBg: 'hover:bg-amber-600', lightBg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-300' },
+    { key: 'standard', stepNum: 2, name: '2단계: 4지선다', shortName: '4지선다', desc: '테스트', icon: 'fa-solid fa-graduation-cap', color: 'indigo', bg: 'bg-indigo-600', hoverBg: 'hover:bg-indigo-700', lightBg: 'bg-indigo-50', text: 'text-indigo-700', border: 'border-indigo-300' },
+    { key: 'cloze', stepNum: 3, name: '3단계: 문장빈칸', shortName: '문장빈칸', desc: '문맥', icon: 'fa-solid fa-pen-to-square', color: 'emerald', bg: 'bg-emerald-600', hoverBg: 'hover:bg-emerald-700', lightBg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-300' },
+    { key: 'paraphrase', stepNum: 4, name: '4단계: 패러프레이징', shortName: '패러프레이징', desc: '실전', icon: 'fa-solid fa-shuffle', color: 'rose', bg: 'bg-rose-500', hoverBg: 'hover:bg-rose-600', lightBg: 'bg-rose-50', text: 'text-rose-700', border: 'border-rose-300' }
+  ];
+
+  const ALL_STUDY_DAYS = [
+    '기초단어',
+    'Day 01', 'Day 02', 'Day 03', 'Day 04', 'Day 05',
+    'Day 06', 'Day 07', 'Day 08', 'Day 09', 'Day 10',
+    'Day 11', 'Day 12', 'Day 13', 'Day 14', 'Day 15',
+    'Day 16', 'Day 17', 'Day 18', 'Day 19', 'Day 20',
+    '[기출 혼동어휘]'
+  ];
+
+  function getDayWordCountText(day) {
+    if (day === '기초단어') return '기초 필수 50단어';
+    if (day === '[기출 혼동어휘]') return '핵심 기출 혼동 28단어';
+    const c = words.filter(w => normalizeDayName(w.day) === normalizeDayName(day)).length;
+    return `${c || 50}단어`;
+  }
+
+  function getMatrixDateColumns(offsetWeeks = 0) {
+    const dates = [];
+    const todayStr = getTodayDateStr();
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() + (offsetWeeks * 7) - i);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      const dateStr = `${y}-${m}-${day}`;
+      const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+      const dow = daysOfWeek[d.getDay()];
+      dates.push({
+        dateStr,
+        display: `${m}/${day}`,
+        dow,
+        isToday: (dateStr === todayStr)
+      });
+    }
+    return dates;
+  }
+
+  function renderStudyProgressMatrix() {
+    seedStudyDateMatrixIfEmpty();
+    const guideBox = document.getElementById('studyMatrixGuideBox');
+    const tableContainer = document.getElementById('studyMatrixTableContainer');
+    if (!tableContainer) return;
+
+    const roundStats = getDayRoundStats();
+    const dateMatrix = getStudyDateMatrix();
+    const dates = getMatrixDateColumns(studyMatrixOffsetWeeks);
+
+    // 1. 오늘의 맞춤 하루 2Day 진도 & 복습 가이드 박스 렌더링
+    if (guideBox) {
+      // 일반 Day 01 ~ 20 중 미완료(4단계 중 하나라도 0회독)인 첫 2개 Day 탐색
+      const regularDays = ALL_STUDY_DAYS.filter(d => d.startsWith('Day '));
+      const incompleteDays = regularDays.filter(day => {
+        const dStats = roundStats[day] || {};
+        return STUDY_STEPS.some(s => (Number(dStats[s.key]) || 0) === 0);
+      });
+
+      let targetDay1 = incompleteDays[0] || 'Day 01';
+      let targetDay2 = incompleteDays[1] || 'Day 02';
+
+      // 4단계 중 일부만 풀고 빼먹은 Day 목록 (복습 필요 알림)
+      const missedAlerts = [];
+      regularDays.forEach(day => {
+        const dStats = roundStats[day] || {};
+        const doneCount = STUDY_STEPS.filter(s => (Number(dStats[s.key]) || 0) > 0).length;
+        if (doneCount > 0 && doneCount < 4) {
+          const missingSteps = STUDY_STEPS.filter(s => (Number(dStats[s.key]) || 0) === 0);
+          missedAlerts.push({ day, missingSteps });
+        }
+      });
+
+      const renderDayGoalCard = (day) => {
+        const dStats = roundStats[day] || {};
+        return `
+          <div class="bg-white p-3 sm:p-3.5 rounded-2xl border border-indigo-100 shadow-xs space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-black text-sm text-indigo-900 flex items-center gap-1.5">
+                <i class="fa-solid fa-flag-checkered text-indigo-600"></i> ${day}
+              </span>
+              <span class="text-[11px] font-bold text-slate-500">${getDayWordCountText(day)}</span>
+            </div>
+            <div class="grid grid-cols-2 gap-1.5">
+              ${STUDY_STEPS.map(step => {
+                const count = Number(dStats[step.key]) || 0;
+                const isDone = count > 0;
+                return `
+                  <button onclick="window.startDayDirectQuiz('${day}', '${step.key}')" class="p-2 rounded-xl border text-left transition flex items-center justify-between ${
+                    isDone 
+                      ? `${step.lightBg} border-${step.color}-200 ${step.text} hover:opacity-90` 
+                      : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700'
+                  }">
+                    <span class="font-bold text-xs flex items-center gap-1">
+                      <i class="${step.icon} ${isDone ? step.text : 'text-slate-400'}"></i> ${step.shortName}
+                    </span>
+                    <span class="text-[10px] font-black px-1.5 py-0.5 rounded-md ${
+                      isDone ? `${step.bg} text-white` : 'bg-slate-200 text-slate-600'
+                    }">${isDone ? `✓ ${count}회` : '시작 ▶'}</span>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      };
+
+      guideBox.innerHTML = `
+        <div class="bg-gradient-to-br from-indigo-50/80 via-purple-50/40 to-slate-50 p-4 rounded-2xl border border-indigo-100/90 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="font-black text-xs sm:text-sm text-indigo-950 flex items-center gap-1.5">
+              <i class="fa-solid fa-bullseye text-indigo-600 text-base"></i> 오늘의 맞춤 권장 진도: 하루 2Day 마스터
+            </div>
+            <span class="text-[11px] font-extrabold text-indigo-700 bg-white px-2.5 py-1 rounded-full border border-indigo-200 shadow-2xs">
+              🎯 추천 목표: ${targetDay1} & ${targetDay2}
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            ${renderDayGoalCard(targetDay1)}
+            ${renderDayGoalCard(targetDay2)}
+          </div>
+
+          ${missedAlerts.length > 0 ? `
+            <div class="mt-2 p-3 bg-amber-50 rounded-xl border border-amber-200/80 text-xs text-amber-900 space-y-1.5">
+              <div class="font-black flex items-center gap-1.5 text-amber-800">
+                <i class="fa-solid fa-bell text-amber-600"></i> 복습 필요! 진도 중 빼먹은 단계가 있습니다:
+              </div>
+              <div class="flex flex-wrap gap-2 pt-0.5">
+                ${missedAlerts.slice(0, 3).map(a => `
+                  <div class="inline-flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg border border-amber-300 font-bold text-[11px]">
+                    <span class="text-indigo-700">${a.day}:</span>
+                    ${a.missingSteps.map(ms => `
+                      <button onclick="window.startDayDirectQuiz('${a.day}', '${ms.key}')" class="underline hover:text-amber-700 ${ms.text}">
+                        ${ms.shortName}
+                      </button>
+                    `).join(', ')}
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    // 2. Day 목록 필터링
+    let filteredDays = [...ALL_STUDY_DAYS];
+    if (studyMatrixDayFilter === 'D1_10') {
+      filteredDays = ALL_STUDY_DAYS.filter(d => {
+        if (!d.startsWith('Day ')) return false;
+        const num = parseInt(d.replace('Day ', ''), 10);
+        return num >= 1 && num <= 10;
+      });
+    } else if (studyMatrixDayFilter === 'D11_20') {
+      filteredDays = ALL_STUDY_DAYS.filter(d => {
+        if (!d.startsWith('Day ')) return false;
+        const num = parseInt(d.replace('Day ', ''), 10);
+        return num >= 11 && num <= 20;
+      });
+    } else if (studyMatrixDayFilter === 'SPECIAL') {
+      filteredDays = ALL_STUDY_DAYS.filter(d => d === '기초단어' || d === '[기출 혼동어휘]');
+    } else if (studyMatrixDayFilter === 'IN_PROGRESS') {
+      filteredDays = ALL_STUDY_DAYS.filter(day => {
+        const dStats = roundStats[day] || {};
+        const doneCount = STUDY_STEPS.filter(s => (Number(dStats[s.key]) || 0) > 0).length;
+        return doneCount < 4;
+      });
+    }
+
+    // 3. 매트릭스 표 HTML 조립
+    let tableHtml = `
+      <table class="w-full text-left border-collapse min-w-[700px]">
+        <thead>
+          <tr class="bg-slate-100 text-slate-700 text-xs font-black border-b border-slate-200">
+            <th class="p-2.5 sticky left-0 bg-slate-100 z-10 w-44 shadow-xs">Day / 4단계 학습 구분</th>
+            ${dates.map(d => `
+              <th class="p-2 text-center border-l border-slate-200 ${d.isToday ? 'bg-indigo-100/70 text-indigo-900 border-indigo-300' : ''}">
+                <div class="text-[11px] leading-tight">${d.display}</div>
+                <div class="text-[10px] font-semibold text-slate-500 flex items-center justify-center gap-0.5 mt-0.5">
+                  (${d.dow})
+                  ${d.isToday ? '<span class="text-[9px] font-black bg-indigo-600 text-white px-1 rounded">오늘</span>' : ''}
+                </div>
+              </th>
+            `).join('')}
+            <th class="p-2 text-center border-l border-slate-200 w-24">누적 회독수</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 text-xs">
+    `;
+
+    filteredDays.forEach(day => {
+      const dStats = roundStats[day] || {};
+      const completedStepsCount = STUDY_STEPS.filter(s => (Number(dStats[s.key]) || 0) > 0).length;
+
+      tableHtml += `
+        <!-- Day 구분 헤더 행 -->
+        <tr class="bg-slate-50/90 border-t-2 border-slate-200">
+          <td colspan="${dates.length + 2}" class="p-2 px-3 font-black text-slate-800 text-xs flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded-lg bg-indigo-600 text-white font-extrabold text-[11px]">${day}</span>
+              <span class="text-[11px] text-slate-500 font-semibold">${getDayWordCountText(day)}</span>
+            </div>
+            <div class="text-[11px] font-bold">
+              4단계 회독 진도: <span class="${completedStepsCount === 4 ? 'text-emerald-600 font-black' : 'text-indigo-600 font-black'}">${completedStepsCount}/4 단계 완료</span>
+            </div>
+          </td>
+        </tr>
+      `;
+
+      STUDY_STEPS.forEach(step => {
+        const totalRound = Number(dStats[step.key]) || 0;
+        tableHtml += `
+          <tr class="hover:bg-slate-50/70 transition">
+            <!-- 1열: 학습 항목 명칭 -->
+            <td class="p-2 sticky left-0 bg-white hover:bg-slate-50 z-1 border-r border-slate-100 font-bold text-xs text-slate-700 whitespace-nowrap shadow-2xs">
+              <div class="flex items-center justify-between gap-1">
+                <span class="flex items-center gap-1.5">
+                  <i class="${step.icon} ${step.text} text-xs"></i>
+                  <span>${step.name}</span>
+                </span>
+                <button onclick="window.startDayDirectQuiz('${day}', '${step.key}')" class="p-1 px-1.5 rounded-md hover:${step.lightBg} ${step.text} text-[10px] font-bold" title="바로 학습 시작">
+                  <i class="fa-solid fa-play text-[9px]"></i>
+                </button>
+              </div>
+            </td>
+
+            <!-- 날짜별 셀 (7개) -->
+            ${dates.map(d => {
+              const count = (dateMatrix[d.dateStr] && dateMatrix[d.dateStr][day] && dateMatrix[d.dateStr][day][step.key]) || 0;
+              const isTodayCell = d.isToday;
+              return `
+                <td class="p-1 text-center align-middle border-l border-slate-100 ${isTodayCell ? 'bg-indigo-50/30' : ''}">
+                  ${count > 0 ? `
+                    <button onclick="window.handleMatrixCellClick('${day}', '${step.key}', '${d.dateStr}', ${count})" class="w-full py-1.5 px-0.5 rounded-lg ${step.bg} text-white font-black text-[10px] sm:text-[11px] shadow-2xs hover:opacity-90 active:scale-95 transition flex items-center justify-center gap-0.5" title="${d.dateStr} ${day} ${step.shortName} ${count}회독 완료 (클릭 시 액션)">
+                      <i class="fa-solid fa-check text-[9px]"></i> ${count}회
+                    </button>
+                  ` : `
+                    <button onclick="window.handleMatrixCellClick('${day}', '${step.key}', '${d.dateStr}', 0)" class="w-full py-1.5 px-0.5 rounded-lg border border-dashed border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/50 text-slate-300 hover:text-indigo-600 text-[10px] font-bold transition flex items-center justify-center" title="${d.dateStr} ${day} ${step.shortName} 미완료 (클릭 시 학습 시작 또는 수동 체크)">
+                      -
+                    </button>
+                  `}
+                </td>
+              `;
+            }).join('')}
+
+            <!-- 누적 회독수 셀 -->
+            <td class="p-1.5 text-center align-middle border-l border-slate-100 bg-slate-50/40 font-bold">
+              ${totalRound > 0 ? `
+                <span class="px-2 py-0.5 rounded-full ${step.lightBg} ${step.text} border ${step.border} font-black text-[10px] sm:text-[11px]">
+                  ${totalRound}회독
+                </span>
+              ` : `
+                <span class="text-slate-300 text-[10px] font-normal">0회</span>
+              `}
+            </td>
+          </tr>
+        `;
+      });
+    });
+
+    tableHtml += `
+        </tbody>
+      </table>
+    `;
+
+    tableContainer.innerHTML = tableHtml;
+
+    // 4. 필터 버튼 상태 업데이트
+    document.querySelectorAll('.matrix-filter-btn').forEach(btn => {
+      const active = (btn.dataset.filter === studyMatrixDayFilter);
+      btn.classList.toggle('bg-indigo-600', active);
+      btn.classList.toggle('text-white', active);
+      btn.classList.toggle('shadow-xs', active);
+      btn.classList.toggle('bg-slate-100', !active);
+      btn.classList.toggle('text-slate-600', !active);
+    });
+  }
+
+  window.renderStudyProgressMatrix = renderStudyProgressMatrix;
+
+  window.handleMatrixCellClick = function(day, type, dateStr, currentCount) {
+    matrixActiveTarget = { day, type, dateStr, currentCount };
+    const stepObj = STUDY_STEPS.find(s => s.key === type) || { name: type, shortName: type };
+    const dateBadge = document.getElementById('matrixModalDateBadge');
+    const title = document.getElementById('matrixModalTitle');
+    const startBtn = document.getElementById('matrixModalStartStudyBtn');
+    const toggleBtnText = document.getElementById('matrixModalToggleCheckText');
+
+    if (dateBadge) dateBadge.textContent = dateStr;
+    if (title) title.innerHTML = `${day} • <span class="${stepObj.text || 'text-indigo-600'}">${stepObj.name}</span>`;
+    if (startBtn) {
+      startBtn.innerHTML = `<i class="fa-solid fa-play"></i> 지금 바로 [${day} ${stepObj.shortName}] 학습 시작`;
+      startBtn.onclick = () => {
+        closeModal('studyMatrixActionModal');
+        window.startDayDirectQuiz(day, type);
+      };
+    }
+    if (toggleBtnText) {
+      if (currentCount > 0) {
+        toggleBtnText.textContent = `이 날짜(${dateStr}) 완료 체크 취소 (현재 ${currentCount}회독)`;
+      } else {
+        toggleBtnText.textContent = `이 날짜(${dateStr})에 1회독 완료로 수동 체크`;
+      }
+    }
+    const toggleBtn = document.getElementById('matrixModalToggleCheckBtn');
+    if (toggleBtn) {
+      toggleBtn.onclick = () => {
+        closeModal('studyMatrixActionModal');
+        toggleStudyDateCompletion(day, type, dateStr);
+        showToast(currentCount > 0 ? `[${day} ${stepObj.shortName}] ${dateStr} 완료가 취소되었습니다.` : `[${day} ${stepObj.shortName}] ${dateStr} 1회독 완료로 체크되었습니다! ✓`);
+      };
+    }
+    openModal('studyMatrixActionModal');
+  };
+
   function renderStats() {
+    renderStudyProgressMatrix();
     const listEl = document.getElementById('statsWrongWordsList');
     const totalCountEl = document.getElementById('statsTotalWrongWords');
     if (!listEl) return;
@@ -3323,6 +3758,26 @@
     document.getElementById('btnOpenDayGridModal')?.addEventListener('click', () => {
       renderDayGridDashboard();
       openModal('dayGridModal');
+    });
+
+    // 학습 진도표 매트릭스 주간 이동 및 필터 이벤트 바인딩
+    document.getElementById('btnMatrixPrevWeek')?.addEventListener('click', () => {
+      studyMatrixOffsetWeeks--;
+      renderStudyProgressMatrix();
+    });
+    document.getElementById('btnMatrixNextWeek')?.addEventListener('click', () => {
+      studyMatrixOffsetWeeks++;
+      renderStudyProgressMatrix();
+    });
+    document.getElementById('btnMatrixToday')?.addEventListener('click', () => {
+      studyMatrixOffsetWeeks = 0;
+      renderStudyProgressMatrix();
+    });
+    document.querySelectorAll('.matrix-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        studyMatrixDayFilter = btn.dataset.filter;
+        renderStudyProgressMatrix();
+      });
     });
 
     // 탭 클릭
@@ -3626,6 +4081,7 @@
         customMemos: getCustomMemos(),
         wrongStats: wrongStats,
         dayRoundStats: getDayRoundStats(),
+        studyDateMatrix: getStudyDateMatrix(),
         exportDate: new Date().toISOString()
       };
       const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
@@ -3701,6 +4157,9 @@
           if (imported.dayRoundStats) {
             saveDayRoundStats(imported.dayRoundStats);
           }
+          if (imported.studyDateMatrix && typeof imported.studyDateMatrix === 'object') {
+            saveStudyDateMatrix(imported.studyDateMatrix);
+          }
           renderDayFilters();
           if (currentTab === 'list') {
             renderWordList();
@@ -3723,15 +4182,20 @@
 
     // Day별 회독 차수 초기화
     document.getElementById('btnResetDayRounds')?.addEventListener('click', () => {
-      if (confirm('모든 Day의 4지선다 및 빈칸 문제 회독 차수를 0회로 초기화하시겠습니까?')) {
+      if (confirm('모든 Day의 4가지 학습(플래시카드, 4지선다, 문장빈칸, 패러프레이징) 회독 차수와 날짜별 진도표를 0회로 초기화하시겠습니까?')) {
         resetDayRoundStats();
+        localStorage.removeItem(STUDY_DATE_MATRIX_KEY);
         setupQuizScopeUI('standard');
         setupQuizScopeUI('paraphrase');
         setupClozeScopeUI();
         setupFlashcardScopeUI();
-        renderDayGridModal();
+        renderDayGridDashboard();
+        renderStudyProgressMatrix();
         closeModal('dataManageModal');
-        showToast('Day별 회독 기록이 초기화되었습니다.');
+        if (typeof syncPushToCloud === 'function' && typeof getCloudSyncKey === 'function' && getCloudSyncKey()) {
+          syncPushToCloud(true);
+        }
+        showToast('Day별 4단계 회독 및 진도표가 초기화되었습니다.');
       }
     });
 
@@ -4356,6 +4820,20 @@
       const wrongsUpdated = mergeWrongStats(remoteData.wrongStats);
       const memosUpdated = mergeCustomMemos(remoteData.customMemos);
 
+      if (remoteData.studyDateMatrix && typeof remoteData.studyDateMatrix === 'object') {
+        const localMatrix = getStudyDateMatrix();
+        for (const [date, days] of Object.entries(remoteData.studyDateMatrix)) {
+          if (!localMatrix[date]) localMatrix[date] = {};
+          for (const [day, steps] of Object.entries(days || {})) {
+            if (!localMatrix[date][day]) localMatrix[date][day] = {};
+            for (const [step, count] of Object.entries(steps || {})) {
+              localMatrix[date][day][step] = Math.max(Number(localMatrix[date][day][step]) || 0, Number(count) || 0);
+            }
+          }
+        }
+        saveStudyDateMatrix(localMatrix);
+      }
+
       // 상호 동기화를 위해 로컬 데이터도 클라우드에 즉시 반영
       await syncPushToCloud(true);
 
@@ -4398,6 +4876,7 @@
           customMemos: getCustomMemos(),
           wrongStats: wrongStats,
           dayRoundStats: getDayRoundStats(),
+          studyDateMatrix: getStudyDateMatrix(),
           updatedAt: new Date().toISOString()
         }
       };
