@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v4.3.3_20261124_1220';
+    const APP_CURRENT_VER = 'v4.3.4_20261124_1235';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -3603,12 +3603,12 @@
     // 3. 매트릭스 표 HTML 조립 (X축 상단 헤더 & Y축 좌측 열 완전 틀고정(Sticky Freeze) 적용)
     let tableHtml = `
       <table class="w-full text-left border-separate border-spacing-0 min-w-[620px]">
-        <thead class="sticky top-0 z-30 bg-slate-100 shadow-xs">
+        <thead class="sticky top-0 z-30 bg-slate-100 shadow-xs" style="position: sticky; top: 0; z-index: 30;">
           <tr class="bg-slate-100 text-slate-700 text-xs font-black">
             <!-- X/Y축 교차 틀고정 코너 셀 (상단 스크롤 + 좌측 스크롤 모두 완전 고정) -->
-            <th class="p-2 sticky top-0 left-0 bg-slate-100 z-40 w-40 sm:w-44 shadow-xs border-r border-b border-slate-300">Day / 4단계 학습 구분</th>
+            <th class="matrix-corner-th p-2 sticky top-0 left-0 bg-slate-100 z-40 w-40 sm:w-44 shadow-xs border-r border-b border-slate-300" style="position: sticky; top: 0; left: 0; z-index: 45; background-color: #f1f5f9;">Day / 4단계 학습 구분</th>
             ${dates.map(d => `
-              <th class="p-1 px-0.5 text-center border-l border-b border-slate-200 w-9 min-w-[34px] max-w-[42px] sticky top-0 z-30 ${d.isToday ? 'bg-indigo-100 text-indigo-900 border-b-indigo-300 font-black' : 'bg-slate-100 text-slate-600 border-b-slate-300'}">
+              <th class="matrix-header-th p-1 px-0.5 text-center border-l border-b border-slate-200 w-9 min-w-[34px] max-w-[42px] sticky top-0 z-30 ${d.isToday ? 'bg-indigo-100 text-indigo-900 border-b-indigo-300 font-black' : 'bg-slate-100 text-slate-600 border-b-slate-300'}" style="position: sticky; top: 0; z-index: 30; background-color: ${d.isToday ? '#e0e7ff' : '#f1f5f9'};">
                 <div class="text-[10px] leading-tight font-black">${d.display}</div>
                 <div class="text-[9px] font-bold ${d.dow === '일' ? 'text-rose-500' : (d.dow === '토' ? 'text-blue-500' : 'text-slate-400')}">
                   ${d.dow}${d.isToday ? '<span class="block text-[8px] bg-indigo-600 text-white rounded px-0.5 mt-0.5 leading-none py-0.5 font-bold">오늘</span>' : ''}
@@ -3626,8 +3626,8 @@
       tableHtml += `
         <!-- Day 구분 헤더 행 (가로 스크롤 시에도 Day 타이틀 좌측 틀고정 유지) -->
         <tr class="bg-slate-50">
-          <td colspan="${dates.length + 1}" class="p-2 px-3 font-black text-slate-800 text-xs border-t-2 border-b border-slate-200">
-            <div class="sticky left-3 flex items-center justify-between w-full max-w-[calc(100vw-4rem)] sm:max-w-xl">
+          <td colspan="${dates.length + 1}" class="p-2 px-3 font-black text-slate-800 text-xs border-t-2 border-b border-slate-200" style="position: relative;">
+            <div class="matrix-day-title-sticky sticky left-3 flex items-center justify-between w-full max-w-[calc(100vw-4rem)] sm:max-w-xl" style="position: sticky; left: 12px; display: inline-flex;">
               <div class="flex items-center gap-2">
                 <span class="px-2 py-0.5 rounded-lg bg-indigo-600 text-white font-extrabold text-[11px]">${day}</span>
                 <span class="text-[11px] text-slate-500 font-semibold">${getDayWordCountText(day)}</span>
@@ -3645,7 +3645,7 @@
         tableHtml += `
           <tr class="hover:bg-slate-50/70 transition">
             <!-- 1열 Y축 틀고정: 학습 항목 명칭 + 괄호 안 누적 회독수 (가로 스크롤 시 고정) -->
-            <td class="p-1.5 px-2 sticky left-0 bg-white hover:bg-slate-50 z-20 border-r border-b border-slate-200 font-bold text-xs whitespace-nowrap shadow-2xs w-40 sm:w-44">
+            <td class="matrix-left-col p-1.5 px-2 sticky left-0 bg-white hover:bg-slate-50 z-20 border-r border-b border-slate-200 font-bold text-xs whitespace-nowrap shadow-2xs w-40 sm:w-44" style="position: sticky; left: 0; z-index: 20; background-color: #ffffff;">
               <div class="flex items-center justify-between gap-1">
                 <span class="text-slate-800 text-[11px] sm:text-xs">
                   ${step.name} <span class="${totalRound > 0 ? `${step.text} font-black` : 'text-slate-400 font-medium'}">(${totalRound})</span>
