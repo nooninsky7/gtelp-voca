@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v4.3.0_20261124_1115';
+    const APP_CURRENT_VER = 'v4.3.1_20261124_1135';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -316,23 +316,23 @@
     const matrix = getStudyDateMatrix();
     if (Object.keys(matrix).length === 0) {
       const stats = getDayRoundStats();
-      const today = getTodayDateStr();
+      const baseDate = '2026-11-22';
       let hasData = false;
       const seeded = {};
-      seeded[today] = {};
+      seeded[baseDate] = {};
       const stepKeys = ['flashcard', 'standard', 'cloze', 'paraphrase'];
       for (const day in stats) {
         if (stats[day]) {
           const normDay = normalizeDayName(day);
-          seeded[today][normDay] = {};
+          seeded[baseDate][normDay] = {};
           stepKeys.forEach(k => {
             if (stats[day][k] && stats[day][k] > 0) {
-              seeded[today][normDay][k] = stats[day][k];
+              seeded[baseDate][normDay][k] = stats[day][k];
               hasData = true;
             }
           });
-          if (Object.keys(seeded[today][normDay]).length === 0) {
-            delete seeded[today][normDay];
+          if (Object.keys(seeded[baseDate][normDay]).length === 0) {
+            delete seeded[baseDate][normDay];
           }
         }
       }
@@ -2859,11 +2859,14 @@
     document.getElementById('resultWrongCount').textContent = wrong;
     document.getElementById('resultAccuracy').textContent = accuracy;
 
-    // 4지선다 Day별 회독 차수 카운트 & 결과 배지 표시
+    // 4지선다 Day별 회독 차수 카운트 & 결과 배지 표시: 해당 Day의 모든 단어를 다 풀었을 때만 적용 및 집계!
     const roundBadge = document.getElementById('quizResultRoundBadge');
     const roundText = document.getElementById('quizResultRoundText');
     const isSpecialScope = ['all', 'wrong', 'selected'].includes(activeQuiz.currentScope);
-    if (!activeQuiz.isRetry && activeQuiz.currentScope && !isSpecialScope) {
+    const dayPool = getWordPoolForScope(activeQuiz.currentScope);
+    const isFullDayCompleted = !activeQuiz.isRetry && activeQuiz.currentScope && !isSpecialScope && (total >= dayPool.length) && (activeQuiz.currentIndex >= total);
+
+    if (isFullDayCompleted) {
       const newRound = incrementDayRoundCount(activeQuiz.currentScope, 'standard');
       if (roundBadge && roundText) {
         roundText.textContent = `${activeQuiz.currentScope} 4지선다 ${newRound}회독 달성! 🎉`;
@@ -3186,7 +3189,10 @@
         } else {
           clearCurrentLearningSession();
           const isSpecialParaScope = ['all', 'wrong', 'selected'].includes(activeQuiz.currentScope);
-          if (!activeQuiz.isRetry && activeQuiz.currentScope && !isSpecialParaScope) {
+          const paraPool = getWordPoolForScope(activeQuiz.currentScope).filter(w => Array.isArray(w.paraphrase) && w.paraphrase.length > 0);
+          const isFullParaCompleted = !activeQuiz.isRetry && activeQuiz.currentScope && !isSpecialParaScope && (activeQuiz.questionList.length >= paraPool.length) && (activeQuiz.currentIndex >= activeQuiz.questionList.length);
+
+          if (isFullParaCompleted) {
             const newRound = incrementDayRoundCount(activeQuiz.currentScope, 'paraphrase');
             showToast(`${activeQuiz.currentScope} 패러프레이징 ${newRound}회독 달성! 🎉`);
           }
@@ -3360,15 +3366,15 @@
   // --------------------------------------------------------------------------
   // 7. 데일리 학습 진도 매트릭스 & 오답 통계 뷰
   // --------------------------------------------------------------------------
-  let studyMatrixOffsetWeeks = 0;
+  let studyMatrixDayOffset = 0;
   let studyMatrixDayFilter = 'ALL';
   let matrixActiveTarget = null;
 
   const STUDY_STEPS = [
-    { key: 'flashcard', stepNum: 1, name: '1단계: 플래시카드', shortName: '플래시카드', desc: '암기', icon: 'fa-solid fa-clone', color: 'amber', bg: 'bg-amber-500', hoverBg: 'hover:bg-amber-600', lightBg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-300' },
-    { key: 'standard', stepNum: 2, name: '2단계: 4지선다', shortName: '4지선다', desc: '테스트', icon: 'fa-solid fa-graduation-cap', color: 'indigo', bg: 'bg-indigo-600', hoverBg: 'hover:bg-indigo-700', lightBg: 'bg-indigo-50', text: 'text-indigo-700', border: 'border-indigo-300' },
-    { key: 'cloze', stepNum: 3, name: '3단계: 문장빈칸', shortName: '문장빈칸', desc: '문맥', icon: 'fa-solid fa-pen-to-square', color: 'emerald', bg: 'bg-emerald-600', hoverBg: 'hover:bg-emerald-700', lightBg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-300' },
-    { key: 'paraphrase', stepNum: 4, name: '4단계: 패러프레이징', shortName: '패러프레이징', desc: '실전', icon: 'fa-solid fa-shuffle', color: 'rose', bg: 'bg-rose-500', hoverBg: 'hover:bg-rose-600', lightBg: 'bg-rose-50', text: 'text-rose-700', border: 'border-rose-300' }
+    { key: 'flashcard', stepNum: 1, name: '1단계 플래시카드', shortName: '플래시카드', desc: '암기', color: 'amber', bg: 'bg-amber-500', hoverBg: 'hover:bg-amber-600', lightBg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-300' },
+    { key: 'standard', stepNum: 2, name: '2단계 4지선다', shortName: '4지선다', desc: '테스트', color: 'indigo', bg: 'bg-indigo-600', hoverBg: 'hover:bg-indigo-700', lightBg: 'bg-indigo-50', text: 'text-indigo-700', border: 'border-indigo-300' },
+    { key: 'cloze', stepNum: 3, name: '3단계 문장빈칸', shortName: '문장빈칸', desc: '문맥', color: 'emerald', bg: 'bg-emerald-600', hoverBg: 'hover:bg-emerald-700', lightBg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-300' },
+    { key: 'paraphrase', stepNum: 4, name: '4단계 패러프레이징', shortName: '패러프레이징', desc: '실전', color: 'rose', bg: 'bg-rose-500', hoverBg: 'hover:bg-rose-600', lightBg: 'bg-rose-50', text: 'text-rose-700', border: 'border-rose-300' }
   ];
 
   const ALL_STUDY_DAYS = [
@@ -3387,12 +3393,17 @@
     return `${c || 50}단어`;
   }
 
-  function getMatrixDateColumns(offsetWeeks = 0) {
+  // 11/22일부터 시작하여 요일이 한눈에 많이 보이도록 14일(2주) 단위 생성
+  function getMatrixDateColumns(offsetDays = 0, count = 14) {
     const dates = [];
     const todayStr = getTodayDateStr();
-    for (let i = 6; i >= 0; i--) {
-      const d = new Date();
-      d.setDate(d.getDate() + (offsetWeeks * 7) - i);
+    // 2026-11-22(일) 기준 시작
+    const base = new Date(2026, 10, 22);
+    base.setDate(base.getDate() + offsetDays);
+
+    for (let i = 0; i < count; i++) {
+      const d = new Date(base);
+      d.setDate(base.getDate() + i);
       const y = d.getFullYear();
       const m = String(d.getMonth() + 1).padStart(2, '0');
       const day = String(d.getDate()).padStart(2, '0');
@@ -3417,11 +3428,10 @@
 
     const roundStats = getDayRoundStats();
     const dateMatrix = getStudyDateMatrix();
-    const dates = getMatrixDateColumns(studyMatrixOffsetWeeks);
+    const dates = getMatrixDateColumns(studyMatrixDayOffset, 14);
 
     // 1. 오늘의 맞춤 하루 2Day 진도 & 복습 가이드 박스 렌더링
     if (guideBox) {
-      // 일반 Day 01 ~ 20 중 미완료(4단계 중 하나라도 0회독)인 첫 2개 Day 탐색
       const regularDays = ALL_STUDY_DAYS.filter(d => d.startsWith('Day '));
       const incompleteDays = regularDays.filter(day => {
         const dStats = roundStats[day] || {};
@@ -3431,7 +3441,6 @@
       let targetDay1 = incompleteDays[0] || 'Day 01';
       let targetDay2 = incompleteDays[1] || 'Day 02';
 
-      // 4단계 중 일부만 풀고 빼먹은 Day 목록 (복습 필요 알림)
       const missedAlerts = [];
       regularDays.forEach(day => {
         const dStats = roundStats[day] || {};
@@ -3447,8 +3456,8 @@
         return `
           <div class="bg-white p-3 sm:p-3.5 rounded-2xl border border-indigo-100 shadow-xs space-y-2">
             <div class="flex items-center justify-between">
-              <span class="font-black text-sm text-indigo-900 flex items-center gap-1.5">
-                <i class="fa-solid fa-flag-checkered text-indigo-600"></i> ${day}
+              <span class="font-black text-sm text-indigo-900">
+                ${day}
               </span>
               <span class="text-[11px] font-bold text-slate-500">${getDayWordCountText(day)}</span>
             </div>
@@ -3462,8 +3471,8 @@
                       ? `${step.lightBg} border-${step.color}-200 ${step.text} hover:opacity-90` 
                       : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700'
                   }">
-                    <span class="font-bold text-xs flex items-center gap-1">
-                      <i class="${step.icon} ${isDone ? step.text : 'text-slate-400'}"></i> ${step.shortName}
+                    <span class="font-bold text-xs">
+                      ${step.name}
                     </span>
                     <span class="text-[10px] font-black px-1.5 py-0.5 rounded-md ${
                       isDone ? `${step.bg} text-white` : 'bg-slate-200 text-slate-600'
@@ -3503,7 +3512,7 @@
                     <span class="text-indigo-700">${a.day}:</span>
                     ${a.missingSteps.map(ms => `
                       <button onclick="window.startDayDirectQuiz('${a.day}', '${ms.key}')" class="underline hover:text-amber-700 ${ms.text}">
-                        ${ms.shortName}
+                        ${ms.name}
                       </button>
                     `).join(', ')}
                   </div>
@@ -3539,22 +3548,20 @@
       });
     }
 
-    // 3. 매트릭스 표 HTML 조립
+    // 3. 매트릭스 표 HTML 조립 (요일칸은 좁게, 한눈에 많이 보이도록 최적화, 누적회독수는 괄호에 표기)
     let tableHtml = `
-      <table class="w-full text-left border-collapse min-w-[700px]">
+      <table class="w-full text-left border-collapse min-w-[620px]">
         <thead>
           <tr class="bg-slate-100 text-slate-700 text-xs font-black border-b border-slate-200">
-            <th class="p-2.5 sticky left-0 bg-slate-100 z-10 w-44 shadow-xs">Day / 4단계 학습 구분</th>
+            <th class="p-2 sticky left-0 bg-slate-100 z-10 w-40 sm:w-44 shadow-xs">Day / 4단계 학습 구분</th>
             ${dates.map(d => `
-              <th class="p-2 text-center border-l border-slate-200 ${d.isToday ? 'bg-indigo-100/70 text-indigo-900 border-indigo-300' : ''}">
-                <div class="text-[11px] leading-tight">${d.display}</div>
-                <div class="text-[10px] font-semibold text-slate-500 flex items-center justify-center gap-0.5 mt-0.5">
-                  (${d.dow})
-                  ${d.isToday ? '<span class="text-[9px] font-black bg-indigo-600 text-white px-1 rounded">오늘</span>' : ''}
+              <th class="p-1 px-0.5 text-center border-l border-slate-200 w-9 min-w-[34px] max-w-[42px] ${d.isToday ? 'bg-indigo-50/80 text-indigo-900 border-indigo-300 font-black' : 'text-slate-600'}">
+                <div class="text-[10px] leading-tight font-black">${d.display}</div>
+                <div class="text-[9px] font-bold ${d.dow === '일' ? 'text-rose-500' : (d.dow === '토' ? 'text-blue-500' : 'text-slate-400')}">
+                  ${d.dow}${d.isToday ? '<span class="block text-[8px] bg-indigo-600 text-white rounded px-0.5 mt-0.5 leading-none py-0.5 font-bold">오늘</span>' : ''}
                 </div>
               </th>
             `).join('')}
-            <th class="p-2 text-center border-l border-slate-200 w-24">누적 회독수</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-100 text-xs">
@@ -3567,13 +3574,13 @@
       tableHtml += `
         <!-- Day 구분 헤더 행 -->
         <tr class="bg-slate-50/90 border-t-2 border-slate-200">
-          <td colspan="${dates.length + 2}" class="p-2 px-3 font-black text-slate-800 text-xs flex items-center justify-between">
+          <td colspan="${dates.length + 1}" class="p-2 px-3 font-black text-slate-800 text-xs flex items-center justify-between">
             <div class="flex items-center gap-2">
               <span class="px-2 py-0.5 rounded-lg bg-indigo-600 text-white font-extrabold text-[11px]">${day}</span>
               <span class="text-[11px] text-slate-500 font-semibold">${getDayWordCountText(day)}</span>
             </div>
             <div class="text-[11px] font-bold">
-              4단계 회독 진도: <span class="${completedStepsCount === 4 ? 'text-emerald-600 font-black' : 'text-indigo-600 font-black'}">${completedStepsCount}/4 단계 완료</span>
+              4단계 회독 진도: <span class="${completedStepsCount === 4 ? 'text-emerald-600 font-black' : 'text-indigo-600 font-black'}">${completedStepsCount}/4 완료</span>
             </div>
           </td>
         </tr>
@@ -3583,12 +3590,11 @@
         const totalRound = Number(dStats[step.key]) || 0;
         tableHtml += `
           <tr class="hover:bg-slate-50/70 transition">
-            <!-- 1열: 학습 항목 명칭 -->
-            <td class="p-2 sticky left-0 bg-white hover:bg-slate-50 z-1 border-r border-slate-100 font-bold text-xs text-slate-700 whitespace-nowrap shadow-2xs">
+            <!-- 1열: 학습 항목 명칭 + 괄호 안 누적 회독수 (아이콘 제외) -->
+            <td class="p-1.5 px-2 sticky left-0 bg-white hover:bg-slate-50 z-1 border-r border-slate-200 font-bold text-xs whitespace-nowrap shadow-2xs w-40 sm:w-44">
               <div class="flex items-center justify-between gap-1">
-                <span class="flex items-center gap-1.5">
-                  <i class="${step.icon} ${step.text} text-xs"></i>
-                  <span>${step.name}</span>
+                <span class="text-slate-800 text-[11px] sm:text-xs">
+                  ${step.name} <span class="${totalRound > 0 ? `${step.text} font-black` : 'text-slate-400 font-medium'}">(${totalRound})</span>
                 </span>
                 <button onclick="window.startDayDirectQuiz('${day}', '${step.key}')" class="p-1 px-1.5 rounded-md hover:${step.lightBg} ${step.text} text-[10px] font-bold" title="바로 학습 시작">
                   <i class="fa-solid fa-play text-[9px]"></i>
@@ -3596,35 +3602,24 @@
               </div>
             </td>
 
-            <!-- 날짜별 셀 (7개) -->
+            <!-- 날짜별 셀: 회차 숫자만 깔끔하게 표시 -->
             ${dates.map(d => {
               const count = (dateMatrix[d.dateStr] && dateMatrix[d.dateStr][day] && dateMatrix[d.dateStr][day][step.key]) || 0;
               const isTodayCell = d.isToday;
               return `
-                <td class="p-1 text-center align-middle border-l border-slate-100 ${isTodayCell ? 'bg-indigo-50/30' : ''}">
+                <td class="p-0.5 text-center align-middle border-l border-slate-100 ${isTodayCell ? 'bg-indigo-50/20' : ''}">
                   ${count > 0 ? `
-                    <button onclick="window.handleMatrixCellClick('${day}', '${step.key}', '${d.dateStr}', ${count})" class="w-full py-1.5 px-0.5 rounded-lg ${step.bg} text-white font-black text-[10px] sm:text-[11px] shadow-2xs hover:opacity-90 active:scale-95 transition flex items-center justify-center gap-0.5" title="${d.dateStr} ${day} ${step.shortName} ${count}회독 완료 (클릭 시 액션)">
-                      <i class="fa-solid fa-check text-[9px]"></i> ${count}회
+                    <button onclick="window.handleMatrixCellClick('${day}', '${step.key}', '${d.dateStr}', ${count})" class="w-7 h-7 mx-auto rounded-md ${step.bg} text-white font-black text-xs shadow-2xs hover:opacity-90 active:scale-95 transition flex items-center justify-center" title="${d.dateStr} ${day} ${step.shortName} ${count}회독 완료">
+                      ${count}
                     </button>
                   ` : `
-                    <button onclick="window.handleMatrixCellClick('${day}', '${step.key}', '${d.dateStr}', 0)" class="w-full py-1.5 px-0.5 rounded-lg border border-dashed border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/50 text-slate-300 hover:text-indigo-600 text-[10px] font-bold transition flex items-center justify-center" title="${d.dateStr} ${day} ${step.shortName} 미완료 (클릭 시 학습 시작 또는 수동 체크)">
+                    <button onclick="window.handleMatrixCellClick('${day}', '${step.key}', '${d.dateStr}', 0)" class="w-7 h-7 mx-auto rounded-md text-slate-300 hover:text-indigo-600 hover:bg-indigo-50/50 font-bold text-xs transition flex items-center justify-center" title="${d.dateStr} ${day} ${step.shortName} 미완료">
                       -
                     </button>
                   `}
                 </td>
               `;
             }).join('')}
-
-            <!-- 누적 회독수 셀 -->
-            <td class="p-1.5 text-center align-middle border-l border-slate-100 bg-slate-50/40 font-bold">
-              ${totalRound > 0 ? `
-                <span class="px-2 py-0.5 rounded-full ${step.lightBg} ${step.text} border ${step.border} font-black text-[10px] sm:text-[11px]">
-                  ${totalRound}회독
-                </span>
-              ` : `
-                <span class="text-slate-300 text-[10px] font-normal">0회</span>
-              `}
-            </td>
           </tr>
         `;
       });
@@ -3760,17 +3755,17 @@
       openModal('dayGridModal');
     });
 
-    // 학습 진도표 매트릭스 주간 이동 및 필터 이벤트 바인딩
+    // 학습 진도표 매트릭스 이동 및 필터 이벤트 바인딩
     document.getElementById('btnMatrixPrevWeek')?.addEventListener('click', () => {
-      studyMatrixOffsetWeeks--;
+      studyMatrixDayOffset -= 7;
       renderStudyProgressMatrix();
     });
     document.getElementById('btnMatrixNextWeek')?.addEventListener('click', () => {
-      studyMatrixOffsetWeeks++;
+      studyMatrixDayOffset += 7;
       renderStudyProgressMatrix();
     });
     document.getElementById('btnMatrixToday')?.addEventListener('click', () => {
-      studyMatrixOffsetWeeks = 0;
+      studyMatrixDayOffset = 0;
       renderStudyProgressMatrix();
     });
     document.querySelectorAll('.matrix-filter-btn').forEach(btn => {
@@ -3779,6 +3774,7 @@
         renderStudyProgressMatrix();
       });
     });
+    renderStudyProgressMatrix();
 
     // 탭 클릭
     document.querySelectorAll('.nav-tab').forEach(tab => {
@@ -5446,10 +5442,12 @@
     saveFlashcardProgress(scope, 0);
     clearCurrentLearningSession();
 
-    // 플래시카드 Day별 회독 차수 카운트
+    // 플래시카드 Day별 회독 차수 카운트: 해당 항목의 모든 단어를 다 확인했을 때만 적용 및 집계!
     const isSpecialFcScope = ['all', 'wrong', 'selected'].includes(scope);
+    const dayPool = getWordPoolForScope(scope);
+    const isFullFcCompleted = scope && !isSpecialFcScope && (flashcardDeck.length >= dayPool.length) && (flashcardCurrentIndex >= flashcardDeck.length);
     let roundText = '';
-    if (scope && !isSpecialFcScope) {
+    if (isFullFcCompleted) {
       const newRound = incrementDayRoundCount(scope, 'flashcard');
       roundText = ` (${newRound}회독 달성! 🎉)`;
     }
@@ -5899,11 +5897,14 @@
     document.getElementById('clozeResultWrong').textContent = wrong;
     document.getElementById('clozeResultAccuracy').textContent = accuracy;
 
-    // 빈칸 문장 Day별 회독 차수 카운트 & 결과 배지 표시
+    // 빈칸 문장 Day별 회독 차수 카운트 & 결과 배지 표시: 해당 Day의 모든 빈칸 문장을 다 풀었을 때만 적용 및 집계!
     const clozeRoundBadge = document.getElementById('clozeResultRoundBadge');
     const clozeRoundText = document.getElementById('clozeResultRoundText');
     const isSpecialClozeScope = ['all', 'wrong', 'selected'].includes(activeClozeQuiz.currentScope);
-    if (!activeClozeQuiz.isRetry && activeClozeQuiz.currentScope && !isSpecialClozeScope) {
+    const clozePool = getWordPoolForScope(activeClozeQuiz.currentScope).filter(w => w.exampleEn && w.exampleEn.trim().length > 0);
+    const isFullClozeCompleted = !activeClozeQuiz.isRetry && activeClozeQuiz.currentScope && !isSpecialClozeScope && (total >= clozePool.length) && (activeClozeQuiz.currentIndex >= total);
+
+    if (isFullClozeCompleted) {
       const newRound = incrementDayRoundCount(activeClozeQuiz.currentScope, 'cloze');
       if (clozeRoundBadge && clozeRoundText) {
         clozeRoundText.textContent = `${activeClozeQuiz.currentScope} 문장 빈칸 ${newRound}회독 달성! 🎉`;
