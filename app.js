@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v4.3.7_20261124_1755';
+    const APP_CURRENT_VER = 'v4.3.8_20261124_1805';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -435,6 +435,18 @@
     } else if (!stats['기초단어'].standard || stats['기초단어'].standard < 1) {
       stats['기초단어'].standard = 1;
       changed = true;
+    }
+
+    // 💡 사용자가 오늘(2026-11-24) 완독한 Day 06 플래시카드 1회독 소급 자동 반영!
+    const AUTOCREDIT_D06_KEY = 'voca_autocredit_d06_fc_20261124';
+    if (!localStorage.getItem(AUTOCREDIT_D06_KEY)) {
+      if (!stats['Day 06']) stats['Day 06'] = {};
+      if (!stats['Day 06'].flashcard || stats['Day 06'].flashcard < 1) {
+        stats['Day 06'].flashcard = 1;
+        changed = true;
+      }
+      recordStudyDateCompletion('Day 06', 'flashcard', '2026-11-24');
+      localStorage.setItem(AUTOCREDIT_D06_KEY, 'true');
     }
 
     if (changed) {
@@ -5413,6 +5425,7 @@
 
   function handleFlashcardNext() {
     if (flashcardCurrentIndex >= flashcardDeck.length - 1) {
+      flashcardCurrentIndex = flashcardDeck.length; // 마지막 단어까지 100% 완독 완료로 인덱스 확정
       finishFlashcard();
       return;
     }
@@ -5673,7 +5686,7 @@
     // 플래시카드 Day별 회독 차수 카운트: 해당 항목의 모든 단어를 다 확인했을 때만 적용 및 집계!
     const isSpecialFcScope = ['all', 'wrong', 'selected'].includes(scope);
     const dayPool = getWordPoolForScope(scope);
-    const isFullFcCompleted = scope && !isSpecialFcScope && (flashcardDeck.length >= dayPool.length) && (flashcardCurrentIndex >= flashcardDeck.length);
+    const isFullFcCompleted = scope && !isSpecialFcScope && (flashcardDeck.length > 0) && (flashcardCurrentIndex >= flashcardDeck.length - 1 || flashcardCurrentIndex >= flashcardDeck.length);
     let roundText = '';
     if (isFullFcCompleted) {
       const newRound = incrementDayRoundCount(scope, 'flashcard');
