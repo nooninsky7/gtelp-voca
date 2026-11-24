@@ -128,27 +128,39 @@
       }
     }
 
+    // 1. 유효하지 않은(단어명이 비어있거나 공백인) 유령 데이터 원천 차단 및 클리닝
+    if (Array.isArray(loaded)) {
+      const beforeCount = loaded.length;
+      loaded = loaded.filter(w => w && typeof w.word === 'string' && w.word.trim().length > 0 && typeof w.meaning === 'string' && w.meaning.trim().length > 0);
+      if (loaded.length !== beforeCount) {
+        console.warn(`[VOCA Cleanup] 공란/유령 단어 ${beforeCount - loaded.length}건을 로컬스토리지에서 자동 제거했습니다.`);
+        localStorage.setItem('voca_words', JSON.stringify(loaded));
+      }
+    }
+
     // INITIAL_WORDS_DATA를 기준으로 데이터 맵 생성 (최신 교재 데이터 반영)
     const wordMap = new Map();
     const existingWordKeys = new Set();
 
     INITIAL_WORDS_DATA.forEach(w => {
+      if (!w || !w.word || !w.word.trim()) return;
       wordMap.set(w.id, { ...w });
-      const key = `${w.day}::${(w.word || '').trim().toLowerCase()}`;
+      const key = `${w.day}::${w.word.trim().toLowerCase()}`;
       existingWordKeys.add(key);
     });
     
-    // 사용자가 로컬에서 수정한 내용이나 추가된 커스텀 단어가 있다면 병합 (단, 정식 단어와 중복되는 구버전 단어는 최신 정식 데이터 우선)
+    // 사용자가 로컬에서 수정한 내용이나 추가된 커스텀 단어가 있다면 병합 (단, 공백 단어 배제 & 정식 단어 우선)
     loaded.forEach(w => {
+      if (!w || !w.word || !w.word.trim() || !w.meaning || !w.meaning.trim()) return;
       const normalizedDay = (w.day === '기초 01' || w.day === '기초01' || w.day === '기초 필수 단어') ? '기초단어' : w.day;
-      const key = `${normalizedDay}::${(w.word || '').trim().toLowerCase()}`;
+      const key = `${normalizedDay}::${w.word.trim().toLowerCase()}`;
       if (!wordMap.has(w.id) && !existingWordKeys.has(key)) {
         wordMap.set(w.id, { ...w, day: normalizedDay });
         existingWordKeys.add(key);
       }
     });
 
-    words = Array.from(wordMap.values());
+    words = Array.from(wordMap.values()).filter(w => w && typeof w.word === 'string' && w.word.trim().length > 0);
     window.words = words;
 
     // 사용자가 작성/수정한 커스텀 암기 팁(수기 메모) 로드 및 단어별 병합
@@ -167,11 +179,7 @@
         wordsChanged = true;
       }
     });
-    if (wordsChanged) {
-      saveWords();
-    } else {
-      saveWords();
-    }
+    saveWords();
 
     // Day별 회독 차수 초기화 및 마이그레이션 (기초단어 4지선다 1회독 반영)
     migrateDayRoundStats();
@@ -189,6 +197,7 @@
   }
 
   function saveWords() {
+    words = words.filter(w => w && typeof w.word === 'string' && w.word.trim().length > 0);
     localStorage.setItem('voca_words', JSON.stringify(words));
   }
 
@@ -2426,28 +2435,29 @@
   }
 
   function getWordPoolForScope(scope) {
+    const validWords = words.filter(w => w && typeof w.word === 'string' && w.word.trim().length > 0 && typeof w.meaning === 'string' && w.meaning.trim().length > 0);
     if (scope === 'selected') {
       const selected = [];
       selectedWordIds.forEach(id => {
-        const found = words.find(w => w.id === id);
+        const found = validWords.find(w => w.id === id);
         if (found) {
           selected.push(found);
         } else {
           const synth = getWordDetailsComprehensive(id);
-          if (synth) selected.push(synth);
+          if (synth && synth.word && synth.word.trim()) selected.push(synth);
         }
       });
       return selected;
     }
     if (scope === 'wrong') {
-      return words.filter(w => getWrongCount(w.id) > 0);
+      return validWords.filter(w => getWrongCount(w.id) > 0);
     }
     if (scope === 'all') {
-      return [...words];
+      return [...validWords];
     }
     // 특정 Day (정규화하여 Day 01 == Day 1 완벽 매칭)
     const normScope = normalizeDayName(scope);
-    return words.filter(w => normalizeDayName(w.day) === normScope);
+    return validWords.filter(w => normalizeDayName(w.day) === normScope);
   }
 
   function shuffle(array) {
@@ -4665,9 +4675,10 @@
     let added = false;
 
     cloudCustomWords.forEach(w => {
-      const key = `${w.day}::${(w.word || '').trim().toLowerCase()}`;
+      if (!w || !w.word || typeof w.word !== 'string' || !w.word.trim() || !w.meaning || typeof w.meaning !== 'string' || !w.meaning.trim()) return;
+      const key = `${w.day}::${w.word.trim().toLowerCase()}`;
       if (!existingIds.has(w.id) && !existingKeys.has(key)) {
-        words.push(w);
+        words.push({ ...w, word: w.word.trim(), meaning: w.meaning.trim() });
         existingIds.add(w.id);
         existingKeys.add(key);
         added = true;
@@ -5164,7 +5175,7 @@
     `;
 
     days.forEach(day => {
-      const count = words.filter(w => w.day === day).length;
+      const count = words.filter(w => normalizeDayName(w.day) === normalizeDayName(day) && w && typeof w.word === 'string' && w.word.trim().length > 0).length;
       const savedIdx = getFlashcardLastIndex(day);
       const fcRounds = getDayRoundCount(day, 'flashcard');
       const progressBadge = (savedIdx > 0 && savedIdx < count)
@@ -5210,7 +5221,7 @@
 
   function startFlashcard(scope, forceReset = false) {
     flashcardCurrentScope = scope || getSelectedScope('flashcard') || 'Day 01';
-    let pool = getWordPoolForScope(flashcardCurrentScope);
+    let pool = getWordPoolForScope(flashcardCurrentScope).filter(w => w && typeof w.word === 'string' && w.word.trim().length > 0 && typeof w.meaning === 'string' && w.meaning.trim().length > 0);
     if (pool.length === 0) {
       alert('학습할 단어가 없습니다. 범위를 다시 선택해주세요.');
       return;
