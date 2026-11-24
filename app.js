@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v4.3.1_20261124_1135';
+    const APP_CURRENT_VER = 'v4.3.2_20261124_1155';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -309,7 +309,7 @@
     if (typeof syncPushToCloud === 'function' && typeof getCloudSyncKey === 'function' && getCloudSyncKey()) {
       syncPushToCloud(true);
     }
-    renderStudyProgressMatrix();
+    refreshAllStudyRoundDisplays();
   }
 
   function seedStudyDateMatrixIfEmpty() {
@@ -342,24 +342,52 @@
     }
   }
 
+  // 전체 화면(모든 탭 & 모달 & 매트릭스 진도표)의 회독 수 표기를 100% 실시간 일치시키는 통합 갱신 함수
+  function refreshAllStudyRoundDisplays() {
+    try {
+      if (typeof setupQuizScopeUI === 'function') {
+        setupQuizScopeUI('standard');
+        setupQuizScopeUI('paraphrase');
+      }
+      if (typeof setupFlashcardScopeUI === 'function') setupFlashcardScopeUI();
+      if (typeof setupClozeScopeUI === 'function') setupClozeScopeUI();
+      if (typeof renderDayGridDashboard === 'function') renderDayGridDashboard();
+      if (typeof renderDayFoldersView === 'function') {
+        const foldersContainer = document.getElementById('dayFoldersContainer');
+        if (foldersContainer) renderDayFoldersView(foldersContainer);
+      }
+      if (typeof renderStudyProgressMatrix === 'function') renderStudyProgressMatrix();
+    } catch (e) {
+      console.warn('Error refreshing round displays:', e);
+    }
+  }
+  window.refreshAllStudyRoundDisplays = refreshAllStudyRoundDisplays;
+
+  // 단일 진실 공급원(Single Source of Truth): 정규화된 Day 명칭과 원본 명칭 양쪽 모두 완벽 호환
   function getDayRoundCount(day, type) {
     if (!day) return 0;
+    const normDay = normalizeDayName(day);
     const stats = getDayRoundStats();
-    if (!stats[day]) return 0;
-    return Number(stats[day][type]) || 0;
+    if (stats[normDay] && stats[normDay][type] !== undefined) return Number(stats[normDay][type]) || 0;
+    if (stats[day] && stats[day][type] !== undefined) return Number(stats[day][type]) || 0;
+    return 0;
   }
 
   function incrementDayRoundCount(day, type) {
     if (!day || ['all', 'wrong', 'selected'].includes(day)) return 0;
+    const normDay = normalizeDayName(day);
     const stats = getDayRoundStats();
-    if (!stats[day]) stats[day] = {};
-    const current = Number(stats[day][type]) || 0;
+    if (!stats[normDay]) stats[normDay] = {};
+    const current = Number(stats[normDay][type]) || 0;
     const next = current + 1;
-    stats[day][type] = next;
+    stats[normDay][type] = next;
     saveDayRoundStats(stats);
 
     // 날짜별 학습 매트릭스에 오늘 일자로 자동 기록!
-    recordStudyDateCompletion(day, type);
+    recordStudyDateCompletion(normDay, type);
+
+    // 모든 탭(4지선다, 플래시카드, 문장빈칸, 패러프레이징, Day목차, 학습진도표) 실시간 동기화
+    refreshAllStudyRoundDisplays();
 
     // 클라우드 동기화 키가 있으면 즉시 자동 업로드
     if (typeof syncPushToCloud === 'function' && typeof getCloudSyncKey === 'function' && getCloudSyncKey()) {
@@ -367,6 +395,14 @@
     }
     return next;
   }
+
+  window.getDayRoundCount = getDayRoundCount;
+  window.incrementDayRoundCount = incrementDayRoundCount;
+  window.toggleStudyDateCompletion = toggleStudyDateCompletion;
+  window.getDayRoundStats = getDayRoundStats;
+  window.getStudyDateMatrix = getStudyDateMatrix;
+  window.renderDayGridDashboard = renderDayGridDashboard;
+  window.startParaphraseQuiz = startParaphraseQuiz;
 
   function migrateDayRoundStats() {
     const stats = getDayRoundStats();
@@ -1039,18 +1075,20 @@
     const days = getAllDays();
 
     container.innerHTML = days.map(d => {
-      const dayWords = words.filter(w => w.day === d);
+      const dayWords = words.filter(w => normalizeDayName(w.day) === normalizeDayName(d));
       const wrongCount = dayWords.filter(w => getWrongCount(w.id) > 0).length;
+      const fcRounds = getDayRoundCount(d, 'flashcard');
       const stdRounds = getDayRoundCount(d, 'standard');
       const clozeRounds = getDayRoundCount(d, 'cloze');
+      const paraRounds = getDayRoundCount(d, 'paraphrase');
       const isCurrent = activeDayFilter === d;
 
       return `
-        <div class="p-4 rounded-2xl border transition-all ${
+        <div class="p-3.5 sm:p-4 rounded-2xl border transition-all ${
           isCurrent 
             ? 'border-indigo-500 bg-indigo-50/60 shadow-md ring-2 ring-indigo-500/20' 
             : 'border-slate-200 bg-white hover:border-indigo-300 hover:shadow-sm'
-        } space-y-3">
+        } space-y-2.5">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
               <span class="w-8 h-8 rounded-xl bg-indigo-600 text-white font-black text-xs flex items-center justify-center shadow-sm">
@@ -1059,8 +1097,11 @@
               <div>
                 <div class="font-black text-sm text-slate-900">${d}</div>
                 <div class="text-[11px] text-slate-500">총 ${dayWords.length}단어 수록</div>
-                <div class="text-[10px] text-slate-500 mt-0.5">
-                  4지: <strong class="${stdRounds > 0 ? 'text-indigo-600 font-bold' : 'text-slate-400'}">${stdRounds}회독</strong> · 빈칸: <strong class="${clozeRounds > 0 ? 'text-emerald-600 font-bold' : 'text-slate-400'}">${clozeRounds}회독</strong>
+                <div class="text-[10px] text-slate-500 mt-0.5 flex flex-wrap gap-x-2 gap-y-0.5 font-semibold">
+                  <span>카드: <strong class="${fcRounds > 0 ? 'text-amber-600 font-bold' : 'text-slate-400'}">${fcRounds}회</strong></span>
+                  <span>4지: <strong class="${stdRounds > 0 ? 'text-indigo-600 font-bold' : 'text-slate-400'}">${stdRounds}회</strong></span>
+                  <span>빈칸: <strong class="${clozeRounds > 0 ? 'text-emerald-600 font-bold' : 'text-slate-400'}">${clozeRounds}회</strong></span>
+                  <span>동의: <strong class="${paraRounds > 0 ? 'text-rose-600 font-bold' : 'text-slate-400'}">${paraRounds}회</strong></span>
                 </div>
               </div>
             </div>
@@ -1072,19 +1113,22 @@
             ` : ''}
           </div>
 
-          <!-- 액션 버튼들 -->
-          <div class="grid grid-cols-4 gap-1 pt-1 border-t border-slate-100 text-[11px]">
-            <button onclick="window.selectDayFromDashboard('${d}')" class="py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition text-center shadow-xs">
+          <!-- 유기적 연동 바로가기 5버튼 (단어 / 플래시카드 / 4지선다 / 문장빈칸 / 패러프레이징) -->
+          <div class="grid grid-cols-5 gap-1 pt-1 border-t border-slate-100 text-[11px]">
+            <button onclick="window.selectDayFromDashboard('${d}')" class="py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition text-center shadow-xs" title="단어 목록 보기">
               <i class="fa-solid fa-book-open"></i> 단어
             </button>
-            <button onclick="window.startDayDirectQuiz('${d}', 'standard')" class="py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition text-center">
+            <button onclick="window.startDayDirectQuiz('${d}', 'flashcard')" class="py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold transition text-center" title="플래시카드">
+              <i class="fa-solid fa-clone"></i> 카드${fcRounds > 0 ? ` (${fcRounds})` : ''}
+            </button>
+            <button onclick="window.startDayDirectQuiz('${d}', 'standard')" class="py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-800 font-bold transition text-center" title="4지선다">
               <i class="fa-solid fa-play"></i> 4지${stdRounds > 0 ? ` (${stdRounds})` : ''}
             </button>
-            <button onclick="window.startDayDirectQuiz('${d}', 'cloze')" class="py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold transition text-center">
+            <button onclick="window.startDayDirectQuiz('${d}', 'cloze')" class="py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold transition text-center" title="문장빈칸">
               <i class="fa-solid fa-pen"></i> 빈칸${clozeRounds > 0 ? ` (${clozeRounds})` : ''}
             </button>
-            <button onclick="window.startDayDirectQuiz('${d}', 'flashcard')" class="py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold transition text-center">
-              <i class="fa-solid fa-clone"></i> 카드
+            <button onclick="window.startDayDirectQuiz('${d}', 'paraphrase')" class="py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-800 font-bold transition text-center" title="동의어(패러프레이징)">
+              <i class="fa-solid fa-shuffle"></i> 동의${paraRounds > 0 ? ` (${paraRounds})` : ''}
             </button>
           </div>
         </div>
@@ -1093,31 +1137,33 @@
   }
 
   window.selectDayFromDashboard = function(day) {
-    activeDayFilter = day;
+    activeDayFilter = normalizeDayName(day);
     renderDayFilters();
     renderWordList();
     closeModal('dayGridModal');
     if (day === 'ALL') {
       showToast('전체 단어 목록을 표시합니다.');
     } else {
-      showToast(`[${day}] 단어 목록으로 이동했습니다.`);
+      showToast(`[${activeDayFilter}] 단어 목록으로 이동했습니다.`);
     }
   };
 
   window.startDayDirectQuiz = function(day, type) {
     closeModal('dayGridModal');
+    closeModal('studyMatrixActionModal');
+    const normDay = normalizeDayName(day);
     if (type === 'standard') {
       switchTab('quiz');
-      startStandardQuiz(day);
+      startStandardQuiz(normDay);
     } else if (type === 'cloze') {
       switchTab('cloze-quiz');
-      startClozeQuiz(day);
+      startClozeQuiz(normDay);
     } else if (type === 'flashcard') {
       switchTab('flashcard');
-      startFlashcard(day);
-    } else {
+      startFlashcard(normDay, false);
+    } else if (type === 'paraphrase') {
       switchTab('paraphrase-quiz');
-      startParaphraseQuiz(day);
+      startParaphraseQuiz(normDay);
     }
   };
 
@@ -1335,8 +1381,10 @@
     days.forEach(d => {
       const dayWords = words.filter(w => normalizeDayName(w.day) === normalizeDayName(d));
       const wrongCount = dayWords.filter(w => getWrongCount(w.id) > 0).length;
+      const fcRounds = getDayRoundCount(d, 'flashcard');
       const stdRounds = getDayRoundCount(d, 'standard');
       const clozeRounds = getDayRoundCount(d, 'cloze');
+      const paraRounds = getDayRoundCount(d, 'paraphrase');
       const sampleWords = dayWords.slice(0, 4).map(w => w.word).join(', ');
 
       html += `
@@ -1369,13 +1417,19 @@
             <i class="fa-solid fa-quote-left text-[10px] text-slate-300 mr-1"></i>${sampleWords}...
           </div>
 
-          <!-- 회독 현황 뱃지 -->
-          <div class="flex items-center gap-2 text-[11px] font-semibold text-slate-500 pt-1 border-t border-slate-100 pointer-events-none">
-            <span class="px-1.5 py-0.5 rounded bg-slate-50 border border-slate-100 flex items-center gap-1">
-              <i class="fa-solid fa-circle-check text-indigo-500 text-[10px]"></i> 4지: <strong>${stdRounds}회독</strong>
+          <!-- 4단계 회독 현황 뱃지 (플래시카드, 4지, 빈칸, 동의어) -->
+          <div class="flex flex-wrap items-center gap-1.5 text-[10px] sm:text-[11px] font-semibold text-slate-500 pt-1 border-t border-slate-100 pointer-events-none">
+            <span class="px-1.5 py-0.5 rounded bg-amber-50 text-amber-900 border border-amber-100 flex items-center gap-1">
+              <i class="fa-solid fa-clone text-amber-500 text-[10px]"></i> 카드: <strong>${fcRounds}회</strong>
             </span>
-            <span class="px-1.5 py-0.5 rounded bg-slate-50 border border-slate-100 flex items-center gap-1">
-              <i class="fa-solid fa-pen text-emerald-500 text-[10px]"></i> 빈칸: <strong>${clozeRounds}회독</strong>
+            <span class="px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-900 border border-indigo-100 flex items-center gap-1">
+              <i class="fa-solid fa-circle-check text-indigo-500 text-[10px]"></i> 4지: <strong>${stdRounds}회</strong>
+            </span>
+            <span class="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-900 border border-emerald-100 flex items-center gap-1">
+              <i class="fa-solid fa-pen text-emerald-500 text-[10px]"></i> 빈칸: <strong>${clozeRounds}회</strong>
+            </span>
+            <span class="px-1.5 py-0.5 rounded bg-rose-50 text-rose-900 border border-rose-100 flex items-center gap-1">
+              <i class="fa-solid fa-shuffle text-rose-500 text-[10px]"></i> 동의: <strong>${paraRounds}회</strong>
             </span>
           </div>
 
@@ -2391,8 +2445,9 @@
     if (scope === 'all') {
       return [...words];
     }
-    // 특정 Day
-    return words.filter(w => w.day === scope);
+    // 특정 Day (정규화하여 Day 01 == Day 1 완벽 매칭)
+    const normScope = normalizeDayName(scope);
+    return words.filter(w => normalizeDayName(w.day) === normScope);
   }
 
   function shuffle(array) {
@@ -2943,6 +2998,7 @@
 
     activeQuiz = {
       type: 'paraphrase',
+      currentScope: scope,
       scopeLabel: scope === 'selected' ? '선택 단어' : (scope === 'wrong' ? '오답 집중' : (scope === 'all' ? '전체 단어' : scope)),
       questionList: shuffle(pool),
       currentIndex: 0,
@@ -3434,8 +3490,7 @@
     if (guideBox) {
       const regularDays = ALL_STUDY_DAYS.filter(d => d.startsWith('Day '));
       const incompleteDays = regularDays.filter(day => {
-        const dStats = roundStats[day] || {};
-        return STUDY_STEPS.some(s => (Number(dStats[s.key]) || 0) === 0);
+        return STUDY_STEPS.some(s => getDayRoundCount(day, s.key) === 0);
       });
 
       let targetDay1 = incompleteDays[0] || 'Day 01';
@@ -3443,16 +3498,14 @@
 
       const missedAlerts = [];
       regularDays.forEach(day => {
-        const dStats = roundStats[day] || {};
-        const doneCount = STUDY_STEPS.filter(s => (Number(dStats[s.key]) || 0) > 0).length;
+        const doneCount = STUDY_STEPS.filter(s => getDayRoundCount(day, s.key) > 0).length;
         if (doneCount > 0 && doneCount < 4) {
-          const missingSteps = STUDY_STEPS.filter(s => (Number(dStats[s.key]) || 0) === 0);
+          const missingSteps = STUDY_STEPS.filter(s => getDayRoundCount(day, s.key) === 0);
           missedAlerts.push({ day, missingSteps });
         }
       });
 
       const renderDayGoalCard = (day) => {
-        const dStats = roundStats[day] || {};
         return `
           <div class="bg-white p-3 sm:p-3.5 rounded-2xl border border-indigo-100 shadow-xs space-y-2">
             <div class="flex items-center justify-between">
@@ -3463,7 +3516,7 @@
             </div>
             <div class="grid grid-cols-2 gap-1.5">
               ${STUDY_STEPS.map(step => {
-                const count = Number(dStats[step.key]) || 0;
+                const count = getDayRoundCount(day, step.key);
                 const isDone = count > 0;
                 return `
                   <button onclick="window.startDayDirectQuiz('${day}', '${step.key}')" class="p-2 rounded-xl border text-left transition flex items-center justify-between ${
@@ -3542,8 +3595,7 @@
       filteredDays = ALL_STUDY_DAYS.filter(d => d === '기초단어' || d === '[기출 혼동어휘]');
     } else if (studyMatrixDayFilter === 'IN_PROGRESS') {
       filteredDays = ALL_STUDY_DAYS.filter(day => {
-        const dStats = roundStats[day] || {};
-        const doneCount = STUDY_STEPS.filter(s => (Number(dStats[s.key]) || 0) > 0).length;
+        const doneCount = STUDY_STEPS.filter(s => getDayRoundCount(day, s.key) > 0).length;
         return doneCount < 4;
       });
     }
@@ -3565,11 +3617,10 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-100 text-xs">
-    `;
+      `;
 
     filteredDays.forEach(day => {
-      const dStats = roundStats[day] || {};
-      const completedStepsCount = STUDY_STEPS.filter(s => (Number(dStats[s.key]) || 0) > 0).length;
+      const completedStepsCount = STUDY_STEPS.filter(s => getDayRoundCount(day, s.key) > 0).length;
 
       tableHtml += `
         <!-- Day 구분 헤더 행 -->
@@ -3587,7 +3638,7 @@
       `;
 
       STUDY_STEPS.forEach(step => {
-        const totalRound = Number(dStats[step.key]) || 0;
+        const totalRound = getDayRoundCount(day, step.key);
         tableHtml += `
           <tr class="hover:bg-slate-50/70 transition">
             <!-- 1열: 학습 항목 명칭 + 괄호 안 누적 회독수 (아이콘 제외) -->
@@ -3604,7 +3655,11 @@
 
             <!-- 날짜별 셀: 회차 숫자만 깔끔하게 표시 -->
             ${dates.map(d => {
-              const count = (dateMatrix[d.dateStr] && dateMatrix[d.dateStr][day] && dateMatrix[d.dateStr][day][step.key]) || 0;
+              const normDay = normalizeDayName(day);
+              const count = (dateMatrix[d.dateStr] && (
+                (dateMatrix[d.dateStr][normDay] && dateMatrix[d.dateStr][normDay][step.key]) ||
+                (dateMatrix[d.dateStr][day] && dateMatrix[d.dateStr][day][step.key])
+              )) || 0;
               const isTodayCell = d.isToday;
               return `
                 <td class="p-0.5 text-center align-middle border-l border-slate-100 ${isTodayCell ? 'bg-indigo-50/20' : ''}">
