@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v4.3.8_20261124_1805';
+    const APP_CURRENT_VER = 'v4.3.9_20261124_1810';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -2923,24 +2923,25 @@
           isTarget ? 'bg-emerald-100/80 border-emerald-300 text-emerald-950 font-bold' : 'bg-white border-slate-200 hover:border-indigo-300 text-slate-700'
         } border shadow-xs transition gap-2 cursor-pointer group active:scale-[0.99]" onclick="window.openQuizOptionDetail('${registeredId}', '${optWord}', '${safeDefForAttr}')">
           
-          <!-- 단어 및 뜻 (터치 시 상세 모달 오픈, 스피커 클릭 시 발음 재생) -->
+          <!-- 단어 및 뜻 (터치 시 상세 모달 오픈) -->
           <div class="flex items-center gap-2 flex-1 min-w-0">
-            <button type="button" class="text-indigo-600 hover:text-indigo-800 p-1.5 rounded-lg hover:bg-indigo-50 transition shrink-0" title="발음 듣기" onclick="event.stopPropagation(); window.speakText('${optWord}', event)">
-              <i class="fa-solid fa-volume-high text-xs"></i>
-            </button>
             <div class="min-w-0">
               <span class="font-black text-slate-900 tracking-tight text-sm">${optWord}</span>
               <span class="text-slate-600 text-xs truncate ml-1">: ${optDef}</span>
             </div>
           </div>
 
-          <!-- 상태 및 상세 팝업 버튼 -->
+          <!-- 오른손잡이 터치 최적화 버튼군 (정답 -> 소리버튼 -> 상세 -> Day표시) -->
           <div class="flex items-center gap-1.5 shrink-0">
-            ${isTarget ? '<span class="text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded-full font-black">정답</span>' : ''}
+            ${isTarget ? '<span class="text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded-full font-black mr-0.5">정답</span>' : ''}
+            
+            <button type="button" class="px-2 py-1 rounded-xl bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white font-bold text-xs flex items-center justify-center transition shadow-2xs border border-indigo-200 cursor-pointer active:scale-95 touch-manipulation" title="'${optWord}' 발음 듣기" onclick="event.stopPropagation(); window.speakText('${optWord}', event)">
+              <i class="fa-solid fa-volume-high text-[11px]"></i>
+            </button>
             
             <button type="button" onclick="event.stopPropagation(); window.openQuizOptionDetail('${registeredId}', '${optWord}', '${safeDefForAttr}')" class="px-2.5 py-1 rounded-xl ${
               isTarget ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-700'
-            } font-bold text-xs flex items-center gap-1 transition shadow-xs border border-indigo-200 cursor-pointer active:scale-95" title="'${optWord}' 상세 예문/파생어/암기팁 보기">
+            } font-bold text-xs flex items-center gap-1 transition shadow-xs border border-indigo-200 cursor-pointer active:scale-95 touch-manipulation" title="'${optWord}' 상세 예문/파생어/암기팁 보기">
               <i class="fa-solid fa-book-open text-[11px]"></i>
               <span>상세</span>
             </button>
@@ -6030,9 +6031,6 @@
         } border shadow-xs transition gap-2 cursor-pointer group active:scale-[0.99]" onclick="window.openQuizOptionDetail('${registeredId}', '${optWord}', '${safeDefForAttr}')">
           
           <div class="flex items-center gap-2 flex-1 min-w-0">
-            <button type="button" class="text-emerald-600 hover:text-emerald-800 p-1.5 rounded-lg hover:bg-emerald-50 transition shrink-0" title="발음 듣기" onclick="event.stopPropagation(); window.speakText('${optWord}', event)">
-              <i class="fa-solid fa-volume-high text-xs"></i>
-            </button>
             <div class="min-w-0">
               <span class="font-black text-slate-900 tracking-tight text-sm">${optWord}</span>
               <span class="text-slate-600 text-xs truncate ml-1">: ${optDef}</span>
@@ -6040,11 +6038,15 @@
           </div>
 
           <div class="flex items-center gap-1.5 shrink-0">
-            ${isTarget ? '<span class="text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded-full font-black">정답</span>' : ''}
+            ${isTarget ? '<span class="text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded-full font-black mr-0.5">정답</span>' : ''}
+            
+            <button type="button" class="px-2 py-1 rounded-xl bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white font-bold text-xs flex items-center justify-center transition shadow-2xs border border-emerald-200 cursor-pointer active:scale-95 touch-manipulation" title="'${optWord}' 발음 듣기" onclick="event.stopPropagation(); window.speakText('${optWord}', event)">
+              <i class="fa-solid fa-volume-high text-[11px]"></i>
+            </button>
             
             <button type="button" onclick="event.stopPropagation(); window.openQuizOptionDetail('${registeredId}', '${optWord}', '${safeDefForAttr}')" class="px-2.5 py-1 rounded-xl ${
               isTarget ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'bg-emerald-50 hover:bg-emerald-600 hover:text-white text-emerald-700'
-            } font-bold text-xs flex items-center gap-1 transition shadow-xs border border-emerald-200 cursor-pointer active:scale-95" title="'${optWord}' 상세 예문/파생어/암기팁 보기">
+            } font-bold text-xs flex items-center gap-1 transition shadow-xs border border-emerald-200 cursor-pointer active:scale-95 touch-manipulation" title="'${optWord}' 상세 예문/파생어/암기팁 보기">
               <i class="fa-solid fa-book-open text-[11px]"></i>
               <span>상세</span>
             </button>
