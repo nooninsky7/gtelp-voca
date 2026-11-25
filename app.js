@@ -29,7 +29,7 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v4.4.0_20261124_2245';
+    const APP_CURRENT_VER = 'v4.4.1_20261125_1710';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
@@ -3973,7 +3973,6 @@
 
   function renderStudyProgressMatrix() {
     seedStudyDateMatrixIfEmpty();
-    const guideBox = document.getElementById('studyMatrixGuideBox');
     const tableContainer = document.getElementById('studyMatrixTableContainer');
     if (!tableContainer) return;
 
@@ -3981,141 +3980,63 @@
     const dateMatrix = getStudyDateMatrix();
     const dates = getMatrixDateColumns(studyMatrixDayOffset, 14);
 
-    // 1. 오늘의 맞춤 하루 2Day 진도 & 복습 가이드 박스 렌더링
-    if (guideBox) {
-      const regularDays = ALL_STUDY_DAYS.filter(d => d.startsWith('Day '));
-      const incompleteDays = regularDays.filter(day => {
-        return STUDY_STEPS.some(s => getDayRoundCount(day, s.key) === 0);
-      });
-
-      let targetDay1 = incompleteDays[0] || 'Day 01';
-      let targetDay2 = incompleteDays[1] || 'Day 02';
-
-      const missedAlerts = [];
-      regularDays.forEach(day => {
-        const doneCount = STUDY_STEPS.filter(s => getDayRoundCount(day, s.key) > 0).length;
-        if (doneCount > 0 && doneCount < 4) {
-          const missingSteps = STUDY_STEPS.filter(s => getDayRoundCount(day, s.key) === 0);
-          missedAlerts.push({ day, missingSteps });
-        }
-      });
-
-      const renderDayGoalCard = (day) => {
-        return `
-          <div class="bg-white p-3 sm:p-3.5 rounded-2xl border border-indigo-100 shadow-xs space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="font-black text-sm text-indigo-900">
-                ${day}
-              </span>
-              <span class="text-[11px] font-bold text-slate-500">${getDayWordCountText(day)}</span>
-            </div>
-            <div class="grid grid-cols-2 gap-1.5">
-              ${STUDY_STEPS.map(step => {
-                const count = getDayRoundCount(day, step.key);
-                const isDone = count > 0;
-                return `
-                  <button onclick="window.startDayDirectQuiz('${day}', '${step.key}')" class="p-2 rounded-xl border text-left transition flex items-center justify-between ${
-                    isDone 
-                      ? `${step.lightBg} border-${step.color}-200 ${step.text} hover:opacity-90` 
-                      : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700'
-                  }">
-                    <span class="font-bold text-xs">
-                      ${step.name}
-                    </span>
-                    <span class="text-[10px] font-black px-1.5 py-0.5 rounded-md ${
-                      isDone ? `${step.bg} text-white` : 'bg-slate-200 text-slate-600'
-                    }">${isDone ? `✓ ${count}회` : '시작 ▶'}</span>
-                  </button>
-                `;
-              }).join('')}
-            </div>
-          </div>
-        `;
-      };
-
-      guideBox.innerHTML = `
-        <div class="bg-gradient-to-br from-indigo-50/80 via-purple-50/40 to-slate-50 p-4 rounded-2xl border border-indigo-100/90 space-y-3">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <div class="font-black text-xs sm:text-sm text-indigo-950 flex items-center gap-1.5">
-              <i class="fa-solid fa-bullseye text-indigo-600 text-base"></i> 오늘의 맞춤 권장 진도: 하루 2Day 마스터
-            </div>
-            <span class="text-[11px] font-extrabold text-indigo-700 bg-white px-2.5 py-1 rounded-full border border-indigo-200 shadow-2xs">
-              🎯 추천 목표: ${targetDay1} & ${targetDay2}
-            </span>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            ${renderDayGoalCard(targetDay1)}
-            ${renderDayGoalCard(targetDay2)}
-          </div>
-
-          ${missedAlerts.length > 0 ? `
-            <div class="mt-2 p-3 bg-amber-50 rounded-xl border border-amber-200/80 text-xs text-amber-900 space-y-1.5">
-              <div class="font-black flex items-center gap-1.5 text-amber-800">
-                <i class="fa-solid fa-bell text-amber-600"></i> 복습 필요! 진도 중 빼먹은 단계가 있습니다:
-              </div>
-              <div class="flex flex-wrap gap-2 pt-0.5">
-                ${missedAlerts.slice(0, 3).map(a => `
-                  <div class="inline-flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg border border-amber-300 font-bold text-[11px]">
-                    <span class="text-indigo-700">${a.day}:</span>
-                    ${a.missingSteps.map(ms => `
-                      <button onclick="window.startDayDirectQuiz('${a.day}', '${ms.key}')" class="underline hover:text-amber-700 ${ms.text}">
-                        ${ms.name}
-                      </button>
-                    `).join(', ')}
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-          ` : ''}
-        </div>
-      `;
-    }
-
-    // 2. Day 목록 필터링
-    let filteredDays = [...ALL_STUDY_DAYS];
-    if (studyMatrixDayFilter === 'D1_10') {
-      filteredDays = ALL_STUDY_DAYS.filter(d => {
-        if (!d.startsWith('Day ')) return false;
-        const num = parseInt(d.replace('Day ', ''), 10);
-        return num >= 1 && num <= 10;
-      });
-    } else if (studyMatrixDayFilter === 'D11_20') {
-      filteredDays = ALL_STUDY_DAYS.filter(d => {
-        if (!d.startsWith('Day ')) return false;
-        const num = parseInt(d.replace('Day ', ''), 10);
-        return num >= 11 && num <= 20;
-      });
-    } else if (studyMatrixDayFilter === 'SPECIAL') {
-      filteredDays = ALL_STUDY_DAYS.filter(d => d === '기초단어' || d === '[기출 혼동어휘]');
-    } else if (studyMatrixDayFilter === 'IN_PROGRESS') {
-      filteredDays = ALL_STUDY_DAYS.filter(day => {
-        const doneCount = STUDY_STEPS.filter(s => getDayRoundCount(day, s.key) > 0).length;
-        return doneCount < 4;
-      });
-    }
-
-    // 3. 매트릭스 표 HTML 조립 (X축 상단 헤더 & Y축 좌측 열 완전 틀고정(Sticky Freeze) 적용)
+    // 매트릭스 표 HTML 조립 (X축 상단 헤더 & Y축 좌측 열 완전 틀고정(Sticky Freeze) 적용)
     let tableHtml = `
       <table class="w-full text-left border-separate border-spacing-0 min-w-[620px]">
         <thead class="sticky top-0 z-30 bg-slate-100 shadow-xs" style="position: sticky; top: 0; z-index: 30;">
           <tr class="bg-slate-100 text-slate-700 text-xs font-black">
             <!-- X/Y축 교차 틀고정 코너 셀 (상단 스크롤 + 좌측 스크롤 모두 완전 고정) -->
-            <th class="matrix-corner-th p-2 sticky top-0 left-0 bg-slate-100 z-40 w-40 sm:w-44 shadow-xs border-r border-b border-slate-300" style="position: sticky; top: 0; left: 0; z-index: 45; background-color: #f1f5f9;">Day / 4단계 학습 구분</th>
-            ${dates.map(d => `
-              <th class="matrix-header-th p-1 px-0.5 text-center border-l border-b border-slate-200 w-9 min-w-[34px] max-w-[42px] sticky top-0 z-30 ${d.isToday ? 'bg-indigo-100 text-indigo-900 border-b-indigo-300 font-black' : 'bg-slate-100 text-slate-600 border-b-slate-300'}" style="position: sticky; top: 0; z-index: 30; background-color: ${d.isToday ? '#e0e7ff' : '#f1f5f9'};">
-                <div class="text-[10px] leading-tight font-black">${d.display}</div>
-                <div class="text-[9px] font-bold ${d.dow === '일' ? 'text-rose-500' : (d.dow === '토' ? 'text-blue-500' : 'text-slate-400')}">
-                  ${d.dow}${d.isToday ? '<span class="block text-[8px] bg-indigo-600 text-white rounded px-0.5 mt-0.5 leading-none py-0.5 font-bold">오늘</span>' : ''}
-                </div>
-              </th>
-            `).join('')}
+            <th class="matrix-corner-th p-2 sticky top-0 left-0 bg-slate-100 z-40 w-40 sm:w-44 shadow-xs border-r border-b border-slate-300" style="position: sticky; top: 0; left: 0; z-index: 45; background-color: #f1f5f9;">
+              <div class="flex items-center justify-between">
+                <span class="font-black text-slate-800 text-[11px] sm:text-xs">Day / 학습 구분</span>
+                <span class="text-[9px] text-indigo-700 font-bold bg-indigo-50 px-1 py-0.5 rounded border border-indigo-200">일일합계 ➔</span>
+              </div>
+            </th>
+            ${dates.map(d => {
+              const dayRecords = dateMatrix[d.dateStr];
+              let dayTotal = 0;
+              let doneSummary = [];
+              if (dayRecords) {
+                for (const day in dayRecords) {
+                  if (dayRecords[day]) {
+                    for (const stepKey in dayRecords[day]) {
+                      const cnt = Number(dayRecords[day][stepKey]) || 0;
+                      if (cnt > 0) {
+                        dayTotal += cnt;
+                        const stepObj = STUDY_STEPS.find(s => s.key === stepKey);
+                        doneSummary.push(`${day} ${stepObj ? stepObj.shortName : stepKey} ${cnt}회`);
+                      }
+                    }
+                  }
+                }
+              }
+              const tooltipText = doneSummary.length > 0 ? `${d.dateStr} 완료: ${doneSummary.join(', ')}` : `${d.dateStr} 완료 내역 없음`;
+
+              return `
+                <th class="matrix-header-th p-1 px-0.5 text-center border-l border-b border-slate-200 w-9 min-w-[34px] max-w-[44px] sticky top-0 z-30 ${d.isToday ? 'bg-indigo-100 text-indigo-900 border-b-indigo-300 font-black' : 'bg-slate-100 text-slate-600 border-b-slate-300'}" style="position: sticky; top: 0; z-index: 30; background-color: ${d.isToday ? '#e0e7ff' : '#f1f5f9'};">
+                  <div class="text-[10px] leading-tight font-black">${d.display}</div>
+                  <div class="text-[9px] font-bold ${d.dow === '일' ? 'text-rose-500' : (d.dow === '토' ? 'text-blue-500' : 'text-slate-400')}">
+                    ${d.dow}${d.isToday ? '<span class="block text-[8px] bg-indigo-600 text-white rounded px-0.5 mt-0.5 leading-none py-0.5 font-bold">오늘</span>' : ''}
+                  </div>
+                  <!-- 날짜 하단: 그날 1회독 완료한 총 건수/숫자 표시 -->
+                  <div class="mt-1 pt-0.5 border-t border-slate-200" title="${tooltipText}">
+                    ${dayTotal > 0 ? `
+                      <span class="inline-flex items-center justify-center min-w-[18px] h-4.5 px-1 rounded-full text-[9px] font-black ${d.isToday ? 'bg-indigo-700 text-white' : 'bg-slate-800 text-white'} shadow-2xs">
+                        ${dayTotal}
+                      </span>
+                    ` : `
+                      <span class="text-[9px] text-slate-300 font-bold">-</span>
+                    `}
+                  </div>
+                </th>
+              `;
+            }).join('')}
           </tr>
         </thead>
         <tbody class="text-xs">
       `;
 
-    filteredDays.forEach(day => {
+    ALL_STUDY_DAYS.forEach(day => {
       const completedStepsCount = STUDY_STEPS.filter(s => getDayRoundCount(day, s.key) > 0).length;
 
       tableHtml += `
@@ -4184,16 +4105,6 @@
     `;
 
     tableContainer.innerHTML = tableHtml;
-
-    // 4. 필터 버튼 상태 업데이트
-    document.querySelectorAll('.matrix-filter-btn').forEach(btn => {
-      const active = (btn.dataset.filter === studyMatrixDayFilter);
-      btn.classList.toggle('bg-indigo-600', active);
-      btn.classList.toggle('text-white', active);
-      btn.classList.toggle('shadow-xs', active);
-      btn.classList.toggle('bg-slate-100', !active);
-      btn.classList.toggle('text-slate-600', !active);
-    });
   }
 
   window.renderStudyProgressMatrix = renderStudyProgressMatrix;
