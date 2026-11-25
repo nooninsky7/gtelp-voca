@@ -29,13 +29,11 @@
 
   // DOM 로드 완료 후 초기화
   document.addEventListener('DOMContentLoaded', () => {
-    const APP_CURRENT_VER = 'v4.3.9_20261124_1810';
+    const APP_CURRENT_VER = 'v4.4.0_20261124_2245';
     try {
       const installedVer = localStorage.getItem('voca_installed_ver');
       if (installedVer !== APP_CURRENT_VER) {
         localStorage.setItem('voca_installed_ver', APP_CURRENT_VER);
-        // 이전 버전의 세션 캐시 초기화
-        localStorage.removeItem('gtelp_active_learning_session');
       }
       localStorage.removeItem('gtelp_auth_state');
       sessionStorage.removeItem('gtelp_auth_state');
@@ -557,12 +555,92 @@
   // 2-B. 실전 학습 세션 자동 저장 & 이어하기 (앱 전환/재접속 대비)
   // --------------------------------------------------------------------------
   const SESSION_KEY = 'gtelp_active_learning_session';
+  const FC_PROGRESS_KEY = 'gtelp_fc_last_progress';
+  const QUIZ_PROGRESS_KEY = 'gtelp_quiz_last_progress';
+  const CLOZE_PROGRESS_KEY = 'gtelp_cloze_last_progress';
+  const PARA_PROGRESS_KEY = 'gtelp_para_last_progress';
+
+  const SESSION_KEYS = {
+    flashcard: 'gtelp_active_fc_session',
+    quiz: 'gtelp_active_quiz_session',
+    'cloze-quiz': 'gtelp_active_cloze_session',
+    'paraphrase-quiz': 'gtelp_active_para_session'
+  };
+
+  // --- 4대 학습 모드별 영구 진행도 매퍼 (LocalStorage) ---
+  function getStudyItemKey(type) {
+    if (type === 'flashcard') return FC_PROGRESS_KEY;
+    if (type === 'standard' || type === 'quiz') return QUIZ_PROGRESS_KEY;
+    if (type === 'cloze' || type === 'cloze-quiz') return CLOZE_PROGRESS_KEY;
+    return PARA_PROGRESS_KEY;
+  }
+
+  function getStudyItemProgressMap(type) {
+    try {
+      const raw = localStorage.getItem(getStudyItemKey(type));
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveStudyItemProgress(type, scope, data) {
+    if (!scope) return;
+    try {
+      const map = getStudyItemProgressMap(type);
+      map[scope] = {
+        ...(map[scope] || {}),
+        ...data,
+        updatedAt: Date.now()
+      };
+      localStorage.setItem(getStudyItemKey(type), JSON.stringify(map));
+    } catch (e) {}
+  }
+
+  function getStudyItemLastProgress(type, scope) {
+    if (!scope) return null;
+    try {
+      const map = getStudyItemProgressMap(type);
+      return map[scope] || null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function clearStudyItemProgress(type, scope) {
+    if (!scope) return;
+    try {
+      const map = getStudyItemProgressMap(type);
+      if (map[scope]) {
+        delete map[scope];
+        localStorage.setItem(getStudyItemKey(type), JSON.stringify(map));
+      }
+    } catch (e) {}
+  }
+
+  // 기존 플래시카드 호환용 래퍼 함수들
+  function getFlashcardProgressMap() {
+    return getStudyItemProgressMap('flashcard');
+  }
+
+  function saveFlashcardProgress(scope, index) {
+    if (!scope) return;
+    saveStudyItemProgress('flashcard', scope, {
+      index: Math.max(0, index || 0),
+      total: flashcardDeck ? flashcardDeck.length : 50
+    });
+  }
+
+  function getFlashcardLastIndex(scope) {
+    const data = getStudyItemLastProgress('flashcard', scope);
+    return data ? (data.index || 0) : 0;
+  }
 
   function saveCurrentLearningSession() {
     try {
       // 1. 일반 4지선다 퀴즈
       const quizActive = document.getElementById('quizActiveCard');
-      if (currentTab === 'quiz' && quizActive && !quizActive.classList.contains('hidden') && activeQuiz && activeQuiz.questionList && activeQuiz.questionList.length > 0) {
+      if (quizActive && !quizActive.classList.contains('hidden') && activeQuiz && activeQuiz.type === 'standard' && activeQuiz.questionList && activeQuiz.questionList.length > 0) {
         const data = {
           tab: 'quiz',
           type: 'standard',
@@ -577,13 +655,24 @@
           userAnswers: activeQuiz.userAnswers || {},
           savedAt: Date.now()
         };
+        localStorage.setItem(SESSION_KEYS.quiz, JSON.stringify(data));
         localStorage.setItem(SESSION_KEY, JSON.stringify(data));
-        return;
+        saveStudyItemProgress('standard', activeQuiz.currentScope, {
+          index: activeQuiz.currentIndex,
+          total: activeQuiz.questionList.length,
+          questionList: activeQuiz.questionList,
+          score: activeQuiz.score,
+          correctCount: activeQuiz.correctCount,
+          wrongList: activeQuiz.wrongList,
+          answered: activeQuiz.answered,
+          userAnswers: activeQuiz.userAnswers || {},
+          scopeLabel: activeQuiz.scopeLabel
+        });
       }
 
       // 2. 문장 빈칸 퀴즈 (Cloze)
       const clozeActive = document.getElementById('clozeActiveCard');
-      if (currentTab === 'cloze-quiz' && clozeActive && !clozeActive.classList.contains('hidden') && activeClozeQuiz && activeClozeQuiz.questionList && activeClozeQuiz.questionList.length > 0) {
+      if (clozeActive && !clozeActive.classList.contains('hidden') && activeClozeQuiz && activeClozeQuiz.questionList && activeClozeQuiz.questionList.length > 0) {
         const data = {
           tab: 'cloze-quiz',
           type: 'cloze',
@@ -598,13 +687,24 @@
           userAnswers: activeClozeQuiz.userAnswers || {},
           savedAt: Date.now()
         };
+        localStorage.setItem(SESSION_KEYS['cloze-quiz'], JSON.stringify(data));
         localStorage.setItem(SESSION_KEY, JSON.stringify(data));
-        return;
+        saveStudyItemProgress('cloze', activeClozeQuiz.currentScope, {
+          index: activeClozeQuiz.currentIndex,
+          total: activeClozeQuiz.questionList.length,
+          questionList: activeClozeQuiz.questionList,
+          score: activeClozeQuiz.score,
+          correctCount: activeClozeQuiz.correctCount,
+          wrongList: activeClozeQuiz.wrongList,
+          answered: activeClozeQuiz.answered,
+          userAnswers: activeClozeQuiz.userAnswers || {},
+          scopeLabel: activeClozeQuiz.scopeLabel
+        });
       }
 
       // 3. 패러프레이징 퀴즈
       const paraActive = document.getElementById('paraActiveCard');
-      if (currentTab === 'paraphrase-quiz' && paraActive && !paraActive.classList.contains('hidden') && activeQuiz && activeQuiz.type === 'paraphrase' && activeQuiz.questionList && activeQuiz.questionList.length > 0) {
+      if (paraActive && !paraActive.classList.contains('hidden') && activeQuiz && activeQuiz.type === 'paraphrase' && activeQuiz.questionList && activeQuiz.questionList.length > 0) {
         const data = {
           tab: 'paraphrase-quiz',
           type: 'paraphrase',
@@ -619,13 +719,24 @@
           userAnswers: activeQuiz.userAnswers || {},
           savedAt: Date.now()
         };
+        localStorage.setItem(SESSION_KEYS['paraphrase-quiz'], JSON.stringify(data));
         localStorage.setItem(SESSION_KEY, JSON.stringify(data));
-        return;
+        saveStudyItemProgress('paraphrase', activeQuiz.currentScope, {
+          index: activeQuiz.currentIndex,
+          total: activeQuiz.questionList.length,
+          questionList: activeQuiz.questionList,
+          score: activeQuiz.score,
+          correctCount: activeQuiz.correctCount,
+          wrongList: activeQuiz.wrongList,
+          answered: activeQuiz.answered,
+          userAnswers: activeQuiz.userAnswers || {},
+          scopeLabel: activeQuiz.scopeLabel
+        });
       }
 
       // 4. 플래시카드
       const fcActive = document.getElementById('flashcardActiveCard');
-      if (currentTab === 'flashcard' && fcActive && !fcActive.classList.contains('hidden') && flashcardDeck && flashcardDeck.length > 0 && flashcardCurrentIndex < flashcardDeck.length) {
+      if (fcActive && !fcActive.classList.contains('hidden') && flashcardDeck && flashcardDeck.length > 0 && flashcardCurrentIndex < flashcardDeck.length) {
         const data = {
           tab: 'flashcard',
           type: 'flashcard',
@@ -636,52 +747,157 @@
           unknown: flashcardUnknown,
           savedAt: Date.now()
         };
+        localStorage.setItem(SESSION_KEYS.flashcard, JSON.stringify(data));
         localStorage.setItem(SESSION_KEY, JSON.stringify(data));
-        return;
+        saveStudyItemProgress('flashcard', flashcardCurrentScope, {
+          index: flashcardCurrentIndex,
+          total: flashcardDeck.length,
+          deck: flashcardDeck,
+          known: flashcardKnown,
+          unknown: flashcardUnknown
+        });
       }
     } catch (e) {
       console.warn('Failed to save learning session:', e);
     }
   }
 
-  function clearCurrentLearningSession() {
+  function clearCurrentLearningSession(targetTab) {
     try {
-      localStorage.removeItem(SESSION_KEY);
+      if (targetTab && SESSION_KEYS[targetTab]) {
+        localStorage.removeItem(SESSION_KEYS[targetTab]);
+        const raw = localStorage.getItem(SESSION_KEY);
+        if (raw) {
+          const d = JSON.parse(raw);
+          if (d && (d.tab === targetTab || d.type === targetTab)) {
+            localStorage.removeItem(SESSION_KEY);
+          }
+        }
+      } else {
+        localStorage.removeItem(SESSION_KEY);
+      }
       updateResumeBanners();
     } catch (e) {}
   }
 
   function restoreActiveLearningSession(targetType) {
     try {
-      const raw = localStorage.getItem(SESSION_KEY);
-      if (!raw) return false;
-      const data = JSON.parse(raw);
-      if (!data || !data.savedAt) return false;
+      let data = null;
+      if (targetType && SESSION_KEYS[targetType]) {
+        const rawTab = localStorage.getItem(SESSION_KEYS[targetType]);
+        if (rawTab) data = JSON.parse(rawTab);
+      }
+
+      if (!data) {
+        const raw = localStorage.getItem(SESSION_KEY);
+        if (raw) {
+          const cand = JSON.parse(raw);
+          if (targetType) {
+            if (cand && ((cand.tab === targetType) || (cand.type === targetType))) {
+              data = cand;
+            }
+          } else {
+            data = cand;
+          }
+        }
+      }
 
       // 48시간 이내의 세션만 자동 복원
-      if (Date.now() - data.savedAt > 48 * 60 * 60 * 1000) {
-        clearCurrentLearningSession();
-        return false;
+      if (!data || !data.savedAt || (Date.now() - data.savedAt > 48 * 60 * 60 * 1000)) {
+        if (targetType) {
+          // 세션이 없어도 각 항목별 가장 최근 진행중인 Day가 있는지 fallback 확인
+          const pMap = getStudyItemProgressMap(targetType);
+          let latestScope = null;
+          let latestP = null;
+          for (const [scope, p] of Object.entries(pMap)) {
+            if (p && p.index > 0 && (!latestP || (p.updatedAt || 0) > (latestP.updatedAt || 0))) {
+              latestScope = scope;
+              latestP = p;
+            }
+          }
+          if (latestP && latestScope) {
+            if (targetType === 'standard' || targetType === 'quiz') {
+              if (latestP.questionList && latestP.index < latestP.questionList.length) {
+                data = {
+                  tab: 'quiz',
+                  type: 'standard',
+                  currentScope: latestScope,
+                  scopeLabel: latestP.scopeLabel || `${latestScope} 문제풀이`,
+                  questionList: latestP.questionList,
+                  currentIndex: latestP.index,
+                  score: latestP.score || 0,
+                  correctCount: latestP.correctCount || 0,
+                  wrongList: latestP.wrongList || [],
+                  answered: latestP.answered || false,
+                  userAnswers: latestP.userAnswers || {}
+                };
+              }
+            } else if (targetType === 'cloze-quiz' || targetType === 'cloze') {
+              if (latestP.questionList && latestP.index < latestP.questionList.length) {
+                data = {
+                  tab: 'cloze-quiz',
+                  type: 'cloze',
+                  currentScope: latestScope,
+                  scopeLabel: latestP.scopeLabel || `${latestScope} 문장 빈칸`,
+                  questionList: latestP.questionList,
+                  currentIndex: latestP.index,
+                  score: latestP.score || 0,
+                  correctCount: latestP.correctCount || 0,
+                  wrongList: latestP.wrongList || [],
+                  answered: latestP.answered || false,
+                  userAnswers: latestP.userAnswers || {}
+                };
+              }
+            } else if (targetType === 'paraphrase-quiz' || targetType === 'paraphrase') {
+              if (latestP.questionList && latestP.index < latestP.questionList.length) {
+                data = {
+                  tab: 'paraphrase-quiz',
+                  type: 'paraphrase',
+                  currentScope: latestScope,
+                  scopeLabel: latestP.scopeLabel || `${latestScope} 동의어`,
+                  questionList: latestP.questionList,
+                  currentIndex: latestP.index,
+                  score: latestP.score || 0,
+                  correctCount: latestP.correctCount || 0,
+                  wrongList: latestP.wrongList || [],
+                  answered: latestP.answered || false,
+                  userAnswers: latestP.userAnswers || {}
+                };
+              }
+            } else if (targetType === 'flashcard') {
+              if (latestP.deck && latestP.index < latestP.deck.length) {
+                data = {
+                  tab: 'flashcard',
+                  type: 'flashcard',
+                  scope: latestScope,
+                  deck: latestP.deck,
+                  currentIndex: latestP.index,
+                  known: latestP.known || [],
+                  unknown: latestP.unknown || []
+                };
+              }
+            }
+          }
+        }
       }
 
-      if (targetType) {
-        const matches = (data.tab === targetType) || (data.type === targetType);
-        if (!matches) return false;
-      }
+      if (!data) return false;
 
+      // 1. 일반 4지선다 퀴즈 복원
       if (data.tab === 'quiz' && data.type === 'standard') {
         if (!data.questionList || data.questionList.length === 0) return false;
         activeQuiz = {
           type: 'standard',
           currentScope: data.currentScope,
-          scopeLabel: data.scopeLabel || '이어풀기 퀴즈',
+          scopeLabel: data.scopeLabel || `${data.currentScope || 'Day 01'} 문제풀이`,
           questionList: data.questionList,
           currentIndex: Math.min(data.currentIndex || 0, data.questionList.length - 1),
           score: data.score || 0,
           correctCount: data.correctCount || 0,
           wrongList: data.wrongList || [],
           answered: data.answered || false,
-          userAnswers: data.userAnswers || {}
+          userAnswers: data.userAnswers || {},
+          isRetry: false
         };
         switchTab('quiz');
         document.getElementById('quizSetupCard')?.classList.add('hidden');
@@ -692,10 +908,11 @@
         return true;
       }
 
-      if (data.tab === 'cloze-quiz') {
+      // 2. 문장 빈칸 퀴즈 복원
+      if (data.tab === 'cloze-quiz' || data.type === 'cloze') {
         if (!data.questionList || data.questionList.length === 0) return false;
         activeClozeQuiz = {
-          scopeLabel: data.scopeLabel || '이어풀기 빈칸',
+          scopeLabel: data.scopeLabel || `${data.currentScope || 'Day 01'} 문장 빈칸`,
           currentScope: data.currentScope,
           questionList: data.questionList,
           currentIndex: Math.min(data.currentIndex || 0, data.questionList.length - 1),
@@ -703,7 +920,8 @@
           correctCount: data.correctCount || 0,
           wrongList: data.wrongList || [],
           answered: data.answered || false,
-          userAnswers: data.userAnswers || {}
+          userAnswers: data.userAnswers || {},
+          isRetry: false
         };
         switchTab('cloze-quiz');
         document.getElementById('clozeSetupCard')?.classList.add('hidden');
@@ -714,12 +932,13 @@
         return true;
       }
 
-      if (data.tab === 'paraphrase-quiz') {
+      // 3. 패러프레이징 퀴즈 복원
+      if (data.tab === 'paraphrase-quiz' || data.type === 'paraphrase') {
         if (!data.questionList || data.questionList.length === 0) return false;
         activeQuiz = {
           type: 'paraphrase',
           currentScope: data.currentScope,
-          scopeLabel: data.scopeLabel || '이어풀기 동의어',
+          scopeLabel: data.scopeLabel || `${data.currentScope || 'Day 01'} 동의어`,
           questionList: data.questionList,
           currentIndex: Math.min(data.currentIndex || 0, data.questionList.length - 1),
           score: data.score || 0,
@@ -736,11 +955,12 @@
         return true;
       }
 
-      if (data.tab === 'flashcard') {
+      // 4. 플래시카드 복원
+      if (data.tab === 'flashcard' || data.type === 'flashcard') {
         if (!data.deck || data.deck.length === 0) return false;
         flashcardDeck = data.deck;
         flashcardCurrentIndex = Math.min(data.currentIndex || 0, data.deck.length - 1);
-        flashcardCurrentScope = data.scope;
+        flashcardCurrentScope = data.scope || 'Day 01';
         flashcardKnown = data.known || [];
         flashcardUnknown = data.unknown || [];
         flashcardIsFlipped = false;
@@ -760,21 +980,34 @@
 
   function updateResumeBanners() {
     try {
-      const raw = localStorage.getItem(SESSION_KEY);
-      const data = raw ? JSON.parse(raw) : null;
-      const isValid = data && data.savedAt && (Date.now() - data.savedAt < 48 * 60 * 60 * 1000);
-
       // 1. Standard Quiz Banner
       const quizBanner = document.getElementById('quizResumeBanner');
       if (quizBanner) {
-        if (isValid && data.tab === 'quiz' && data.questionList && data.questionList.length > 0) {
+        let qData = null;
+        const rawQ = localStorage.getItem(SESSION_KEYS.quiz);
+        if (rawQ) {
+          try { qData = JSON.parse(rawQ); } catch(e) {}
+        }
+        if (!qData || !qData.questionList || !(qData.currentIndex > 0)) {
+          const pMap = getStudyItemProgressMap('standard');
+          for (const [scope, p] of Object.entries(pMap)) {
+            if (p && p.questionList && p.index > 0 && p.index < p.questionList.length) {
+              if (!qData || (p.updatedAt || 0) > (qData.savedAt || 0)) {
+                qData = { tab: 'quiz', type: 'standard', currentScope: scope, scopeLabel: p.scopeLabel || `${scope} 문제풀이`, questionList: p.questionList, currentIndex: p.index, savedAt: p.updatedAt };
+              }
+            }
+          }
+        }
+        if (qData && qData.questionList && qData.questionList.length > 0 && qData.currentIndex > 0 && qData.currentIndex < qData.questionList.length) {
           const badge = document.getElementById('quizResumeScopeBadge');
           const progress = document.getElementById('quizResumeProgressText');
-          if (badge) badge.textContent = data.scopeLabel || 'Day 01';
-          if (progress) progress.textContent = `${(data.currentIndex || 0) + 1} / ${data.questionList.length}번`;
+          if (badge) badge.textContent = qData.scopeLabel || qData.currentScope || 'Day 01';
+          if (progress) progress.textContent = `${(qData.currentIndex || 0) + 1} / ${qData.questionList.length}번`;
           quizBanner.classList.remove('hidden');
           const btn = document.getElementById('btnResumeQuizNow');
-          if (btn) btn.onclick = () => restoreActiveLearningSession();
+          if (btn) btn.onclick = () => {
+            restoreActiveLearningSession('quiz') || startStandardQuiz(qData.currentScope);
+          };
         } else {
           quizBanner.classList.add('hidden');
         }
@@ -783,14 +1016,31 @@
       // 2. Cloze Quiz Banner
       const clozeBanner = document.getElementById('clozeResumeBanner');
       if (clozeBanner) {
-        if (isValid && data.tab === 'cloze-quiz' && data.questionList && data.questionList.length > 0) {
+        let cData = null;
+        const rawC = localStorage.getItem(SESSION_KEYS['cloze-quiz']);
+        if (rawC) {
+          try { cData = JSON.parse(rawC); } catch(e) {}
+        }
+        if (!cData || !cData.questionList || !(cData.currentIndex > 0)) {
+          const pMap = getStudyItemProgressMap('cloze');
+          for (const [scope, p] of Object.entries(pMap)) {
+            if (p && p.questionList && p.index > 0 && p.index < p.questionList.length) {
+              if (!cData || (p.updatedAt || 0) > (cData.savedAt || 0)) {
+                cData = { tab: 'cloze-quiz', type: 'cloze', currentScope: scope, scopeLabel: p.scopeLabel || `${scope} 문장 빈칸`, questionList: p.questionList, currentIndex: p.index, savedAt: p.updatedAt };
+              }
+            }
+          }
+        }
+        if (cData && cData.questionList && cData.questionList.length > 0 && cData.currentIndex > 0 && cData.currentIndex < cData.questionList.length) {
           const badge = document.getElementById('clozeResumeScopeBadge');
           const progress = document.getElementById('clozeResumeProgressText');
-          if (badge) badge.textContent = data.scopeLabel || 'Day 01';
-          if (progress) progress.textContent = `${(data.currentIndex || 0) + 1} / ${data.questionList.length}번`;
+          if (badge) badge.textContent = cData.scopeLabel || cData.currentScope || 'Day 01';
+          if (progress) progress.textContent = `${(cData.currentIndex || 0) + 1} / ${cData.questionList.length}번`;
           clozeBanner.classList.remove('hidden');
           const btn = document.getElementById('btnResumeClozeNow');
-          if (btn) btn.onclick = () => restoreActiveLearningSession();
+          if (btn) btn.onclick = () => {
+            restoreActiveLearningSession('cloze-quiz') || startClozeQuiz(cData.currentScope);
+          };
         } else {
           clozeBanner.classList.add('hidden');
         }
@@ -799,14 +1049,31 @@
       // 3. Paraphrase Quiz Banner
       const paraBanner = document.getElementById('paraResumeBanner');
       if (paraBanner) {
-        if (isValid && data.tab === 'paraphrase-quiz' && data.questionList && data.questionList.length > 0) {
+        let pData = null;
+        const rawP = localStorage.getItem(SESSION_KEYS['paraphrase-quiz']);
+        if (rawP) {
+          try { pData = JSON.parse(rawP); } catch(e) {}
+        }
+        if (!pData || !pData.questionList || !(pData.currentIndex > 0)) {
+          const pMap = getStudyItemProgressMap('paraphrase');
+          for (const [scope, p] of Object.entries(pMap)) {
+            if (p && p.questionList && p.index > 0 && p.index < p.questionList.length) {
+              if (!pData || (p.updatedAt || 0) > (pData.savedAt || 0)) {
+                pData = { tab: 'paraphrase-quiz', type: 'paraphrase', currentScope: scope, scopeLabel: p.scopeLabel || `${scope} 동의어`, questionList: p.questionList, currentIndex: p.index, savedAt: p.updatedAt };
+              }
+            }
+          }
+        }
+        if (pData && pData.questionList && pData.questionList.length > 0 && pData.currentIndex > 0 && pData.currentIndex < pData.questionList.length) {
           const badge = document.getElementById('paraResumeScopeBadge');
           const progress = document.getElementById('paraResumeProgressText');
-          if (badge) badge.textContent = data.scopeLabel || 'Day 01';
-          if (progress) progress.textContent = `${(data.currentIndex || 0) + 1} / ${data.questionList.length}번`;
+          if (badge) badge.textContent = pData.scopeLabel || pData.currentScope || 'Day 01';
+          if (progress) progress.textContent = `${(pData.currentIndex || 0) + 1} / ${pData.questionList.length}번`;
           paraBanner.classList.remove('hidden');
           const btn = document.getElementById('btnResumeParaNow');
-          if (btn) btn.onclick = () => restoreActiveLearningSession();
+          if (btn) btn.onclick = () => {
+            restoreActiveLearningSession('paraphrase-quiz') || startParaphraseQuiz(pData.currentScope);
+          };
         } else {
           paraBanner.classList.add('hidden');
         }
@@ -815,14 +1082,29 @@
       // 4. Flashcard Banner
       const fcBanner = document.getElementById('flashcardResumeBanner');
       if (fcBanner) {
-        if (isValid && data.tab === 'flashcard' && data.deck && data.deck.length > 0) {
+        let fData = null;
+        const rawF = localStorage.getItem(SESSION_KEYS.flashcard);
+        if (rawF) {
+          try { fData = JSON.parse(rawF); } catch(e) {}
+        }
+        if (!fData || !fData.deck || !(fData.currentIndex > 0)) {
+          const pMap = getStudyItemProgressMap('flashcard');
+          for (const [scope, p] of Object.entries(pMap)) {
+            if (p && p.index > 0 && (!fData || (p.updatedAt || 0) > (fData.savedAt || 0))) {
+              fData = { tab: 'flashcard', type: 'flashcard', scope: scope, currentIndex: p.index, total: p.total || 50, savedAt: p.updatedAt };
+            }
+          }
+        }
+        if (fData && fData.currentIndex > 0) {
           const badge = document.getElementById('flashcardResumeScopeBadge');
           const progress = document.getElementById('flashcardResumeProgressText');
-          if (badge) badge.textContent = data.scope || 'Day 01';
-          if (progress) progress.textContent = `${(data.currentIndex || 0) + 1} / ${data.deck.length}번`;
+          if (badge) badge.textContent = fData.scope || 'Day 01';
+          if (progress) progress.textContent = `${(fData.currentIndex || 0) + 1} / ${fData.total || (fData.deck ? fData.deck.length : 50)}번`;
           fcBanner.classList.remove('hidden');
           const btn = document.getElementById('btnResumeFlashcardNow');
-          if (btn) btn.onclick = () => restoreActiveLearningSession();
+          if (btn) btn.onclick = () => {
+            restoreActiveLearningSession('flashcard') || startFlashcard(fData.scope);
+          };
         } else {
           fcBanner.classList.add('hidden');
         }
@@ -861,11 +1143,14 @@
       if (fcActive && !fcActive.classList.contains('hidden') && flashcardDeck && flashcardDeck.length > 0 && flashcardCurrentIndex < flashcardDeck.length) {
         // 이미 진행 중인 카드 화면 유지
       } else {
-        document.getElementById('flashcardActiveCard')?.classList.add('hidden');
-        document.getElementById('flashcardResultCard')?.classList.add('hidden');
-        document.getElementById('flashcardSetupCard')?.classList.remove('hidden');
-        setupFlashcardScopeUI();
-        updateResumeBanners();
+        const restored = restoreActiveLearningSession('flashcard');
+        if (!restored) {
+          document.getElementById('flashcardActiveCard')?.classList.add('hidden');
+          document.getElementById('flashcardResultCard')?.classList.add('hidden');
+          document.getElementById('flashcardSetupCard')?.classList.remove('hidden');
+          setupFlashcardScopeUI();
+          updateResumeBanners();
+        }
       }
     } else if (tabId === 'quiz') {
       const quizActive = document.getElementById('quizActiveCard');
@@ -883,17 +1168,30 @@
       }
     } else if (tabId === 'cloze-quiz') {
       const clozeActive = document.getElementById('clozeActiveCard');
-      if (clozeActive && !clozeActive.classList.contains('hidden') && activeClozeQuiz && activeClozeQuiz.questionList && activeClozeQuiz.questionList.length > 0) {
+      if (clozeActive && !clozeActive.classList.contains('hidden') && activeClozeQuiz && activeClozeQuiz.questionList && activeClozeQuiz.questionList.length > 0 && activeClozeQuiz.currentIndex < activeClozeQuiz.questionList.length) {
         // 이미 진행 중인 빈칸 퀴즈 화면 유지
       } else {
-        setupClozeScopeUI();
+        const restored = restoreActiveLearningSession('cloze-quiz');
+        if (!restored) {
+          document.getElementById('clozeActiveCard')?.classList.add('hidden');
+          document.getElementById('clozeResultCard')?.classList.add('hidden');
+          document.getElementById('clozeSetupCard')?.classList.remove('hidden');
+          setupClozeScopeUI();
+          updateResumeBanners();
+        }
       }
     } else if (tabId === 'paraphrase-quiz') {
       const paraActive = document.getElementById('paraActiveCard');
-      if (paraActive && !paraActive.classList.contains('hidden') && activeQuiz && activeQuiz.type === 'paraphrase' && activeQuiz.questionList && activeQuiz.questionList.length > 0) {
+      if (paraActive && !paraActive.classList.contains('hidden') && activeQuiz && activeQuiz.type === 'paraphrase' && activeQuiz.questionList && activeQuiz.questionList.length > 0 && activeQuiz.currentIndex < activeQuiz.questionList.length) {
         // 이미 진행 중인 동의어 퀴즈 화면 유지
       } else {
-        setupQuizScopeUI('paraphrase');
+        const restored = restoreActiveLearningSession('paraphrase-quiz');
+        if (!restored) {
+          document.getElementById('paraActiveCard')?.classList.add('hidden');
+          document.getElementById('paraSetupCard')?.classList.remove('hidden');
+          setupQuizScopeUI('paraphrase');
+          updateResumeBanners();
+        }
       }
     } else if (tabId === 'stats') {
       renderStats();
@@ -2381,6 +2679,8 @@
           const wrongCount = dayWords.filter(w => getWrongCount(w.id) > 0).length;
           const stdRounds = getDayRoundCount(day, 'standard');
           const clozeRounds = getDayRoundCount(day, 'cloze');
+          const savedStd = getStudyItemLastProgress('standard', day);
+          const hasStdProgress = savedStd && savedStd.index > 0 && savedStd.index < (savedStd.total || (savedStd.questionList && savedStd.questionList.length) || dayWords.length);
 
           return `
             <div class="p-3.5 sm:p-4 rounded-2xl border border-slate-200 bg-white hover:border-indigo-400 shadow-xs transition flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -2391,6 +2691,12 @@
                   ${wrongCount > 0 ? `
                     <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-rose-50 text-rose-600 border border-rose-100">
                       오답 ${wrongCount}개
+                    </span>
+                  ` : ''}
+                  ${hasStdProgress ? `
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-black bg-amber-100 text-amber-800 border border-amber-300">
+                      <i class="fa-solid fa-bookmark text-[9px] text-amber-600"></i>
+                      <span>${savedStd.index + 1}/${savedStd.total || dayWords.length}번 이어풀기</span>
                     </span>
                   ` : ''}
                 </div>
@@ -2415,9 +2721,9 @@
                   <i class="fa-solid fa-book-open text-xs text-indigo-600"></i>
                   <span>단어 목록</span>
                 </button>
-                <button onclick="window.startStandardQuiz('${day}')" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs flex items-center justify-center gap-1.5 shadow-sm transition active:scale-95">
-                  <i class="fa-solid fa-play text-[10px]"></i>
-                  <span>4지선다 풀기</span>
+                <button onclick="window.startStandardQuiz('${day}')" class="px-4 py-2 rounded-xl ${hasStdProgress ? 'bg-amber-600 hover:bg-amber-700' : 'bg-indigo-600 hover:bg-indigo-700'} text-white font-black text-xs flex items-center justify-center gap-1.5 shadow-sm transition active:scale-95">
+                  <i class="fa-solid ${hasStdProgress ? 'fa-rotate-left' : 'fa-play'} text-[10px]"></i>
+                  <span>${hasStdProgress ? `${savedStd.index + 1}번 이어풀기` : '4지선다 풀기'}</span>
                 </button>
               </div>
             </div>
@@ -2487,6 +2793,12 @@
     days.forEach(day => {
       const count = words.filter(w => w.day === day).length;
       const paraRounds = getDayRoundCount(day, 'paraphrase');
+      const savedPara = getStudyItemLastProgress('paraphrase', day);
+      const hasParaProgress = savedPara && savedPara.index > 0 && savedPara.index < (savedPara.total || (savedPara.questionList && savedPara.questionList.length) || count);
+      const progressBadge = hasParaProgress
+        ? `<div class="text-[10px] text-rose-800 bg-rose-100 font-extrabold px-1.5 py-0.5 rounded-md inline-block mt-0.5"><i class="fa-solid fa-bookmark mr-0.5 text-rose-600"></i>${savedPara.index + 1}/${savedPara.total || count}번 이어풀기</div>`
+        : `<div class="text-[11px] text-slate-500">${count}개 단어</div>`;
+
       html += `
         <button class="scope-btn p-3 rounded-2xl border border-slate-200 hover:bg-slate-50 text-left transition" data-scope="${day}">
           <div class="flex items-center justify-between gap-1 mb-0.5">
@@ -2499,7 +2811,7 @@
               ${paraRounds > 0 ? `${paraRounds}회독` : '0회독'}
             </span>
           </div>
-          <div class="text-[11px] text-slate-500">${count}개 단어</div>
+          <div>${progressBadge}</div>
         </button>
       `;
     });
@@ -2617,46 +2929,58 @@
   }
 
   // --- [6-A. 기본 4지선다 퀴즈] ---
-  function startStandardQuiz(scope) {
-    let pool = getWordPoolForScope(scope);
+  function startStandardQuiz(scope, forceReset = false) {
+    const targetScope = scope || 'Day 01';
+    let pool = getWordPoolForScope(targetScope);
     if (pool.length === 0) {
       alert('출제할 단어가 없습니다. 범위를 다시 선택해주세요.');
       return;
     }
 
-    // 풀던 문제 이어풀기 확인: 메모리 또는 저장된 세션에 풀던 문제가 있는 경우
-    if (activeQuiz && activeQuiz.type === 'standard' && activeQuiz.currentScope === scope && activeQuiz.currentIndex > 0 && activeQuiz.currentIndex < activeQuiz.questionList.length) {
-      const continueExam = confirm(`${scope} 4지선다 퀴즈를 ${activeQuiz.currentIndex + 1}번 문제까지 풀던 중이었습니다.\n\n이어서 푸시겠습니까?\n[확인: 이어서 풀기 / 취소: 처음부터 새로 풀기]`);
-      if (continueExam) {
+    isStandardTimeAttack = localStorage.getItem('gtelp_timeattack_enabled') === 'true';
+
+    // 풀던 문제 이어풀기 확인 (forceReset이 아닐 때)
+    if (!forceReset) {
+      // 1. 메모리상 활성 퀴즈가 해당 범위인 경우
+      if (activeQuiz && activeQuiz.type === 'standard' && activeQuiz.currentScope === targetScope && activeQuiz.questionList && activeQuiz.currentIndex > 0 && activeQuiz.currentIndex < activeQuiz.questionList.length) {
         document.getElementById('quizSetupCard').classList.add('hidden');
         document.getElementById('quizResultCard').classList.add('hidden');
         document.getElementById('quizActiveCard').classList.remove('hidden');
         renderCurrentStandardQuestion();
+        showToast(`📍 ${targetScope} 4지선다 (${activeQuiz.currentIndex + 1}/${activeQuiz.questionList.length}번) 풀던 위치로 이어서 진행합니다!`);
         return;
       }
-    } else {
-      try {
-        const raw = localStorage.getItem(SESSION_KEY);
-        if (raw) {
-          const data = JSON.parse(raw);
-          if (data && data.tab === 'quiz' && data.type === 'standard' && data.currentScope === scope && (data.currentIndex || 0) > 0 && data.currentIndex < (data.questionList || []).length) {
-            const continueExam = confirm(`${scope} 4지선다 퀴즈를 ${(data.currentIndex || 0) + 1}번 문제까지 풀던 중이었습니다.\n\n이어서 푸시겠습니까?\n[확인: 이어서 풀기 / 취소: 처음부터 새로 풀기]`);
-            if (continueExam) {
-              restoreActiveLearningSession('quiz');
-              return;
-            }
-          }
-        }
-      } catch (e) {}
+
+      // 2. LocalStorage 영구 저장소에 저장된 해당 Day의 진행 상태 복원
+      const saved = getStudyItemLastProgress('standard', targetScope);
+      if (saved && saved.questionList && saved.questionList.length > 0 && saved.index > 0 && saved.index < saved.questionList.length) {
+        activeQuiz = {
+          type: 'standard',
+          currentScope: targetScope,
+          scopeLabel: saved.scopeLabel || (targetScope === 'selected' ? '선택 단어' : (targetScope === 'wrong' ? '오답 집중' : (targetScope === 'all' ? '전체 단어' : `${targetScope} 문제풀이`))),
+          questionList: saved.questionList,
+          currentIndex: Math.min(saved.index, saved.questionList.length - 1),
+          score: saved.score || 0,
+          correctCount: saved.correctCount || 0,
+          wrongList: saved.wrongList || [],
+          answered: saved.answered || false,
+          userAnswers: saved.userAnswers || {},
+          isRetry: false
+        };
+        document.getElementById('quizSetupCard').classList.add('hidden');
+        document.getElementById('quizResultCard').classList.add('hidden');
+        document.getElementById('quizActiveCard').classList.remove('hidden');
+        renderCurrentStandardQuestion();
+        showToast(`📍 ${targetScope} 4지선다 (${activeQuiz.currentIndex + 1}/${activeQuiz.questionList.length}번) 풀던 위치로 바로 이어졌습니다!`);
+        return;
+      }
     }
 
-    isStandardTimeAttack = localStorage.getItem('gtelp_timeattack_enabled') === 'true';
-
-    // 셔플된 문제 리스트
+    // 셔플된 문제 리스트로 새로 시작
     activeQuiz = {
       type: 'standard',
-      currentScope: scope,
-      scopeLabel: scope === 'selected' ? '선택 단어' : (scope === 'wrong' ? '오답 집중' : (scope === 'all' ? '전체 단어' : `${scope} 문제풀이`)),
+      currentScope: targetScope,
+      scopeLabel: targetScope === 'selected' ? '선택 단어' : (targetScope === 'wrong' ? '오답 집중' : (targetScope === 'all' ? '전체 단어' : `${targetScope} 문제풀이`)),
       questionList: shuffle(pool),
       currentIndex: 0,
       score: 0,
@@ -3031,7 +3355,11 @@
 
   function finishQuiz() {
     clearQuizTimer();
-    clearCurrentLearningSession();
+    const finishedScope = activeQuiz ? activeQuiz.currentScope : null;
+    if (finishedScope) {
+      clearStudyItemProgress('standard', finishedScope);
+    }
+    clearCurrentLearningSession('quiz');
     document.getElementById('quizActiveCard').classList.add('hidden');
     document.getElementById('quizResultCard').classList.remove('hidden');
 
@@ -3119,17 +3447,50 @@
   }
 
   // --- [6-B. 패러프레이징 (동의어) 전용 퀴즈] ---
-  function startParaphraseQuiz(scope) {
-    let pool = getWordPoolForScope(scope).filter(w => Array.isArray(w.paraphrase) && w.paraphrase.length > 0);
+  function startParaphraseQuiz(scope, forceReset = false) {
+    const targetScope = scope || getSelectedScope('paraphrase') || 'Day 01';
+    let pool = getWordPoolForScope(targetScope).filter(w => Array.isArray(w.paraphrase) && w.paraphrase.length > 0);
     if (pool.length === 0) {
       alert('패러프레이징(동의어) 데이터가 있는 단어가 없습니다. 다른 범위를 선택해주세요.');
       return;
     }
 
+    // 풀던 문제 이어풀기 확인 (forceReset이 아닐 때)
+    if (!forceReset) {
+      if (activeQuiz && activeQuiz.type === 'paraphrase' && activeQuiz.currentScope === targetScope && activeQuiz.questionList && activeQuiz.currentIndex > 0 && activeQuiz.currentIndex < activeQuiz.questionList.length) {
+        document.getElementById('paraSetupCard').classList.add('hidden');
+        document.getElementById('paraActiveCard').classList.remove('hidden');
+        renderCurrentParaQuestion();
+        showToast(`📍 ${targetScope} 패러프레이징 (${activeQuiz.currentIndex + 1}/${activeQuiz.questionList.length}번) 풀던 위치로 이어서 진행합니다!`);
+        return;
+      }
+
+      const saved = getStudyItemLastProgress('paraphrase', targetScope);
+      if (saved && saved.questionList && saved.questionList.length > 0 && saved.index > 0 && saved.index < saved.questionList.length) {
+        activeQuiz = {
+          type: 'paraphrase',
+          currentScope: targetScope,
+          scopeLabel: saved.scopeLabel || (targetScope === 'selected' ? '선택 단어' : (targetScope === 'wrong' ? '오답 집중' : (targetScope === 'all' ? '전체 단어' : `${targetScope} 동의어`))),
+          questionList: saved.questionList,
+          currentIndex: Math.min(saved.index, saved.questionList.length - 1),
+          score: saved.score || 0,
+          correctCount: saved.correctCount || 0,
+          wrongList: saved.wrongList || [],
+          answered: saved.answered || false,
+          userAnswers: saved.userAnswers || {}
+        };
+        document.getElementById('paraSetupCard').classList.add('hidden');
+        document.getElementById('paraActiveCard').classList.remove('hidden');
+        renderCurrentParaQuestion();
+        showToast(`📍 ${targetScope} 패러프레이징 (${activeQuiz.currentIndex + 1}/${activeQuiz.questionList.length}번) 풀던 위치로 바로 이어졌습니다!`);
+        return;
+      }
+    }
+
     activeQuiz = {
       type: 'paraphrase',
-      currentScope: scope,
-      scopeLabel: scope === 'selected' ? '선택 단어' : (scope === 'wrong' ? '오답 집중' : (scope === 'all' ? '전체 단어' : scope)),
+      currentScope: targetScope,
+      scopeLabel: targetScope === 'selected' ? '선택 단어' : (targetScope === 'wrong' ? '오답 집중' : (targetScope === 'all' ? '전체 단어' : targetScope)),
       questionList: shuffle(pool),
       currentIndex: 0,
       score: 0,
@@ -3373,7 +3734,11 @@
         if (activeQuiz.currentIndex < activeQuiz.questionList.length) {
           renderCurrentParaQuestion();
         } else {
-          clearCurrentLearningSession();
+          const finishedScope = activeQuiz ? activeQuiz.currentScope : null;
+          if (finishedScope) {
+            clearStudyItemProgress('paraphrase', finishedScope);
+          }
+          clearCurrentLearningSession('paraphrase-quiz');
           const isSpecialParaScope = ['all', 'wrong', 'selected'].includes(activeQuiz.currentScope);
           const paraPool = getWordPoolForScope(activeQuiz.currentScope).filter(w => Array.isArray(w.paraphrase) && w.paraphrase.length > 0);
           const isFullParaCompleted = !activeQuiz.isRetry && activeQuiz.currentScope && !isSpecialParaScope && (activeQuiz.questionList.length >= paraPool.length) && (activeQuiz.currentIndex >= activeQuiz.questionList.length);
@@ -4065,27 +4430,35 @@
         activeQuiz.currentIndex--;
         renderCurrentStandardQuestion();
       } else {
-        if (confirm('진행 중인 퀴즈를 중단하고 범위 선택으로 돌아가시겠습니까?')) {
+        if (confirm('진행 중인 퀴즈를 중단하고 범위 선택으로 돌아가시겠습니까? (현재 풀던 위치가 자동 저장됩니다)')) {
+          clearQuizTimer();
+          saveCurrentLearningSession();
           document.getElementById('quizActiveCard').classList.add('hidden');
           document.getElementById('quizSetupCard').classList.remove('hidden');
+          setupQuizScopeUI('standard');
+          updateResumeBanners();
         }
       }
     });
 
     document.getElementById('btnQuitQuiz')?.addEventListener('click', () => {
-      if (confirm('진행 중인 퀴즈를 종료하시겠습니까?')) {
+      if (confirm('진행 중인 퀴즈를 잠시 중단하시겠습니까? (현재 풀던 위치가 자동 저장됩니다)')) {
         clearQuizTimer();
-        clearCurrentLearningSession();
+        saveCurrentLearningSession();
         document.getElementById('quizActiveCard').classList.add('hidden');
         document.getElementById('quizSetupCard').classList.remove('hidden');
+        setupQuizScopeUI('standard');
+        updateResumeBanners();
       }
     });
 
     document.getElementById('btnBackToQuizSetup')?.addEventListener('click', () => {
-      clearCurrentLearningSession();
+      clearQuizTimer();
+      saveCurrentLearningSession();
       document.getElementById('quizResultCard').classList.add('hidden');
       document.getElementById('quizSetupCard').classList.remove('hidden');
       setupQuizScopeUI('standard');
+      updateResumeBanners();
     });
 
     // 플래시카드 이벤트
@@ -4146,27 +4519,35 @@
         activeClozeQuiz.currentIndex--;
         renderCurrentClozeQuestion();
       } else {
-        if (confirm('문장 빈칸 퀴즈를 중단하고 범위 선택으로 돌아가시겠습니까?')) {
+        if (confirm('문장 빈칸 퀴즈를 중단하고 범위 선택으로 돌아가시겠습니까? (현재 풀던 위치가 자동 저장됩니다)')) {
+          clearQuizTimer();
+          saveCurrentLearningSession();
           document.getElementById('clozeActiveCard').classList.add('hidden');
           document.getElementById('clozeSetupCard').classList.remove('hidden');
+          setupClozeScopeUI();
+          updateResumeBanners();
         }
       }
     });
 
     document.getElementById('btnQuitClozeQuiz')?.addEventListener('click', () => {
-      if (confirm('문장 빈칸 퀴즈를 종료하시겠습니까?')) {
+      if (confirm('문장 빈칸 퀴즈를 잠시 중단하시겠습니까? (현재 풀던 위치가 자동 저장됩니다)')) {
         clearQuizTimer();
-        clearCurrentLearningSession();
+        saveCurrentLearningSession();
         document.getElementById('clozeActiveCard').classList.add('hidden');
         document.getElementById('clozeSetupCard').classList.remove('hidden');
+        setupClozeScopeUI();
+        updateResumeBanners();
       }
     });
 
     document.getElementById('btnBackToClozeSetup')?.addEventListener('click', () => {
-      clearCurrentLearningSession();
+      clearQuizTimer();
+      saveCurrentLearningSession();
       document.getElementById('clozeResultCard').classList.add('hidden');
       document.getElementById('clozeSetupCard').classList.remove('hidden');
       setupClozeScopeUI();
+      updateResumeBanners();
     });
 
     // 10초 타임어택 독립 옵션 동기화 및 이벤트
@@ -4231,18 +4612,23 @@
         activeQuiz.currentIndex--;
         renderCurrentParaQuestion();
       } else {
-        if (confirm('패러프레이징 퀴즈를 중단하고 범위 선택으로 돌아가시겠습니까?')) {
+        if (confirm('패러프레이징 퀴즈를 중단하고 범위 선택으로 돌아가시겠습니까? (현재 풀던 위치가 자동 저장됩니다)')) {
+          saveCurrentLearningSession();
           document.getElementById('paraActiveCard').classList.add('hidden');
           document.getElementById('paraSetupCard').classList.remove('hidden');
+          setupQuizScopeUI('paraphrase');
+          updateResumeBanners();
         }
       }
     });
 
     document.getElementById('btnQuitParaQuiz')?.addEventListener('click', () => {
-      if (confirm('패러프레이징 퀴즈를 종료하시겠습니까?')) {
-        clearCurrentLearningSession();
+      if (confirm('패러프레이징 퀴즈를 잠시 중단하시겠습니까? (현재 풀던 위치가 자동 저장됩니다)')) {
+        saveCurrentLearningSession();
         document.getElementById('paraActiveCard').classList.add('hidden');
         document.getElementById('paraSetupCard').classList.remove('hidden');
+        setupQuizScopeUI('paraphrase');
+        updateResumeBanners();
       }
     });
 
@@ -5256,39 +5642,6 @@
   let flashcardUnknown = [];
   let flashcardCurrentScope = 'all';
 
-  const FC_PROGRESS_KEY = 'gtelp_fc_last_progress';
-
-  function getFlashcardProgressMap() {
-    try {
-      const raw = localStorage.getItem(FC_PROGRESS_KEY);
-      return raw ? JSON.parse(raw) : {};
-    } catch (e) {
-      return {};
-    }
-  }
-
-  function saveFlashcardProgress(scope, index) {
-    if (!scope) return;
-    try {
-      const map = getFlashcardProgressMap();
-      map[scope] = {
-        index: Math.max(0, index || 0),
-        updatedAt: Date.now()
-      };
-      localStorage.setItem(FC_PROGRESS_KEY, JSON.stringify(map));
-    } catch (e) {}
-  }
-
-  function getFlashcardLastIndex(scope) {
-    if (!scope) return 0;
-    try {
-      const map = getFlashcardProgressMap();
-      return map[scope] ? (map[scope].index || 0) : 0;
-    } catch (e) {
-      return 0;
-    }
-  }
-
   function setupFlashcardScopeUI() {
     const container = document.getElementById('flashcardScopeContainer');
     if (!container) return;
@@ -5682,7 +6035,8 @@
   function finishFlashcard() {
     const scope = flashcardCurrentScope;
     saveFlashcardProgress(scope, 0);
-    clearCurrentLearningSession();
+    clearStudyItemProgress('flashcard', scope);
+    clearCurrentLearningSession('flashcard');
 
     // 플래시카드 Day별 회독 차수 카운트: 해당 항목의 모든 단어를 다 확인했을 때만 적용 및 집계!
     const isSpecialFcScope = ['all', 'wrong', 'selected'].includes(scope);
@@ -5751,6 +6105,12 @@
     days.forEach(day => {
       const count = words.filter(w => w.day === day).length;
       const clozeRounds = getDayRoundCount(day, 'cloze');
+      const savedCloze = getStudyItemLastProgress('cloze', day);
+      const hasClozeProgress = savedCloze && savedCloze.index > 0 && savedCloze.index < (savedCloze.total || (savedCloze.questionList && savedCloze.questionList.length) || count);
+      const progressBadge = hasClozeProgress
+        ? `<div class="text-[10px] text-emerald-800 bg-emerald-100 font-extrabold px-1.5 py-0.5 rounded-md inline-block mt-0.5"><i class="fa-solid fa-bookmark mr-0.5 text-emerald-600"></i>${savedCloze.index + 1}/${savedCloze.total || count}번 이어풀기</div>`
+        : `<div class="text-[11px] text-slate-500">${count}개 단어</div>`;
+
       html += `
         <button class="cloze-scope-btn p-3 rounded-2xl border border-slate-200 hover:bg-slate-50 text-left transition" data-scope="${day}">
           <div class="flex items-center justify-between gap-1 mb-0.5">
@@ -5763,7 +6123,7 @@
               ${clozeRounds > 0 ? `${clozeRounds}회독` : '0회독'}
             </span>
           </div>
-          <div class="text-[11px] text-slate-500">${count}개 단어</div>
+          <div>${progressBadge}</div>
         </button>
       `;
     });
@@ -5788,7 +6148,7 @@
     updateResumeBanners();
   }
 
-  function startClozeQuiz(scope) {
+  function startClozeQuiz(scope, forceReset = false) {
     const targetScope = scope || getSelectedScope('cloze') || 'Day 01';
     let pool = getWordPoolForScope(targetScope).filter(w => w.exampleEn && w.exampleEn.trim().length > 0);
     if (pool.length === 0) {
@@ -5797,6 +6157,40 @@
     }
 
     isClozeTimeAttack = localStorage.getItem('gtelp_timeattack_enabled') === 'true';
+
+    // 풀던 문제 이어풀기 확인 (forceReset이 아닐 때)
+    if (!forceReset) {
+      if (activeClozeQuiz && activeClozeQuiz.currentScope === targetScope && activeClozeQuiz.questionList && activeClozeQuiz.currentIndex > 0 && activeClozeQuiz.currentIndex < activeClozeQuiz.questionList.length) {
+        document.getElementById('clozeSetupCard').classList.add('hidden');
+        document.getElementById('clozeResultCard').classList.add('hidden');
+        document.getElementById('clozeActiveCard').classList.remove('hidden');
+        renderCurrentClozeQuestion();
+        showToast(`📍 ${targetScope} 문장 빈칸 (${activeClozeQuiz.currentIndex + 1}/${activeClozeQuiz.questionList.length}번) 풀던 위치로 이어서 진행합니다!`);
+        return;
+      }
+
+      const saved = getStudyItemLastProgress('cloze', targetScope);
+      if (saved && saved.questionList && saved.questionList.length > 0 && saved.index > 0 && saved.index < saved.questionList.length) {
+        activeClozeQuiz = {
+          scopeLabel: saved.scopeLabel || (targetScope === 'selected' ? '선택 단어' : (targetScope === 'wrong' ? '오답 집중' : (targetScope === 'all' ? '전체 단어' : `${targetScope} 문장 빈칸`))),
+          currentScope: targetScope,
+          questionList: saved.questionList,
+          currentIndex: Math.min(saved.index, saved.questionList.length - 1),
+          score: saved.score || 0,
+          correctCount: saved.correctCount || 0,
+          wrongList: saved.wrongList || [],
+          answered: saved.answered || false,
+          userAnswers: saved.userAnswers || {},
+          isRetry: false
+        };
+        document.getElementById('clozeSetupCard').classList.add('hidden');
+        document.getElementById('clozeResultCard').classList.add('hidden');
+        document.getElementById('clozeActiveCard').classList.remove('hidden');
+        renderCurrentClozeQuestion();
+        showToast(`📍 ${targetScope} 문장 빈칸 (${activeClozeQuiz.currentIndex + 1}/${activeClozeQuiz.questionList.length}번) 풀던 위치로 바로 이어졌습니다!`);
+        return;
+      }
+    }
 
     activeClozeQuiz = {
       scopeLabel: targetScope === 'selected' ? '선택 단어' : (targetScope === 'wrong' ? '오답 집중' : (targetScope === 'all' ? '전체 단어' : `${targetScope} 문장 빈칸`)),
@@ -6136,7 +6530,11 @@
 
   function finishClozeQuiz() {
     clearQuizTimer();
-    clearCurrentLearningSession();
+    const finishedScope = activeClozeQuiz ? activeClozeQuiz.currentScope : null;
+    if (finishedScope) {
+      clearStudyItemProgress('cloze', finishedScope);
+    }
+    clearCurrentLearningSession('cloze-quiz');
     document.getElementById('clozeActiveCard').classList.add('hidden');
     document.getElementById('clozeResultCard').classList.remove('hidden');
 
